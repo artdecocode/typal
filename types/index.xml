@@ -1,0 +1,7 @@
+<types>
+  <type name="Config" desc="Options for the program.">
+    <prop boolean name="shouldRun">
+      A boolean option.
+    </prop>
+  </type>
+</types>
