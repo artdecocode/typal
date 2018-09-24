@@ -1,3 +1,9 @@
+## 25 September 2018
+
+### 1.1.0
+
+- [feature] Parse types inside of the `Object.<string, Type>` construct.
+
 ## 24 September 2018
 
 ### 1.0.0
