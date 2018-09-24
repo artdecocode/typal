@@ -38,3 +38,15 @@ export const getPropType = ({ number, string, boolean, type }) => {
   if (type) return type
   return '*'
 }
+
+export const getLink = (title, prefix = '') => {
+  const l = title
+    .replace(/<\/?code>/g, '')
+    .replace(/<\/?strong>/g, '')
+    .replace(/<br\/>/g, '')
+    .replace(/&nbsp;/g, '')
+    .replace(/[^\w-\d ]/g, '')
+    .toLowerCase()
+    .replace(/[, ]/g, '-')
+  return `${prefix}-${l}`
+}

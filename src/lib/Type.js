@@ -1,7 +1,7 @@
 import extractTags from 'rexml'
 import mismatch from 'mismatch'
 import Property from './Property'
-import { getLink } from '..'
+import { getLink } from '.'
 
 /**
  * A representation of a type.
@@ -61,9 +61,9 @@ export default class Type {
     const codedName = `\`${this.name}\``
     let nn
     if (!this.import) {
-      nn = this.noToc ? `[${codedName}](l)` : `[${codedName}](t)`
+      nn = this.noToc ? `[${codedName}](l-type)` : `[${codedName}](t-type)`
     } else {
-      nn = `[${codedName}](l)`
+      nn = `[${codedName}](l-type)`
     }
     const d = this.description ? `: ${this.description}` : ''
     const twl = typeWithLink ? `${typeWithLink} ` : ''
@@ -140,6 +140,6 @@ const esc = (s) => {
 
 const getLinkToType = (allTypes, type) => {
   const linkedType = allTypes.find(({ name }) => name == type)
-  const link = linkedType ? getLink(linkedType.name) : undefined
+  const link = linkedType ? getLink(linkedType.name, 'type') : undefined
   return link
 }

@@ -134,17 +134,17 @@ const TypeToMarkdown = {
   'writes a markdown without props'({ t, name, desc }) {
     t.fromXML('', { name, desc })
     const res = t.toMarkdown()
-    equal(res, '__[`Type`](t)__: A test type.')
+    equal(res, '__[`Type`](t-type)__: A test type.')
   },
   'writes a markdown with a type'({ t, name, desc, type }) {
     t.fromXML('', { name, desc, type })
     const res = t.toMarkdown()
-    equal(res, '`Object` __[`Type`](t)__: A test type.')
+    equal(res, '`Object` __[`Type`](t-type)__: A test type.')
   },
   'writes a markdown with props'({ t, name, desc, content }) {
     t.fromXML(content, { name, desc })
     const res = t.toMarkdown()
-    const expected = `__[\`Type\`](t)__: A test type.
+    const expected = `__[\`Type\`](t-type)__: A test type.
 
 \`\`\`table
 [["Name","Type","Description","Default"],["__root*__","_string_","Root directory string.","-"],["maxage","_number_","Browser cache max-age in milliseconds.","\`0\`"]]
