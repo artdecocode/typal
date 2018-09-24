@@ -1,7 +1,7 @@
 let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
 let Property = require('./Property'); if (Property && Property.__esModule) Property = Property.default;
-const { getLink } = require('..');
+const { getLink } = require('.');
 
 /**
  * A representation of a type.
@@ -61,9 +61,9 @@ const { getLink } = require('..');
     const codedName = `\`${this.name}\``
     let nn
     if (!this.import) {
-      nn = this.noToc ? `[${codedName}](l)` : `[${codedName}](t)`
+      nn = this.noToc ? `[${codedName}](l-type)` : `[${codedName}](t-type)`
     } else {
-      nn = `[${codedName}](l)`
+      nn = `[${codedName}](l-type)`
     }
     const d = this.description ? `: ${this.description}` : ''
     const twl = typeWithLink ? `${typeWithLink} ` : ''
@@ -140,7 +140,7 @@ const esc = (s) => {
 
 const getLinkToType = (allTypes, type) => {
   const linkedType = allTypes.find(({ name }) => name == type)
-  const link = linkedType ? getLink(linkedType.name) : undefined
+  const link = linkedType ? getLink(linkedType.name, 'type') : undefined
   return link
 }
 

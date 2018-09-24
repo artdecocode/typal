@@ -39,7 +39,19 @@
   return '*'
 }
 
+       const getLink = (title, prefix = '') => {
+  const l = title
+    .replace(/<\/?code>/g, '')
+    .replace(/<\/?strong>/g, '')
+    .replace(/<br\/>/g, '')
+    .replace(/&nbsp;/g, '')
+    .replace(/[^\w-\d ]/g, '')
+    .toLowerCase()
+    .replace(/[, ]/g, '-')
+  return `${prefix}-${l}`
+}
 
 module.exports.getNameWithDefault = getNameWithDefault
 module.exports.getPropType = getPropType
+module.exports.getLink = getLink
 //# sourceMappingURL=index.js.map
