@@ -89,16 +89,16 @@ const getSpread = (properties = []) => {
   return st
 }
 
-const getLinks = (allTypes, type) => {
+       const getLinks = (allTypes, type) => {
   const m = mismatch(
-    /(?:(.+)\.<(.+?)>)|([^|]+)/g,
+    /(?:(.+)\.<(string, *)?(.+?)>)|([^|]+)/g,
     type,
-    ['gen', 'generic', 't'],
+    ['gen', 'string', 'generic', 't'],
   )
-  const types = m.map(({ gen, generic, t }) => {
+  const types = m.map(({ gen, generic, string = '', t }) => {
     if (gen) {
       const pp = getLinks(allTypes, generic)
-      return `${gen}.<${pp}>`
+      return `${gen}.<${string}${pp}>`
     }
     const link = getLinkToType(allTypes, t)
     if (!link) return t
@@ -145,4 +145,5 @@ const getLinkToType = (allTypes, type) => {
 }
 
 module.exports = Type
+module.exports.getLinks = getLinks
 //# sourceMappingURL=Type.js.map
