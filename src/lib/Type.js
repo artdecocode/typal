@@ -110,7 +110,7 @@ const getLinks = (allTypes, type) => {
 
 /**
  * @param {Property[]} props
- * @param {*} allTypes
+ * @param {Type[]} allTypes
  */
 const makePropsTable = (props = [], allTypes = []) => {
   if (!props.length) return ''

@@ -1,6 +1,6 @@
 import { throws } from 'assert'
 import { equal, deepEqual } from 'zoroaster/assert'
-import Property from '../../../src/lib/typedef/Property'
+import Property from '../../src/lib/Property'
 
 class context {
   get desc() {

@@ -1,6 +1,6 @@
 import { throws } from 'assert'
 import { equal, deepEqual } from 'zoroaster/assert'
-import Type from '../../src/Type'
+import Type from '../../src/lib/Type'
 
 class context {
   /** Name of the type. */

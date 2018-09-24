@@ -40,5 +40,9 @@
     "eslint-config-artdeco": "1.0.1",
     "yarn-s": "1.1.0",
     "zoroaster": "3.5.1"
+  },
+  "dependencies": {
+    "mismatch": "1.0.3",
+    "rexml": "1.1.0"
   }
 }
