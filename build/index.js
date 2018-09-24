@@ -1,26 +1,19 @@
-const { debuglog } = require('util');
+const $_lib_Type = require('./lib/Type');
+const $_lib_Property = require('./lib/Property');
 
-const LOG = debuglog('typal')
-
-/**
- * Keeps JSDoc types in XML files and converts them to JavaScript and Markdown.
- * @param {Config} config Options for the program.
- * @param {boolean} config.shouldRun A boolean option.
- */
-               async function typal(config) {
-  const {
-    type,
-  } = config
-  LOG('typal called with %s', type)
-  return type
+       const getLink = (title) => {
+  const l = title
+    .replace(/<\/?code>/g, '')
+    .replace(/<\/?strong>/g, '')
+    .replace(/<br\/>/g, '')
+    .replace(/&nbsp;/g, '')
+    .replace(/[^\w-\d ]/g, '')
+    .toLowerCase()
+    .replace(/[, ]/g, '-')
+  return l
 }
 
-/* documentary types/index.xml */
-/**
- * @typedef {Object} Config Options for the program.
- * @prop {boolean} shouldRun A boolean option.
- */
-
-
-module.exports = typal
+module.exports.getLink = getLink
+module.exports.Type = $_lib_Type
+module.exports.Property = $_lib_Property
 //# sourceMappingURL=index.js.map
