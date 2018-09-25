@@ -21,6 +21,8 @@ const { getLink } = require('.');
     if (i) this.import = true
     if (link) this.link = link
 
+    /** @type {Property[]} */
+    this.properties = []
     if (content) {
       const ps = extractTags('prop', content)
       const props = ps.map(({ content: c, props: p }) => {
@@ -55,6 +57,7 @@ const { getLink } = require('.');
     const st = [s, ...p].join('\n')
     return st
   }
+  /** @param {Type[]} allTypes */
   toMarkdown(allTypes = []) {
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
@@ -112,8 +115,9 @@ const getSpread = (properties = []) => {
  * @param {Property[]} props
  * @param {Type[]} allTypes
  */
-const makePropsTable = (props = [], allTypes = []) => {
+       const makePropsTable = (props = [], allTypes = []) => {
   if (!props.length) return ''
+  const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
   const h = ['Name', 'Type', 'Description', 'Default']
   const ps = props.map((prop) => {
@@ -122,7 +126,10 @@ const makePropsTable = (props = [], allTypes = []) => {
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
     return [name, `_${esc(linkedType)}_`, prop.description, d]
   })
-  const res = [h, ...ps]
+  const pre = [h, ...ps]
+  const res = anyHaveDefault
+    ? pre
+    : pre.map(([name, type, desc]) => [name, type, desc])
   const j = JSON.stringify(res)
   return `
 
@@ -146,4 +153,5 @@ const getLinkToType = (allTypes, type) => {
 
 module.exports = Type
 module.exports.getLinks = getLinks
+module.exports.makePropsTable = makePropsTable
 //# sourceMappingURL=Type.js.map
