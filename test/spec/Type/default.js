@@ -1,6 +1,6 @@
 import { throws } from 'assert'
 import { equal, deepEqual } from 'zoroaster/assert'
-import Type from '../../src/lib/Type'
+import Type from '../../../src/lib/Type'
 
 class context {
   /** Name of the type. */
@@ -39,6 +39,7 @@ const TypeFromXml = {
       name,
       noToc: true,
       description: desc,
+      properties: [],
     })
   },
   'creates a type without description'({ t, name }) {
@@ -46,6 +47,7 @@ const TypeFromXml = {
     t.fromXML('', props)
     deepEqual(t, {
       name,
+      properties: [],
     })
   },
   'creates a type with properties'({ t, name, desc, content }) {

@@ -4,6 +4,11 @@ import { getPropType, getNameWithDefault } from '.'
  * Representation of a property of a type.
  */
 export default class Property {
+  static fromXML(...args) {
+    const prop = new Property()
+    prop.fromXML(...args)
+    return prop
+  }
   fromXML(content,
     { name, string, boolean, opt, number, type, default: def },
   ) {
