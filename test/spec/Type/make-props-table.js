@@ -10,10 +10,16 @@ const ts = {
     ])
     equal(res, '\n\n```table\n[["Name","Type","Description","Default"],["__prop1*__","_*_","test","-"],["prop2","_*_","test2","`OK`"]]\n```')
   },
+  'escapes the | in the description'() {
+    const res = makePropsTable([
+      Property.fromXML('`echo abc | node consume.js`', { name: 'prop1', type: 'string' }),
+    ])
+    equal(res, '\n\n```table\n[["Name","Type","Description"],["__prop1*__","_string_","`echo abc \\\\| node consume.js`"]]\n```')
+  },
   'skips default when no props have it'() {
     const res = makePropsTable([
       Property.fromXML('test', { name: 'prop1' }),
-      Property.fromXML('test2', { name: 'prop2' })
+      Property.fromXML('test2', { name: 'prop2' }),
     ])
     equal(res, '\n\n```table\n[["Name","Type","Description"],["__prop1*__","_*_","test"],["__prop2*__","_*_","test2"]]\n```')
   },
