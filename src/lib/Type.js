@@ -124,7 +124,7 @@ export const makePropsTable = (props = [], allTypes = []) => {
     const linkedType = getLinks(allTypes, prop.type)
     const name = prop.optional ? prop.name : `__${prop.name}*__`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
-    return [name, `_${esc(linkedType)}_`, prop.description, d]
+    return [name, `_${esc(linkedType)}_`, esc(prop.description), d]
   })
   const pre = [h, ...ps]
   const res = anyHaveDefault
