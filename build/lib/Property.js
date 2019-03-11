@@ -42,4 +42,3 @@ const { getPropType, getNameWithDefault } = require('.');
 }
 
 module.exports = Property
-//# sourceMappingURL=Property.js.map

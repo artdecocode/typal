@@ -54,4 +54,3 @@
 module.exports.getNameWithDefault = getNameWithDefault
 module.exports.getPropType = getPropType
 module.exports.getLink = getLink
-//# sourceMappingURL=index.js.map

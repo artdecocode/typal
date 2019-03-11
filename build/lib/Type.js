@@ -1,6 +1,6 @@
 let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
-let Property = require('./Property'); if (Property && Property.__esModule) Property = Property.default;
+const Property = require('./Property');
 const { getLink } = require('.');
 
 /**
@@ -124,7 +124,7 @@ const getSpread = (properties = []) => {
     const linkedType = getLinks(allTypes, prop.type)
     const name = prop.optional ? prop.name : `__${prop.name}*__`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
-    return [name, `_${esc(linkedType)}_`, prop.description, d]
+    return [name, `_${esc(linkedType)}_`, esc(prop.description), d]
   })
   const pre = [h, ...ps]
   const res = anyHaveDefault
@@ -154,4 +154,3 @@ const getLinkToType = (allTypes, type) => {
 module.exports = Type
 module.exports.getLinks = getLinks
 module.exports.makePropsTable = makePropsTable
-//# sourceMappingURL=Type.js.map
