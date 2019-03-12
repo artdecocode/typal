@@ -92,6 +92,9 @@ const getSpread = (properties = []) => {
   return st
 }
 
+/**
+ * Iterates through the type and creates a link for it.
+ */
        const getLinks = (allTypes, type) => {
   const m = mismatch(
     /(?:(.+)\.<(string, *)?(.+?)>)|([^|]+)/g,
@@ -107,7 +110,7 @@ const getSpread = (properties = []) => {
     if (!link) return t
     const typeWithLink = `[${t}](#${link})`
     return typeWithLink
-  }).join('|')
+  }).join(' | ')
   return types
 }
 
