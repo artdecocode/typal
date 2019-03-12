@@ -2,7 +2,8 @@
   "name": "typal",
   "version": "1.2.0",
   "description": "Keeps JSDoc types in XML files and converts them to JavaScript and Markdown.",
-  "main": "build",
+  "main": "build/index.js",
+  "module": "src/index.js",
   "scripts": {
     "t": "zoroaster -a",
     "test": "yarn t test/spec test/mask",
@@ -20,7 +21,8 @@
     "example/": "yarn e example/example.js"
   },
   "files": [
-    "build"
+    "build",
+    "src"
   ],
   "repository": {
     "type": "git",
