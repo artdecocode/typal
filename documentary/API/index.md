@@ -1,4 +1,3 @@
-
 ## API
 
 The package is available by importing its default function:
