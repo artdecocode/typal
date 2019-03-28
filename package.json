@@ -38,11 +38,11 @@
   },
   "homepage": "https://github.com/artdecocode/typal#readme",
   "devDependencies": {
-    "alamode": "1.8.4",
+    "alamode": "1.8.6",
     "documentary": "1.22.0",
     "eslint-config-artdeco": "1.0.1",
     "yarn-s": "1.1.0",
-    "zoroaster": "3.8.2"
+    "zoroaster": "3.11.1"
   },
   "dependencies": {
     "mismatch": "1.0.3",
