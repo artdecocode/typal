@@ -45,13 +45,13 @@ export default class Type {
     const st = [s, ...p].join('\n')
     return st
   }
-  toParam(paramName, optional) {
+  toParam(paramName, optional, ws = '') {
     const d = this.description ? ` ${this.description}` : ''
     const nn = this.spread ? getSpread(this.properties) : this.name
     const pn = optional ? `[${paramName}]` : paramName
-    const s = ` * @param {${nn}} ${pn}${d}`
+    const s = `${ws} * @param {${nn}} ${pn}${d}`
     const p = this.properties && !this.noExpand ? this.properties.map((pr) => {
-      const sp = pr.toParam(paramName)
+      const sp = pr.toParam(paramName, ws)
       return sp
     }) : []
     const st = [s, ...p].join('\n')

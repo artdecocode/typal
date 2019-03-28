@@ -34,9 +34,9 @@ export default class Property {
     const p = ` * @prop ${s}`
     return p
   }
-  toParam(parentParam) {
+  toParam(parentParam, ws = '') {
     const s = this.toJSDoc(parentParam)
-    const p = ` * @param ${s}`
+    const p = `${ws} * @param ${s}`
     return p
   }
 }

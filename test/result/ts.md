@@ -1,4 +1,4 @@
-// generates table for properties
+## generates table for properties
 { "name": "prop1",
 "description": "`echo abc | node consume.js`",
 "type": "string" }
@@ -11,7 +11,7 @@
 ```
 /**/
 
-// adds spaces to typedef pipes
+## adds spaces to typedef pipes
 { "name": "prop1",
 "description": "The prop.",
 "type": "string|number" }
