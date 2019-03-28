@@ -1,6 +1,6 @@
 {
   "name": "typal",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Keeps JSDoc types in XML files and converts them to JavaScript and Markdown.",
   "main": "build/index.js",
   "module": "src/index.js",
