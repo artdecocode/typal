@@ -1,3 +1,9 @@
+## 28 March 2019
+
+### [1.2.2](https://github.com/artdecocode/typal/compare/v1.2.1...v1.2.2)
+
+- [fix] Implement the `whitespace` argument, e.g., when used inside of classes.
+
 ## 12 March 2019
 
 ### 1.2.1
