@@ -1,3 +1,10 @@
+## 4 April 2019
+
+### [1.2.3](https://github.com/artdecocode/typal/compare/v1.2.2...v1.2.3)
+
+- [fix] Fix escape bug in property with no description.
+- [deps] Unfix deps.
+
 ## 28 March 2019
 
 ### [1.2.2](https://github.com/artdecocode/typal/compare/v1.2.1...v1.2.2)
