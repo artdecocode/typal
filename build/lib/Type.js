@@ -141,7 +141,7 @@ ${j}
 \`\`\``
 }
 
-const esc = (s) => {
+const esc = (s = '') => {
   return s
     .replace(/\|/g, '\\|')
     .replace(/</g, '&lt;')
