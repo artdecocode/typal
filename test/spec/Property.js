@@ -1,5 +1,5 @@
 import { throws } from 'assert'
-import { equal, deepEqual } from 'zoroaster/assert'
+import { equal } from 'zoroaster/assert'
 import Property from '../../src/lib/Property'
 
 class context {
@@ -29,62 +29,32 @@ const PropertyFromXml = {
   'creates a string property'({ p, name, desc }) {
     const props = { string: true, name }
     p.fromXML(desc, props)
-    deepEqual(p, {
-      name,
-      type: 'string',
-      description: desc,
-    })
+    return p
   },
   'creates a number property with default'({ p, name, desc }) {
     const props = { number: true, name, default: 0 }
     p.fromXML(desc, props)
-    deepEqual(p, {
-      name,
-      hasDefault: true,
-      type: 'number',
-      description: desc,
-      default: 0,
-      optional: true,
-    })
+    return p
   },
   'creates a boolean property'({ p, name, desc }) {
     const props = { boolean: true, name, default: false }
     p.fromXML(desc, props)
-    deepEqual(p, {
-      name,
-      hasDefault: true,
-      optional: true,
-      type: 'boolean',
-      description: desc,
-      default: false,
-    })
+    return p
   },
   'creates a custom type property'({ p, name, type, desc }) {
     const props = { name, type, opt: true }
     p.fromXML(desc, props)
-    deepEqual(p, {
-      type,
-      name,
-      description: desc,
-      optional: true,
-    })
+    return p
   },
   'creates any type property'({ p, name, desc }) {
     const props = { name }
     p.fromXML(desc, props)
-    deepEqual(p, {
-      name,
-      type: '*',
-      description: desc,
-    })
+    return p
   },
   'creates a property without description'({ p, name }) {
     const props = { name }
     p.fromXML('', props)
-    deepEqual(p, {
-      type: '*',
-      name,
-    })
+    return p
   },
   'throws an error when no name is given'({ p }) {
     throws(() => {

@@ -37,8 +37,13 @@ const TypeFromXml = {
     t.fromXML('', props)
     deepEqual(t, {
       name,
-      noToc: true,
+      type: null,
+      link: null,
       description: desc,
+      noToc: true,
+      spread: false,
+      import: false,
+      noExpand: false,
       properties: [],
     })
   },
@@ -47,31 +52,20 @@ const TypeFromXml = {
     t.fromXML('', props)
     deepEqual(t, {
       name,
+      description: null,
+      type: null,
+      link: null,
+      noToc: false,
+      spread: false,
+      import: false,
+      noExpand: false,
       properties: [],
     })
   },
   'creates a type with properties'({ t, name, desc, content }) {
     const props = { name, desc }
     t.fromXML(content, props)
-    deepEqual(t, {
-      name,
-      description: desc,
-      properties: [
-        {
-          name: 'root',
-          type: 'string',
-          description: 'Root directory string.',
-        },
-        {
-          name: 'maxage',
-          type: 'number',
-          description: 'Browser cache max-age in milliseconds.',
-          hasDefault: true,
-          default: 0,
-          optional: true,
-        },
-      ],
-    })
+    return t
   },
   'throws an error when no name is given'({ t }) {
     throws(() => {

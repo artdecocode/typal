@@ -1,0 +1,8 @@
+{
+  "name": "test",
+  "description": "Test description.",
+  "type": "boolean",
+  "hasDefault": true,
+  "default": false,
+  "optional": true
+}

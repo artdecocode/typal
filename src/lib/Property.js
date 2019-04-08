@@ -1,9 +1,41 @@
-import { getPropType, getNameWithDefault } from '.'
+import { getPropType, getNameWithDefault } from './'
 
 /**
  * Representation of a property of a type.
  */
 export default class Property {
+  constructor() {
+    /**
+     * The name of the property.
+     * @type {?string}
+     */
+    this.name = null
+    /**
+     * The description of the property.
+     * @type {?string}
+     */
+    this.description = null
+    /**
+     * The type of the property.
+     * @type {string}
+     */
+    this.type = '*'
+    /**
+     * Whether the property has the default value.
+     * @type {boolean}
+     */
+    this.hasDefault = false
+    /**
+     * The default value of the property.
+     * @type {?(string|boolean|number)}
+     */
+    this.default = null
+    /**
+     * If the property is optional.
+     * @type {boolean}
+     */
+    this.optional = false
+  }
   static fromXML(...args) {
     const prop = new Property()
     prop.fromXML(...args)

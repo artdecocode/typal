@@ -1,0 +1,28 @@
+{
+  "name": "Type",
+  "type": null,
+  "description": "A test type.",
+  "noToc": false,
+  "spread": false,
+  "import": false,
+  "noExpand": false,
+  "link": null,
+  "properties": [
+    {
+      "name": "root",
+      "description": "Root directory string.",
+      "type": "string",
+      "hasDefault": false,
+      "default": null,
+      "optional": false
+    },
+    {
+      "name": "maxage",
+      "description": "Browser cache max-age in milliseconds.",
+      "type": "number",
+      "hasDefault": true,
+      "default": 0,
+      "optional": true
+    }
+  ]
+}

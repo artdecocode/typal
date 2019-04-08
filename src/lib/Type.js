@@ -1,12 +1,35 @@
 import extractTags from 'rexml'
 import mismatch from 'mismatch'
 import Property from './Property'
-import { getLink } from '.'
+import { getLink } from './'
 
 /**
  * A representation of a type.
  */
 export default class Type {
+  constructor() {
+    /**
+     * The name of the type.
+     * @type {?string}
+     */
+    this.name = null
+    /** @type {?string} */
+    this.type = null
+    /** @type {?string} */
+    this.description = null
+    /** @type {?boolean} */
+    this.noToc = null
+    /** @type {?boolean} */
+    this.spread = null
+    /** @type {?boolean} */
+    this.import = null
+    /** @type {?boolean} */
+    this.noExpand = null
+    /** @type {?string} */
+    this.link = null
+    /** @type {Array<Property>} */
+    this.properties = []
+  }
   fromXML(content, {
     'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link,
   }) {
@@ -15,14 +38,12 @@ export default class Type {
 
     if (type) this.type = type
     if (desc) this.description = desc.trim()
-    if (noToc) this.noToc = true
-    if (spread) this.spread = true
-    if (noExpand) this.noExpand = true
-    if (i) this.import = true
+    this.noToc = !!noToc
+    this.spread = !!spread
+    this.noExpand = !!noExpand
+    this.import = !!i
     if (link) this.link = link
 
-    /** @type {Property[]} */
-    this.properties = []
     if (content) {
       const ps = extractTags('prop', content)
       const props = ps.map(({ content: c, props: p }) => {
@@ -33,14 +54,19 @@ export default class Type {
       this.properties = props
     }
   }
-  toTypedef(externs = false) {
+  toExtern(nullable = false) {
+    const nn = getSpread(this.properties, true)
+    const s = ` * @typedef {${nullable ? '!' : ''}${nn}}`
+    return s
+  }
+  toTypedef() {
     const t = this.type || 'Object'
     // ${pd ? ` ${pd}` : ''}
     const d = this.description ? ` ${this.description}` : ''
-    const dd = externs ? '' : ` ${this.name}${d}`
+    const dd = ` ${this.name}${d}`
     const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
-      const sp = pr.toProp(externs)
+      const sp = pr.toProp()
       return sp
     }) : []
     const st = [s, ...p].join('\n')
@@ -58,7 +84,7 @@ export default class Type {
     const st = [s, ...p].join('\n')
     return st
   }
-  /** @param {Type[]} allTypes */
+  /** @param {Array<Type>} allTypes */
   toMarkdown(allTypes = []) {
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
@@ -79,12 +105,18 @@ export default class Type {
 }
 
 /**
- * @param {Property[]} properties
+ * @param {Array<Property>} properties
+ * @param {boolean} [closure = false] Whether generate for Closure's externs.
  */
-const getSpread = (properties = []) => {
+const getSpread = (properties = [], closure = false) => {
   const s = properties.map(p => {
-    const n = p.optional ? `${p.name}?` : p.name
-    const t = p.type
+    let n = p.name, t = p.type
+    if (p.optional && !closure) {
+      n = `${p.name}?`
+    }
+    if (p.optional && !p.hasDefault && closure) {
+      t = `(${p.type}|undefined)`
+    }
     const st = `${n}: ${t}`
     return st
   })
@@ -116,8 +148,8 @@ export const getLinks = (allTypes, type) => {
 }
 
 /**
- * @param {Property[]} props
- * @param {Type[]} allTypes
+ * @param {Array<Property>} props
+ * @param {Array<Type>} allTypes
  */
 export const makePropsTable = (props = [], allTypes = []) => {
   if (!props.length) return ''
