@@ -3,7 +3,7 @@
 
 
 /*@ conf */
-{"externs": true}
+{externs: true}
 /*@*/
 
 /*@ expected */

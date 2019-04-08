@@ -2,7 +2,7 @@
 /**
  * @param {StaticConfig} param
  */
-const a = (param) => {}
+var a = (param) => {}
 
 /* typal test/fixture/types.xml */
 
@@ -14,7 +14,7 @@ const a = (param) => {}
  * @param {number} [param.maxage=0] Browser cache max-age in milliseconds. Default `0`.
  * @param {boolean} [param.hidden=false] Allow transfer of hidden files. Default `false`.
  */
-const a = (param) => {}
+var a = (param) => {}
 
 /* typal test/fixture/types.xml */
 /**
@@ -34,13 +34,13 @@ const a = (param) => {}
 /**
  * @param {Conf} param
  */
-const a = (param) => {}
+var a = (param) => {}
 
 /* typal test/fixture/closure.xml */
 
 
 /*@ conf */
-{"closure": true}
+{closure: true}
 /*@*/
 
 /*@ expected */
@@ -48,7 +48,7 @@ const a = (param) => {}
  * @param {Conf} param config
  * @param {string} param.propName The prop description.
  */
-const a = (param) => {}
+var a = (param) => {}
 
 /* typal test/fixture/closure.xml */
 /**
@@ -76,7 +76,7 @@ const a = (param) => {}
  * @param {ConfUpdate} param config
  * @param {string} param.propName The prop description.
  */
-const a = (param) => {}
+var a = (param) => {}
 
 /* typal test/fixture/closure-update.xml */
 /**
@@ -99,7 +99,7 @@ const a = (param) => {}
 
 
 /*@ conf */
-{"closure": true}
+{closure: true}
 /*@*/
 
 /*@ expected */
@@ -107,7 +107,7 @@ const a = (param) => {}
  * @param {ConfUpdate} param config-update
  * @param {string} param.propNameUpdate The prop description-update.
  */
-const a = (param) => {}
+var a = (param) => {}
 
 /* typal test/fixture/closure-update.xml */
 /**

@@ -10,11 +10,11 @@ const ts = makeTestSuite('test/result/js-typal', {
    */
   async getTransform({ write }) {
     if (this.types) await write('types.xml', this.types)
-    const js = new JSTypal(this.conf)
+    let conf; this.conf && eval(`conf = ${this.conf}`)
+    const js = new JSTypal(conf)
     js.LOG = () => {}
     return js
   },
-  jsonProps: ['conf'],
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
 })
