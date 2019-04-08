@@ -1,0 +1,10 @@
+<types>
+  <import name="ReadableUpdate" from="fs" />
+  <import name="WritableUpdate" from="fs" />
+  <type name="ConfUpdate" desc="config-update">
+    <prop string name="propNameUpdate">
+      The prop description-update.
+    </prop>
+  </type>
+  <type name="ExtraUpdate" desc="other type update" type="Array<boolean>"/>
+</types>

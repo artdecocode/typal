@@ -1,0 +1,10 @@
+<types>
+  <import name="Readable" from="fs" />
+  <import name="Writable" from="fs" />
+  <type name="Conf" desc="config">
+    <prop string name="propName">
+      The prop description.
+    </prop>
+  </type>
+  <type name="Extra" desc="other type" type="Array<string>"/>
+</types>

@@ -1,4 +1,4 @@
-## !processes nullable type
+## processes nullable type
 /**
  * @param {!Conf} param
  */

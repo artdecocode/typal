@@ -3,16 +3,14 @@ import typedefJsRule from './typedef/rule'
 import JSDocRule from './typedef/jsdoc'
 
 export default class JSTypal extends Replaceable {
-  constructor() {
-    super([
-      typedefJsRule,
-      JSDocRule,
-    ])
+  constructor(conf = {}) {
+    super([typedefJsRule, JSDocRule])
     this._types = {}
 
     this.on('types', typedefs => {
       this.addTypes(typedefs)
     })
+    this.conf = conf
   }
   /**
    * Add types emitted during typedefJsRule replacement.
