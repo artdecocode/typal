@@ -8,7 +8,7 @@ import { getLink } from '.'
  */
 export default class Type {
   fromXML(content, {
-    name, type, desc, noToc, spread, noExpand, import: i, link,
+    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link,
   }) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -33,13 +33,14 @@ export default class Type {
       this.properties = props
     }
   }
-  toTypedef() {
+  toTypedef(externs = false) {
     const t = this.type || 'Object'
     // ${pd ? ` ${pd}` : ''}
     const d = this.description ? ` ${this.description}` : ''
-    const s = ` * @typedef {${t}} ${this.name}${d}`
+    const dd = externs ? '' : ` ${this.name}${d}`
+    const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
-      const sp = pr.toProp()
+      const sp = pr.toProp(externs)
       return sp
     }) : []
     const st = [s, ...p].join('\n')

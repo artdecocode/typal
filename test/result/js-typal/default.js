@@ -1,4 +1,4 @@
-## processes types
+// processes types
 /**
  * @param {StaticConfig} param
  */
@@ -20,7 +20,7 @@ const a = (param) => {}
 /**
  * @typedef {import('http').ServerResponse} ServerResponse
  *
- * @typedef {(res: ServerResponse) => any} SetHeaders Function to set custom headers on response.
+ * @typedef {function(ServerResponse)} SetHeaders Function to set custom headers on response.
  *
  * @typedef {Object} StaticConfig Options to setup `koa-static`.
  * @prop {string} root Root directory string.
@@ -30,7 +30,7 @@ const a = (param) => {}
 
 /*@*/
 
-## suppresses JSDoc for Closure
+// suppresses JSDoc for Closure
 /**
  * @param {Conf} param
  */
@@ -71,7 +71,7 @@ const a = (param) => {}
 
 /*@*/
 
-## updates the types
+// updates the types
 /**
  * @param {ConfUpdate} param config
  * @param {string} param.propName The prop description.

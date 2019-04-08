@@ -1,5 +1,6 @@
 import extractTags from 'rexml'
 import read from '@wrote/read'
+import { builtinModules } from 'module'
 import Type from '../Type'
 
 export const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg
@@ -18,7 +19,7 @@ ${s}
 const typedefRule = {
   re: typedefJsRe,
   async replacement(match, docOrTypal, location) {
-    const { closure } = this.conf // for closure, suppress typedef
+    const { closure, externs } = this.conf // for closure, suppress typedef
     try {
       this.LOG('Detected type marker: %s', location)
       const xml = await read(location)
@@ -29,7 +30,7 @@ const typedefRule = {
 
       const typeTags = extractTags('type', Root)
       const imports = extractTags('import', Root)
-        .map(({ props: { name, from } }) => ({ name, from }))
+        .map(({ props: { 'name': name, 'from': from } }) => ({ name, from }))
 
       const types = typeTags.map(({ content, props }) => {
         const tt = new Type()
@@ -39,7 +40,14 @@ const typedefRule = {
 
       this.emit('types', types) // remember types for js-replace-stream
 
-      const block = closure ? closureJoinTypes(imports, types) : joinTypes(imports, types)
+      let block
+      if (closure) {
+        block = closureJoinTypes(imports, types)
+      } else if (externs) {
+        block = externsJoinTypes(imports, types) + '\n'
+      } else {
+        block = joinTypes(imports, types)
+      }
 
       const typedef = `/* ${docOrTypal} ${location} */\n${block}`
       return typedef
@@ -52,6 +60,19 @@ const typedefRule = {
 
 const importToTypedef = (Import) => {
   return ` * @typedef {import('${Import.from}').${Import.name}} ${Import.name}`
+}
+const importToExtern = (Import) => {
+  let a
+  if (builtinModules.includes(Import.from)) {
+    const from = ['process', 'console', 'module']
+      .includes(Import.from) ? `_${Import.from}` : Import.from
+    a = `${from}.${Import.name}`
+  } else {
+    console.warn('Unknown import in externs: %s.%s', Import.from, Import.name)
+    a = `import('${Import.from}').${Import.name}`
+  }
+  const b = makeBlock(` * @typedef {${a}}`)
+  return `${b}var ${Import.name}`
 }
 
 /**
@@ -91,6 +112,21 @@ const closureJoinTypes = (imports, types) => {
     return block
   })
   return blocks.join('')
+}
+
+const externsJoinTypes = (imports, types) => {
+  const tblocks = types.map((t) => {
+    const m = t.toTypedef(true)
+    const b = makeBlock(m)
+    return `${b}var ${t.name}`
+  })
+  const iblocks = imports.map((i) => {
+    const m = importToExtern(i)
+    return m
+  })
+  const blocks = [...tblocks, ...iblocks]
+    .join('\n')
+  return blocks
 }
 
 const addSuppress = (line) => {

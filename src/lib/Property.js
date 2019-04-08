@@ -10,7 +10,7 @@ export default class Property {
     return prop
   }
   fromXML(content,
-    { name, string, boolean, opt, number, type, default: def },
+    { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type, 'default': def },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
@@ -21,16 +21,17 @@ export default class Property {
     if (this.hasDefault) this.default = def
     if (opt || this.hasDefault) this.optional = true
   }
-  toJSDoc(parentParam) {
+  toJSDoc(parentParam, externs = false) {
     const nameWithDefault = getNameWithDefault(this.name, this.default, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
     const dd = this.description ? ` ${this.description}` : ''
     const d = this.hasDefault ? ` Default \`${this.default}\`.` : ''
-    const s = `{${this.type}} ${name}${dd}${d}`
+    const t = `${dd}${d}`
+    const s = `{${this.type}} ${name}${externs ? '' : t}`
     return s
   }
-  toProp() {
-    const s = this.toJSDoc()
+  toProp(externs = false) {
+    const s = this.toJSDoc(undefined, externs)
     const p = ` * @prop ${s}`
     return p
   }
