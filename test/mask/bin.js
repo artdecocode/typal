@@ -1,0 +1,50 @@
+import Context from '../context'
+import makeTestSuite from '@zoroaster/mask'
+import TempContext from 'temp-context'
+
+export default makeTestSuite('test/result/bin/default', {
+  context: TempContext,
+  fork: {
+    module: Context.BIN,
+    /**
+     * @param {string} args
+     * @param {TempContext} t
+     */
+    async getArgs(args, { write }) {
+      const p = await write('program.js', this.program)
+      return [p, ...args]
+    },
+  },
+  /**
+   * @param {TempContext} t
+   */
+  async getResults(input, { snapshot }) {
+    return snapshot()
+  },
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})
+
+export const dir = makeTestSuite('test/result/bin/dir', {
+  context: TempContext,
+  fork: {
+    module: Context.BIN,
+    /**
+     * @param {string} args
+     * @param {TempContext} t
+     */
+    async getArgs(args, { write }) {
+      await write('program.js', this.program)
+      await write('program2.js', this.program)
+      return ['test/temp', ...args]
+    },
+  },
+  /**
+   * @param {TempContext} t
+   */
+  async getResults(input, { snapshot }) {
+    return snapshot()
+  },
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})

@@ -2,6 +2,7 @@ import getArgs from 'argufy'
 
 const args = getArgs({
   'source': { command: true },
+  'closure': { short: 'c', boolean: true },
 })
 
 /**
@@ -9,3 +10,8 @@ const args = getArgs({
  * @type {string}
  */
 export const _source = /** @type {string} */ (args['source'])
+/**
+ * Whether to generate types for closure.
+ * @type {boolean}
+ */
+export const _closure = /** @type {boolean} */ (args['closure'])

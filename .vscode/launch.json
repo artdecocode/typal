@@ -23,6 +23,20 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Typal",
+      "program": "${workspaceFolder}/node_modules/.bin/alanode",
+      "console": "integratedTerminal",
+      "args": [
+        "src/bin/typal",
+        "test/temp/program.js",
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }
