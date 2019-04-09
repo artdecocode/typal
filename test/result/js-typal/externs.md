@@ -22,3 +22,29 @@ var StaticConfig
 var ServerResponse
 
 /*@*/
+
+## generates externs with closure types
+/* typal test/temp/types.xml */
+
+
+/*@ conf */
+{externs: true}
+/*@*/
+
+/*@ types */
+<types>
+  <type name="Test">
+    <prop type="error" closure="actual" name="prop"></prop>
+  </type>
+</types>
+/*@*/
+
+
+/*@ expected */
+/* typal test/temp/types.xml */
+/**
+ * @typedef {{ prop: actual }}
+ */
+var Test
+
+/*@*/

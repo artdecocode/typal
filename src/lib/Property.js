@@ -21,6 +21,11 @@ export default class Property {
      */
     this.type = '*'
     /**
+     * The override on the type in externs.
+     * @type {?string}
+     */
+    this.closureType = null
+    /**
      * Whether the property has the default value.
      * @type {boolean}
      */
@@ -42,13 +47,15 @@ export default class Property {
     return prop
   }
   fromXML(content,
-    { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type, 'default': def },
+    { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type, 'default': def, 'closure': closure },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
     if (content) this.description = content.trim()
     const t = getPropType({ number, string, boolean, type })
     this.type = t
+    if (closure) this.closureType = closure
+    else this.closureType = this.type
     if (def !== undefined) this.hasDefault = true
     if (this.hasDefault) this.default = def
     if (opt || this.hasDefault) this.optional = true

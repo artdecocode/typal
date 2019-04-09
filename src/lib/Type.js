@@ -131,12 +131,13 @@ export default class Type {
  */
 const getSpread = (properties = [], closure = false) => {
   const s = properties.map(p => {
-    let n = p.name, t = p.type
+    const type = closure ? p.closureType : p.type
+    let n = p.name, t = type
     if (p.optional && !closure) {
       n = `${p.name}?`
     }
     if (p.optional && !p.hasDefault && closure) {
-      t = `(${p.type}|undefined)`
+      t = `(${type}|undefined)`
     }
     const st = `${n}: ${t}`
     return st

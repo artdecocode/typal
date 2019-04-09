@@ -1,7 +1,6 @@
 import makeTestSuite from '@zoroaster/mask'
-import JSTypal from '../../src/lib/JSTypal'
 import TempContext from 'temp-context'
-// import { createReadStream } from 'fs'
+import JSTypal from '../../src/lib/JSTypal'
 
 const ts = makeTestSuite('test/result/js-typal', {
   context: TempContext,

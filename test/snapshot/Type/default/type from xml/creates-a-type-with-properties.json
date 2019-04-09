@@ -13,6 +13,7 @@
       "name": "root",
       "description": "Root directory string.",
       "type": "string",
+      "closureType": "string",
       "hasDefault": false,
       "default": null,
       "optional": false
@@ -21,6 +22,7 @@
       "name": "maxage",
       "description": "Browser cache max-age in milliseconds.",
       "type": "number",
+      "closureType": "number",
       "hasDefault": true,
       "default": 0,
       "optional": true

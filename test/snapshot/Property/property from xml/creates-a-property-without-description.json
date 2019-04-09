@@ -2,6 +2,7 @@
   "name": "test",
   "description": null,
   "type": "*",
+  "closureType": "*",
   "hasDefault": false,
   "default": null,
   "optional": false

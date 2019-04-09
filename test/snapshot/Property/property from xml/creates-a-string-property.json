@@ -2,6 +2,7 @@
   "name": "test",
   "description": "Test description.",
   "type": "string",
+  "closureType": "string",
   "hasDefault": false,
   "default": null,
   "optional": false
