@@ -15,6 +15,12 @@ export default class Type {
     this.name = null
     /** @type {?string} */
     this.type = null
+    /**
+     * An overriding type for closure to generate externs, e.g.,
+     * `function(string): boolean` instead of `(s:string) => boolean`.
+     * @type {?string}
+     */
+    this.closureType = null
     /** @type {?string} */
     this.description = null
     /** @type {?boolean} */
@@ -29,14 +35,18 @@ export default class Type {
     this.link = null
     /** @type {Array<Property>} */
     this.properties = []
+    /** @type {?string} */
+    this.namespace = null
   }
   fromXML(content, {
-    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link,
-  }) {
+    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure,
+  }, namespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
 
     if (type) this.type = type
+    if (closure) this.closureType = closure
+    else this.closureType = this.type
     if (desc) this.description = desc.trim()
     this.noToc = !!noToc
     this.spread = !!spread
@@ -53,17 +63,21 @@ export default class Type {
       })
       this.properties = props
     }
+    if (namespace) this.namespace = namespace
   }
   toExtern(nullable = false) {
+    if (this.closureType) {
+      const s = ` * @typedef {${nullable ? '!' : ''}${this.closureType}}`
+      return s
+    }
     const nn = getSpread(this.properties, true)
     const s = ` * @typedef {${nullable ? '!' : ''}${nn}}`
     return s
   }
   toTypedef() {
     const t = this.type || 'Object'
-    // ${pd ? ` ${pd}` : ''}
     const d = this.description ? ` ${this.description}` : ''
-    const dd = ` ${this.name}${d}`
+    const dd = ` ${this.fullName}${d}`
     const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
       const sp = pr.toProp()
@@ -72,9 +86,16 @@ export default class Type {
     const st = [s, ...p].join('\n')
     return st
   }
+  get ns() {
+    if (this.namespace) return `${this.namespace}.`
+    return ''
+  }
+  get fullName() {
+    return `${this.ns}${this.name}`
+  }
   toParam(paramName, optional, ws = '', nullable = false) {
     const d = this.description ? ` ${this.description}` : ''
-    const nn = this.spread ? getSpread(this.properties) : this.name
+    const nn = this.spread ? getSpread(this.properties) : this.fullName
     const pn = optional ? `[${paramName}]` : paramName
     const s = `${ws} * @param {${nullable ? '!' : ''}${nn}} ${pn}${d}`
     const p = this.properties && !this.noExpand ? this.properties.map((pr) => {

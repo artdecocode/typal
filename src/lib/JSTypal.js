@@ -14,13 +14,13 @@ export default class JSTypal extends Replaceable {
   }
   /**
    * Add types emitted during typedefJsRule replacement.
-   * @param {Type[]} typedefs
+   * @param {Array<Type>} typedefs
    */
   addTypes(typedefs) {
     const typedefsHash = typedefs.reduce((acc, typedef) => {
       return {
         ...acc,
-        [typedef.name]: typedef,
+        [typedef.fullName]: typedef,
       }
     }, {})
     this._types = {
@@ -35,3 +35,8 @@ export default class JSTypal extends Replaceable {
     return this._types
   }
 }
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../lib/Type').default} Type
+ */

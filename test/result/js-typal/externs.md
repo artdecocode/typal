@@ -13,10 +13,7 @@
  */
 var SetHeaders
 /**
- * @typedef {Object}
- * @prop {string} root
- * @prop {number} [maxage=0]
- * @prop {boolean} [hidden=false]
+ * @typedef {{ root: string, maxage: number, hidden: boolean }}
  */
 var StaticConfig
 /**

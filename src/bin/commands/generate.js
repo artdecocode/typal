@@ -6,7 +6,8 @@ import { lstat } from 'fs'
 import makePromise from 'makepromise'
 import JSTypal from '../../lib/JSTypal'
 
-export default async (source, closure = false) => {
+export default async (source, opts = {}) => {
+  const { closure = false, externs = false } = opts
   const ls = await makePromise(lstat, source)
   let files
   if (ls.isFile()) {
@@ -15,16 +16,16 @@ export default async (source, closure = false) => {
     const dir = await readDirStructure(source)
     files = getFiles(dir.content, source)
   }
-  await processFiles(files, closure)
+  await processFiles(files, closure, externs)
 }
 
 /**
  * @param {Array<string>} files The list of files.
  */
-const processFiles = async (files, closure = false) => {
+const processFiles = async (files, closure = false, externs = false) => {
   await Promise.all(files.map(async (file) => {
     const content = await read(file)
-    const js = new JSTypal({ closure })
+    const js = new JSTypal({ closure, externs })
     js.LOG = console.error
     js.end(content)
     const res = await collect(js)

@@ -1,0 +1,51 @@
+<types namespace="typal">
+  <type name="Type" desc="The type interace.">
+    <prop string name="name">
+      The name of the type.
+    </prop>
+    <prop string name="type" default="Object">
+      The type of the type.
+    </prop>
+    <prop string name="description" opt>
+      The description of the type.
+    </prop>
+    <prop boolean name="noToc" default="false">
+      Whether the type should not be included in the table of contents (for _Documentary_).
+    </prop>
+    <prop boolean name="spread" default="false">
+      When generating JSDoc, print all properties of the type, but loose individual property description.
+    </prop>
+    <prop boolean name="noExpand" default="false">
+      Don't print each property description.
+    </prop>
+    <prop boolean name="import" default="false">
+      Whether the type is an import.
+    </prop>
+    <prop string name="link" opt>
+      If the type is an import, the link to the documentation page.
+    </prop>
+    <prop type="!Array<!typal.Property>" name="properties">
+      The properties of the type.
+    </prop>
+  </type>
+  <type name="Property" desc="A property of a type.">
+    <prop string name="name">
+      The name of the property.
+    </prop>
+    <prop string name="description" opt>
+      The description of the property.
+    </prop>
+    <prop string name="type" default="*">
+      The type of the property.
+    </prop>
+    <prop boolean name="hasDefault" default="false">
+      Whether the property has the default value.
+    </prop>
+    <prop string opt name="default">
+      The default value of the property.
+    </prop>
+    <prop boolean name="optional" default="false">
+      If the property is optional.
+    </prop>
+  </type>
+</types>

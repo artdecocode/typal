@@ -26,8 +26,9 @@ const JSDocRule = {
 
 // export default typedefRe
 
+export default JSDocRule
+
 /**
+ * @suppress {nonStandardJsDocs}
  * @typedef {import('../Type').default} Type
  */
-
-export default JSDocRule

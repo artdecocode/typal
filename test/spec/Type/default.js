@@ -35,32 +35,12 @@ const TypeFromXml = {
   'creates a type without properties'({ t, name, desc }) {
     const props = { name, desc, noToc: true }
     t.fromXML('', props)
-    deepEqual(t, {
-      name,
-      type: null,
-      link: null,
-      description: desc,
-      noToc: true,
-      spread: false,
-      import: false,
-      noExpand: false,
-      properties: [],
-    })
+    return t
   },
   'creates a type without description'({ t, name }) {
     const props = { name }
     t.fromXML('', props)
-    deepEqual(t, {
-      name,
-      description: null,
-      type: null,
-      link: null,
-      noToc: false,
-      spread: false,
-      import: false,
-      noExpand: false,
-      properties: [],
-    })
+    return t
   },
   'creates a type with properties'({ t, name, desc, content }) {
     const props = { name, desc }
