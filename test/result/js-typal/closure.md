@@ -1,4 +1,4 @@
-// processes types with a namespace
+## generates both ns and non-ns types for Closure
 /**
  * @param {ns.Conf} param
  */
@@ -6,6 +6,10 @@ var a = (param) => {}
 
 /* typal test/fixture/ns.xml */
 
+
+/*@ conf */
+{closure: true}
+/*@*/
 
 /*@ expected */
 /**
@@ -16,6 +20,7 @@ var a = (param) => {}
 
 /* typal test/fixture/ns.xml */
 /**
+ * @suppress {nonStandardJsDocs}
  * @typedef {ns.Conf} Conf config
  * @typedef {Object} ns.Conf config
  * @prop {string} propName The prop description.

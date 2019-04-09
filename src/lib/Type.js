@@ -35,7 +35,10 @@ export default class Type {
     this.link = null
     /** @type {Array<Property>} */
     this.properties = []
-    /** @type {?string} */
+    /**
+     * The type's namespace, e.g., `typal`.
+     * @type {?string}
+     */
     this.namespace = null
   }
   fromXML(content, {
@@ -83,7 +86,14 @@ export default class Type {
       const sp = pr.toProp()
       return sp
     }) : []
-    const st = [s, ...p].join('\n')
+    // need this to be able to import types from other programs,
+    // /⁎⁎
+    //  ⁎ @typedef {ns.Type} Type The type (that can be imported)
+    //  ⁎ @typedef {Object} ns.Type The type (to use in current file)
+    //  ⁎/
+    const pre = this.namespace ? [
+      ` * @typedef {${this.fullName}} ${this.name}${d}`] : []
+    const st = [...pre, s, ...p].join('\n')
     return st
   }
   get ns() {
