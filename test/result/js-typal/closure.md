@@ -1,3 +1,8 @@
+```s
+TODO FOR ZOROASTER:
+ALLOW TO SPECIFY SINGLE CONFIG AT THE TOP BEFORE TESTS
+```
+
 ## generates both ns and non-ns types for Closure
 /**
  * @param {ns.Conf} param
@@ -70,6 +75,39 @@ var a = (param) => {}
  * @suppress {nonStandardJsDocs}
  * @typedef {Object} ns.Test test
  * @prop {function(number): string} prop The property.
+ */
+
+/*@*/
+
+## generates imports
+/**
+ * @param {stream.Readable} readable
+ */
+var a = (param) => {}
+
+/* typal test/temp/types.xml */
+
+
+/*@ conf */
+{closure: true}
+/*@*/
+
+/*@ types */
+<types namespace="ns">
+  <import from="stream" name="Readable" />
+</types>
+/*@*/
+
+/*@ expected */
+/**
+ * @param {stream.Readable} readable
+ */
+var a = (param) => {}
+
+/* typal test/temp/types.xml */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('stream').Readable} stream.Readable
  */
 
 /*@*/

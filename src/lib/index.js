@@ -60,7 +60,7 @@ ${s}
 }
 
 export const importToTypedef = (Import) => {
-  return ` * @typedef {import('${Import.from}').${Import.name}} ${Import.name}`
+  return ` * @typedef {import('${Import.from}').${Import.name}} ${Import.from}.${Import.name}`
 }
 
 export const addSuppress = (line) => {

@@ -9,17 +9,13 @@
 /*@ expected */
 /* typal test/fixture/types.xml */
 /**
- * @typedef {function(ServerResponse)}
+ * @typedef {function(http.ServerResponse)}
  */
 var SetHeaders
 /**
  * @typedef {{ root: string, maxage: number, hidden: boolean }}
  */
 var StaticConfig
-/**
- * @typedef {http.ServerResponse}
- */
-var ServerResponse
 
 /*@*/
 

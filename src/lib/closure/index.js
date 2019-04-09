@@ -47,10 +47,11 @@ export const externsJoinTypes = (imports, types, namespace, currentNamespaces) =
     // const v = namespace ? 'var ' : ''
     return `${b}${getExternDeclaration(namespace, t.name)}`
   })
-  const iblocks = imports.map((i) => {
-    const m = importToExtern(i, namespace)
-    return m
-  })
+  const iblocks = [] // currently no imports in types.
+  // imports.map((i) => {
+  //   const m = importToExtern(i, namespace)
+  //   return m
+  // })
   const blocks = [...tblocks, ...iblocks]
     .join('\n')
   const n = namespace && !currentNamespaces.includes(namespace) ? `/** @const */

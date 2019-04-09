@@ -18,10 +18,10 @@ var a = (param) => {}
 
 /* typal test/fixture/types.xml */
 /**
- * @typedef {import('http').ServerResponse} ServerResponse
+ * @typedef {import('http').ServerResponse} http.ServerResponse
  */
 /**
- * @typedef {function(ServerResponse)} SetHeaders Function to set custom headers on response.
+ * @typedef {function(http.ServerResponse)} SetHeaders Function to set custom headers on response.
  */
 /**
  * @typedef {Object} StaticConfig Options to setup `koa-static`.
@@ -64,11 +64,11 @@ var a = (param) => {}
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('fs').Readable} Readable
+ * @typedef {import('fs').Readable} fs.Readable
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('fs').Writable} Writable
+ * @typedef {import('fs').Writable} fs.Writable
  */
 
 /*@*/
@@ -92,11 +92,11 @@ var a = (param) => {}
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('fs').Readable} Readable
+ * @typedef {import('fs').Readable} fs.Readable
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('fs').Writable} Writable
+ * @typedef {import('fs').Writable} fs.Writable
  */
 
 
@@ -123,11 +123,11 @@ var a = (param) => {}
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('fs').ReadableUpdate} ReadableUpdate
+ * @typedef {import('fs').ReadableUpdate} fs.ReadableUpdate
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('fs').WritableUpdate} WritableUpdate
+ * @typedef {import('fs').WritableUpdate} fs.WritableUpdate
  */
 
 /*@*/
