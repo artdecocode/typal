@@ -10,7 +10,12 @@ export default class JSTypal extends Replaceable {
     this.on('types', typedefs => {
       this.addTypes(typedefs)
     })
+    this.on('namespace', namespace => {
+      this.addNamespace(namespace)
+    })
     this.conf = conf
+    /** @type {Array<string>} */
+    this.namespaces = []
   }
   /**
    * Add types emitted during typedefJsRule replacement.
@@ -27,6 +32,13 @@ export default class JSTypal extends Replaceable {
       ...this._types,
       ...typedefsHash,
     }
+  }
+  /**
+   * @param {string} namespace
+   */
+  addNamespace(namespace) {
+    if (!this.namespaces.includes(namespace))
+      this.namespaces.push(namespace)
   }
   /**
    * @type {Object.<string, Type>}

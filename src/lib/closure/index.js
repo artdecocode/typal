@@ -1,7 +1,7 @@
 import { builtinModules } from 'module'
 import { makeBlock, importToTypedef } from '../'
 
-export const importToExtern = (Import, namespace = '') => {
+export const importToExtern = (Import, namespace) => {
   let a
   if (builtinModules.includes(Import.from)) {
     const from = ['process', 'console', 'module']
@@ -43,7 +43,7 @@ export const closureJoinTypes = (imports, types) => {
   return blocks.join('')
 }
 
-export const externsJoinTypes = (imports, types, namespace = '') => {
+export const externsJoinTypes = (imports, types, namespace, currentNamespaces) => {
   const tblocks = types.map((t) => {
     const m = t.toExtern()
     const b = makeBlock(m)
@@ -56,7 +56,7 @@ export const externsJoinTypes = (imports, types, namespace = '') => {
   })
   const blocks = [...tblocks, ...iblocks]
     .join('\n')
-  const n = namespace ? `/** @const */
+  const n = namespace && !currentNamespaces.includes(namespace) ? `/** @const */
 var ${namespace} = {}
 ` : ''
   return `${n}${blocks}`
