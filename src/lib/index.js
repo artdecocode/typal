@@ -62,3 +62,9 @@ ${s}
 export const importToTypedef = (Import) => {
   return ` * @typedef {import('${Import.from}').${Import.name}} ${Import.name}`
 }
+
+export const addSuppress = (line) => {
+  const m = ` * @suppress {nonStandardJsDocs}
+${line}`
+  return m
+}

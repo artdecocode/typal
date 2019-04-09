@@ -22,6 +22,9 @@ var a = (param) => {}
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {ns.Conf} Conf config
+ */
+/**
+ * @suppress {nonStandardJsDocs}
  * @typedef {Object} ns.Conf config
  * @prop {string} propName The prop description.
  */

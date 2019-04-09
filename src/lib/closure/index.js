@@ -1,5 +1,5 @@
 import { builtinModules } from 'module'
-import { makeBlock, importToTypedef } from '../'
+import { makeBlock, importToTypedef, addSuppress } from '../'
 
 export const importToExtern = (Import, namespace) => {
   let a
@@ -29,17 +29,14 @@ const getExternDeclaration = (namespace, name) => {
  */
 export const closureJoinTypes = (imports, types) => {
   const tblocks = types.map((t) => {
-    const m = addSuppress(t.toTypedef())
+    const m = t.toTypedef(true)
     return m
   })
   const iblocks = imports.map((i) => {
-    const m = addSuppress(importToTypedef(i))
+    const m = makeBlock(addSuppress(importToTypedef(i)))
     return m
   })
-  const blocks = [...tblocks, ...iblocks].map((s) => {
-    const block = makeBlock(s)
-    return block
-  })
+  const blocks = [...tblocks, ...iblocks]
   return blocks.join('')
 }
 
@@ -60,10 +57,4 @@ export const externsJoinTypes = (imports, types, namespace, currentNamespaces) =
 var ${namespace} = {}
 ` : ''
   return `${n}${blocks}`
-}
-
-const addSuppress = (line) => {
-  const m = ` * @suppress {nonStandardJsDocs}
-${line}`
-  return m
 }

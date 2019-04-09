@@ -60,14 +60,14 @@ const TypeToTypedef = {
   'writes a typedef without props'({ t, name, desc }) {
     t.fromXML('', { name, desc })
     const res = t.toTypedef()
-    equal(res, ' * @typedef {Object} Type A test type.')
+    equal(res, '/**\n * @typedef {Object} Type A test type.\n */\n')
   },
   'writes a typedef with props'({ t, name, desc, content }) {
     t.fromXML(content, { name, desc })
     const res = t.toTypedef()
-    const expected = ` * @typedef {Object} Type A test type.
+    const expected = `/**\n * @typedef {Object} Type A test type.
  * @prop {string} root Root directory string.
- * @prop {number} [maxage=0] Browser cache max-age in milliseconds. Default \`0\`.`
+ * @prop {number} [maxage=0] Browser cache max-age in milliseconds. Default \`0\`.\n */\n`
     equal(res, expected)
   },
 }

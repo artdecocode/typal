@@ -1,7 +1,7 @@
 import extractTags from 'rexml'
 import mismatch from 'mismatch'
 import Property from './Property'
-import { getLink } from './'
+import { getLink, addSuppress, makeBlock } from './'
 
 /**
  * A representation of a type.
@@ -77,7 +77,7 @@ export default class Type {
     const s = ` * @typedef {${nullable ? '!' : ''}${nn}}`
     return s
   }
-  toTypedef() {
+  toTypedef(closure) {
     const t = this.type || 'Object'
     const d = this.description ? ` ${this.description}` : ''
     const dd = ` ${this.fullName}${d}`
@@ -91,10 +91,16 @@ export default class Type {
     //  ⁎ @typedef {ns.Type} Type The type (that can be imported)
     //  ⁎ @typedef {Object} ns.Type The type (to use in current file)
     //  ⁎/
-    const pre = this.namespace ? [
-      ` * @typedef {${this.fullName}} ${this.name}${d}`] : []
-    const st = [...pre, s, ...p].join('\n')
-    return st
+    let pre = ''
+    if (this.namespace) {
+      let td = ` * @typedef {${this.fullName}} ${this.name}${d}`
+      if (closure) td = addSuppress(td)
+      pre = makeBlock(td)
+    }
+    let typedef = [s, ...p].join('\n')
+    if (closure) typedef = addSuppress(typedef)
+    typedef = makeBlock(typedef)
+    return `${pre}${typedef}`
   }
   get ns() {
     if (this.namespace) return `${this.namespace}.`
