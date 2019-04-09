@@ -7,6 +7,7 @@ import { closureJoinTypes, externsJoinTypes } from '../closure'
 export const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg
 
 /**
+ * @suppress {globalThis}
  * @type {function(this: { namespaces: !Array<string>, emit: function(string, *), LOG: function(...string), conf: { closure: boolean, externs: boolean } }, ...string): !Promise<string>}
  */
 async function replacement(match, docOrTypal, location) {

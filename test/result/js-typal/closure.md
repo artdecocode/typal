@@ -30,3 +30,46 @@ var a = (param) => {}
  */
 
 /*@*/
+
+## generates closure types
+/**
+ * @param {ns.Test} param
+ */
+var a = (param) => {}
+
+/* typal test/temp/types.xml */
+
+
+/*@ conf */
+{closure: true}
+/*@*/
+
+/*@ types */
+<types namespace="ns">
+  <type name="Test" desc="test">
+    <prop type="(i: number) => string" closure="function(number): string" name="prop">
+      The property.
+    </prop>
+  </type>
+</types>
+/*@*/
+
+/*@ expected */
+/**
+ * @param {ns.Test} param test
+ * @param {function(number): string} param.prop The property.
+ */
+var a = (param) => {}
+
+/* typal test/temp/types.xml */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {ns.Test} Test test
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} ns.Test test
+ * @prop {function(number): string} prop The property.
+ */
+
+/*@*/

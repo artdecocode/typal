@@ -77,13 +77,13 @@ export default class Type {
     const s = ` * @typedef {${nullable ? '!' : ''}${nn}}`
     return s
   }
-  toTypedef(closure) {
-    const t = this.type || 'Object'
+  toTypedef(closure = false) {
+    const t = (closure ? this.closureType : this.type) || 'Object'
     const d = this.description ? ` ${this.description}` : ''
     const dd = ` ${this.fullName}${d}`
     const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
-      const sp = pr.toProp()
+      const sp = pr.toProp(closure)
       return sp
     }) : []
     // need this to be able to import types from other programs,
@@ -109,13 +109,13 @@ export default class Type {
   get fullName() {
     return `${this.ns}${this.name}`
   }
-  toParam(paramName, optional, ws = '', nullable = false) {
+  toParam(paramName, optional, ws = '', nullable = false, closure = false) {
     const d = this.description ? ` ${this.description}` : ''
     const nn = this.spread ? getSpread(this.properties) : this.fullName
     const pn = optional ? `[${paramName}]` : paramName
     const s = `${ws} * @param {${nullable ? '!' : ''}${nn}} ${pn}${d}`
     const p = this.properties && !this.noExpand ? this.properties.map((pr) => {
-      const sp = pr.toParam(paramName, ws)
+      const sp = pr.toParam(paramName, ws, closure)
       return sp
     }) : []
     const st = [s, ...p].join('\n')

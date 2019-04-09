@@ -3,7 +3,7 @@
  * @param {?string} name Name of the property.
  * @param {?(string|boolean|number)} defaultValue Default of the property.
  * @param {string} type Type of the property.
- * @param {string} parentParam Name of the parent parameter.
+ * @param {?string} parentParam Name of the parent parameter.
  * @example
  *
  * requiredParam

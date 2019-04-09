@@ -15,7 +15,8 @@ const JSDocRule = {
     }
     /** @type {Type} */
     const t = this.types[realName]
-    const s = t.toParam(paramName, optional, ws, nullable)
+    const { closure } = this.conf
+    const s = t.toParam(paramName, optional, ws, nullable, closure)
     return s
   },
 }

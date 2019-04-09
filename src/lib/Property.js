@@ -60,22 +60,22 @@ export default class Property {
     if (this.hasDefault) this.default = def
     if (opt || this.hasDefault) this.optional = true
   }
-  toJSDoc(parentParam, externs = false) {
+  toJSDoc(parentParam = null, closure = false) {
     const nameWithDefault = getNameWithDefault(this.name, this.default, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
     const dd = this.description ? ` ${this.description}` : ''
     const d = this.hasDefault ? ` Default \`${this.default}\`.` : ''
     const t = `${dd}${d}`
-    const s = `{${this.type}} ${name}${externs ? '' : t}`
+    const s = `{${closure ? this.closureType : this.type}} ${name}${t}`
     return s
   }
-  toProp(externs = false) {
-    const s = this.toJSDoc(undefined, externs)
+  toProp(closure = false) {
+    const s = this.toJSDoc(null, closure)
     const p = ` * @prop ${s}`
     return p
   }
-  toParam(parentParam, ws = '') {
-    const s = this.toJSDoc(parentParam)
+  toParam(parentParam, ws = '', closure = false) {
+    const s = this.toJSDoc(parentParam, closure)
     const p = `${ws} * @param ${s}`
     return p
   }
