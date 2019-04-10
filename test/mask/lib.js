@@ -2,7 +2,7 @@ import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
 import JSTypal from '../../src/lib/JSTypal'
 
-const ts = makeTestSuite('test/result/js-typal', {
+export default makeTestSuite('test/result/js-typal', {
   context: TempContext,
   /**
    * @param {TempContext} t
@@ -17,5 +17,3 @@ const ts = makeTestSuite('test/result/js-typal', {
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
 })
-
-export default ts

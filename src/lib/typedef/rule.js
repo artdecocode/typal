@@ -1,7 +1,6 @@
-import extractTags from 'rexml'
 import read from '@wrote/read'
 import Type from '../Type'
-import { makeBlock, importToTypedef } from '../'
+import { makeBlock, importToTypedef, parseFile } from '../'
 import { closureJoinTypes, externsJoinTypes } from '../closure'
 
 export const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg
@@ -15,19 +14,7 @@ async function replacement(match, docOrTypal, location) {
   try {
     this.LOG('Detected type marker: %s', location)
     const xml = await read(location)
-    const root = extractTags('types', xml)
-    if (!root.length)
-      throw new Error('XML file should contain root types element.')
-
-    const [{ content: Root, props: {
-      'namespace': ns1,
-      'ns': namespace = ns1,
-    } }] = root
-
-    const typeTags = extractTags('type', Root)
-    const imports = extractTags('import', Root)
-      .map(({ props: { 'name': name, 'from': from } }) => ({ name, from }))
-
+    const { namespace, typeTags, importTags } = parseFile(xml)
     const types = typeTags.map(({ content, props }) => {
       const tt = new Type()
       tt.fromXML(content, props, namespace)
@@ -38,12 +25,12 @@ async function replacement(match, docOrTypal, location) {
 
     let block
     if (closure) {
-      block = closureJoinTypes(imports, types)
+      block = closureJoinTypes(importTags, types)
     } else if (externs) {
-      block = externsJoinTypes(imports, types, namespace, this.namespaces) + '\n'
+      block = externsJoinTypes(importTags, types, namespace, this.namespaces) + '\n'
       if (namespace) this.emit('namespace', namespace)
     } else {
-      block = joinTypes(imports, types)
+      block = joinTypes(importTags, types)
     }
 
     const typedef = `/* ${docOrTypal} ${location} */\n${block}`

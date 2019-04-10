@@ -1,5 +1,5 @@
 import { throws } from 'assert'
-import { equal, deepEqual } from 'zoroaster/assert'
+import { equal } from 'zoroaster/assert'
 import Type from '../../../src/lib/Type'
 
 class context {
@@ -120,12 +120,7 @@ const TypeToMarkdown = {
   'writes a markdown with props'({ t, name, desc, content }) {
     t.fromXML(content, { name, desc })
     const res = t.toMarkdown()
-    const expected = `__[\`Type\`](t-type)__: A test type.
-
-\`\`\`table
-[["Name","Type","Description","Default"],["__root*__","_string_","Root directory string.","-"],["maxage","_number_","Browser cache max-age in milliseconds.","\`0\`"]]
-\`\`\``
-    equal(res, expected)
+    return res
   },
 }
 

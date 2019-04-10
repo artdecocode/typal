@@ -1,0 +1,24 @@
+
+
+```table
+[
+  [
+    "Name",
+    "Type",
+    "Description",
+    "Default"
+  ],
+  [
+    "__prop1*__",
+    "_*_",
+    "test",
+    "-"
+  ],
+  [
+    "prop2",
+    "_*_",
+    "test2",
+    "`OK`"
+  ]
+]
+```

@@ -1,0 +1,16 @@
+
+
+```table
+[
+  [
+    "Name",
+    "Type",
+    "Description"
+  ],
+  [
+    "__prop1*__",
+    "_string_",
+    "`echo abc \\| node consume.js`"
+  ]
+]
+```

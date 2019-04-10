@@ -125,7 +125,7 @@ export default class Type {
   toMarkdown(allTypes = []) {
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
-    const codedName = `\`${this.name}\``
+    const codedName = `\`${this.fullName}\``
     let nn
     if (!this.import) {
       nn = this.noToc ? `[${codedName}](l-type)` : `[${codedName}](t-type)`
@@ -164,6 +164,7 @@ const getSpread = (properties = [], closure = false) => {
 
 /**
  * Iterates through the type and creates a link for it.
+ * @param {Array<Type>} allTypes
  */
 export const getLinks = (allTypes, type) => {
   const m = mismatch(
@@ -203,7 +204,7 @@ export const makePropsTable = (props = [], allTypes = []) => {
   const res = anyHaveDefault
     ? pre
     : pre.map(([name, type, desc]) => [name, type, desc])
-  const j = JSON.stringify(res)
+  const j = JSON.stringify(res, null, 2)
   return `
 
 \`\`\`table
@@ -219,7 +220,8 @@ const esc = (s = '') => {
 }
 
 const getLinkToType = (allTypes, type) => {
-  const linkedType = allTypes.find(({ name }) => name == type)
-  const link = linkedType ? getLink(linkedType.name, 'type') : undefined
+  const typeName = type.replace(/^[!?]/, '')
+  const linkedType = allTypes.find(({ fullName }) => fullName == typeName)
+  const link = linkedType ? getLink(linkedType.fullName, 'type') : undefined
   return link
 }

@@ -1,0 +1,24 @@
+__[`Type`](t-type)__: A test type.
+
+```table
+[
+  [
+    "Name",
+    "Type",
+    "Description",
+    "Default"
+  ],
+  [
+    "__root*__",
+    "_string_",
+    "Root directory string.",
+    "-"
+  ],
+  [
+    "maxage",
+    "_number_",
+    "Browser cache max-age in milliseconds.",
+    "`0`"
+  ]
+]
+```
