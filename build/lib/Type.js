@@ -1,28 +1,62 @@
 let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
 const Property = require('./Property');
-const { getLink } = require('.');
+const { getLink, addSuppress, makeBlock } = require('./');
 
 /**
  * A representation of a type.
  */
                class Type {
+  constructor() {
+    /**
+     * The name of the type.
+     * @type {?string}
+     */
+    this.name = null
+    /** @type {?string} */
+    this.type = null
+    /**
+     * An overriding type for closure to generate externs, e.g.,
+     * `function(string): boolean` instead of `(s:string) => boolean`.
+     * @type {?string}
+     */
+    this.closureType = null
+    /** @type {?string} */
+    this.description = null
+    /** @type {?boolean} */
+    this.noToc = null
+    /** @type {?boolean} */
+    this.spread = null
+    /** @type {?boolean} */
+    this.import = null
+    /** @type {?boolean} */
+    this.noExpand = null
+    /** @type {?string} */
+    this.link = null
+    /** @type {Array<Property>} */
+    this.properties = []
+    /**
+     * The type's namespace, e.g., `typal`.
+     * @type {?string}
+     */
+    this.namespace = null
+  }
   fromXML(content, {
-    name, type, desc, noToc, spread, noExpand, import: i, link,
-  }) {
+    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure,
+  }, namespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
 
     if (type) this.type = type
+    if (closure) this.closureType = closure
+    else this.closureType = this.type
     if (desc) this.description = desc.trim()
-    if (noToc) this.noToc = true
-    if (spread) this.spread = true
-    if (noExpand) this.noExpand = true
-    if (i) this.import = true
+    this.noToc = !!noToc
+    this.spread = !!spread
+    this.noExpand = !!noExpand
+    this.import = !!i
     if (link) this.link = link
 
-    /** @type {Property[]} */
-    this.properties = []
     if (content) {
       const ps = extractTags('prop', content)
       const props = ps.map(({ content: c, props: p }) => {
@@ -32,36 +66,66 @@ const { getLink } = require('.');
       })
       this.properties = props
     }
+    if (namespace) this.namespace = namespace
   }
-  toTypedef() {
-    const t = this.type || 'Object'
-    // ${pd ? ` ${pd}` : ''}
+  toExtern(nullable = false) {
+    if (this.closureType) {
+      const s = ` * @typedef {${nullable ? '!' : ''}${this.closureType}}`
+      return s
+    }
+    const nn = getSpread(this.properties, true)
+    const s = ` * @typedef {${nullable ? '!' : ''}${nn}}`
+    return s
+  }
+  toTypedef(closure = false) {
+    const t = (closure ? this.closureType : this.type) || 'Object'
     const d = this.description ? ` ${this.description}` : ''
-    const s = ` * @typedef {${t}} ${this.name}${d}`
+    const dd = ` ${this.fullName}${d}`
+    const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
-      const sp = pr.toProp()
+      const sp = pr.toProp(closure)
       return sp
     }) : []
-    const st = [s, ...p].join('\n')
-    return st
+    // need this to be able to import types from other programs,
+    // /⁎⁎
+    //  ⁎ @typedef {ns.Type} Type The type (that can be imported)
+    //  ⁎ @typedef {Object} ns.Type The type (to use in current file)
+    //  ⁎/
+    let pre = ''
+    if (this.namespace) {
+      let td = ` * @typedef {${this.fullName}} ${this.name}${d}`
+      if (closure) td = addSuppress(td)
+      pre = makeBlock(td)
+    }
+    let typedef = [s, ...p].join('\n')
+    if (closure) typedef = addSuppress(typedef)
+    typedef = makeBlock(typedef)
+    return `${pre}${typedef}`
   }
-  toParam(paramName, optional, ws = '') {
+  get ns() {
+    if (this.namespace) return `${this.namespace}.`
+    return ''
+  }
+  get fullName() {
+    return `${this.ns}${this.name}`
+  }
+  toParam(paramName, optional, ws = '', nullable = false, closure = false) {
     const d = this.description ? ` ${this.description}` : ''
-    const nn = this.spread ? getSpread(this.properties) : this.name
+    const nn = this.spread ? getSpread(this.properties) : this.fullName
     const pn = optional ? `[${paramName}]` : paramName
-    const s = `${ws} * @param {${nn}} ${pn}${d}`
+    const s = `${ws} * @param {${nullable ? '!' : ''}${nn}} ${pn}${d}`
     const p = this.properties && !this.noExpand ? this.properties.map((pr) => {
-      const sp = pr.toParam(paramName, ws)
+      const sp = pr.toParam(paramName, ws, closure)
       return sp
     }) : []
     const st = [s, ...p].join('\n')
     return st
   }
-  /** @param {Type[]} allTypes */
+  /** @param {Array<Type>} allTypes */
   toMarkdown(allTypes = []) {
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
-    const codedName = `\`${this.name}\``
+    const codedName = `\`${this.fullName}\``
     let nn
     if (!this.import) {
       nn = this.noToc ? `[${codedName}](l-type)` : `[${codedName}](t-type)`
@@ -78,12 +142,18 @@ const { getLink } = require('.');
 }
 
 /**
- * @param {Property[]} properties
+ * @param {Array<Property>} properties
+ * @param {boolean} [closure = false] Whether generate for Closure's externs.
  */
-const getSpread = (properties = []) => {
+const getSpread = (properties = [], closure = false) => {
   const s = properties.map(p => {
-    const n = p.optional ? `${p.name}?` : p.name
-    const t = p.type
+    const type = closure ? p.closureType : p.type
+    let n = p.name, t = type
+    if (p.optional && !closure) {
+      n = `${p.name}?`
+    } else if (p.optional && closure) {
+      t = `(${type}|undefined)`
+    }
     const st = `${n}: ${t}`
     return st
   })
@@ -94,6 +164,7 @@ const getSpread = (properties = []) => {
 
 /**
  * Iterates through the type and creates a link for it.
+ * @param {Array<Type>} allTypes
  */
        const getLinks = (allTypes, type) => {
   const m = mismatch(
@@ -115,8 +186,8 @@ const getSpread = (properties = []) => {
 }
 
 /**
- * @param {Property[]} props
- * @param {Type[]} allTypes
+ * @param {Array<Property>} props
+ * @param {Array<Type>} allTypes
  */
        const makePropsTable = (props = [], allTypes = []) => {
   if (!props.length) return ''
@@ -133,7 +204,7 @@ const getSpread = (properties = []) => {
   const res = anyHaveDefault
     ? pre
     : pre.map(([name, type, desc]) => [name, type, desc])
-  const j = JSON.stringify(res)
+  const j = JSON.stringify(res, null, 2)
   return `
 
 \`\`\`table
@@ -149,8 +220,9 @@ const esc = (s = '') => {
 }
 
 const getLinkToType = (allTypes, type) => {
-  const linkedType = allTypes.find(({ name }) => name == type)
-  const link = linkedType ? getLink(linkedType.name, 'type') : undefined
+  const typeName = type.replace(/^[!?]/, '')
+  const linkedType = allTypes.find(({ fullName }) => fullName == typeName)
+  const link = linkedType ? getLink(linkedType.fullName, 'type') : undefined
   return link
 }
 

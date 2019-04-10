@@ -1,9 +1,11 @@
+let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
+
 /**
  * Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
- * @param {string} name Name of the property.
- * @param {*} defaultValue Default of the property.
+ * @param {?string} name Name of the property.
+ * @param {?(string|boolean|number)} defaultValue Default of the property.
  * @param {string} type Type of the property.
- * @param {string} parentParam Name of the parent parameter.
+ * @param {?string} parentParam Name of the parent parameter.
  * @example
  *
  * requiredParam
@@ -17,12 +19,13 @@
  * [parentParam.optionalParam]
  */
        const getNameWithDefault = (name, defaultValue, type, parentParam) => {
+  if (!name) throw new Error('The name of the property is not given')
   const n = `${parentParam ? `${parentParam}.` : ''}${name}`
 
-  const hasDefault = defaultValue !== undefined
+  const hasDefault = defaultValue !== null
   if (!hasDefault) return n
 
-  const isPrimitive = Number.isInteger(defaultValue)
+  const isPrimitive = Number.isInteger(/** @type {number} */ (defaultValue))
     || defaultValue === true
     || defaultValue === false
     || ['number', 'boolean'].includes(type)
@@ -39,6 +42,7 @@
   return '*'
 }
 
+// update this to match what documentary has
        const getLink = (title, prefix = '') => {
   const l = title
     .replace(/<\/?code>/g, '')
@@ -51,6 +55,51 @@
   return `${prefix}-${l}`
 }
 
+       const makeBlock = (s) => {
+  return `/**
+${s}
+ */
+`
+}
+
+       const importToTypedef = (Import) => {
+  return ` * @typedef {import('${Import.from}').${Import.name}} ${Import.from}.${Import.name}`
+}
+
+       const addSuppress = (line) => {
+  const m = ` * @suppress {nonStandardJsDocs}
+${line}`
+  return m
+}
+
+/**
+ * Parse the types.xml file.
+ * @param {string} xml
+ */
+       const parseFile = (xml) => {
+  const root = extractTags('types', xml)
+  if (!root.length)
+    throw new Error('XML file should contain root types element.')
+
+  const [{ content: Root, props: {
+    'namespace': ns1,
+    'ns': namespace = ns1,
+  } }] = root
+
+  const typeTags = extractTags('type', Root)
+  const imports = extractTags('import', Root)
+    .map(({ props: {
+      'name': name, 'from': from,
+      'desc': desc, 'link': link,
+    } }) => ({ name, from, desc, link }))
+
+  return { namespace, typeTags, imports }
+}
+
 module.exports.getNameWithDefault = getNameWithDefault
 module.exports.getPropType = getPropType
 module.exports.getLink = getLink
+module.exports.makeBlock = makeBlock
+module.exports.importToTypedef = importToTypedef
+module.exports.addSuppress = addSuppress
+module.exports.parseFile = parseFile
