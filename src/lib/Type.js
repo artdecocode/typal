@@ -151,8 +151,7 @@ const getSpread = (properties = [], closure = false) => {
     let n = p.name, t = type
     if (p.optional && !closure) {
       n = `${p.name}?`
-    }
-    if (p.optional && !p.hasDefault && closure) {
+    } else if (p.optional && closure) {
       t = `(${type}|undefined)`
     }
     const st = `${n}: ${t}`

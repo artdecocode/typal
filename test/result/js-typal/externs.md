@@ -13,7 +13,7 @@
  */
 var SetHeaders
 /**
- * @typedef {{ root: string, maxage: number, hidden: boolean }}
+ * @typedef {{ root: string, maxage: (number|undefined), hidden: (boolean|undefined) }}
  */
 var StaticConfig
 
@@ -78,5 +78,32 @@ ns.Test
  * @typedef {{ prop: actual }}
  */
 ns.Test
+
+/*@*/
+
+## generates correct undefined
+/* typal test/temp/types.xml */
+
+
+/*@ conf */
+{externs: true}
+/*@*/
+
+/*@ types */
+<types>
+  <type name="Test">
+    <prop boolean opt name="bool">A prop</prop>
+    <prop string name="str" default="hello">B prop</prop>
+  </type>
+</types>
+/*@*/
+
+
+/*@ expected */
+/* typal test/temp/types.xml */
+/**
+ * @typedef {{ bool: (boolean|undefined), str: (string|undefined) }}
+ */
+var Test
 
 /*@*/
