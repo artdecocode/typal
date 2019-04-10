@@ -1,4 +1,5 @@
 const { builtinModules } = require('module');
+const Type = require('../Type'); // eslint-disable-line
 const { makeBlock, importToTypedef, addSuppress } = require('../');
 
        const importToExtern = (Import, namespace) => {

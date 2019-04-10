@@ -1,4 +1,5 @@
 import { builtinModules } from 'module'
+import Type from '../Type' // eslint-disable-line
 import { makeBlock, importToTypedef, addSuppress } from '../'
 
 export const importToExtern = (Import, namespace) => {

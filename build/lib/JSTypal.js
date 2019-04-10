@@ -1,6 +1,7 @@
 const { Replaceable } = require('restream');
 const typedefJsRule = require('./typedef/rule');
 const JSDocRule = require('./typedef/jsdoc');
+const Type = require('./Type'); // eslint-disable-line
 
                class JSTypal extends Replaceable {
   constructor(conf = {}) {
@@ -16,6 +17,7 @@ const JSDocRule = require('./typedef/jsdoc');
     this.conf = conf
     /** @type {Array<string>} */
     this.namespaces = []
+    this.LOG = console.log
   }
   /**
    * Add types emitted during typedefJsRule replacement.

@@ -1,6 +1,7 @@
 import { Replaceable } from 'restream'
 import typedefJsRule from './typedef/rule'
 import JSDocRule from './typedef/jsdoc'
+import Type from './Type' // eslint-disable-line
 
 export default class JSTypal extends Replaceable {
   constructor(conf = {}) {

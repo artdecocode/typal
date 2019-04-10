@@ -33,7 +33,7 @@ export default class Type {
     this.noExpand = null
     /** @type {?string} */
     this.link = null
-    /** @type {Array<Property>} */
+    /** @type {!Array<!Property>} */
     this.properties = []
     /**
      * The type's namespace, e.g., `typal`.
@@ -121,7 +121,7 @@ export default class Type {
     const st = [s, ...p].join('\n')
     return st
   }
-  /** @param {Array<Type>} allTypes */
+  /** @param {!Array<!Type>} allTypes */
   toMarkdown(allTypes = []) {
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
@@ -164,7 +164,8 @@ const getSpread = (properties = [], closure = false) => {
 
 /**
  * Iterates through the type and creates a link for it.
- * @param {Array<Type>} allTypes
+ * @param {!Array<!Type>} allTypes
+ * @param {string} type
  */
 export const getLinks = (allTypes, type) => {
   const m = mismatch(
@@ -186,8 +187,8 @@ export const getLinks = (allTypes, type) => {
 }
 
 /**
- * @param {Array<Property>} props
- * @param {Array<Type>} allTypes
+ * @param {!Array<!Property>} [props]
+ * @param {!Array<!Type>} [allTypes]
  */
 export const makePropsTable = (props = [], allTypes = []) => {
   if (!props.length) return ''
@@ -195,7 +196,8 @@ export const makePropsTable = (props = [], allTypes = []) => {
 
   const h = ['Name', 'Type', 'Description', 'Default']
   const ps = props.map((prop) => {
-    const linkedType = getLinks(allTypes, prop.type)
+    const linkedType =
+      getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type)
     const name = prop.optional ? prop.name : `__${prop.name}*__`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
     return [name, `_${esc(linkedType)}_`, esc(prop.description), d]

@@ -37,6 +37,21 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Tool",
+      "program": "${workspaceFolder}/node_modules/.bin/alanode",
+      "console": "integratedTerminal",
+      "args": [
+        "tool",
+        "erotic",
+        // "2.1.0"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }

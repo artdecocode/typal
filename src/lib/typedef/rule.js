@@ -44,7 +44,7 @@ async function replacement(match, docOrTypal, location) {
   }
 }
 
-/** @type {restream.Rule} */
+/** @type {_restream.Rule} */
 const typedefRule = {
   re: typedefJsRe,
   replacement,
@@ -71,5 +71,5 @@ export default typedefRule
 
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('restream').Rule} restream.Rule
+ * @typedef {import('restream').Rule} _restream.Rule
  */

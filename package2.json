@@ -51,12 +51,10 @@
   },
   "homepage": "https://github.com/artdecocode/typal#readme",
   "devDependencies": {
-    "@artdeco/clean-stack": "^1.1.1",
     "@wrote/write": "^1.0.4",
     "alamode": "^1.9.2",
     "catchment": "^3.3.0",
     "documentary": "^1.23.4",
-    "erotic": "^2.1.0",
     "eslint-config-artdeco": "1.0.1",
     "restream": "^3.6.0",
     "temp-context": "^2.1.3",

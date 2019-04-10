@@ -14,7 +14,7 @@ module.exports=async (source, opts = {}) => {
     files = [source]
   } else if (ls.isDirectory()) {
     const dir = await readDirStructure(source)
-    files = getFiles(dir.content, source)
+    files = getFiles(/** @type {!_readDirStructure.Content } */(dir.content), source)
   }
   await processFiles(files, closure, externs)
 }
