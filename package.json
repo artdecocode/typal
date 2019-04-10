@@ -53,7 +53,7 @@
   "devDependencies": {
     "@wrote/write": "^1.0.3",
     "alamode": "^1.9.2",
-    "catchment": "^3.2.3",
+    "catchment": "^3.3.0",
     "documentary": "^1.23.4",
     "eslint-config-artdeco": "1.0.1",
     "restream": "^3.5.1",

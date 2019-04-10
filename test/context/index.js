@@ -7,6 +7,9 @@ export default class Context {
   static get BIN() {
     return process.env.ALAMODE_ENV == 'test-build' ? 'build/bin/typal' : 'src/bin'
   }
+  get typesLocation() {
+    return 'test/fixture/types.xml'
+  }
 }
 
 export class MarkdownSnapshot extends Zoroaster {

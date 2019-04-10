@@ -87,8 +87,11 @@ export const parseFile = (xml) => {
   } }] = root
 
   const typeTags = extractTags('type', Root)
-  const importTags = extractTags('import', Root)
-    .map(({ props: { 'name': name, 'from': from } }) => ({ name, from }))
+  const imports = extractTags('import', Root)
+    .map(({ props: {
+      'name': name, 'from': from,
+      'desc': desc, 'link': link,
+    } }) => ({ name, from, desc, link }))
 
-  return { namespace, typeTags, importTags }
+  return { namespace, typeTags, imports }
 }

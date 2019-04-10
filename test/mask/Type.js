@@ -6,14 +6,14 @@ import Type from '../../src/lib/Type'
 export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
   context: TempContext,
   getResults(input) {
-    const { typeTags, namespace, importTags } = parseFile(input)
+    const { typeTags, namespace, imports } = parseFile(input)
     const types = typeTags.map(({ content, props }) => {
       const tt = new Type()
       tt.fromXML(content, props, namespace)
       return tt
     })
     // copy Documentary logic
-    const imports = importTags.map(({ name, from }) => {
+    const Imports = imports.map(({ name, from }) => {
       const tt = new Type()
       tt.fromXML('', {
         name,
@@ -23,7 +23,7 @@ export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
       }, from)
       return tt
     })
-    const all = [...imports, ...types]
+    const all = [...Imports, ...types]
     return all.map((t) => {
       return t.toMarkdown(all)
     }).join('\n')

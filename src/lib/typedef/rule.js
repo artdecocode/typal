@@ -17,7 +17,7 @@ async function replacement(match, docOrTypal, location) {
   try {
     this.LOG('Detected type marker: %s', location)
     const xml = await read(location)
-    const { namespace, typeTags, importTags } = parseFile(xml)
+    const { namespace, typeTags, imports } = parseFile(xml)
     const types = typeTags.map(({ content, props }) => {
       const tt = new Type()
       tt.fromXML(content, props, namespace)
@@ -28,12 +28,12 @@ async function replacement(match, docOrTypal, location) {
 
     let block
     if (closure) {
-      block = closureJoinTypes(importTags, types)
+      block = closureJoinTypes(imports, types)
     } else if (externs) {
-      block = externsJoinTypes(importTags, types, namespace, this.namespaces) + '\n'
+      block = externsJoinTypes(imports, types, namespace, this.namespaces) + '\n'
       if (namespace) this.emit('namespace', namespace)
     } else {
-      block = joinTypes(importTags, types)
+      block = joinTypes(imports, types)
     }
 
     const typedef = `/* ${docOrTypal} ${location} */\n${block}`
