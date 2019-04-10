@@ -1,5 +1,5 @@
 /**
- * JSDoc detects the param {Type} declaration above functions, and updates them according to existing types that were detected with the `typedefRule` rule.
+ * _JSDoc regex_ detects the ` * @param {Type}` declaration above functions, and the _JSDoc rule_ updates them according to existing types that were detected with the `typedefRule` rule.
  */
 
 export const jsDocRe = /( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm
