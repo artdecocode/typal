@@ -1,0 +1,6 @@
+{
+  "html.experimental.customData": [
+    "./splendid/components/web-components.json",
+    "./node_modules/splendid/web-components.json"
+  ]
+}

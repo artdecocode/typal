@@ -25,7 +25,9 @@
     "build": "yarn-s d b doc",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "alanode",
-    "example/": "yarn e example/example.js"
+    "example/": "yarn e example/example.js",
+    "splendid": "splendid-dev",
+    "web": "splendid-dev -s"
   },
   "bin": "depack/typal.js",
   "files": [
@@ -69,7 +71,8 @@
     "restream": "^3.6.0",
     "temp-context": "^2.1.3",
     "yarn-s": "1.1.0",
-    "zoroaster": "^3.11.5"
+    "zoroaster": "^3.11.5",
+    "preact": "8.4.2"
   },
   "dependencies": {
     "mismatch": "^1.1.1",

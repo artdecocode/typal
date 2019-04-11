@@ -52,6 +52,19 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Splendid",
+      "program": "${workspaceFolder}/node_modules/splendid/src/bin/index.js",
+      "console": "integratedTerminal",
+      "args": [
+        // "2.1.0"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }

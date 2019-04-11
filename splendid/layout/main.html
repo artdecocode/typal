@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+    <head>
+      <page-title />
+      <link href="styles/app.css" rel="stylesheet">
+      <link href="styles/default.css" rel="stylesheet">
+      <link href="styles/prism.css" rel="stylesheet">
+      <link href="img/favicon.ico" rel="shortcut icon">
+      <link href="https://fonts.googleapis.com/css?family=Ruda" rel="stylesheet">
+    </head>
+    <body>
+      <Loader />
+      <div class="table">
+        <div class="left-column">
+          <div class="logo">
+            <img src="img/logo.jpg" alt="splendid logo">
+          </div>
+          <div class="badges">
+            <github-badge name="splendid" org="artdecocode" />
+            <npm-badge name="splendid" version="1.0.0">_Splendid_</npm-badge>
+          </div>
+
+          ### Pages
+
+          <Pages />
+
+          ### npm links
+
+          <ul>
+            * [splendid](https://www.npmjs.com/package/splendid)
+            * [mnp](https://www.npmjs.com/package/mnp)
+          </ul>
+        </div>
+        <div class="right-column" id="Content">
+          {{ content }}
+        </div>
+        </div>
+        <footer>
+          &copy; {{ company }}, <year/>
+        </footer>
+        <script src="js/main.js"></script>
+    </body>
+</html>
