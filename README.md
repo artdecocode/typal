@@ -21,6 +21,7 @@ yarn add -DE typal
     * [Google Closure Compiler Warnings](#google-closure-compiler-warnings)
     * [Closure-Compatible JSDoc](#closure-compatible-jsdoc)
     * [Generated Externs](#generated-externs)
+    * [Result Of Compilation](#result-of-compilation)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -487,7 +488,7 @@ The externs are generated with the Closure-compatible syntax and ready to be use
 To continue, we run `depack example/restream/program -c -a -p --externs restream/externs.js` again, and this time, _Depack_ will pass the externs argument to the compiler as we request.
 
 <table>
-<tr><th colspan="2">Result Of Compilation</th></tr>
+<tr><th colspan="2"><a name="result-of-compilation">Result Of Compilation</a></th></tr>
 <tr><td>
 
 ```js
@@ -512,7 +513,6 @@ e.pipe(process.stdout);
 e.end("__hello world__");
 ```
 </td></tr>
-<tr><td>stdout</td></tr>
 </table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>

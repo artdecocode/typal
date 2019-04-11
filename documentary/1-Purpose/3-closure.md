@@ -216,7 +216,7 @@ The externs are generated with the Closure-compatible syntax and ready to be use
 To continue, we run `depack example/restream/program -c -a -p --externs restream/externs.js` again, and this time, _Depack_ will pass the externs argument to the compiler as we request.
 
 <table>
-<tr><th colspan="2">Result Of Compilation</th></tr>
+<tr><th colspan="2">[Result Of Compilation](t)</th></tr>
 <tr><td>
 
 %FORK-js node_modules/depack/src/bin example/restream/program -c -a -p --externs example/restream/externs.js%
@@ -225,7 +225,7 @@ To continue, we run `depack example/restream/program -c -a -p --externs restream
 
 %FORKERR-js node_modules/depack/src/bin example/restream/program -c -a -p --externs example/restream/externs.js%
 </td></tr> -->
-<tr><td>stdout</td></tr>
+<!-- <tr><td>stdout</td></tr> -->
 <!-- <tr><td>stderr</td></tr> -->
 </table>
 
