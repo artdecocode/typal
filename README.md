@@ -16,6 +16,7 @@ yarn add -DE typal
 - [Purpose](#purpose)
   * [Example](#example)
     * [Naïve approach](#naïve-approach)
+    * [JSDoc approach](#jsdoc-approach)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -39,11 +40,12 @@ The solutions provided by _Typal_ are:
 
 ---
 
+
 ### Example
 
 This example will illustrate why _Typal_ is extremely useful as the tool both for plain JSDoc management and JSDoc for _Google Closure Compiler_ workflow.
 
-_**<a name="naïve-approach">Naïve approach</a>**: Lets implement a transform stream that updates data using regular expressions specified in the constructor:_
+_**<a name="naïve-approach">Naïve approach</a>**: Let's implement a transform stream that updates data using regular expressions specified in the constructor:_
 
 ```js
 import { Transform } from 'stream'
@@ -67,9 +69,9 @@ export class Restream extends Transform {
 }
 
 /**
- * @typedef {Object} Rule
+ * @typedef {Object} Rule The replacement rule.
  * @prop {RegExp} regex The regular expression.
- * @prop {(...args:string) => string} replacer The regular expression.
+ * @prop {(...args:string) => string} replacer The function used to update input.
  * @typedef {import('stream').TransformOptions} TransformOptions
  */
 ```
@@ -101,11 +103,66 @@ However, there are 2 problems with that:
       <img src="doc/restream2.png" title="VSCode does not show properties of a type">
     </p>
 
+_**<a name="jsdoc-approach">JSDoc approach</a>**: Now let's refactor the code that we have, and place the types definitions in the `types.xml` file instead of the source code:_
+
+```xml
+<types>
+  <import from="stream" name="TransformOptions"
+    link="https://nodejs.org/api/stream.html#stream_class_stream_transform" />
+  <type name="Rule" desc="The replacement rule.">
+    <prop type="RegExp" name="regex">
+      The regular expression.
+    </prop>
+    <prop type="(...args:string) => string" name="regex">
+      The function used to update input.
+    </prop>
+  </type>
+</types>
+```
+
+The types files support `<import>`, `<type>` and `<prop>` tags. We then update the source code to indicate the location of where types should be read from (there needs to be a newline before the end of the file):
+
+```js
+import { Transform } from 'stream'
+
+export class Restream extends Transform {
+  /**
+   * Sets up a transform stream that updates data using the regular expression.
+   * @param {Rule} rule The replacement rule.
+   * @param {TransformOptions} [options] Additional options for _Transform_.
+   */
+  constructor(rule, options) {
+    super(options)
+    this.rule = rule
+  }
+  // ...
+}
+
+/* typal example/restream/types.xml */
+```
+
+Then, we call the `typal` binary to get it to update the source: `typal example/restream/index.js`:
+
+```js
+import { Transform } from 'stream'
+
+export class Restream extends Transform {
+  /**
+   * Sets up a transform stream that updates data using the regular expression.
+   * @param {Rule} rule The replacement rule.
+   * @param {TransformOptions} [options] Additional options for _Transform_.
+   */
+  constructor(rule, options) {
+    super(options)
+    this.rule = rule
+  }
+  // ...
+}
+
+/* typal example/restream/types */
+```
+
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
-
-
-
-
 
 ## API
 

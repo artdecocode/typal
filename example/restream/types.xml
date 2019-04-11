@@ -1,0 +1,12 @@
+<types>
+  <import from="stream" name="TransformOptions"
+    link="https://nodejs.org/api/stream.html#stream_class_stream_transform" />
+  <type name="Rule" desc="The replacement rule.">
+    <prop type="RegExp" name="regex">
+      The regular expression.
+    </prop>
+    <prop type="(...args:string) => string" name="regex">
+      The function used to update input.
+    </prop>
+  </type>
+</types>
