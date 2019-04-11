@@ -196,9 +196,16 @@ Another advantage, is that the `Rule` type was expanded into individual properti
 
 _**<a name="closure-approach">Closure approach</a>**: Finally, if we want to allow our package to be compiled as part of other packages with GCC, we need to make sure the JSDoc is in the format that it accepts._
 
-We create a simple program that uses our _Restream_ library:
+<table>
+<tr>
+  <th>We create a simple program that uses our Restream library:</th>
+  <th>And run it with Node.JS:</th>
+</tr>
+<tr>
+  <td>
+
 ```js
-import { Restream } from './index2'
+import { Restream } from 'restream'
 
 const restream = new Restream({
   regex: /__(.+?)__/,
@@ -210,13 +217,21 @@ const restream = new Restream({
 restream.pipe(process.stdout)
 restream.end('__hello world__')
 ```
+  </td>
+  <td>
 
-And run it with Node.JS:
 ```html
 <em>hello world</em>
 ```
+  </td>
+</tr>
+</table>
 
-But if we try to compile a program using _GCC_ now (using [_Depack_](https://github.com/dpck/depack)), we'll get warnings:
+Let's try to compile a program using _GCC_ now (using [_Depack_](https://github.com/dpck/depack)) and see what happens:
+
+<table>
+<tr/>
+<tr><td colspan="2">
 
 ```js
 java -jar google-closure-compiler-java/compiler.jar --compilation_level ADVANCED \
@@ -231,36 +246,69 @@ const stream = require('stream');%output%" \
      example/restream/warnings.js \
      example/restream/index2.js
 ```
+</td></tr>
+<tr>
+  <td rowspan="2">
+
+  _Google Closure Compiler_ does not discover source code files the list of which must be passed manually. In addition, it does not work with internal Node.JS modules natively. The software that performs static analysis of programs to detect what files to feed to the compiler, as well as mocking Node.JS built-in modules in the `node_modules` folder and providing externs for them is called _Depack_.
+  </td>
+  <td>
+
+  The command above was generated with _Depack_ call shown below, where `-c` means Node.JS compilation (which adds the wrapper, mocks and externs), `-a` means ADVANCED mode, and `-p` means pretty-printing.
+  </td>
+</tr>
+<tr>
+  <td>
+
+```sh
+depack restream/index2 -c -a -p
+```
+  </td>
+</tr>
+</table>
+
+After finishing its job, the compiler will give us warnings shown below, which tell us that the program was not typed checked correctly. Sometimes we can ignore warnings, but we loose the ability to ensure correct typing. It is also possible that the compiler will perform the advanced optimisations incorrectly by mangling property names (e.g., `regex` becomes `a`), but it is not the case here because all files are used together, but if we were publishing the library, the first parameter `rule` would not adhere to the _Rule_ interface.
 
 <table>
 <tr/>
-<tr>
+<tr><td>
 
 ```js
-example/restream/index2.js:6: WARNING - Bad type annotation. Unknown type Rule
+restream/index2.js:6: WARNING - Bad type annotation. Unknown type Rule
    * @param {Rule} rule The replacement rule.
              ^
 
-example/restream/index2.js:8: WARNING - Bad type annotation. type not recognized due to syntax error. See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler for more information.
+restream/index2.js:8: WARNING - Bad type annotation. type not recognized due to syntax error.
+See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler
+for more information.
    * @param {(...args:string) => string} rule.replacement The function used to update input.
               ^
 
-example/restream/index2.js:9: WARNING - Bad type annotation. Unknown type TransformOptions
+restream/index2.js:9: WARNING - Bad type annotation. Unknown type TransformOptions
    * @param {TransformOptions} [options] Additional options for _Transform_.
              ^
 
-example/restream/index2.js:25: WARNING - Bad type annotation. expected closing } See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler for more information.
+restream/index2.js:25: WARNING - Bad type annotation. expected closing }
+See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler
+for more information.
  * @typedef {import('stream').TransformOptions} TransformOptions
                    ^
 
-example/restream/index2.js:26: WARNING - Bad type annotation. type annotation incompatible with other annotations. See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler for more information.
+restream/index2.js:26: WARNING - Bad type annotation. type annotation incompatible with
+other annotations.
+See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler
+for more information.
  * @typedef {Object} Rule The replacement rule.
    ^
 ```
-</tr>
-<tr>
-The warnings produced by the compiler tell us the points discussed in the beginning: the classic typedefs (such as `Rule`), function types (`(...args:string) => string`) and imports (`import('stream').TransformOptions`) are not understood.
-</tr>
+</td></tr>
+<tr><td>
+
+The warnings produced by the compiler tell us the points discussed in the beginning: <br/>
+- the classic typedefs <code>{Object} Rule</code>, <br/>
+- function types <code>(...args:string) => string</code>, <br/>
+- and imports <code>import('stream').TransformOptions</code> are not understood.
+</td></tr>
 </table>
 
 This is because the traditional JSDoc annotation is not compatible with the compiler. To solve that, we need to compile JSDoc in _Closure_ mode with _Typal_. First, we want to adjust our types with the following things:
