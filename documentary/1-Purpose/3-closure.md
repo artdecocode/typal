@@ -22,6 +22,10 @@ const stream = require('stream');%output%" \
      example/restream/index2.js
 ```
 
+<table>
+<tr/>
+<tr>
+
 ```js
 example/restream/index2.js:6: WARNING - Bad type annotation. Unknown type Rule
    * @param {Rule} rule The replacement rule.
@@ -43,14 +47,23 @@ example/restream/index2.js:26: WARNING - Bad type annotation. type annotation in
  * @typedef {Object} Rule The replacement rule.
    ^
 ```
+</tr>
+<tr>
+The warnings produced by the compiler tell us the points discussed in the beginning: the classic typedefs (such as `Rule`), function types (`(...args:string) => string`) and imports (`import('stream').TransformOptions`) are not understood.
+</tr>
+</table>
 
 This is because the traditional JSDoc annotation is not compatible with the compiler. To solve that, we need to compile JSDoc in _Closure_ mode with _Typal_. First, we want to adjust our types with the following things:
 
 1. Annotate the nullability of our types, since there's attention to _Null_ in GCC, not like traditional JS.
 1. We also add the `closure` property to the `prop` elements to make them use that type instead of the traditional one. Unfortunately, there's no way to use both in code for _VSCode_ and for _GCC_, however we can still use more readable `type` descriptions when generating README documentation.
-1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not exactly.
-1. Finally, add another type just to illustrate how to reference types across and withing namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
+1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not because it's a namespace in externs, but an instance of _Restream_ in source code.
+1. Finally, add another type _Rules_ just to illustrate how to reference types across and withing namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
 
 %EXAMPLE: example/restream/types2.xml%
+
+If we now compile the source code using `--closure` flag (so that the command is `typal example/restream/closure.js -c`), our source code will have JSDoc that is fully compatible with the _Google Closure Compiler_:
+
+%FORK-js src/bin/typal example/restream/index2.js -c -o -%
 
 %~ width="20"%
