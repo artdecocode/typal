@@ -5,6 +5,7 @@ import { getLink, addSuppress, makeBlock } from './'
 
 /**
  * A representation of a type.
+ * @implements {ABC}
  */
 export default class Type {
   constructor() {
@@ -41,6 +42,9 @@ export default class Type {
      */
     this.namespace = null
   }
+  /**
+   * Create type from the xml content and properties parsed with `rexml`.
+   */
   fromXML(content, {
     'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure,
   }, namespace) {

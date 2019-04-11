@@ -1,9 +1,9 @@
 <types namespace="typal">
   <type name="Type" desc="The type interace.">
-    <prop string name="name">
+    <prop type="?string" name="name">
       The name of the type.
     </prop>
-    <prop string name="type" default="Object">
+    <prop string name="type">
       The type of the type.
     </prop>
     <prop string name="description" opt>

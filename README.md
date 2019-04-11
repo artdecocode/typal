@@ -13,17 +13,72 @@ yarn add -DE typal
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
-- [CLI](#cli)
+- [Purpose](#purpose)
 - [API](#api)
-  * [`getNameWithDefault(name: string, ?defaultValue: (string|boolean|number), type: string=, parentParam: string=)`](#getnamewithdefaultname-stringdefaultvalue-stringbooleannumbertype-stringparentparam-string-void)
-  * [`parseFile(xml: string, rootNamespace: string=)`](#parsefilexml-stringrootnamespace-string-void)
-  * [Root Namespace](#root-namespace)
+  * [class `Type`](#class-type)
+  * [class `Property`](#class-property)
+  * [`getNameWithDefault(name: string, defaultValue: ?(string|boolean|number), type: string=, parentParam: string=)`](#getnamewithdefaultname-stringdefaultvalue-stringbooleannumbertype-stringparentparam-string-void)
+  * [`parseFile(xml: string, rootNamespace: string=): { types, imports, namespace }`](#parsefilexml-stringrootnamespace-string--types-imports-namespace-)
+    * [Root Namespace](#root-namespace)
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
-## CLI
+## Purpose
 
-The package can be used
+The main purpose of this package is to generate _JSDoc_ annotations that are understood both by _VSCode_, and compatible with _Google Closure Compiler_ via its externs system. The project deliberately deviates from _TypeScript_ and is meant for _JavaScript_ development, and it proves that typing can be achieved perfectly well with _JSDoc_. It's idea is to store files in an XML file, and then embed them in JS and README files and externs.
+
+_For example, lets implement a transform stream that updates data using regular expressions specified in the constructor:_
+
+```js
+import { Transform } from 'stream'
+
+export class Restream extends Transform {
+  /**
+   * Sets up a transform stream that updates data using the
+   * regular expression.
+   * @param {Rule} rule The replacement rule.
+   * @param {TransformOptions} [options] Additional options for
+   * _Transform_.
+   */
+  constructor(rule, options) {
+    super(options)
+    this.rule = rule
+  }
+  _transform(chunk, enc, next) {
+    this.push(
+      `${chunk}`.replace(this.rule., this.rule.replacer)
+    )
+    next()
+  }
+}
+
+/**
+ * @typedef {Object} Rule
+ * @prop {RegExp} regex The regular expression.
+ * @prop {(...args:string) => string} replacer The regular expression.
+ * @typedef {import('stream').TransformOptions} TransformOptions
+ */
+```
+
+In the file, we have defined a type using typedef, and imported a type from the internal Node.JS API. All is well, and we get our _JSDoc_ autosuggestions that help us understand that what we're doing is correct.
+
+![doc/restream1.gif](JSDoc autosuggestions for defined types)
+
+However, there are 2 problems with that:
+
+1. _Google Closure Compiler_ does not understand typedefs without variables. The format for _GCC_ typedefs is the following one:
+    ```js
+    /**
+     * @typedef {{ regex: RegExp, replacement: function(...string): string }}
+     */
+    var Rule
+    ```
+1. _Google Closure Compiler_ does not understand imports syntax. It is currently not supported, and to be able to reference files from other packages, there need to be externs. So for the _TransformOptions_, we need `stream.TransformOptions` externs.
+1. The documentation that we wrote as JSDoc type declarations, has to be copied and pasted into the README file manually, and all tables need to be also constructed.
+1. It is not clear what interface the _Rule_ type adheres to, because _VSCode_ does not show that information:
+    ![doc/restream2.png](VSCode does not show properties of a type)
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -35,9 +90,21 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="25"></a></p>
 
-### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`?defaultValue: (string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): void`
+### class `Type`
+
+This class represents the type.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
+
+### class `Property`
+
+This class represents the properties of the type.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
+
+### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): void`
 
 Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
 
@@ -54,9 +121,9 @@ Return a name of a property with its default value, and surrounded by square bra
  * @param {*} [parentParam.optionalParam]
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
 
-### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): void`
+### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
 Returns the string parsed into _Types_ and _Properties_.
 
@@ -155,7 +222,7 @@ _The result will contain Types and Imports:_
        link: undefined } ] }
 ```
 
-### Root Namespace
+#### Root Namespace
 
 Passing the `rootNamespace` allows to ignore the given namespace in types and properties. This can be used for compiling documentation when only single namespace is used, and readers can assume where the types come from. However, this should only be used when printing to docs, but when compiling JSDoc, the full namespaces should be used to allow integration with externs.
 
@@ -238,7 +305,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
