@@ -34,11 +34,9 @@ import { Transform } from 'stream'
 
 export class Restream extends Transform {
   /**
-   * Sets up a transform stream that updates data using the
-   * regular expression.
+   * Sets up a transform stream that updates data using the regular expression.
    * @param {Rule} rule The replacement rule.
-   * @param {TransformOptions} [options] Additional options for
-   * _Transform_.
+   * @param {TransformOptions} [options] Additional options for _Transform_.
    */
   constructor(rule, options) {
     super(options)
@@ -46,7 +44,7 @@ export class Restream extends Transform {
   }
   _transform(chunk, enc, next) {
     this.push(
-      `${chunk}`.replace(this.rule., this.rule.replacer)
+      `${chunk}`.replace(this.rule.regex, this.rule.replacer)
     )
     next()
   }
@@ -62,7 +60,7 @@ export class Restream extends Transform {
 
 In the file, we have defined a type using typedef, and imported a type from the internal Node.JS API. All is well, and we get our _JSDoc_ autosuggestions that help us understand that what we're doing is correct.
 
-![doc/restream1.gif](JSDoc autosuggestions for defined types)
+![JSDoc autosuggestions for defined types](doc/restream1.gif)
 
 However, there are 2 problems with that:
 
@@ -76,7 +74,7 @@ However, there are 2 problems with that:
 1. _Google Closure Compiler_ does not understand imports syntax. It is currently not supported, and to be able to reference files from other packages, there need to be externs. So for the _TransformOptions_, we need `stream.TransformOptions` externs.
 1. The documentation that we wrote as JSDoc type declarations, has to be copied and pasted into the README file manually, and all tables need to be also constructed.
 1. It is not clear what interface the _Rule_ type adheres to, because _VSCode_ does not show that information:
-    ![doc/restream2.png](VSCode does not show properties of a type)
+    ![VSCode does not show properties of a type](doc/restream2.png)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
 
