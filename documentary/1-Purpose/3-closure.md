@@ -20,7 +20,7 @@ _**[Closure approach](t)**: Finally, if we want to allow our package to be compi
 Let's try to compile a program using _GCC_ now (using [_Depack_](https://github.com/dpck/depack)) and see what happens:
 
 <table>
-<tr/>
+<tr><th colspan="2">Shell Command To Spawn Closure</th></tr>
 <tr><td colspan="2">
 
 ```js
@@ -40,9 +40,9 @@ const stream = require('stream');%output%" \
 <tr>
   <td rowspan="2">
 
-The command above was generated with _Depack_ call on the right, where: <br/>
-- `-c` means Node.JS compilation<br/> (adds the wrapper, mocks and externs), <br/>
-- `-a` means ADVANCED mode, <br/>
+The command above was generated with _Depack_ call on the right, where:
+- `-c` means Node.JS compilation (adds the wrapper, mocks and externs),
+- `-a` means ADVANCED mode,
 - and `-p` means pretty-printing.
   </td>
 </tr>
@@ -99,10 +99,10 @@ for more information.
 </td></tr>
 <tr><td>
 
-The warnings produced by the compiler tell us the points discussed in the beginning: <br/>
-- the classic typedefs <code>{Object} Rule</code>, <br/>
-- function types <code>(...args:string) => string</code>, <br/>
-- and imports <code>import('stream').TransformOptions</code> are not understood.
+The warnings produced by the compiler tell us the points discussed in the beginning:
+- the classic typedefs `{Object} Rule`,
+- function types `(...args:string) => string`,
+- and imports `import('stream').TransformOptions` are not understood.
 </td></tr>
 </table>
 
