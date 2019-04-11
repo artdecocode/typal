@@ -22,6 +22,7 @@ yarn add -DE typal
     * [Closure-Compatible JSDoc](#closure-compatible-jsdoc)
     * [Generated Externs](#generated-externs)
     * [Result Of Compilation](#result-of-compilation)
+    * [Annotating Types](#annotating-types)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -531,6 +532,40 @@ Running Google Closure Compiler target...
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
 </table>
+
+And so that's it! We've successfully compiled our Node.JS program with _Google Closure Compiler_ using _Depack_ as the CLI interface, and _Typal_ as the utility to organise types, both for README documentation, JSDoc annotation and Compiler externs information. There is just one last thing to add.
+
+<table>
+<tr><th><a name="annotating-types">Annotating Types</a></th></tr>
+<tr><td>
+
+```js
+import { Restream } from 'restream'
+
+/**
+ * The rule to enable `<em>` tag conversion from Markdown.
+ * @type {_restream.Rule}
+ */
+const rule = {
+  regex: /__(.+?)__/,
+  replacement(match, s) {
+    return `<em>${s}</em>`
+  },
+}
+const restream = new Restream(rule)
+
+restream.pipe(process.stdout)
+restream.end('__hello world__')
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('restream').Rule} _restream.Rule
+ */
+```
+</td></tr>
+</table>
+
+When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs it it finds it. Packages can publish their externs and point to them using the `externs` field, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 

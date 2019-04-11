@@ -230,5 +230,17 @@ To continue, we run `depack example/restream/program -c -a -p --externs restream
 <!-- <tr><td>stderr</td></tr> -->
 </table>
 
+And so that's it! We've successfully compiled our Node.JS program with _Google Closure Compiler_ using _Depack_ as the CLI interface, and _Typal_ as the utility to organise types, both for README documentation, JSDoc annotation and Compiler externs information. There is just one last thing to add.
+
+<table>
+<tr><th>[Annotating Types](t)</th></tr>
+<tr><td>
+
+%EXAMPLE: example/restream/annotation, ./compat => restream%
+</td></tr>
+</table>
+
+When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs it it finds it. Packages can publish their externs and point to them using the `externs` field, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
+
 <!-- %~ width="20"% -->
 %~%
