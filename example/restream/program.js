@@ -1,4 +1,4 @@
-import { Restream } from './index2'
+import { Restream } from './compat'
 
 const restream = new Restream({
   regex: /__(.+?)__/,
