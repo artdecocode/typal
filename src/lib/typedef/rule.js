@@ -53,16 +53,20 @@ const typedefRule = {
 const joinTypes = (imports, types) => {
   const ts = types.map(tt => tt.toTypedef())
 
-  const is = imports.map(importToTypedef)
+  const is = imports.map((i) => importToTypedef(i, false))
 
   const iss = is.map(makeBlock).join('')
   const tss = ts.join('')
   const importsAndTypes = `${iss}${tss}`
 
-  return importsAndTypes
+  return importsAndTypes.replace(m, ' * @typedef')
 }
 
 export default typedefRule
+
+const m = ` */
+/**
+ * @typedef`
 
 /**
  * @suppress {nonStandardJsDocs}

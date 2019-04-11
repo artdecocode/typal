@@ -60,8 +60,9 @@ ${s}
 `
 }
 
-export const importToTypedef = (Import) => {
-  return ` * @typedef {import('${Import.from}').${Import.name}} ${Import.from}.${Import.name}`
+export const importToTypedef = (Import, includeNamespace = true) => {
+  const n = includeNamespace ? `${Import.from}.${Import.name}` : Import.name
+  return ` * @typedef {import('${Import.from}').${Import.name}} ${n}`
 }
 
 export const addSuppress = (line) => {
