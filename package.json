@@ -18,6 +18,8 @@
     "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack-dev src/bin/typal.js -c -o build/bin -a -p -s",
     "depack1": "depack-dev depack/t.js -c -o t/tt.js -a -p",
     "depack2": "depack-dev depack/prop/index.js -c -a -p",
+    "depack-compat": "depack-dev example/restream/compat -c -a -p",
+    "compat": "yarn dev example/restream/compat.js -c",
     "d": "NODE_DEBUG=doc doc src/index.js -g",
     "build": "yarn-s d b doc",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",

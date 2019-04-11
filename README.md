@@ -352,7 +352,7 @@ This is because the traditional JSDoc annotation is not compatible with the comp
 </td></tr>
 <tr><td>
 
-1. Annotate the nullability of our types, since there's attention to *`null`* in _GCC_, not like traditional JS.
+1. Annotate the nullability of our types using **!**, since there's attention to *`null`* in _GCC_, not like traditional JS.
 1. We also add the `closure` property to the `prop` elements to make them use that type instead of the traditional one. Unfortunately, there's no way to use both in code for _VSCode_ and for _GCC_, however we can still use more readable `type` descriptions when generating README documentation.
 1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not because it's a namespace in externs, but an instance of _Restream_ in source code.
 1. Finally, add another type _Rules_ just to illustrate how to reference types across and withing namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
@@ -375,10 +375,10 @@ import { Transform } from 'stream'
 export class Restream extends Transform {
   /**
    * Sets up a transform stream that updates data using the regular expression.
-   * @param {_restream.Rule} rule The replacement rule.
-   * @param {RegExp} rule.regex The regular expression.
+   * @param {!_restream.Rule} rule The replacement rule.
+   * @param {!RegExp} rule.regex The regular expression.
    * @param {(...args:string) => string} rule.replacement The function used to update input.
-   * @param {stream.TransformOptions} [options] Additional options for _Transform_.
+   * @param {!stream.TransformOptions} [options] Additional options for _Transform_.
    */
   constructor(rule, options) {
     super(options)
@@ -444,7 +444,7 @@ The imports are now also suppressed (but the change will come into effect in the
 ```js
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
+ * @typedef {_restream.Rules} Rules Multiple replacement rules.
  */
 /**
  * @suppress {nonStandardJsDocs}
@@ -455,6 +455,31 @@ The imports are now also suppressed (but the change will come into effect in the
 <tr><td>
 
 Any types within the namespace must refer to each other using their full name.
+</td></tr>
+</table>
+
+Before we continue to compilation, we still need to generate externs, because the _Closure_ compiler does not know about the _Rule_ type. Externs is the way of introducing types to the compiler, so that it can do type checking and property renaming more accurately. Once again, we place the `/* typal example/restream/types2.xml */` marker in the empty `externs.js` file, and let _Typal_ to the job with `typal example/restream/externs.js --externs` command (or `-e`).
+
+<table>
+<tr><th>Generated Restream Externs</th></tr>
+<tr><td>
+
+```js
+/* typal example/restream/types2.xml */
+/** @const */
+var _restream = {}
+/**
+ * @typedef {{ regex: !RegExp, replacement: function(...string): string }}
+ */
+_restream.Rule
+/**
+ * @typedef {!Array<!_restream.Rule>}
+ */
+_restream.Rules
+```
+</td></tr>
+<tr><td>
+The externs are generated with the Closure-compatible syntax and ready to be used for compilation of our example program.
 </td></tr>
 </table>
 
