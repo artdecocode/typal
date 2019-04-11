@@ -284,7 +284,7 @@ depack example/restream/program -c -a -p
 
 > _Google Closure Compiler_ does not discover source code files the list of which must be passed manually. In addition, it does not work with internal Node.JS modules natively. The software that performs static analysis of programs to detect what files to feed to the compiler, as well as mocking Node.JS built-in modules in the `node_modules` folder and providing externs for them is called _Depack_.
 
-After finishing its job, the compiler will give us warnings shown below, which tell us that the program was not typed checked correctly. Sometimes we can ignore warnings, but we loose the ability to ensure correct typing. It is also possible that the compiler will perform the advanced optimisations incorrectly by mangling property names (e.g., `regex` becomes `a`), but it is not the case here because all files are used together, but if we were publishing the library, the first parameter `rule` would not adhere to the _Rule_ interface.
+After finishing its job, the compiler will give us warnings shown below, which tell us that the program was not type-checked correctly. Sometimes we can ignore warnings, but we loose the ability to ensure correct typing. It is also possible that the compiler will perform the advanced optimisations incorrectly by mangling property names (e.g., `regex` becomes `a`), but it is not the case here because all files are used together, but if we were publishing the library, the first parameter `rule` would not adhere to the _Rule_ interface.
 
 <table>
 <tr><th><a name="google-closure-compiler-warnings">Google Closure Compiler Warnings</a></th></tr>
@@ -358,7 +358,7 @@ This is because the traditional JSDoc annotation is not compatible with the comp
 1. Annotate the nullability of our types using **!**, since there's attention to *`null`* in _GCC_, not like traditional JS.
 1. We also add the `closure` property to the `prop` elements to make them use that type instead of the traditional one. Unfortunately, there's no way to use both in code for _VSCode_ and for _GCC_, however we can still use more readable `type` descriptions when generating README documentation.
 1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not because it's a namespace in externs, but an instance of _Restream_ in source code.
-1. Finally, add another type _Rules_ just to illustrate how to reference types across and withing namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
+1. Finally, add another type _Rules_ just to illustrate how to reference types across and within namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
 </td></tr>
 
 </table>
