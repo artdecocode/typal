@@ -24,10 +24,11 @@
     "e": "alanode",
     "example/": "yarn e example/example.js"
   },
-  "bin": "build/bin/typal.js",
+  "bin": "depack/typal.js",
   "files": [
     "build",
-    "src"
+    "src",
+    "depack"
   ],
   "repository": {
     "type": "git",
