@@ -124,7 +124,10 @@ The Source Code With Closure-Compatible JSDoc
 <tr>
   <td>
 
-%FORK-js src/bin/typal example/restream/index2.js -c -o -%
+%EXAMPLE: example/restream/index2.js%
+<hr/>
+
+%FORK-js src/bin/typal example/restream/index2-types.js -c -o -%
   </td>
 </tr>
 <tr>
