@@ -5,7 +5,8 @@
     <prop type="!RegExp" name="regex">
       The regular expression.
     </prop>
-    <prop type="function(...string): string" name="replacement">
+    <prop type="(...args:string) => string"
+      closure="function(...string): string" name="replacement">
       The function used to update input.
     </prop>
   </type>

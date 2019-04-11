@@ -325,12 +325,11 @@ The warnings produced by the compiler tell us the points discussed in the beginn
 </td></tr>
 </table>
 
-This is because the traditional JSDoc annotation is not compatible with the compiler. To solve that, we need to compile JSDoc in _Closure_ mode with _Typal_. First, we want to adjust our types with the following things:
+This is because the traditional JSDoc annotation is not compatible with the compiler. To solve that, we need to compile JSDoc in _Closure_ mode with _Typal_. First, we want to adjust our types to include more features:
 
-1. Annotate the nullability of our types, since there's attention to *`null`* in _GCC_, not like traditional JS.
-1. We also add the `closure` property to the `prop` elements to make them use that type instead of the traditional one. Unfortunately, there's no way to use both in code for _VSCode_ and for _GCC_, however we can still use more readable `type` descriptions when generating README documentation.
-1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not because it's a namespace in externs, but an instance of _Restream_ in source code.
-1. Finally, add another type _Rules_ just to illustrate how to reference types across and withing namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
+<table>
+<tr><th>Updated Types For Closure (<a href="example/restream/types2.xml">view source</a>)</th></tr>
+<tr><td>
 
 ```xml
 <types namespace="_restream">
@@ -340,7 +339,8 @@ This is because the traditional JSDoc annotation is not compatible with the comp
     <prop type="!RegExp" name="regex">
       The regular expression.
     </prop>
-    <prop type="function(...string): string" name="replacement">
+    <prop type="(...args:string) => string"
+      closure="function(...string): string" name="replacement">
       The function used to update input.
     </prop>
   </type>
@@ -349,6 +349,16 @@ This is because the traditional JSDoc annotation is not compatible with the comp
   </type>
 </types>
 ```
+</td></tr>
+<tr><td>
+
+1. Annotate the nullability of our types, since there's attention to *`null`* in _GCC_, not like traditional JS.
+1. We also add the `closure` property to the `prop` elements to make them use that type instead of the traditional one. Unfortunately, there's no way to use both in code for _VSCode_ and for _GCC_, however we can still use more readable `type` descriptions when generating README documentation.
+1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not because it's a namespace in externs, but an instance of _Restream_ in source code.
+1. Finally, add another type _Rules_ just to illustrate how to reference types across and withing namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
+</td></tr>
+
+</table>
 
 If we now compile the source code using `--closure` flag (so that the command is `typal example/restream/closure.js -c`), our source code will have JSDoc that is fully compatible with the _Google Closure Compiler_:
 
@@ -432,6 +442,10 @@ The imports are now also suppressed (but the change will come into effect in the
 <tr><td>
 
 ```js
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
+ */
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
