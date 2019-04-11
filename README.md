@@ -13,11 +13,14 @@ yarn add -DE typal
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
-- [Purpose](#purpose)
-  * [Example](#example)
-    * [Naïve approach](#naïve-approach)
-    * [JSDoc approach](#jsdoc-approach)
-    * [Closure approach](#closure-approach)
+- [Purpose And Use-Cases](#purpose-and-use-cases)
+  * [Naïve approach](#naïve-approach)
+  * [JSDoc approach](#jsdoc-approach)
+  * [Closure approach](#closure-approach)
+    * [Shell Command To Spawn Closure](#shell-command-to-spawn-closure)
+    * [Google Closure Compiler Warnings](#google-closure-compiler-warnings)
+    * [Closure-Compatible JSDoc](#closure-compatible-jsdoc)
+    * [Generated Externs](#generated-externs)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -27,7 +30,7 @@ yarn add -DE typal
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
-## Purpose
+## Purpose And Use-Cases
 
 The main purpose of this package is to generate _JSDoc_ annotations that are understood both by _VSCode_, and compatible with _Google Closure Compiler_ via its externs system. The project deliberately deviates from _TypeScript_ and is meant for _JavaScript_ development, and it proves that typing can be achieved perfectly well with _JSDoc_. It's idea is to store files in an XML file, and then embed them in JS and README files and externs.
 
@@ -42,9 +45,7 @@ The solutions provided by _Typal_ are:
 ---
 
 
-### Example
-
-This example will illustrate why _Typal_ is extremely useful as the tool both for plain JSDoc management and JSDoc for _Google Closure Compiler_ workflow.
+The example given below will illustrate why _Typal_ is extremely useful as the tool both for plain JSDoc management and JSDoc for _Google Closure Compiler_ workflow.
 
 _**<a name="naïve-approach">Naïve approach</a>**: Let's implement a transform stream that updates data using regular expressions specified in the constructor:_
 
@@ -205,7 +206,7 @@ Another advantage, is that the `Rule` type was expanded into individual properti
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="20"></a></p>
 
-_**<a name="closure-approach">Closure approach</a>**: Finally, if we want to allow our package to be compiled as part of other packages with GCC, we need to make sure the JSDoc is in the format that it accepts._
+_**<a name="closure-approach">Closure approach</a>**: Finally, if we want to allow our package to be compiled as part of other packages with GCC (or compile a binary from the lib we've written), we need to make sure the JSDoc is in the format that it accepts._
 
 <table>
 <tr>
@@ -215,25 +216,11 @@ _**<a name="closure-approach">Closure approach</a>**: Finally, if we want to all
 <tr>
   <td>
 
-```js
-import { Restream } from 'restream'
-
-const restream = new Restream({
-  regex: /__(.+?)__/,
-  replacement(match, s) {
-    return `<em>${s}</em>`
-  },
-})
-
-restream.pipe(process.stdout)
-restream.end('__hello world__')
-```
+%EXAMPLE: example/restream/warnings, ./index2 => restream%
   </td>
   <td>
 
-```html
-<em>hello world</em>
-```
+%FORK-html example/restream/warnings%
   </td>
 </tr>
 </table>
@@ -241,7 +228,7 @@ restream.end('__hello world__')
 Let's try to compile a program using _GCC_ now (using [_Depack_](https://github.com/dpck/depack)) and see what happens:
 
 <table>
-<tr><th colspan="2">Shell Command To Spawn Closure</th></tr>
+<tr><th colspan="2"><a name="shell-command-to-spawn-closure">Shell Command To Spawn Closure</a></th></tr>
 <tr><td colspan="2">
 
 ```js
@@ -272,7 +259,7 @@ The command above was generated with _Depack_ call on the right, where:
 <em>
 
 ```sh
-depack restream/index2 -c -a -p
+depack example/restream/program -c -a -p
 ```
 </em>
   </td>
@@ -284,7 +271,7 @@ depack restream/index2 -c -a -p
 After finishing its job, the compiler will give us warnings shown below, which tell us that the program was not typed checked correctly. Sometimes we can ignore warnings, but we loose the ability to ensure correct typing. It is also possible that the compiler will perform the advanced optimisations incorrectly by mangling property names (e.g., `regex` becomes `a`), but it is not the case here because all files are used together, but if we were publishing the library, the first parameter `rule` would not adhere to the _Rule_ interface.
 
 <table>
-<tr><th>Google Closure Compiler Warnings</th></tr>
+<tr><th><a name="google-closure-compiler-warnings">Google Closure Compiler Warnings</a></th></tr>
 <tr><td>
 
 ```js
@@ -364,7 +351,7 @@ If we now compile the source code using `--closure` flag (so that the command is
 
 <table>
 <tr><th>
-The Source Code With Closure-Compatible JSDoc (<a href="example/restream/compat.js">view source</a>)
+The Source Code With <a name="closure-compatible-jsdoc">Closure-Compatible JSDoc</a> (<a href="example/restream/compat.js">view source</a>)
 </th></tr>
 <tr>
   <td>
@@ -461,7 +448,7 @@ Any types within the namespace must refer to each other using their full name.
 Before we continue to compilation, we still need to generate externs, because the _Closure_ compiler does not know about the _Rule_ type. Externs is the way of introducing types to the compiler, so that it can do type checking and property renaming more accurately. Once again, we place the `/* typal example/restream/types2.xml */` marker in the empty `externs.js` file, and let _Typal_ to the job with `typal example/restream/externs.js --externs` command (or `-e`).
 
 <table>
-<tr><th>Generated Restream Externs</th></tr>
+<tr><th><a name="generated-externs">Generated Externs</a> For Restream (<a href="example/restream/externs.js">view source</a>)</th></tr>
 <tr><td>
 
 ```js
@@ -481,6 +468,59 @@ _restream.Rules
 <tr><td>
 The externs are generated with the Closure-compatible syntax and ready to be used for compilation of our example program.
 </td></tr>
+</table>
+
+To continue, we run `depack example/restream/program -c -a -p --externs restream/externs.js` again, and this time, _Depack_ will pass the externs argument to the compiler as we request.
+
+<table>
+<tr><th colspan="2">Result Of Compilation</th></tr>
+<tr><td>
+
+```js
+#!/usr/bin/env node
+'use strict';
+const stream = require('stream');             
+const {Transform:c} = stream;
+class d extends c {
+  constructor(a, b) {
+    super(b);
+    this.a = a;
+  }
+  _transform(a, b, f) {
+    this.push(`${a}`.replace(this.a.regex, this.a.replacement));
+    f();
+  }
+}
+;const e = new d({regex:/__(.+?)__/, replacement(a, b) {
+  return `<em>${b}</em>`;
+}});
+e.pipe(process.stdout);
+e.end("__hello world__");
+```
+</td></tr>
+<tr><td>
+
+```js
+Reverting JS hook to add new one.
+Reverting JSX hook to add new one, pragma:
+const { h } = require("preact");
+-jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --externs example/restream/externs.js --package_json_entry_names module,main --externs ../../depack/src/node_modules/@depack/externs/v8/stream.js --externs ../../depack/src/node_modules/@depack/externs/v8/events.js --externs ../../depack/src/node_modules/@depack/externs/v8/global.js --externs ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
+Modules: example/restream/index2.js
+Built-ins: stream
+example/restream/index2.js:8: WARNING - Bad type annotation. type not recognized due to syntax error. See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler for more information.
+   * @param {(...args:string) => string} rule.replacement The function used to update input.
+              ^
+
+node_modules/stream/index.js:9: WARNING - Property super_ never defined on stream
+  super_,
+  ^^^^^^
+
+0 error(s), 2 warning(s), 95.7% typed
+
+```
+</td></tr>
+<tr><td>stdout</td></tr>
+<tr><td>stderr</td></tr>
 </table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>

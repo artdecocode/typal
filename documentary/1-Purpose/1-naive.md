@@ -1,6 +1,5 @@
-### Example
-
-This example will illustrate why _Typal_ is extremely useful as the tool both for plain JSDoc management and JSDoc for _Google Closure Compiler_ workflow.
+<!-- ### Example -->
+The example given below will illustrate why _Typal_ is extremely useful as the tool both for plain JSDoc management and JSDoc for _Google Closure Compiler_ workflow.
 
 _**[Naïve approach](t)**: Let's implement a transform stream that updates data using regular expressions specified in the constructor:_
 

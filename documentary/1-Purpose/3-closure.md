@@ -1,4 +1,4 @@
-_**[Closure approach](t)**: Finally, if we want to allow our package to be compiled as part of other packages with GCC, we need to make sure the JSDoc is in the format that it accepts._
+_**[Closure approach](###)**: Finally, if we want to allow our package to be compiled as part of other packages with GCC (or compile a binary from the lib we've written), we need to make sure the JSDoc is in the format that it accepts._
 
 <table>
 <tr>
@@ -20,7 +20,7 @@ _**[Closure approach](t)**: Finally, if we want to allow our package to be compi
 Let's try to compile a program using _GCC_ now (using [_Depack_](https://github.com/dpck/depack)) and see what happens:
 
 <table>
-<tr><th colspan="2">Shell Command To Spawn Closure</th></tr>
+<tr><th colspan="2">[Shell Command To Spawn Closure](t)</th></tr>
 <tr><td colspan="2">
 
 ```js
@@ -52,7 +52,7 @@ The command above was generated with _Depack_ call on the right, where:
 <em>
 
 ```sh
-depack restream/index2 -c -a -p
+depack example/restream/program -c -a -p
 ```
 </em>
   </td>
@@ -64,7 +64,7 @@ depack restream/index2 -c -a -p
 After finishing its job, the compiler will give us warnings shown below, which tell us that the program was not typed checked correctly. Sometimes we can ignore warnings, but we loose the ability to ensure correct typing. It is also possible that the compiler will perform the advanced optimisations incorrectly by mangling property names (e.g., `regex` becomes `a`), but it is not the case here because all files are used together, but if we were publishing the library, the first parameter `rule` would not adhere to the _Rule_ interface.
 
 <table>
-<tr><th>Google Closure Compiler Warnings</th></tr>
+<tr><th>[Google Closure Compiler Warnings](t)</th></tr>
 <!-- <tr/> -->
 <tr><td>
 
@@ -128,7 +128,7 @@ If we now compile the source code using `--closure` flag (so that the command is
 
 <table>
 <tr><th>
-The Source Code With Closure-Compatible JSDoc (<a href="example/restream/compat.js">view source</a>)
+The Source Code With [Closure-Compatible JSDoc](t) (<a href="example/restream/compat.js">view source</a>)
 </th></tr>
 <tr>
   <td>
@@ -203,7 +203,7 @@ Any types within the namespace must refer to each other using their full name.
 Before we continue to compilation, we still need to generate externs, because the _Closure_ compiler does not know about the _Rule_ type. Externs is the way of introducing types to the compiler, so that it can do type checking and property renaming more accurately. Once again, we place the `/* typal example/restream/types2.xml */` marker in the empty `externs.js` file, and let _Typal_ to the job with `typal example/restream/externs.js --externs` command (or `-e`).
 
 <table>
-<tr><th>Generated Restream Externs</th></tr>
+<tr><th>[Generated Externs](t) For Restream (<a href="example/restream/externs.js">view source</a>)</th></tr>
 <tr><td>
 
 %EXAMPLE: example/restream/externs%
@@ -211,6 +211,22 @@ Before we continue to compilation, we still need to generate externs, because th
 <tr><td>
 The externs are generated with the Closure-compatible syntax and ready to be used for compilation of our example program.
 </td></tr>
+</table>
+
+To continue, we run `depack example/restream/program -c -a -p --externs restream/externs.js` again, and this time, _Depack_ will pass the externs argument to the compiler as we request.
+
+<table>
+<tr><th colspan="2">Result Of Compilation</th></tr>
+<tr><td>
+
+%FORK-js node_modules/depack//src/bin/index.js example/restream/program -c -a -p --externs example/restream/externs.js%
+</td></tr>
+<tr><td>
+
+%FORKERR-js node_modules/depack//src/bin/index.js example/restream/program -c -a -p --externs example/restream/externs.js%
+</td></tr>
+<tr><td>stdout</td></tr>
+<tr><td>stderr</td></tr>
 </table>
 
 <!-- %~ width="20"% -->
