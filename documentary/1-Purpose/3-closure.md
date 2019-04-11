@@ -141,8 +141,8 @@ The Source Code With [Closure-Compatible JSDoc](t) (<a href="example/restream/co
 
   There have to be some manual modifications to the source:
 
-  - We rename the `@params` to use the namespace: `@param {_restream.Rule} rule`;
-  - We also add the namespace to the internal module `@param {stream.TransformOptions}`, because in _Closure_ the externs are provided for the `stream` namespace.
+  - We rename the `@params` to use the namespace and make it non-nullable since it's a thing in _Closure_, i.e., if we don't do it the type of the param will actually be `(restream.Rule|null)`: `@param {_!restream.Rule} rule`;
+  - We also add the namespace to the internal module `@param {!stream.TransformOptions}`, because in _Closure_ the externs are provided for the `stream` namespace.
   <hr/>
 
   The following changes are introduced automatically by _Typal_ after we started using the `--closure` mode:
