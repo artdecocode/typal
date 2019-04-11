@@ -354,7 +354,7 @@ If we now compile the source code using `--closure` flag (so that the command is
 
 <table>
 <tr><th>
-The Source Code With Closure-Compatible JSDoc
+The Source Code With Closure-Compatible JSDoc (<a href="example/restream/compat.js">view source</a>)
 </th></tr>
 <tr>
   <td>
