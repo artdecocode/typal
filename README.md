@@ -382,87 +382,67 @@ export class Restream extends Transform {
   }
 }
 ```
-<hr/>
+  </td>
+</tr>
+<tr>
+  <td>
+
+  There have to be some manual modifications to the source:
+
+  - We rename the `@params` to use the namespace: `@param {_restream.Rule} rule`;
+  - We also add the namespace to the internal module `@param {stream.TransformOptions}`, because in _Closure_ the externs are provided for the `stream` namespace.
+  <hr/>
+
+  The following changes are introduced automatically by _Typal_ after we started using the `--closure` mode:
+  </td>
+</tr>
+<tr><td>
 
 ```js
 /* typal example/restream/types2.xml */
 /**
- * @suppress {nonStandardJsDocs}
- * @typedef {_restream.Rule} Rule The replacement rule.
- */
+  * @suppress {nonStandardJsDocs}
+  * @typedef {_restream.Rule} Rule The replacement rule.
+  */
 /**
- * @suppress {nonStandardJsDocs}
- * @typedef {Object} _restream.Rule The replacement rule.
- * @prop {!RegExp} regex The regular expression.
- * @prop {function(...string): string} replacement The function used to update input.
- */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {_restream.Rules} Rules Multiple replacement rules.
- */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
- */
+  * @suppress {nonStandardJsDocs}
+  * @typedef {Object} _restream.Rule The replacement rule.
+  * @prop {!RegExp} regex The regular expression.
+  * @prop {function(...string): string} replacement The function used to update input.
+  */
+```
+</td></tr>
+<tr><td>
+
+The _Rule_ type is now defined using 2 `@typedefs`, which are also suppressed to prevent warnings. The reason for the first item is so that the type can be imported in other files from our package, using `{import('restream').Rule}`. This is so because `{import('restream')._restream.Rule}` does not work in _VSCode_. The second type stays as is, and is printed with the namespace. It is still not picked up by _GCC_, but the warning is suppressed. Instead, when we come to generate externs in a minute, their name will match `_restream.Rule`, and the param for the function will be recognised by the compiler.
+</td></tr>
+<tr><td>
+
+```js
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('stream').TransformOptions} stream.TransformOptions
  */
 ```
-  </td>
-</tr>
-<tr>
-<td>
+</td></tr>
+<tr><td>
 
-There have to be some manual modifications to the source:
+The imports are now also suppressed (but the change will come into effect in the next version of the compiler), and printed with the namespace, so that we can refer to them in params and get both the autosuggestions, and _Closure_ compatibility.
+</td></tr>
+<tr><td>
 
-- We rename the `@params` to use the namespace: `@param {_restream.Rule} rule`;
-- We also add the namespace to the internal module `@param {stream.TransformOptions}`,<br/> because in _Closure_ the externs are provided for the `stream` namespace.
-</td>
-</tr>
+```js
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
+ */
+```
+</td></tr>
+<tr><td>
+
+Any types within the namespace must refer to each other using their full name.
+</td></tr>
 </table>
-
-The following changes are introduced automatically by _Typal_ after we started using the `--closure` mode:
-
-1. The _Rule_ type is now defined using 2 `@typedefs`, which are also suppressed to prevent warnings. The reason for the first item is so that the type can be imported in other files from our package, using `{import('restream').Rule}`. This is so because `{import('restream')._restream.Rule}` does not work in _VSCode_. The second type stays as is, and is printed with the namespace. It is still not picked up by _GCC_, but the warning is suppressed. Instead, when we come to generate externs in a minute, their name will match `_restream.Rule`, and the param for the function will be recognised by the compiler:
-    <table><tr/><tr><td>
-
-    ```js
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {_restream.Rule} Rule The replacement rule.
-     */
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {Object} _restream.Rule The replacement rule.
-     * @prop {!RegExp} regex The regular expression.
-     * @prop {function(...string): string} replacement The function used to update input.
-     */
-    ```
-    </td></tr></table>
-1. The imports are now also suppressed (but the change will come into effect in the next version of the compiler), and printed with the namespace, so that we can refer to them in params and get both the autosuggestions, and _Closure_ compatibility:
-    <table>
-    <tr/>
-    <tr><td>
-
-    ```js
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {import('stream').TransformOptions} stream.TransformOptions
-     */
-    ```
-    </td></tr>
-    </table>
-1. Any types within the namespace must refer to each other using their full name:
-    <table><tr/><tr><td>
-
-    ```js
-    /**
-    * @suppress {nonStandardJsDocs}
-    * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
-    */
-    ```
-    </td></tr></table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
