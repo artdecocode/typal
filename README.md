@@ -187,7 +187,7 @@ export class Restream extends Transform {
 
 From that point onward, the JSDoc documentation is managed from the separate file. It can also be embedded into the Markdown, using the _Documentary_ documentation pre-processor by adding the `%TYPEDEF: example/restream/types.xml%` marker in the README file:
 
-[`import('stream').TransformOptions`](https://nodejs.org/api/stream.html#stream_class_stream_transform) __<a name="type-transformoptions">`TransformOptions`</a>__
+[`import('stream').TransformOptions`](https://nodejs.org/api/stream.html#stream_class_stream_transform) __<a name="type-streamtransformoptions">`stream.TransformOptions`</a>__
 
 __<a name="type-rule">`Rule`</a>__: The replacement rule.
 
@@ -216,11 +216,25 @@ _**<a name="closure-approach">Closure approach</a>**: Finally, if we want to all
 <tr>
   <td>
 
-%EXAMPLE: example/restream/warnings, ./index2 => restream%
+```js
+import { Restream } from 'restream'
+
+const restream = new Restream({
+  regex: /__(.+?)__/,
+  replacement(match, s) {
+    return `<em>${s}</em>`
+  },
+})
+
+restream.pipe(process.stdout)
+restream.end('__hello world__')
+```
   </td>
   <td>
 
-%FORK-html example/restream/warnings%
+```html
+<em>hello world</em>
+```
   </td>
 </tr>
 </table>
@@ -241,8 +255,8 @@ java -jar google-closure-compiler-java/compiler.jar --compilation_level ADVANCED
 const stream = require('stream');%output%" \
 --js node_modules/stream/package.json \
      node_modules/stream/index.js \
-     example/restream/warnings.js \
-     example/restream/index2.js
+     example/restream/program.js \
+     example/restream/compat.js
 ```
 </td></tr>
 <tr>
@@ -498,29 +512,7 @@ e.pipe(process.stdout);
 e.end("__hello world__");
 ```
 </td></tr>
-<tr><td>
-
-```js
-Reverting JS hook to add new one.
-Reverting JSX hook to add new one, pragma:
-const { h } = require("preact");
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --externs example/restream/externs.js --package_json_entry_names module,main --externs ../../depack/src/node_modules/@depack/externs/v8/stream.js --externs ../../depack/src/node_modules/@depack/externs/v8/events.js --externs ../../depack/src/node_modules/@depack/externs/v8/global.js --externs ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
-Modules: example/restream/index2.js
-Built-ins: stream
-example/restream/index2.js:8: WARNING - Bad type annotation. type not recognized due to syntax error. See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler for more information.
-   * @param {(...args:string) => string} rule.replacement The function used to update input.
-              ^
-
-node_modules/stream/index.js:9: WARNING - Property super_ never defined on stream
-  super_,
-  ^^^^^^
-
-0 error(s), 2 warning(s), 95.7% typed
-
-```
-</td></tr>
 <tr><td>stdout</td></tr>
-<tr><td>stderr</td></tr>
 </table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>

@@ -8,11 +8,11 @@ _**[Closure approach](###)**: Finally, if we want to allow our package to be com
 <tr>
   <td>
 
-%EXAMPLE: example/restream/warnings, ./index2 => restream%
+%EXAMPLE: example/restream/program, ./compat => restream%
   </td>
   <td>
 
-%FORK-html example/restream/warnings%
+%FORK-html example/restream/program%
   </td>
 </tr>
 </table>
@@ -33,8 +33,8 @@ java -jar google-closure-compiler-java/compiler.jar --compilation_level ADVANCED
 const stream = require('stream');%output%" \
 --js node_modules/stream/package.json \
      node_modules/stream/index.js \
-     example/restream/warnings.js \
-     example/restream/index2.js
+     example/restream/program.js \
+     example/restream/compat.js
 ```
 </td></tr>
 <tr>
@@ -219,14 +219,14 @@ To continue, we run `depack example/restream/program -c -a -p --externs restream
 <tr><th colspan="2">Result Of Compilation</th></tr>
 <tr><td>
 
-%FORK-js node_modules/depack//src/bin/index.js example/restream/program -c -a -p --externs example/restream/externs.js%
+%FORK-js node_modules/depack/src/bin example/restream/program -c -a -p --externs example/restream/externs.js%
 </td></tr>
-<tr><td>
+<!-- <tr><td>
 
-%FORKERR-js node_modules/depack//src/bin/index.js example/restream/program -c -a -p --externs example/restream/externs.js%
-</td></tr>
+%FORKERR-js node_modules/depack/src/bin example/restream/program -c -a -p --externs example/restream/externs.js%
+</td></tr> -->
 <tr><td>stdout</td></tr>
-<tr><td>stderr</td></tr>
+<!-- <tr><td>stderr</td></tr> -->
 </table>
 
 <!-- %~ width="20"% -->
