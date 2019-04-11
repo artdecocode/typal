@@ -1,17 +1,13 @@
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
-import { parseFile } from '../../src/lib'
+import parseFile from '../../src/lib/parse'
 import Type from '../../src/lib/Type'
 
 export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
   context: TempContext,
   getResults(input) {
-    const { typeTags, namespace, imports } = parseFile(input)
-    const types = typeTags.map(({ content, props }) => {
-      const tt = new Type()
-      tt.fromXML(content, props, namespace)
-      return tt
-    })
+    const { types, imports } = parseFile(input)
+
     // copy Documentary logic
     const Imports = imports.map(({ name, from }) => {
       const tt = new Type()

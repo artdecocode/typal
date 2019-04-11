@@ -1,3 +1,4 @@
 export { default as Type } from './lib/Type'
 export { default as Property } from './lib/Property'
-export { getNameWithDefault, parseFile } from './lib'
+export { getNameWithDefault } from './lib'
+export { default as parseFile } from './lib/parse'

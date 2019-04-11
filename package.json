@@ -56,7 +56,7 @@
     "@wrote/read": "^1.0.4",
     "@wrote/read-dir-structure": "^1.2.0",
     "@wrote/write": "^1.0.4",
-    "alamode": "^1.9.2",
+    "alamode": "^1.9.3",
     "argufy": "^1.3.3",
     "catchment": "^3.3.0",
     "documentary": "^1.23.4",
@@ -66,7 +66,7 @@
     "restream": "^3.6.0",
     "temp-context": "^2.1.3",
     "yarn-s": "1.1.0",
-    "zoroaster": "^3.11.4"
+    "zoroaster": "^3.11.5"
   },
   "dependencies": {
     "mismatch": "^1.1.1",

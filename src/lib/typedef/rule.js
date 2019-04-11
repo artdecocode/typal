@@ -1,6 +1,6 @@
 import read from '@wrote/read'
-import Type from '../Type'
-import { makeBlock, importToTypedef, parseFile } from '../'
+import { makeBlock, importToTypedef } from '../'
+import parseFile from '../parse'
 import { closureJoinTypes, externsJoinTypes } from '../closure'
 
 /**
@@ -17,12 +17,7 @@ async function replacement(match, docOrTypal, location) {
   try {
     this.LOG('Detected type marker: %s', location)
     const xml = await read(location)
-    const { namespace, typeTags, imports } = parseFile(xml)
-    const types = typeTags.map(({ content, props }) => {
-      const tt = new Type()
-      tt.fromXML(content, props, namespace)
-      return tt
-    })
+    const { namespace, types, imports } = parseFile(xml)
 
     this.emit('types', types) // remember types for js-replace-stream
 

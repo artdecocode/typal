@@ -1,11 +1,9 @@
-import extractTags from 'rexml'
-
 /**
  * Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
- * @param {?string} name Name of the property.
- * @param {?(string|boolean|number)} defaultValue Default of the property.
- * @param {string} type Type of the property.
- * @param {?string} parentParam Name of the parent parameter.
+ * @param {string} name Name of the property.
+ * @param {?(string|boolean|number)} [defaultValue] Default of the property.
+ * @param {string} [type] Type of the property.
+ * @param {string} [parentParam] Name of the parent parameter.
  * @example
  *
  * requiredParam
@@ -70,28 +68,4 @@ export const addSuppress = (line) => {
   const m = ` * @suppress {nonStandardJsDocs}
 ${line}`
   return m
-}
-
-/**
- * Parse the types.xml file.
- * @param {string} xml
- */
-export const parseFile = (xml) => {
-  const root = extractTags('types', xml)
-  if (!root.length)
-    throw new Error('XML file should contain root types element.')
-
-  const [{ content: Root, props: {
-    'namespace': ns1,
-    'ns': namespace = ns1,
-  } }] = root
-
-  const typeTags = extractTags('type', Root)
-  const imports = extractTags('import', Root)
-    .map(({ props: {
-      'name': name, 'from': from,
-      'desc': desc, 'link': link,
-    } }) => ({ name, from, desc, link }))
-
-  return { namespace, typeTags, imports }
 }

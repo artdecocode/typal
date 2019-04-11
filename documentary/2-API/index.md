@@ -38,7 +38,8 @@ Return a name of a property with its default value, and surrounded by square bra
 
 ```### parseFile
 [
-  ["xml", "string"]
+  ["xml", "string"],
+  ["rootNamespace", "string="]
 ]
 ```
 
@@ -55,3 +56,18 @@ _It can be parsed using the following call:_
 _The result will contain Types and Imports:_
 
 %FORK-js example/parse-file%
+
+### Root Namespace
+
+Passing the `rootNamespace` allows to ignore the given namespace in types and properties. This can be used for compiling documentation when only single namespace is used, and readers can assume where the types come from. However, this should only be used when printing to docs, but when compiling JSDoc, the full namespaces should be used to allow integration with externs.
+
+_Given the following types file which uses namespaces:_
+
+%EXAMPLE: example/root.xml%
+
+_It can be parsed so that the `ns.` prefix is ignored:_
+
+%EXAMPLE: example/parse-file-root, ../src => typal%
+%FORK-js example/parse-file-root%
+
+%~ width="25"%

@@ -1,0 +1,12 @@
+<types namespace="ns">
+  <type name="HelloWorld" desc="The example type.">
+  </type>
+  <type type="ns.HelloWorld" name="GoodMorning"
+    desc="Life is seeing sunlight every day." />
+  </type>
+  <type name="Conf" desc="The configuration object">
+    <prop type="ns.HelloWorld" name="propName">
+      The property description.
+    </prop>
+  </type>
+</types>

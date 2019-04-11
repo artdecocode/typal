@@ -16,7 +16,8 @@ yarn add -DE typal
 - [CLI](#cli)
 - [API](#api)
   * [`getNameWithDefault(name: string, ?defaultValue: (string|boolean|number), type: string=, parentParam: string=)`](#getnamewithdefaultname-stringdefaultvalue-stringbooleannumbertype-stringparentparam-string-void)
-  * [`parseFile(xml: string)`](#parsefilexml-string-void)
+  * [`parseFile(xml: string, rootNamespace: string=)`](#parsefilexml-stringrootnamespace-string-void)
+  * [Root Namespace](#root-namespace)
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
@@ -55,7 +56,7 @@ Return a name of a property with its default value, and surrounded by square bra
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="25"></a></p>
 
-### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>`): void`
+### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): void`
 
 Returns the string parsed into _Types_ and _Properties_.
 
@@ -98,30 +99,146 @@ _The result will contain Types and Imports:_
 
 ```js
 { namespace: undefined,
-  typeTags: 
-   [ { props: 
-        { name: 'SetHeaders',
-          type: 'function(http.ServerResponse)',
-          desc: 'Function to set custom headers on response.' },
-       content: '' },
-     { props: { name: 'StaticConfig', desc: 'Options to setup `koa-static`.' },
-       content: '
-    <prop string name="root">
-      Root directory string.
-    </prop>
-    <prop number name="maxage" default="0">
-      Browser cache max-age in milliseconds.
-    </prop>
-    <prop boolean name="hidden" default="false">
-      Allow transfer of hidden files.
-    </prop>
-  ' } ],
+  types: 
+   [ Type {
+       name: 'SetHeaders',
+       type: 'function(http.ServerResponse)',
+       closureType: 'function(http.ServerResponse)',
+       description: 'Function to set custom headers on response.',
+       noToc: false,
+       spread: false,
+       import: false,
+       noExpand: false,
+       link: null,
+       properties: [],
+       namespace: null },
+     Type {
+       name: 'StaticConfig',
+       type: null,
+       closureType: null,
+       description: 'Options to setup `koa-static`.',
+       noToc: false,
+       spread: false,
+       import: false,
+       noExpand: false,
+       link: null,
+       properties: 
+        [ Property {
+            name: 'root',
+            description: 'Root directory string.',
+            type: 'string',
+            closureType: 'string',
+            hasDefault: false,
+            default: null,
+            optional: false },
+          Property {
+            name: 'maxage',
+            description: 'Browser cache max-age in milliseconds.',
+            type: 'number',
+            closureType: 'number',
+            hasDefault: true,
+            default: 0,
+            optional: true },
+          Property {
+            name: 'hidden',
+            description: 'Allow transfer of hidden files.',
+            type: 'boolean',
+            closureType: 'boolean',
+            hasDefault: true,
+            default: false,
+            optional: true } ],
+       namespace: null } ],
   imports: 
    [ { name: 'ServerResponse',
        from: 'http',
        desc: undefined,
        link: undefined } ] }
 ```
+
+### Root Namespace
+
+Passing the `rootNamespace` allows to ignore the given namespace in types and properties. This can be used for compiling documentation when only single namespace is used, and readers can assume where the types come from. However, this should only be used when printing to docs, but when compiling JSDoc, the full namespaces should be used to allow integration with externs.
+
+_Given the following types file which uses namespaces:_
+
+```xml
+<types namespace="ns">
+  <type name="HelloWorld" desc="The example type.">
+  </type>
+  <type type="ns.HelloWorld" name="GoodMorning"
+    desc="Life is seeing sunlight every day." />
+  </type>
+  <type name="Conf" desc="The configuration object">
+    <prop type="ns.HelloWorld" name="propName">
+      The property description.
+    </prop>
+  </type>
+</types>
+```
+
+_It can be parsed so that the `ns.` prefix is ignored:_
+
+```js
+import read from '@wrote/read'
+import { parseFile } from 'typal'
+
+const getFile = async () => {
+  const file = await read('example/root.xml')
+  const res = parseFile(file, 'ns')
+  return res
+}
+```
+```js
+{ namespace: 'ns',
+  types: 
+   [ Type {
+       name: 'HelloWorld',
+       type: null,
+       closureType: null,
+       description: 'The example type.',
+       noToc: false,
+       spread: false,
+       import: false,
+       noExpand: false,
+       link: null,
+       properties: [],
+       namespace: null },
+     Type {
+       name: 'GoodMorning',
+       type: 'HelloWorld',
+       closureType: 'ns.HelloWorld',
+       description: 'Life is seeing sunlight every day.',
+       noToc: false,
+       spread: false,
+       import: false,
+       noExpand: false,
+       link: null,
+       properties: [],
+       namespace: null },
+     Type {
+       name: 'Conf',
+       type: null,
+       closureType: null,
+       description: 'The configuration object',
+       noToc: false,
+       spread: false,
+       import: false,
+       noExpand: false,
+       link: null,
+       properties: 
+        [ Property {
+            name: 'propName',
+            description: 'The property description.',
+            type: 'HelloWorld',
+            closureType: 'ns.HelloWorld',
+            hasDefault: false,
+            default: null,
+            optional: false } ],
+       namespace: null } ],
+  imports: [] }
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
 
 Optional And Default
 ---
