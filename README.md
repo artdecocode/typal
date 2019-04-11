@@ -17,6 +17,7 @@ yarn add -DE typal
   * [Example](#example)
     * [Naïve approach](#naïve-approach)
     * [JSDoc approach](#jsdoc-approach)
+    * [Closure approach](#closure-approach)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -103,17 +104,19 @@ However, there are 2 problems with that:
       <img src="doc/restream2.png" title="VSCode does not show properties of a type">
     </p>
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true" width="20"></a></p>
+
 _**<a name="jsdoc-approach">JSDoc approach</a>**: Now let's refactor the code that we have, and place the types definitions in the `types.xml` file instead of the source code:_
 
 ```xml
 <types>
   <import from="stream" name="TransformOptions"
     link="https://nodejs.org/api/stream.html#stream_class_stream_transform" />
-  <type name="Rule" desc="The replacement rule.">
+  <type name="Rule" desc="The replacement rule." noToc>
     <prop type="RegExp" name="regex">
       The regular expression.
     </prop>
-    <prop type="(...args:string) => string" name="regex">
+    <prop type="(...args:string) => string" name="replacement">
       The function used to update input.
     </prop>
   </type>
@@ -150,6 +153,8 @@ export class Restream extends Transform {
   /**
    * Sets up a transform stream that updates data using the regular expression.
    * @param {Rule} rule The replacement rule.
+   * @param {RegExp} rule.regex The regular expression.
+   * @param {(...args:string) => string} rule.replacement The function used to update input.
    * @param {TransformOptions} [options] Additional options for _Transform_.
    */
   constructor(rule, options) {
@@ -159,10 +164,59 @@ export class Restream extends Transform {
   // ...
 }
 
-/* typal example/restream/types */
+/* typal example/restream/types.xml */
+/**
+ * @typedef {import('stream').TransformOptions} stream.TransformOptions
+ */
+/**
+ * @typedef {Object} Rule The replacement rule.
+ * @prop {RegExp} regex The regular expression.
+ * @prop {(...args:string) => string} replacement The function used to update input.
+ */
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
+From that point onward, the JSDoc documentation is managed from the separate file. It can also be embedded into the Markdown, using the _Documentary_ documentation pre-processor by adding the `%TYPEDEF: example/restream/types.xml%` marker in the README file:
+
+[`import('stream').TransformOptions`](https://nodejs.org/api/stream.html#stream_class_stream_transform) __<a name="type-transformoptions">`TransformOptions`</a>__
+
+__<a name="type-rule">`Rule`</a>__: The replacement rule.
+
+|       Name       |              Type               |            Description             |
+| ---------------- | ------------------------------- | ---------------------------------- |
+| __regex*__       | _RegExp_                        | The regular expression.            |
+| __replacement*__ | _(...args:string) =&gt; string_ | The function used to update input. |
+
+The link to the _Rule_ type was also added to the Table of Contents, however it can be skipped if the `type` element had the `noToc` property set on it. We also added the `link` property to the `import` element to place a link to Node.JS API docs in documentation.
+
+Another advantage, is that the `Rule` type was expanded into individual properties in JSDoc above the constructor method. It allows to preview all properties and their descriptions when hovering over functions:
+
+<p align="center">
+  <img src="doc/restream3.png" title="JSDoc expansion of properties above functions.">
+</p>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="20"></a></p>
+
+_**<a name="closure-approach">Closure approach</a>**: Finally, if we want to allow our package to be compiled as part of other packages with GCC, we need to make sure the JSDoc is in the format that it accepts. First, we want to adjust our types:_
+
+```xml
+<types namespace="_restream">
+  <import from="stream" name="TransformOptions"
+    link="https://nodejs.org/api/stream.html#stream_class_stream_transform" />
+  <type name="Rule" desc="The replacement rule.">
+    <prop type="!RegExp" name="regex">
+      The regular expression.
+    </prop>
+    <prop type="function(...string): string" name="replacement">
+      The function used to update input.
+    </prop>
+  </type>
+  <type type="!Array<!_restream.Rule>" name="Rules"
+    desc="Multiple replacement rules.">
+  </type>
+</types>
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="20"></a></p>
 
 ## API
 
@@ -174,19 +228,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): void`
 
@@ -205,7 +259,7 @@ Return a name of a property with its default value, and surrounded by square bra
  * @param {*} [parentParam.optionalParam]
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -389,7 +443,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
