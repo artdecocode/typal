@@ -513,17 +513,23 @@ e.pipe(process.stdout);
 e.end("__hello world__");
 ```
 </td></tr>
-<tr><td>_stdout_</td></tr>
+<tr><td><em>stdout</em></td></tr>
 <tr><td>
 
 ```js
--jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --externs example/restream/externs.js --package_json_entry_names module,main --externs ../../depack/src/node_modules/@depack/externs/v8/stream.js --externs ../../depack/src/node_modules/@depack/externs/v8/events.js --externs ../../depack/src/node_modules/@depack/externs/v8/global.js --externs ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
+-jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar \
+--compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
+--externs example/restream/externs.js --package_json_entry_names module,main \
+--externs ../../depack/src/node_modules/@depack/externs/v8/stream.js \
+--externs ../../depack/src/node_modules/@depack/externs/v8/events.js \
+--externs ../../depack/src/node_modules/@depack/externs/v8/global.js \
+--externs ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
 Running Google Closure Compiler target...         
 ```
 </td></tr>
-<tr><td>_stderr_</td></tr>
+<tr><td><em>stderr</em></td></tr>
 </table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>

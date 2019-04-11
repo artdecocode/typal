@@ -14,6 +14,7 @@
     "lint": "eslint .",
     "dev": "alanode src/bin/typal",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
+    "doc-dev": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar NODE_DEBUG=doc doc-dev documentary/ -o README.md",
     "b": "alamode src -o build -s",
     "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack-dev src/bin/typal.js -c -o build/bin -a -p -s",
     "depack1": "depack-dev depack/t.js -c -o t/tt.js -a -p",

@@ -221,12 +221,12 @@ To continue, we run `depack example/restream/program -c -a -p --externs restream
 
 %FORK-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --externs example/restream/externs.js%
 </td></tr>
-<tr><td>_stdout_</td></tr>
+<tr><td><em>stdout</em></td></tr>
 <tr><td>
 
 %FORKERR-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --externs example/restream/externs.js%
 </td></tr>
-<tr><td>_stderr_</td></tr>
+<tr><td><em>stderr</em></td></tr>
 <!-- <tr><td>stderr</td></tr> -->
 </table>
 
