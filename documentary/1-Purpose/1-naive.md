@@ -4,11 +4,22 @@ This example will illustrate why _Typal_ is extremely useful as the tool both fo
 
 _**[Naïve approach](t)**: Let's implement a transform stream that updates data using regular expressions specified in the constructor:_
 
+<table>
+<tr/>
+<tr><td>
+
 %EXAMPLE: example/restream%
+<hr>
+
+%EXAMPLE: example/restream/index-types%
+</td></tr>
+</table>
 
 In the file, we have defined a type using typedef, and imported a type from the internal Node.JS API. All is well, and we get our _JSDoc_ autosuggestions that help us understand that what we're doing is correct.
 
-![JSDoc autosuggestions for defined types](doc/restream1.gif)
+<p align="center">
+  <img src="doc/restream1.gif" width="500" title="JSDoc autosuggestions for defined types.">
+</p>
 
 However, there are 2 problems with that:
 

@@ -40,27 +40,32 @@ const stream = require('stream');%output%" \
 <tr>
   <td rowspan="2">
 
-  _Google Closure Compiler_ does not discover source code files the list of which must be passed manually. In addition, it does not work with internal Node.JS modules natively. The software that performs static analysis of programs to detect what files to feed to the compiler, as well as mocking Node.JS built-in modules in the `node_modules` folder and providing externs for them is called _Depack_.
-  </td>
-  <td>
-
-  The command above was generated with _Depack_ call shown below, where `-c` means Node.JS compilation (which adds the wrapper, mocks and externs), `-a` means ADVANCED mode, and `-p` means pretty-printing.
+The command above was generated with _Depack_ call on the right, where: <br/>
+- `-c` means Node.JS compilation<br/> (adds the wrapper, mocks and externs), <br/>
+- `-a` means ADVANCED mode, <br/>
+- and `-p` means pretty-printing.
   </td>
 </tr>
+<!-- <tr/> -->
 <tr>
   <td>
+<em>
 
 ```sh
 depack restream/index2 -c -a -p
 ```
+</em>
   </td>
 </tr>
 </table>
 
+> _Google Closure Compiler_ does not discover source code files the list of which must be passed manually. In addition, it does not work with internal Node.JS modules natively. The software that performs static analysis of programs to detect what files to feed to the compiler, as well as mocking Node.JS built-in modules in the `node_modules` folder and providing externs for them is called _Depack_.
+
 After finishing its job, the compiler will give us warnings shown below, which tell us that the program was not typed checked correctly. Sometimes we can ignore warnings, but we loose the ability to ensure correct typing. It is also possible that the compiler will perform the advanced optimisations incorrectly by mangling property names (e.g., `regex` becomes `a`), but it is not the case here because all files are used together, but if we were publishing the library, the first parameter `rule` would not adhere to the _Rule_ interface.
 
 <table>
-<tr/>
+<tr><th>Google Closure Compiler Warnings</th></tr>
+<!-- <tr/> -->
 <tr><td>
 
 ```js
@@ -103,7 +108,7 @@ The warnings produced by the compiler tell us the points discussed in the beginn
 
 This is because the traditional JSDoc annotation is not compatible with the compiler. To solve that, we need to compile JSDoc in _Closure_ mode with _Typal_. First, we want to adjust our types with the following things:
 
-1. Annotate the nullability of our types, since there's attention to _Null_ in GCC, not like traditional JS.
+1. Annotate the nullability of our types, since there's attention to *`null`* in _GCC_, not like traditional JS.
 1. We also add the `closure` property to the `prop` elements to make them use that type instead of the traditional one. Unfortunately, there's no way to use both in code for _VSCode_ and for _GCC_, however we can still use more readable `type` descriptions when generating README documentation.
 1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not because it's a namespace in externs, but an instance of _Restream_ in source code.
 1. Finally, add another type _Rules_ just to illustrate how to reference types across and withing namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
@@ -112,6 +117,68 @@ This is because the traditional JSDoc annotation is not compatible with the comp
 
 If we now compile the source code using `--closure` flag (so that the command is `typal example/restream/closure.js -c`), our source code will have JSDoc that is fully compatible with the _Google Closure Compiler_:
 
-%FORK-js src/bin/typal example/restream/index2.js -c -o -%
+<table>
+<tr><th>
+The Source Code With Closure-Compatible JSDoc
+</th></tr>
+<tr>
+  <td>
 
-%~ width="20"%
+%FORK-js src/bin/typal example/restream/index2.js -c -o -%
+  </td>
+</tr>
+<tr>
+<td>
+
+There have to be some manual modifications to the source:
+
+- We rename the `@params` to use the namespace: `@param {_restream.Rule} rule`;
+- We also add the namespace to the internal module `@param {stream.TransformOptions}`,<br/> because in _Closure_ the externs are provided for the `stream` namespace.
+</td>
+</tr>
+</table>
+
+The following changes are introduced automatically by _Typal_ after we started using the `--closure` mode:
+
+1. The _Rule_ type is now defined using 2 `@typedefs`, which are also suppressed to prevent warnings. The reason for the first item is so that the type can be imported in other files from our package, using `{import('restream').Rule}`. This is so because `{import('restream')._restream.Rule}` does not work in _VSCode_. The second type stays as is, and is printed with the namespace. It is still not picked up by _GCC_, but the warning is suppressed. Instead, when we come to generate externs in a minute, their name will match `_restream.Rule`, and the param for the function will be recognised by the compiler:
+    <table><tr/><tr><td>
+
+    ```js
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {_restream.Rule} Rule The replacement rule.
+     */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {Object} _restream.Rule The replacement rule.
+     * @prop {!RegExp} regex The regular expression.
+     * @prop {function(...string): string} replacement The function used to update input.
+     */
+    ```
+    </td></tr></table>
+1. The imports are now also suppressed (but the change will come into effect in the next version of the compiler), and printed with the namespace, so that we can refer to them in params and get both the autosuggestions, and _Closure_ compatibility:
+    <table>
+    <tr/>
+    <tr><td>
+
+    ```js
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {import('stream').TransformOptions} stream.TransformOptions
+     */
+    ```
+    </td></tr>
+    </table>
+1. Any types within the namespace must refer to each other using their full name:
+    <table><tr/><tr><td>
+
+    ```js
+    /**
+    * @suppress {nonStandardJsDocs}
+    * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
+    */
+    ```
+    </td></tr></table>
+
+<!-- %~ width="20"% -->
+%~%
