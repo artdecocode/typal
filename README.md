@@ -618,31 +618,40 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
 
 ### _Typal_ Arguments
 
+`typal source [--closure|externs] [-vh]`
+
 <table>
+<tr><th>Argument</th><th>Short</th><th>Description</th>
 <tr>
   <td>source</td>
+  <td></td>
   <td>The path to the source file or directory with files to embed types into.</td>
 </tr>
 <tr>
-  <td>--output, -o</td>
+  <td>--output</td>
+  <td>-o</td>
   <td>The destination where to save output.
     If not passed, the file will be overwritten.
     If <code>-</code> is passed, prints to stdout.</td>
 </tr>
 <tr>
-  <td>--closure, -c</td>
+  <td>--closure</td>
+  <td>-c</td>
   <td>Whether to generate types in <em>Closure</em> mode.</td>
 </tr>
 <tr>
-  <td>--externs, -e</td>
+  <td>--externs</td>
+  <td>-e</td>
   <td>Whether to generate externs for <em>GCC</em>.</td>
 </tr>
 <tr>
-  <td>--help, -h</td>
+  <td>--help</td>
+  <td>-h</td>
   <td>Print the help information and exit.</td>
 </tr>
 <tr>
-  <td>--version, -v</td>
+  <td>--version</td>
+  <td>-v</td>
   <td>Show the version's number and exit.</td>
 </tr>
 </table>

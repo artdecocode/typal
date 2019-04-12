@@ -10,6 +10,8 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
 
 ### _Typal_ Arguments
 
+`typal source [--closure|externs] [-vh]`
+
 <argufy>types/arguments.xml</argufy>
 
 %~%
