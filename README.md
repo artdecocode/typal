@@ -24,6 +24,8 @@ yarn add -DE typal
     * [Result Of Compilation](#result-of-compilation)
     * [Externs As Types](#externs-as-types)
     * [Annotating Types](#annotating-types)
+- [CLI](#cli)
+  * [_Typal_ Arguments](#_typal_-arguments)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -604,6 +606,49 @@ When writing code that imports types from libraries, we can use the `{import('li
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
+## CLI
+
+_Typal_ is the command-line utility that is used to manage _JSDoc_ types in JavaScript source files. The typedefs are now sourced from the `types.xml` file and embedded on demand. There are 3 modes to embedding types:
+
+1. *Standard*, no flags required: places only _VSCode_ compatible code. Can be used when no Closure-compilation will be performed on packages. Does not utilise namespaces.
+1. *Closure* with `-c` flag: suppresses standard typedefs' annotations so that Closure Compiler does not show warnings. Introduces namespaces for internal as well as external APIs to make types' sources more visible.
+1. *Externs* with `-e` flag: generates types only understood by the _Google Closure Compiler_, primarily in the `externs.js` file. These types do not have any meaning for the coding process and are only used in compilation either as types for programs, or externs for libraries.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="20"></a></p>
+
+### _Typal_ Arguments
+
+<table>
+<tr>
+  <td>source</td>
+  <td>The path to the source file or directory with files to embed types into.</td>
+</tr>
+<tr>
+  <td>--output, -o</td>
+  <td>The destination where to save output.
+    If not passed, the file will be overwritten.
+    If <code>-</code> is passed, prints to stdout.</td>
+</tr>
+<tr>
+  <td>--closure, -c</td>
+  <td>Whether to generate types in <em>Closure</em> mode.</td>
+</tr>
+<tr>
+  <td>--externs, -e</td>
+  <td>Whether to generate externs for <em>GCC</em>.</td>
+</tr>
+<tr>
+  <td>--help, -h</td>
+  <td>Print the help information and exit.</td>
+</tr>
+<tr>
+  <td>--version, -v</td>
+  <td>Show the version's number and exit.</td>
+</tr>
+</table>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+
 ## API
 
 The package is available by importing its named functions and classes:
@@ -614,19 +659,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): void`
 
@@ -645,7 +690,7 @@ Return a name of a property with its default value, and surrounded by square bra
  * @param {*} [parentParam.optionalParam]
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -830,7 +875,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
