@@ -22,6 +22,7 @@ yarn add -DE typal
     * [Closure-Compatible JSDoc](#closure-compatible-jsdoc)
     * [Generated Externs](#generated-externs)
     * [Result Of Compilation](#result-of-compilation)
+    * [Externs As Types](#externs-as-types)
     * [Annotating Types](#annotating-types)
 - [API](#api)
   * [class `Type`](#class-type)
@@ -518,19 +519,53 @@ e.end("__hello world__");
 <tr><td>
 
 ```js
--jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar \
+java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --externs example/restream/externs.js --package_json_entry_names module,main \
---externs ../../depack/src/node_modules/@depack/externs/v8/stream.js \
---externs ../../depack/src/node_modules/@depack/externs/v8/events.js \
---externs ../../depack/src/node_modules/@depack/externs/v8/global.js \
---externs ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
+--entry_point example/restream/program.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/stream.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/events.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/global.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
 Running Google Closure Compiler target...         
 ```
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
+</table>
+
+Although we've generated the externs and passed them to the compiler, we don't actually need them here when generating a single executable file. Notice how the compiler didn't rename the `regex` and `replacement` properties of the rule variable, but the variable itself is stored inside of the class as `a`. This is precisely the point of externs &mdash; to prevent the compiler from mangling properties that can come from outside code. Now, if we were compiling a library for use by other developers, and publishing it, we would want to prevent mangling optimisation, and then we would use externs. However, this optimisation only happens in the _ADVANCED_ mode, where all comments with JSDoc is stripped, making the library hard-to use by others. But when we create an program and not a library, we can avoid using the externs, and pass the types just as a source file using the `--js` flag. This will enable type-checking and produce the optimisation of variable name (in case of Node.JS programs this makes little sense though because the difference in size is not that significant, but for the web it might be helpful).
+
+<table>
+<tr><th colspan="2"><a name="externs-as-types">Externs As Types</a></th></tr>
+<tr><td>
+
+```js
+#!/usr/bin/env node
+'use strict';
+const stream = require('stream');             
+const {Transform:c} = stream;
+class d extends c {
+  constructor(a, b) {
+    super(b);
+    this.a = a;
+  }
+  _transform(a, b, f) {
+    this.push(`${a}`.replace(this.a.b, this.a.c));
+    f();
+  }
+}
+;const e = new d({b:/__(.+?)__/, c(a, b) {
+  return `<em>${b}</em>`;
+}});
+e.pipe(process.stdout);
+e.end("__hello world__");
+```
+</td></tr>
+<tr><td>
+The new command is <code>depack example/restream/program -c -a -p --js example/restream/externs.js</code> and it produces correctly optimised code.
+</td></td>
 </table>
 
 And so that's it! We've successfully compiled our Node.JS program with _Google Closure Compiler_ using _Depack_ as the CLI interface, and _Typal_ as the utility to organise types, both for README documentation, JSDoc annotation and Compiler externs information. There is just one last thing to add.
@@ -622,7 +657,8 @@ _Given the following types file:_
 <types>
   <import name="ServerResponse" from="http" />
   <type name="SetHeaders"
-    type="function(http.ServerResponse)"
+    type="(s: ServerResponse) => void"
+    closure="function(http.ServerResponse)"
     desc="Function to set custom headers on response." />
   <type name="StaticConfig" desc="Options to setup `koa-static`.">
     <prop string name="root">
@@ -658,7 +694,7 @@ _The result will contain Types and Imports:_
   types: 
    [ Type {
        name: 'SetHeaders',
-       type: 'function(http.ServerResponse)',
+       type: '(s: ServerResponse) => void',
        closureType: 'function(http.ServerResponse)',
        description: 'Function to set custom headers on response.',
        noToc: false,

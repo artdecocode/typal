@@ -260,6 +260,11 @@ argufy@^1.3.2, argufy@^1.3.3:
   resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.3.3.tgz#e6a0b97fce19a9587c8da05548009808f2a374d4"
   integrity sha512-TkJ+0dkeuWerxEmL0a45xK+jp7R7nXJexlpvN8to0/G4DyTHvfGC7DTg7nTTtOrDafKhnrfyx6ViPEQ3LEtHaQ==
 
+argufy@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.4.0.tgz#ae9d0591dba72dddc09f51855a6634b4315df747"
+  integrity sha512-RScNOUVPtE5nM47+bCX8edDqR7QDFgdLWS0m/3RD8LKIhtex/eCBrYqt/efr7zVq689BcvJbVz3QdfcjHbtgEg==
+
 assert-diff@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/assert-diff/-/assert-diff-2.0.3.tgz#f7a5ab51f8da1bf2dbc9afd3f0b9ea6919808a74"

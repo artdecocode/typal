@@ -230,6 +230,19 @@ To continue, we run `depack example/restream/program -c -a -p --externs restream
 <!-- <tr><td>stderr</td></tr> -->
 </table>
 
+Although we've generated the externs and passed them to the compiler, we don't actually need them here when generating a single executable file. Notice how the compiler didn't rename the `regex` and `replacement` properties of the rule variable, but the variable itself is stored inside of the class as `a`. This is precisely the point of externs &mdash; to prevent the compiler from mangling properties that can come from outside code. Now, if we were compiling a library for use by other developers, and publishing it, we would want to prevent mangling optimisation, and then we would use externs. However, this optimisation only happens in the _ADVANCED_ mode, where all comments with JSDoc is stripped, making the library hard-to use by others. But when we create an program and not a library, we can avoid using the externs, and pass the types just as a source file using the `--js` flag. This will enable type-checking and produce the optimisation of variable name (in case of Node.JS programs this makes little sense though because the difference in size is not that significant, but for the web it might be helpful).
+
+<table>
+<tr><th colspan="2">[Externs As Types](t)</th></tr>
+<tr><td>
+
+%FORK-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --js example/restream/externs.js%
+</td></tr>
+<tr><td>
+The new command is <code>depack example/restream/program -c -a -p --js example/restream/externs.js</code> and it produces correctly optimised code.
+</td></td>
+</table>
+
 And so that's it! We've successfully compiled our Node.JS program with _Google Closure Compiler_ using _Depack_ as the CLI interface, and _Typal_ as the utility to organise types, both for README documentation, JSDoc annotation and Compiler externs information. There is just one last thing to add.
 
 <table>
