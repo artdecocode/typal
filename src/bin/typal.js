@@ -1,5 +1,23 @@
-import { _source, _closure, _externs, _output } from './get-args'
+import { _source, _closure, _externs, _output, _help, _version,
+  argsConfig } from './get-args'
+import usually from 'usually'
+import { reduceUsage } from 'argufy'
 import generate from './commands/generate'
+
+if (_help) {
+  const usage = reduceUsage(argsConfig)
+  console.log(usually({
+    usage,
+    description: `Embeds and maintains Closure-compatible types JSDoc in
+JavaScript source code from an external types.xml file.`,
+    line: 'typal source [--closure|externs] [-o output] [-hv]',
+    example: 'typal types/index.xml -c',
+  }))
+  process.exit()
+} else if (_version) {
+  console.log(require('../../package.json').version)
+  process.exit()
+}
 
 (async () => {
   try {

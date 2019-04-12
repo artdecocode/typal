@@ -5,7 +5,7 @@ import Zoroaster from 'zoroaster'
  */
 export default class Context {
   static get BIN() {
-    return process.env.ALAMODE_ENV == 'test-build' ? 'depack/typal' : 'src/bin'
+    return process.env.ALAMODE_ENV == 'test-build' ? 'depack/bin/typal' : 'src/bin'
   }
   get typesLocation() {
     return 'test/fixture/types.xml'
