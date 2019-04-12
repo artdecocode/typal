@@ -16,7 +16,7 @@
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "doc-dev": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar NODE_DEBUG=doc doc-dev documentary/ -o README.md",
     "b": "alamode src -o build -s -i bin",
-    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack-dev src/bin/typal -c -o depack -a -p -s --entry_point src/bin/typal.js",
+    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack-dev src/bin/typal -c -o depack -a -p -s",
     "depack1": "depack-dev depack/t.js -c -o t/tt.js -a -p",
     "depack2": "depack-dev depack/prop/index.js -c -a -p",
     "depack-compat": "depack-dev example/restream/compat -c -a -p",

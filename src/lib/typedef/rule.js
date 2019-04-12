@@ -1,5 +1,6 @@
 import read from '@wrote/read'
 import { makeBlock, importToTypedef } from '../'
+import Type from '../Type' // eslint-disable-line
 import parseFile from '../parse'
 import { closureJoinTypes, externsJoinTypes } from '../closure'
 
