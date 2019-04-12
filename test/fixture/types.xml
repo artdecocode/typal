@@ -1,7 +1,8 @@
 <types>
   <import name="ServerResponse" from="http" />
   <type name="SetHeaders"
-    type="function(http.ServerResponse)"
+    type="(s: ServerResponse) => void"
+    closure="function(http.ServerResponse)"
     desc="Function to set custom headers on response." />
   <type name="StaticConfig" desc="Options to setup `koa-static`.">
     <prop string name="root">

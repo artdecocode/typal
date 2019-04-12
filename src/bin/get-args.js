@@ -1,30 +1,28 @@
-import getArgs from 'argufy'
+import argufy from 'argufy'
 
-const args = getArgs({
+const args = argufy({
   'source': { command: true },
-  'closure': { short: 'c', boolean: true },
-  'output': { short: 'o' },
-  'externs': { short: 'e', boolean: true },
+  'output': 'o',
+  'closure': { boolean: true, short: 'c' },
+  'externs': { boolean: true, short: 'e' },
 })
 
 /**
  * The path to the source file or directory to embed types into.
- * @type {string}
  */
 export const _source = /** @type {string} */ (args['source'])
-/**
- * Whether to generate types for closure.
- * @type {boolean}
- */
-export const _closure = /** @type {boolean} */ (args['closure'])
-/**
- * Generate externs.
- * @type {boolean}
- */
-export const _externs = /** @type {boolean} */ (args['externs'])
 
 /**
- * Where to save output. Supports `-` for stdout printing.
- * @type {string}
+ * The destination where to save output. If not passed, the file will be overwritten. If `-` is passed, prints to stdout.
  */
 export const _output = /** @type {string} */ (args['output'])
+
+/**
+ * Whether to generate types in _Closure_ mode.
+ */
+export const _closure = /** @type {boolean} */ (args['closure'])
+
+/**
+ * Whether to generate externs for _GCC_.
+ */
+export const _externs = /** @type {boolean} */ (args['externs'])

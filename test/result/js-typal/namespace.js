@@ -17,8 +17,6 @@ var a = (param) => {}
 /* typal test/fixture/ns.xml */
 /**
  * @typedef {ns.Conf} Conf config
- */
-/**
  * @typedef {Object} ns.Conf config
  * @prop {string} propName The prop description.
  */

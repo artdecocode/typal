@@ -1,0 +1,14 @@
+<arguments>
+  <arg command name="source">
+    The path to the source file or directory to embed types into.
+  </arg>
+  <arg name="output" short="o">
+    The destination where to save output. If not passed, the file will be overwritten. If `-` is passed, prints to stdout.
+  </arg>
+  <arg boolean name="closure" short="c">
+    Whether to generate types in _Closure_ mode.
+  </arg>
+  <arg boolean name="externs" short="e">
+    Whether to generate externs for _GCC_.
+  </arg>
+</arguments>

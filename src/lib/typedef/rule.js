@@ -64,9 +64,7 @@ const joinTypes = (imports, types) => {
 
 export default typedefRule
 
-const m = ` */
-/**
- * @typedef`
+const m = / \*\/\n\/\*\*\n \* @typedef/g
 
 /**
  * @suppress {nonStandardJsDocs}
