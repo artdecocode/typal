@@ -61,6 +61,7 @@ const { getPropType, getNameWithDefault } = require('./');
     if (opt || this.hasDefault) this.optional = true
   }
   toJSDoc(parentParam = null, closure = false) {
+    if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
     const nameWithDefault = getNameWithDefault(this.name, this.default, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
     const dd = this.description ? ` ${this.description}` : ''

@@ -41,6 +41,9 @@ const { getLink, addSuppress, makeBlock } = require('./');
      */
     this.namespace = null
   }
+  /**
+   * Create type from the xml content and properties parsed with `rexml`.
+   */
   fromXML(content, {
     'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure,
   }, namespace) {

@@ -5,7 +5,6 @@ import { getLink, addSuppress, makeBlock } from './'
 
 /**
  * A representation of a type.
- * @implements {ABC}
  */
 export default class Type {
   constructor() {
