@@ -529,13 +529,13 @@ java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.
 ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
-Running Google Closure Compiler target...         
+Running Google Closure Compiler target.           
 ```
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
 </table>
 
-Although we've generated the externs and passed them to the compiler, we don't actually need them here when generating a single executable file. Notice how the compiler didn't rename the `regex` and `replacement` properties of the rule variable, but the variable itself is stored inside of the class as `a`. This is precisely the point of externs &mdash; to prevent the compiler from mangling properties that can come from outside code. Now, if we were compiling a library for use by other developers, and publishing it, we would want to prevent mangling optimisation, and then we would use externs. However, this optimisation only happens in the _ADVANCED_ mode, where all comments with JSDoc is stripped, making the library hard-to use by others. But when we create an program and not a library, we can avoid using the externs, and pass the types just as a source file using the `--js` flag. This will enable type-checking and produce the optimisation of variable name (in case of Node.JS programs this makes little sense though because the difference in size is not that significant, but for the web it might be helpful).
+Although we've generated the externs and passed them to the compiler, we don't actually need them here when generating a single executable file. Notice how the compiler didn't rename the `regex` and `replacement` properties of the rule variable, but the variable itself is stored inside of the class as `a`. This is precisely the point of externs &mdash; to prevent the compiler from mangling properties that can come from outside code. Now, if we were compiling a library for use by other developers, and publishing it, we would want to prevent mangling optimisation, and then we would use externs. However, this optimisation only happens in the _ADVANCED_ mode, where all comments with JSDoc is stripped, making the library hard-to use by others. But when we create a program and not a library, we can avoid using the externs, and pass the types just as a source file using the `--js` flag. This will still result in type-checking but also produce the optimisation of variable names (though in case of _Node.JS_ programs the gain is minimal because the difference in size is not that significant, but for the web it might be helpful).
 
 <table>
 <tr><th colspan="2"><a name="externs-as-types">Externs As Types</a></th></tr>
