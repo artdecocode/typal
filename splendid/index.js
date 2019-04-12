@@ -10,7 +10,7 @@ const config = {
   replacements: [
     {
       re: /{{ company }}/g,
-      replacement: '[Splendid](https://splendid.sh)',
+      replacement: '[Typal](https://typedef.page)',
     },
   ],
   output: BUILD_DIR,
