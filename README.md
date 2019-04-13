@@ -625,7 +625,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     /**
      * @param {Conf} conf The configuration object.
      * @param {string} conf.source The source of where to read the data.
-     * @param {boolean} [conf.closeOnFinish=true] Whether to close the stream on finish. Default `true`.
+     * @param {boolean} [conf.closeOnFinish=true] Closes the stream when done. Default `true`.
      * @param {TransformOptions} options
      */
     const prog = (conf, options) => {}
@@ -635,7 +635,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
      * @typedef {import('stream').TransformOptions} TransformOptions
      * @typedef {Object} Conf The configuration object.
      * @prop {string} source The source of where to read the data.
-     * @prop {boolean} [closeOnFinish=true] Whether to close the stream on finish. Default `true`.
+     * @prop {boolean} [closeOnFinish=true] Closes the stream when done. Default `true`.
      */
     ```
     </tr></td></table>
@@ -649,7 +649,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     /**
      * @param {_typal.Conf} conf The configuration object.
      * @param {string} conf.source The source of where to read the data.
-     * @param {boolean} [conf.closeOnFinish=true] Whether to close the stream on finish. Default `true`.
+     * @param {boolean} [conf.closeOnFinish=true] Closes the stream when done. Default `true`.
      * @param {stream.TransformOptions} options
      */
     const prog = (conf, options) => {}
@@ -663,7 +663,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
      * @suppress {nonStandardJsDocs}
      * @typedef {Object} _typal.Conf The configuration object.
      * @prop {string} source The source of where to read the data.
-     * @prop {boolean} [closeOnFinish=true] Whether to close the stream on finish. Default `true`.
+     * @prop {boolean} [closeOnFinish=true] Closes the stream when done. Default `true`.
      */
     /**
      * @suppress {nonStandardJsDocs}

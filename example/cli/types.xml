@@ -5,7 +5,7 @@
       The source of where to read the data.
     </prop>
     <prop boolean name="closeOnFinish" default="true">
-      Whether to close the stream on finish.
+      Closes the stream when done.
     </prop>
   </type>
 </types>
