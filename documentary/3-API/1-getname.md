@@ -7,7 +7,7 @@
 ]
 ```
 
-Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
+Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "". The default values are only used for _VSCode_ because _GCC_ does not use this information.
 
 ```js
 /**
@@ -24,6 +24,6 @@ Returns the name of a property with its default value, and surrounded by square 
 ```
 
 %EXAMPLE: example/get-name, ../src => typal%
-%FORK example/get-name%
+%FORK-js example/get-name%
 
 %~ width="25"%

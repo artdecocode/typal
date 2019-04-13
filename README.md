@@ -770,7 +770,7 @@ This class represents the properties of the type.
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
-Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
+Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "". The default values are only used for _VSCode_ because _GCC_ does not use this information.
 
 ```js
 /**
@@ -790,13 +790,13 @@ Returns the name of a property with its default value, and surrounded by square 
 import { getNameWithDefault } from 'typal'
 
 console.log(getNameWithDefault('arg', 'test', 'string'))
-console.log(getNameWithDefault('arg', 10, 'number', 'hello'))
-console.log(getNameWithDefault('arg', false, 'boolean', 'world'))
+console.log(getNameWithDefault('hello', true, 'boolean', 'arg'))
+console.log(getNameWithDefault('world', 27, 'number', 'arg'))
 ```
-```
+```js
 arg="test"
-hello.arg=10
-world.arg=false
+arg.hello=true
+arg.world=27
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
