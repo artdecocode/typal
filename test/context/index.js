@@ -15,3 +15,6 @@ export default class Context {
 export class MarkdownSnapshot extends Zoroaster {
   static get snapshotExtension() { return 'md' }
 }
+export class XmlSnapshot extends Zoroaster {
+  static get snapshotExtension() { return 'xml' }
+}
