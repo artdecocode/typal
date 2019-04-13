@@ -30,7 +30,7 @@ yarn add -DE typal
   * [*Standard*](#standard)
   * [*Closure*](#closure)
   * [*Externs*](#externs)
-  * [_Typal_ Arguments](#_typal_-arguments)
+  * [_Typal_ Arguments](#typal-arguments)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
