@@ -1,4 +1,4 @@
-```### getNameWithDefault
+```### getNameWithDefault => string
 [
   ["name", "string"],
   ["defaultValue", "?(string|boolean|number)"],
@@ -7,7 +7,7 @@
 ]
 ```
 
-Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
+Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
 
 ```js
 /**
@@ -20,6 +20,10 @@ Return a name of a property with its default value, and surrounded by square bra
  * @param {*} [parentParam.optionalDefaultParam=false]
  * @param {*} [parentParam.optionalDefaultParamString="test"]
  * @param {*} [parentParam.optionalParam]
+ */
 ```
+
+%EXAMPLE: example/get-name, ../src => typal%
+%FORK example/get-name%
 
 %~ width="25"%

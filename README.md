@@ -1,10 +1,10 @@
-# typal
+# Typal
 
 [![npm version](https://badge.fury.io/js/typal.svg)](https://npmjs.org/package/typal)
 
 `typal` Keeps Types In XML files And Converts Them To (1) JavaScript JSDoc, (2) Closure Externs and (3) Markdown Documentation. It is the alternative to TypeScript definitions and utilises the power of JSDoc for excellent developer experience, documentation readability and compiler annotation. It also makes integration between _Google Closure Compiler_ and _VSCode_ easy, using the JSDoc notations that are understood by both at the same time.
 
-The package has an API, as well as the CLI tool to generate types.
+The package's main use is as the CLI tool to generate typedefs, but it also has an API for parsing types and properties with regular expressions.
 
 ```sh
 yarn add -DE typal
@@ -40,7 +40,7 @@ yarn add -DE typal
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
-  * [`getNameWithDefault(name: string, defaultValue: ?(string|boolean|number), type: string=, parentParam: string=)`](#getnamewithdefaultname-stringdefaultvalue-stringbooleannumbertype-stringparentparam-string-void)
+  * [`getNameWithDefault(name: string, defaultValue: ?(string|boolean|number), type: string=, parentParam: string=): string`](#getnamewithdefaultname-stringdefaultvalue-stringbooleannumbertype-stringparentparam-string-string)
   * [`parseFile(xml: string, rootNamespace: string=): { types, imports, namespace }`](#parsefilexml-stringrootnamespace-string--types-imports-namespace-)
     * [Root Namespace](#root-namespace)
 - [Optional And Default](#optional-and-default)
@@ -768,9 +768,9 @@ This class represents the properties of the type.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
 
-### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): void`
+### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
-Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
+Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
 
 ```js
 /**
@@ -783,6 +783,20 @@ Return a name of a property with its default value, and surrounded by square bra
  * @param {*} [parentParam.optionalDefaultParam=false]
  * @param {*} [parentParam.optionalDefaultParamString="test"]
  * @param {*} [parentParam.optionalParam]
+ */
+```
+
+```js
+import { getNameWithDefault } from 'typal'
+
+console.log(getNameWithDefault('arg', 'test', 'string'))
+console.log(getNameWithDefault('arg', 10, 'number', 'hello'))
+console.log(getNameWithDefault('arg', false, 'boolean', 'world'))
+```
+```
+arg="test"
+hello.arg=10
+world.arg=false
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
