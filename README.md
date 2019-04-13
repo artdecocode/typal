@@ -10,6 +10,8 @@ The package has an API, as well as the CLI tool to generate types.
 yarn add -DE typal
 ```
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
+
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
@@ -25,6 +27,9 @@ yarn add -DE typal
     * [Externs As Types](#externs-as-types)
     * [Annotating Types](#annotating-types)
 - [CLI](#cli)
+  * [*Standard*](#standard)
+  * [*Closure*](#closure)
+  * [*Externs*](#externs)
   * [_Typal_ Arguments](#_typal_-arguments)
     * [source](#source)
     * [--output](#--output)
@@ -40,6 +45,8 @@ yarn add -DE typal
     * [Root Namespace](#root-namespace)
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
 ## Purpose And Use-Cases
 
@@ -127,7 +134,7 @@ However, there are 2 problems with that:
       <img src="doc/restream2.png" title="VSCode does not show properties of a type">
     </p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="20"></a></p>
 
 _**<a name="jsdoc-approach">JSDoc approach</a>**: Now let's refactor the code that we have, and place the types definitions in the `types.xml` file instead of the source code:_
 
@@ -215,7 +222,7 @@ Another advantage, is that the `Rule` type was expanded into individual properti
   <img src="doc/restream3.png" title="JSDoc expansion of properties above functions.">
 </p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="20"></a></p>
 
 _**<a name="closure-approach">Closure approach</a>**: Finally, if we want to allow our package to be compiled as part of other packages with GCC (or compile a binary from the lib we've written), we need to make sure the JSDoc is in the format that it accepts._
 
@@ -610,13 +617,13 @@ restream.end('__hello world__')
 
 When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs it it finds it. Packages can publish their externs and point to them using the `externs` field in their **package.json** file, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
 
 ## CLI
 
 _Typal_ is the command-line utility that is used to manage _JSDoc_ types in JavaScript source files. The typedefs are now sourced from the `types.xml` file and embedded on demand. There are 3 modes to embedding types:
 
-1. *Standard*, no flags required: places only _VSCode_ compatible code. Can be used when no Closure-compilation will be performed on packages. Does not utilise namespaces. Expands the parameters of complex types for better visibility.
+1. <a name="standard">*Standard*</a>, no flags required: places only _VSCode_ compatible code. Can be used when no Closure-compilation will be performed on packages. Does not utilise namespaces. Expands the parameters of complex types for better visibility.
     <details>
     <summary>Show Standard JSDoc</summary>
     <table><tr/><tr><td>
@@ -640,7 +647,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     ```
     </tr></td></table>
     </details>
-1. *Closure* with `-c` flag: suppresses standard typedefs' annotations so that Closure Compiler does not show warnings. Introduces namespaces for internal as well as external APIs to make types' sources more visible.
+1. <a name="closure">*Closure*</a> with `-c` flag: suppresses standard typedefs' annotations so that Closure Compiler does not show warnings. Introduces namespaces for internal as well as external APIs to make types' sources more visible.
     <details>
     <summary>Show Closure JSDoc</summary>
     <table><tr/><tr><td>
@@ -672,7 +679,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     ```
     </tr></td></table>
     </details>
-1. *Externs* with `-e` flag: generates types only understood by the _Google Closure Compiler_, primarily in the `externs.js` file. These types do not have any meaning for the coding process and are only used in compilation either as types for programs, or externs for libraries.
+1. <a name="externs">*Externs*</a> with `-e` flag: generates types only understood by the _Google Closure Compiler_, primarily in the `externs.js` file. These types do not have any meaning for the coding process and are only used in compilation either as types for programs, or externs for libraries.
     <details>
     <summary>Show Externs JSDoc</summary>
     <table><tr/><tr><td>
@@ -689,11 +696,15 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     </tr></td></table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="20"></a></p>
 
 ### _Typal_ Arguments
 
-`typal source [--closure|externs] [-o output] [-vh]`
+```sh
+$ typal source [--closure|externs] [-o output] [-vh]
+```
+
+The following arguments are supported by this software.
 
 <table>
 <tr><th>Argument</th><th>Short</th><th>Description</th>
@@ -731,7 +742,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
 </tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -743,19 +754,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): void`
 
@@ -774,7 +785,7 @@ Return a name of a property with its default value, and surrounded by square bra
  * @param {*} [parentParam.optionalParam]
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -959,7 +970,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---

@@ -10,6 +10,10 @@ The package has an API, as well as the CLI tool to generate types.
 yarn add -DE typal
 ```
 
+%~%
+
 ## Table Of Contents
 
 %TOC%
+
+%~%
