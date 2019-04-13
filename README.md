@@ -619,10 +619,13 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
 1. *Standard*, no flags required: places only _VSCode_ compatible code. Can be used when no Closure-compilation will be performed on packages. Does not utilise namespaces. Expands the parameters of complex types for better visibility.
     <details>
     <summary>Show Standard JSDoc</summary>
+    <table><tr/><tr><td>
 
     ```js
     /**
-     * @param {Config} conf
+     * @param {Conf} conf The configuration object.
+     * @param {string} conf.source The source of where to read the data.
+     * @param {boolean} [conf.closeOnFinish=true] Whether to close the stream on finish. Default `true`.
      * @param {TransformOptions} options
      */
     const prog = (conf, options) => {}
@@ -635,16 +638,18 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
      * @prop {boolean} [closeOnFinish=true] Whether to close the stream on finish. Default `true`.
      */
     ```
+    </tr></td></table>
     </details>
 1. *Closure* with `-c` flag: suppresses standard typedefs' annotations so that Closure Compiler does not show warnings. Introduces namespaces for internal as well as external APIs to make types' sources more visible.
     <details>
-    <table>
-    <tr><th><summary>Show Closure JSDoc</summary></th></tr>
-    <tr><td>
+    <summary>Show Closure JSDoc</summary>
+    <table><tr/><tr><td>
 
     ```js
     /**
-     * @param {_typal.Config} conf
+     * @param {_typal.Conf} conf The configuration object.
+     * @param {string} conf.source The source of where to read the data.
+     * @param {boolean} [conf.closeOnFinish=true] Whether to close the stream on finish. Default `true`.
      * @param {stream.TransformOptions} options
      */
     const prog = (conf, options) => {}
@@ -665,12 +670,12 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
      * @typedef {import('stream').TransformOptions} stream.TransformOptions
      */
     ```
-    </tr></td>
-    </table>
+    </tr></td></table>
     </details>
 1. *Externs* with `-e` flag: generates types only understood by the _Google Closure Compiler_, primarily in the `externs.js` file. These types do not have any meaning for the coding process and are only used in compilation either as types for programs, or externs for libraries.
     <details>
     <summary>Show Externs JSDoc</summary>
+    <table><tr/><tr><td>
 
     ```js
     /* typal example/cli/types.xml */
@@ -681,6 +686,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
      */
     _typal.Conf
     ```
+    </tr></td></table>
     </details>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="20"></a></p>
