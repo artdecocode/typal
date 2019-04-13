@@ -1,5 +1,5 @@
 /**
- * @param {Config} conf
+ * @param {Conf} conf
  * @param {TransformOptions} options
  */
 const prog = (conf, options) => {}

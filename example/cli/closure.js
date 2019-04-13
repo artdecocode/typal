@@ -1,5 +1,5 @@
 /**
- * @param {_typal.Config} conf
+ * @param {_typal.Conf} conf
  * @param {stream.TransformOptions} options
  */
 const prog = (conf, options) => {}
