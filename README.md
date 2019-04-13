@@ -31,12 +31,6 @@ yarn add -DE typal
   * [*Closure*](#closure)
   * [*Externs*](#externs)
   * [_Typal_ Arguments](#_typal_-arguments)
-    * [source](#source)
-    * [--output](#--output)
-    * [--closure](#--closure)
-    * [--externs](#--externs)
-    * [--help](#--help)
-    * [--version](#--version)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -502,7 +496,7 @@ The externs are generated with the Closure-compatible syntax and ready to be use
 To continue, we run `depack example/restream/program -c -a -p --externs restream/externs.js` again, and this time, _Depack_ will pass the externs argument to the compiler as we request.
 
 <table>
-<tr><th colspan="2"><a name="result-of-compilation">Result Of Compilation</a></th></tr>
+<tr><th><a name="result-of-compilation">Result Of Compilation</a></th></tr>
 <tr><td>
 
 ```js
@@ -550,7 +544,7 @@ Running Google Closure Compiler target...
 Although we've generated the externs and passed them to the compiler, we don't actually need them here when generating a single executable file. Notice how the compiler didn't rename the `regex` and `replacement` properties of the rule variable, but the variable itself is stored inside of the class as `a`. This is precisely the point of externs &mdash; to prevent the compiler from mangling properties that can come from outside code. Now, if we were compiling a library for use by other developers, and publishing it, we would want to prevent mangling optimisation, and then we would use externs. However, this optimisation only happens in the _ADVANCED_ mode, where all comments with JSDoc is stripped, making the library hard-to use by others. But when we create a program and not a library, we can avoid using the externs, and pass the types just as a source file using the `--js` flag. This will still result in type-checking but also produce the optimisation of variable names (though in case of _Node.JS_ programs the gain is minimal because the difference in size is not that significant, but for the web it might be helpful).
 
 <table>
-<tr><th colspan="2"><a name="externs-as-types">Externs As Types</a></th></tr>
+<tr><th><a name="externs-as-types">Externs As Types</a></th></tr>
 <tr><td>
 
 ```js
@@ -704,39 +698,30 @@ $ typal source [--closure|externs] [-o output] [-vh]
 The following arguments are supported by this software.
 
 <table>
-<tr><th>Argument</th><th>Short</th><th>Description</th>
-<tr>
-  <td><a name="source">source</a></td>
-  <td></td>
-  <td>The path to the source file or directory with files to embed types into.</td>
-</tr>
-<tr>
-  <td><a name="--output">--output</a></td>
-  <td>-o</td>
-  <td>The destination where to save output.
-    If not passed, the file will be overwritten.
-    If <code>-</code> is passed, prints to stdout.</td>
-</tr>
-<tr>
-  <td><a name="--closure">--closure</a></td>
-  <td>-c</td>
-  <td>Whether to generate types in <em>Closure</em> mode.</td>
-</tr>
-<tr>
-  <td><a name="--externs">--externs</a></td>
-  <td>-e</td>
-  <td>Whether to generate externs for <em>GCC</em>.</td>
-</tr>
-<tr>
-  <td><a name="--help">--help</a></td>
-  <td>-h</td>
-  <td>Print the help information and exit.</td>
-</tr>
-<tr>
-  <td><a name="--version">--version</a></td>
-  <td>-v</td>
-  <td>Show the version's number and exit.</td>
-</tr>
+  <tr><th>Argument</th><th>Short</th><th>Description</th></tr>
+  <tr><td>source</td><td></td><td>
+    The path to the source file or directory with files to embed types into.
+  </td>
+  </tr>
+  <tr>
+    <td>--output</td>
+    <td>-o</td>
+    <td>
+      The destination where to save output.
+          If not passed, the file will be overwritten.
+          If <code>-</code> is passed, prints to stdout.
+    </td>
+  </tr>
+  <tr><td>--closure</td><td>-c</td><td>
+    Whether to generate types in <em>Closure</em> mode.
+  </td>
+  </tr>
+  <tr><td>--externs</td><td>-e</td><td>
+    Whether to generate externs for <em>GCC</em>.
+  </td>
+  </tr>
+  <tr><td>--help</td><td>-h</td><td>Print the help information and exit.</td></tr>
+  <tr><td>--version</td><td>-v</td><td>Show the version's number and exit.</td></tr>
 </table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>

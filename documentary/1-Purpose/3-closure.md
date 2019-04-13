@@ -65,7 +65,6 @@ After finishing its job, the compiler will give us warnings shown below, which t
 
 <table>
 <tr><th>[Google Closure Compiler Warnings](t)</th></tr>
-<!-- <tr/> -->
 <tr><td>
 
 ```js
@@ -165,7 +164,10 @@ The Source Code With [Closure-Compatible JSDoc](t) (<a href="example/restream/co
 ```
 </td></tr>
 <tr><td>
-The <em>Rule</em> type is now defined using 2 <code>@typedefs</code>, which are also suppressed to prevent warnings. The reason for the first item is so that the type can be imported in other files from our package, using <code>{import('restream').Rule}</code>. This is so because <code>{import('restream')._restream.Rule}</code> does not work in <em>VSCode</em>. The second type stays as is, and is printed with the namespace. It is still not picked up by <em>GCC</em>, but the warning is suppressed. Instead, when we come to generate externs in a minute, their name will match <code>_restream.Rule</code>, and the param for the function will be recognised by the compiler.
+<md2html>
+
+The _Rule_ type is now defined using 2 `@typedefs`, which are also suppressed to prevent warnings. The reason for the first item is so that the type can be imported in other files from our package, using `{import('restream').Rule}`. This is so because `{import('restream')._restream.Rule}` does not work in _VSCode_. The second type stays as is, and is printed with the namespace. It is still not picked up by _GCC_, but the warning is suppressed. Instead, when we come to generate externs in a minute, their name will match `_restream.Rule`, and the param for the function will be recognised by the compiler.
+</md2html>
 </td></tr>
 <tr><td>
 
@@ -213,7 +215,7 @@ The externs are generated with the Closure-compatible syntax and ready to be use
 To continue, we run `depack example/restream/program -c -a -p --externs restream/externs.js` again, and this time, _Depack_ will pass the externs argument to the compiler as we request.
 
 <table>
-<tr><th colspan="2">[Result Of Compilation](t)</th></tr>
+<tr><th>[Result Of Compilation](t)</th></tr>
 <tr><td>
 
 %FORK-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --externs example/restream/externs.js%
@@ -230,13 +232,16 @@ To continue, we run `depack example/restream/program -c -a -p --externs restream
 Although we've generated the externs and passed them to the compiler, we don't actually need them here when generating a single executable file. Notice how the compiler didn't rename the `regex` and `replacement` properties of the rule variable, but the variable itself is stored inside of the class as `a`. This is precisely the point of externs &mdash; to prevent the compiler from mangling properties that can come from outside code. Now, if we were compiling a library for use by other developers, and publishing it, we would want to prevent mangling optimisation, and then we would use externs. However, this optimisation only happens in the _ADVANCED_ mode, where all comments with JSDoc is stripped, making the library hard-to use by others. But when we create a program and not a library, we can avoid using the externs, and pass the types just as a source file using the `--js` flag. This will still result in type-checking but also produce the optimisation of variable names (though in case of _Node.JS_ programs the gain is minimal because the difference in size is not that significant, but for the web it might be helpful).
 
 <table>
-<tr><th colspan="2">[Externs As Types](t)</th></tr>
+<tr><th>[Externs As Types](t)</th></tr>
 <tr><td>
 
 %FORK-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --js example/restream/externs.js%
 </td></tr>
 <tr><td>
-The new command is <code>depack example/restream/program -c -a -p --js example/restream/externs.js</code> and it produces correctly optimised code.
+<md2html>
+
+The new command is `depack example/restream/program -c -a -p --js example/restream/externs.js` and it produces correctly optimised code.
+</md2html>
 </td></td>
 </table>
 
