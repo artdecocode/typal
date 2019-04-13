@@ -1,22 +1,22 @@
 <arguments>
-  <arg command name="source" toc>
+  <arg command name="source">
     The path to the source file or directory with files to embed types into.
   </arg>
-  <arg name="output" short="o" toc>
+  <arg name="output" short="o">
     The destination where to save output.
     If not passed, the file will be overwritten.
     If `-` is passed, prints to stdout.
   </arg>
-  <arg boolean name="closure" short="c" toc>
+  <arg boolean name="closure" short="c">
     Whether to generate types in _Closure_ mode.
   </arg>
-  <arg boolean name="externs" short="e" toc>
+  <arg boolean name="externs" short="e">
     Whether to generate externs for _GCC_.
   </arg>
-  <arg boolean name="help" short="h" toc>
+  <arg boolean name="help" short="h">
     Print the help information and exit.
   </arg>
-  <arg boolean name="version" short="v" toc>
+  <arg boolean name="version" short="v">
     Show the version's number and exit.
   </arg>
 </arguments>
