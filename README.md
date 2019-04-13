@@ -442,8 +442,7 @@ export class Restream extends Transform {
 ```
 </td></tr>
 <tr><td>
-
-The _Rule_ type is now defined using 2 `@typedefs`, which are also suppressed to prevent warnings. The reason for the first item is so that the type can be imported in other files from our package, using `{import('restream').Rule}`. This is so because `{import('restream')._restream.Rule}` does not work in _VSCode_. The second type stays as is, and is printed with the namespace. It is still not picked up by _GCC_, but the warning is suppressed. Instead, when we come to generate externs in a minute, their name will match `_restream.Rule`, and the param for the function will be recognised by the compiler.
+The <em>Rule</em> type is now defined using 2 <code>@typedefs</code>, which are also suppressed to prevent warnings. The reason for the first item is so that the type can be imported in other files from our package, using <code>{import('restream').Rule}</code>. This is so because <code>{import('restream')._restream.Rule}</code> does not work in <em>VSCode</em>. The second type stays as is, and is printed with the namespace. It is still not picked up by <em>GCC</em>, but the warning is suppressed. Instead, when we come to generate externs in a minute, their name will match <code>_restream.Rule</code>, and the param for the function will be recognised by the compiler.
 </td></tr>
 <tr><td>
 
@@ -455,8 +454,7 @@ The _Rule_ type is now defined using 2 `@typedefs`, which are also suppressed to
 ```
 </td></tr>
 <tr><td>
-
-The imports are now also suppressed (but the change will come into effect in the next version of the compiler), and printed with the namespace, so that we can refer to them in params and get both the autosuggestions, and _Closure_ compatibility.
+The imports are now also suppressed (but the change will hopefully come into effect in the next version of the compiler), and printed with the namespace, so that we can refer to them in params and get both the autosuggestions, and <em>Closure</em> compatibility.
 </td></tr>
 <tr><td>
 
@@ -472,7 +470,6 @@ The imports are now also suppressed (but the change will come into effect in the
 ```
 </td></tr>
 <tr><td>
-
 Any types within the namespace must refer to each other using their full name.
 </td></tr>
 </table>
@@ -615,7 +612,7 @@ restream.end('__hello world__')
 </td></tr>
 </table>
 
-When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs it it finds it. Packages can publish their externs and point to them using the `externs` field in their **package.json** file, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
+When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs if it finds it. Packages can publish their externs and point to them using the `externs` field in their **package.json** file, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
 
