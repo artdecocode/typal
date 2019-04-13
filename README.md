@@ -638,7 +638,9 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     </details>
 1. *Closure* with `-c` flag: suppresses standard typedefs' annotations so that Closure Compiler does not show warnings. Introduces namespaces for internal as well as external APIs to make types' sources more visible.
     <details>
-    <summary>Show Closure JSDoc</summary>
+    <table>
+    <tr><th><summary>Show Closure JSDoc</summary></th></tr>
+    <tr><td>
 
     ```js
     /**
@@ -663,6 +665,8 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
      * @typedef {import('stream').TransformOptions} stream.TransformOptions
      */
     ```
+    </tr></td>
+    </table>
     </details>
 1. *Externs* with `-e` flag: generates types only understood by the _Google Closure Compiler_, primarily in the `externs.js` file. These types do not have any meaning for the coding process and are only used in compilation either as types for programs, or externs for libraries.
     <details>
