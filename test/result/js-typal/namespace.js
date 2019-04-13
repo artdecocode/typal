@@ -1,6 +1,6 @@
 // processes types with a namespace
 /**
- * @param {ns.Conf} param
+ * @param {Conf} param
  */
 var a = (param) => {}
 
@@ -9,15 +9,14 @@ var a = (param) => {}
 
 /*@ expected */
 /**
- * @param {ns.Conf} param config
+ * @param {Conf} param config
  * @param {string} param.propName The prop description.
  */
 var a = (param) => {}
 
 /* typal test/fixture/ns.xml */
 /**
- * @typedef {ns.Conf} Conf config
- * @typedef {Object} ns.Conf config
+ * @typedef {Object} Conf config
  * @prop {string} propName The prop description.
  */
 

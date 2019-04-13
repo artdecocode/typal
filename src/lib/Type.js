@@ -83,7 +83,7 @@ export default class Type {
   toTypedef(closure = false) {
     const t = (closure ? this.closureType : this.type) || 'Object'
     const d = this.description ? ` ${this.description}` : ''
-    const dd = ` ${this.fullName}${d}`
+    const dd = ` ${closure ? this.fullName : this.name}${d}`
     const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
       const sp = pr.toProp(closure)
@@ -95,7 +95,7 @@ export default class Type {
     //  ⁎ @typedef {Object} ns.Type The type (to use in current file)
     //  ⁎/
     let pre = ''
-    if (this.namespace) {
+    if (this.namespace && closure) {
       let td = ` * @typedef {${this.fullName}} ${this.name}${d}`
       if (closure) td = addSuppress(td)
       pre = makeBlock(td)
@@ -114,7 +114,7 @@ export default class Type {
   }
   toParam(paramName, optional, ws = '', nullable = false, closure = false) {
     const d = this.description ? ` ${this.description}` : ''
-    const nn = this.spread ? getSpread(this.properties) : this.fullName
+    const nn = this.spread ? getSpread(this.properties) : (closure ? this.fullName : this.name)
     const pn = optional ? `[${paramName}]` : paramName
     const s = `${ws} * @param {${nullable ? '!' : ''}${nn}} ${pn}${d}`
     const p = this.properties && !this.noExpand ? this.properties.map((pr) => {

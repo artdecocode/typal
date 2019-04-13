@@ -1,0 +1,11 @@
+<types namespace="_typal">
+  <import from="stream" name="TransformOptions"/>
+  <type name="Conf" desc="The configuration object.">
+    <prop string name="source">
+      The source of where to read the data.
+    </prop>
+    <prop boolean name="closeOnFinish" default="true">
+      Whether to close the stream on finish.
+    </prop>
+  </type>
+</types>

@@ -8,16 +8,19 @@ export const jsDocRe = /( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(
 const JSDocRule = {
   re: jsDocRe,
   replacement(match, ws, typeName, optional, paramName) {
+    const { closure } = this.conf
     const nullable = /^!/.test(typeName)
     const realName = nullable ? typeName.replace(/^!/, '') : typeName
-    if (!(realName in this.types)) {
+    /** @type {Type} */
+    const found = Object.values(this.types).find(({ name, fullName }) => {
+      if (closure) return fullName == realName
+      return name == realName
+    })
+    if (!found) {
       this.LOG('Type %s not found', realName)
       return match
     }
-    /** @type {Type} */
-    const t = this.types[realName]
-    const { closure } = this.conf
-    const s = t.toParam(paramName, optional, ws, nullable, closure)
+    const s = found.toParam(paramName, optional, ws, nullable, closure)
     return s
   },
 }

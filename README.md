@@ -537,7 +537,7 @@ java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.
 ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
-Running Google Closure Compiler target.           
+Running Google Closure Compiler target...         
 ```
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
@@ -616,9 +616,68 @@ When writing code that imports types from libraries, we can use the `{import('li
 
 _Typal_ is the command-line utility that is used to manage _JSDoc_ types in JavaScript source files. The typedefs are now sourced from the `types.xml` file and embedded on demand. There are 3 modes to embedding types:
 
-1. *Standard*, no flags required: places only _VSCode_ compatible code. Can be used when no Closure-compilation will be performed on packages. Does not utilise namespaces.
+1. *Standard*, no flags required: places only _VSCode_ compatible code. Can be used when no Closure-compilation will be performed on packages. Does not utilise namespaces. Expands the parameters of complex types for better visibility.
+    <details>
+    <summary>Show Standard JSDoc</summary>
+
+    ```js
+    /**
+     * @param {Config} conf
+     * @param {TransformOptions} options
+     */
+    const prog = (conf, options) => {}
+    
+    /* typal example/cli/types.xml */
+    /**
+     * @typedef {import('stream').TransformOptions} TransformOptions
+     * @typedef {Object} Conf The configuration object.
+     * @prop {string} source The source of where to read the data.
+     * @prop {boolean} [closeOnFinish=true] Whether to close the stream on finish. Default `true`.
+     */
+    ```
+    </details>
 1. *Closure* with `-c` flag: suppresses standard typedefs' annotations so that Closure Compiler does not show warnings. Introduces namespaces for internal as well as external APIs to make types' sources more visible.
+    <details>
+    <summary>Show Closure JSDoc</summary>
+
+    ```js
+    /**
+     * @param {_typal.Config} conf
+     * @param {stream.TransformOptions} options
+     */
+    const prog = (conf, options) => {}
+    
+    /* typal example/cli/types.xml */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {_typal.Conf} Conf The configuration object.
+     */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {Object} _typal.Conf The configuration object.
+     * @prop {string} source The source of where to read the data.
+     * @prop {boolean} [closeOnFinish=true] Whether to close the stream on finish. Default `true`.
+     */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {import('stream').TransformOptions} stream.TransformOptions
+     */
+    ```
+    </details>
 1. *Externs* with `-e` flag: generates types only understood by the _Google Closure Compiler_, primarily in the `externs.js` file. These types do not have any meaning for the coding process and are only used in compilation either as types for programs, or externs for libraries.
+    <details>
+    <summary>Show Externs JSDoc</summary>
+
+    ```js
+    /* typal example/cli/types.xml */
+    /** @const */
+    var _typal = {}
+    /**
+     * @typedef {{ source: string, closeOnFinish: (boolean|undefined) }}
+     */
+    _typal.Conf
+    ```
+    </details>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="20"></a></p>
 
