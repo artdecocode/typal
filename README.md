@@ -26,6 +26,12 @@ yarn add -DE typal
     * [Annotating Types](#annotating-types)
 - [CLI](#cli)
   * [_Typal_ Arguments](#_typal_-arguments)
+    * [source](#source)
+    * [--output](#--output)
+    * [--closure](#--closure)
+    * [--externs](#--externs)
+    * [--help](#--help)
+    * [--version](#--version)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -623,34 +629,34 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
 <table>
 <tr><th>Argument</th><th>Short</th><th>Description</th>
 <tr>
-  <td>source</td>
+  <td><a name="source">source</a></td>
   <td></td>
   <td>The path to the source file or directory with files to embed types into.</td>
 </tr>
 <tr>
-  <td>--output</td>
+  <td><a name="--output">--output</a></td>
   <td>-o</td>
   <td>The destination where to save output.
     If not passed, the file will be overwritten.
     If <code>-</code> is passed, prints to stdout.</td>
 </tr>
 <tr>
-  <td>--closure</td>
+  <td><a name="--closure">--closure</a></td>
   <td>-c</td>
   <td>Whether to generate types in <em>Closure</em> mode.</td>
 </tr>
 <tr>
-  <td>--externs</td>
+  <td><a name="--externs">--externs</a></td>
   <td>-e</td>
   <td>Whether to generate externs for <em>GCC</em>.</td>
 </tr>
 <tr>
-  <td>--help</td>
+  <td><a name="--help">--help</a></td>
   <td>-h</td>
   <td>Print the help information and exit.</td>
 </tr>
 <tr>
-  <td>--version</td>
+  <td><a name="--version">--version</a></td>
   <td>-v</td>
   <td>Show the version's number and exit.</td>
 </tr>
