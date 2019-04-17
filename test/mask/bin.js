@@ -48,3 +48,26 @@ export const dir = makeTestSuite('test/result/bin/dir', {
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
 })
+
+export const extract = makeTestSuite('test/result/bin/extract', {
+  context: TempContext,
+  fork: {
+    module: Context.BIN,
+    /**
+     * @param {string} args
+     * @param {TempContext} t
+     */
+    async getArgs(args, { write }) {
+      await write('program.js', this.program)
+      return ['test/temp/program.js', ...args]
+    },
+  },
+  /**
+   * @param {TempContext} t
+   */
+  async getResults(input, { read }) {
+    if (/-o /.test(input)) return read('types.xml')
+  },
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})

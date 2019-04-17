@@ -1,8 +1,9 @@
-import { _source, _closure, _externs, _output, _help, _version,
+import { _source, _closure, _externs, _output, _help, _version, _migrate,
   argsConfig } from './get-args'
 import usually from 'usually'
 import { reduceUsage } from 'argufy'
 import generate from './commands/generate'
+import extract from './commands/extract'
 
 if (_help) {
   const usage = reduceUsage(argsConfig)
@@ -21,6 +22,11 @@ JavaScript source code from an external types.xml file.`,
 
 (async () => {
   try {
+    if (_migrate) {
+      return await extract(_source, {
+        output: _output,
+      })
+    }
     return await generate(_source, {
       closure: _closure,
       externs: _externs,

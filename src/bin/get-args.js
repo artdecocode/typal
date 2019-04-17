@@ -19,6 +19,11 @@ export const argsConfig = {
     boolean: true,
     short: 'e',
   },
+  'migrate': {
+    description: 'Extracts types from JavaScript source code and saves them\ninto the types.xml file specified in the output option.',
+    boolean: true,
+    short: 'm',
+  },
   'help': {
     description: 'Print the help information and exit.',
     boolean: true,
@@ -53,6 +58,12 @@ export const _closure = /** @type {boolean} */ (args['closure'])
  * Whether to generate externs for _GCC_.
  */
 export const _externs = /** @type {boolean} */ (args['externs'])
+
+/**
+ * Extracts types from JavaScript source code and saves them
+    into the types.xml file specified in the output option.
+ */
+export const _migrate = /** @type {boolean} */ (args['migrate'])
 
 /**
  * Print the help information and exit.

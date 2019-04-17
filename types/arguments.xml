@@ -13,6 +13,10 @@
   <arg boolean name="externs" short="e">
     Whether to generate externs for _GCC_.
   </arg>
+  <arg boolean name="migrate" short="m">
+    Extracts types from JavaScript source code and saves them
+    into the types.xml file specified in the output option.
+  </arg>
   <arg boolean name="help" short="h">
     Print the help information and exit.
   </arg>
