@@ -51,7 +51,7 @@ _For example, the following file can be migrated with the `-m` command:_
 <tr><th>Using Migrate Command</th></tr>
 <tr><td>
 
-%EXAMPLE: test/fixture/extract/extract%
+%EXAMPLE: example/extract%
 </td></tr>
 <tr><td>
 
@@ -59,7 +59,7 @@ The types above can be extracted into the types file using the `typal src/index.
 </td></tr>
 <tr><td>
 
-%FORK-xml src/bin/typal test/fixture/extract/extract.js -m%
+%FORK-xml src/bin/typal example/extract.js -m%
 </td></tr>
 </table>
 

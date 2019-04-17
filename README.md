@@ -746,10 +746,6 @@ _For example, the following file can be migrated with the `-m` command:_
 <tr><td>
 
 ```js
-async function test() {
-  process.stdout.write('ttt')
-}
-
 /**
  * @typedef {import('koa-multer').StorageEngine} StorageEngine
  * @typedef {import('http').IncomingMessage} IncomingMessage
@@ -757,36 +753,16 @@ async function test() {
  */
 
 /**
- * @typedef {Object} Test This is test description.
+ * @typedef {Object} Example An example type.
  * @typedef {Object} SessionConfig Description of Session Config.
- * @prop {string} key cookie key.
- * @prop {number|'session'} [maxAge=86400000] maxAge in ms. Default is 1 day. `session` will result in a cookie that expires when session/browser is closed. Warning: If a session cookie is stolen, this cookie will never expire. Default `86400000`.
+ * @prop {string} key The cookie key.
+ * @prop {number|'session'} [maxAge=86400000] maxAge in ms. Default is 1 day.
  * @prop {boolean} [overwrite] Can overwrite or not. Default `true`.
  * @prop {boolean} [httpOnly] httpOnly or not or not. Default `true`.
  * @prop {boolean} [signed=false] Signed or not. Default `false`.
- * @prop {boolean} [rolling] Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. Default `false`.
- * @prop {boolean} [renew] Renew session when session is nearly expired, so we can always keep user logged in. Default `false`.
+ * @prop {boolean} [rolling] Force a session identifier cookie to be set.
+ * @prop {boolean} [renew] Renew session when session is nearly expired.
  */
-
-/**
- * @typedef {Object} Limits
- * @prop {number} [fieldNameSize] Max field name size (Default: 100 bytes).
- * @prop {number} [fieldSize] Max field value size (Default: 1MB).
- * @prop {number} [fields] Max number of non- file fields (Default: Infinity).
- * @prop {number} [fileSize] For multipart forms, the max file size (in bytes)(Default: Infinity).
- * @prop {number} [files] For multipart forms, the max number of file fields (Default: Infinity).
- * @prop {number} [parts] For multipart forms, the max number of parts (fields + files)(Default: Infinity).
- * @prop {number} [headerPairs] For multipart forms, the max number of header key=> value pairs to parse Default: 2000 (same as node's http).
- *
- * @typedef {Object} MulterConfig
- * @prop {string} [dest] Where to store the files.
- * @prop {StorageEngine} [storage] Where to store the files.
- * @prop {(req: IncomingMessage, file: File, callback: (error: Error | null, acceptFile: boolean)) => void} [fileFilter] Function to control which files are accepted.
- * @prop {Limits} [limits] Limits of the uploaded data.
- * @prop {boolean} [preservePath=false] Keep the full path of files instead of just the base name.
- */
-
-export default test
 ```
 </td></tr>
 <tr><td>
@@ -800,13 +776,13 @@ The types above can be extracted into the types file using the `typal src/index.
   <import name="StorageEngine" from="koa-multer" />
   <import name="IncomingMessage" from="http" />
   <import name="File" from="koa-multer" />
-  <type name="Test" desc="This is test description." />
+  <type name="Example" desc="An example type." />
   <type name="SessionConfig" desc="Description of Session Config.">
     <prop string name="key">
-      cookie key.
+      The cookie key.
     </prop>
     <prop type="number|'session'" name="maxAge" default="86400000">
-      maxAge in ms. Default is 1 day. `session` will result in a cookie that expires when session/browser is closed. Warning: If a session cookie is stolen, this cookie will never expire.
+      maxAge in ms. Default is 1 day.
     </prop>
     <prop boolean name="overwrite" default="true">
       Can overwrite or not.
@@ -817,51 +793,11 @@ The types above can be extracted into the types file using the `typal src/index.
     <prop boolean name="signed" default="false">
       Signed or not.
     </prop>
-    <prop boolean name="rolling" default="false">
-      Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown.
+    <prop opt boolean name="rolling">
+      Force a session identifier cookie to be set.
     </prop>
-    <prop boolean name="renew" default="false">
-      Renew session when session is nearly expired, so we can always keep user logged in.
-    </prop>
-  </type>
-  <type name="Limits">
-    <prop opt number name="fieldNameSize">
-      Max field name size (Default: 100 bytes).
-    </prop>
-    <prop opt number name="fieldSize">
-      Max field value size (Default: 1MB).
-    </prop>
-    <prop opt number name="fields">
-      Max number of non- file fields (Default: Infinity).
-    </prop>
-    <prop opt number name="fileSize">
-      For multipart forms, the max file size (in bytes)(Default: Infinity).
-    </prop>
-    <prop opt number name="files">
-      For multipart forms, the max number of file fields (Default: Infinity).
-    </prop>
-    <prop opt number name="parts">
-      For multipart forms, the max number of parts (fields + files)(Default: Infinity).
-    </prop>
-    <prop opt number name="headerPairs">
-      For multipart forms, the max number of header key=> value pairs to parse Default: 2000 (same as node's http).
-    </prop>
-  </type>
-  <type name="MulterConfig">
-    <prop opt string name="dest">
-      Where to store the files.
-    </prop>
-    <prop opt type="StorageEngine" name="storage">
-      Where to store the files.
-    </prop>
-    <prop opt type="(req: IncomingMessage, file: File, callback: (error: Error | null, acceptFile: boolean)) => void" name="fileFilter">
-      Function to control which files are accepted.
-    </prop>
-    <prop opt type="Limits" name="limits">
-      Limits of the uploaded data.
-    </prop>
-    <prop boolean name="preservePath" default="false">
-      Keep the full path of files instead of just the base name.
+    <prop opt boolean name="renew">
+      Renew session when session is nearly expired.
     </prop>
   </type>
 </types>
