@@ -31,6 +31,7 @@ yarn add -DE typal
   * [*Closure*](#closure)
   * [*Externs*](#externs)
   * [_Typal_ Arguments](#typal-arguments)
+  * [Migration](#migration)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -720,11 +721,155 @@ The following arguments are supported by this software.
     Whether to generate externs for <em>GCC</em>.
   </td>
   </tr>
+  <tr>
+    <td>--migrate</td>
+    <td>-m</td>
+    <td>
+      Extracts types from JavaScript source code and saves them
+          into the types.xml file specified in the output option.
+    </td>
+  </tr>
   <tr><td>--help</td><td>-h</td><td>Print the help information and exit.</td></tr>
   <tr><td>--version</td><td>-v</td><td>Show the version's number and exit.</td></tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
+
+### Migration
+
+When there are JSDoc types written in JavaScript files, and they need to be put in the `types.xml` file, it can be done automatically with the `--migrate` command. In this case, _Typal_ will scan the source code for the type definitions and their properties, defined as `@prop` or `@property` tags, and place them either in the output file when specified, or print to the stdout. This will help to move all types into XML declarations, which can then be manually adjusted if necessary, and embedded into the source code using the `/* typal types.xml */` marker, and in README documentation using [_Documentary_](https://artdecocode.com/documentary/)
+
+_For example, the following file can be migrated with the `-m` command:_
+
+<table>
+<tr><th>Using Migrate Command</th></tr>
+<tr><td>
+
+```js
+async function test() {
+  process.stdout.write('ttt')
+}
+
+/**
+ * @typedef {import('koa-multer').StorageEngine} StorageEngine
+ * @typedef {import('http').IncomingMessage} IncomingMessage
+ * @typedef {import('koa-multer').File} File
+ */
+
+/**
+ * @typedef {Object} Test This is test description.
+ * @typedef {Object} SessionConfig Description of Session Config.
+ * @prop {string} key cookie key.
+ * @prop {number|'session'} [maxAge=86400000] maxAge in ms. Default is 1 day. `session` will result in a cookie that expires when session/browser is closed. Warning: If a session cookie is stolen, this cookie will never expire. Default `86400000`.
+ * @prop {boolean} [overwrite] Can overwrite or not. Default `true`.
+ * @prop {boolean} [httpOnly] httpOnly or not or not. Default `true`.
+ * @prop {boolean} [signed=false] Signed or not. Default `false`.
+ * @prop {boolean} [rolling] Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. Default `false`.
+ * @prop {boolean} [renew] Renew session when session is nearly expired, so we can always keep user logged in. Default `false`.
+ */
+
+/**
+ * @typedef {Object} Limits
+ * @prop {number} [fieldNameSize] Max field name size (Default: 100 bytes).
+ * @prop {number} [fieldSize] Max field value size (Default: 1MB).
+ * @prop {number} [fields] Max number of non- file fields (Default: Infinity).
+ * @prop {number} [fileSize] For multipart forms, the max file size (in bytes)(Default: Infinity).
+ * @prop {number} [files] For multipart forms, the max number of file fields (Default: Infinity).
+ * @prop {number} [parts] For multipart forms, the max number of parts (fields + files)(Default: Infinity).
+ * @prop {number} [headerPairs] For multipart forms, the max number of header key=> value pairs to parse Default: 2000 (same as node's http).
+ *
+ * @typedef {Object} MulterConfig
+ * @prop {string} [dest] Where to store the files.
+ * @prop {StorageEngine} [storage] Where to store the files.
+ * @prop {(req: IncomingMessage, file: File, callback: (error: Error | null, acceptFile: boolean)) => void} [fileFilter] Function to control which files are accepted.
+ * @prop {Limits} [limits] Limits of the uploaded data.
+ * @prop {boolean} [preservePath=false] Keep the full path of files instead of just the base name.
+ */
+
+export default test
+```
+</td></tr>
+<tr><td>
+
+The types above can be extracted into the types file using the `typal src/index.js -m [-o types/index.xml]` command.
+</td></tr>
+<tr><td>
+
+```xml
+<types>
+  <import name="StorageEngine" from="koa-multer" />
+  <import name="IncomingMessage" from="http" />
+  <import name="File" from="koa-multer" />
+  <type name="Test" desc="This is test description." />
+  <type name="SessionConfig" desc="Description of Session Config.">
+    <prop string name="key">
+      cookie key.
+    </prop>
+    <prop type="number|'session'" name="maxAge" default="86400000">
+      maxAge in ms. Default is 1 day. `session` will result in a cookie that expires when session/browser is closed. Warning: If a session cookie is stolen, this cookie will never expire.
+    </prop>
+    <prop boolean name="overwrite" default="true">
+      Can overwrite or not.
+    </prop>
+    <prop boolean name="httpOnly" default="true">
+      httpOnly or not or not.
+    </prop>
+    <prop boolean name="signed" default="false">
+      Signed or not.
+    </prop>
+    <prop boolean name="rolling" default="false">
+      Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown.
+    </prop>
+    <prop boolean name="renew" default="false">
+      Renew session when session is nearly expired, so we can always keep user logged in.
+    </prop>
+  </type>
+  <type name="Limits">
+    <prop opt number name="fieldNameSize">
+      Max field name size (Default: 100 bytes).
+    </prop>
+    <prop opt number name="fieldSize">
+      Max field value size (Default: 1MB).
+    </prop>
+    <prop opt number name="fields">
+      Max number of non- file fields (Default: Infinity).
+    </prop>
+    <prop opt number name="fileSize">
+      For multipart forms, the max file size (in bytes)(Default: Infinity).
+    </prop>
+    <prop opt number name="files">
+      For multipart forms, the max number of file fields (Default: Infinity).
+    </prop>
+    <prop opt number name="parts">
+      For multipart forms, the max number of parts (fields + files)(Default: Infinity).
+    </prop>
+    <prop opt number name="headerPairs">
+      For multipart forms, the max number of header key=> value pairs to parse Default: 2000 (same as node's http).
+    </prop>
+  </type>
+  <type name="MulterConfig">
+    <prop opt string name="dest">
+      Where to store the files.
+    </prop>
+    <prop opt type="StorageEngine" name="storage">
+      Where to store the files.
+    </prop>
+    <prop opt type="(req: IncomingMessage, file: File, callback: (error: Error | null, acceptFile: boolean)) => void" name="fileFilter">
+      Function to control which files are accepted.
+    </prop>
+    <prop opt type="Limits" name="limits">
+      Limits of the uploaded data.
+    </prop>
+    <prop boolean name="preservePath" default="false">
+      Keep the full path of files instead of just the base name.
+    </prop>
+  </type>
+</types>
+```
+</td></tr>
+</table>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -736,19 +881,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -781,7 +926,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -966,7 +1111,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
