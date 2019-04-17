@@ -1,3 +1,11 @@
+## 17 April 2019
+
+### [1.3.0](https://github.com/artdecocode/typal/compare/v1.2.3...v1.3.0)
+
+- [feature] Compile binary with _Google Closure Compiler_ via [_Depack_](https://artdecocode.com/depack/).
+- [feature] Update library to support namespaces.
+- [doc] Write documentation.
+
 ## 4 April 2019
 
 ### [1.2.3](https://github.com/artdecocode/typal/compare/v1.2.2...v1.2.3)
