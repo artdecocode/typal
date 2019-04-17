@@ -31,7 +31,7 @@
     "typal": "depack/bin/typal.js",
     "args": "argufy types/arguments.xml -o src/bin/get-args.js"
   },
-  "bin": "depack/typal.js",
+  "bin": "depack/bin/typal.js",
   "files": [
     "build",
     "src",
