@@ -1,5 +1,6 @@
 let read = require('@wrote/read'); if (read && read.__esModule) read = read.default;
 const { makeBlock, importToTypedef } = require('../');
+const Type = require('../Type'); // eslint-disable-line
 const parseFile = require('../parse');
 const { closureJoinTypes, externsJoinTypes } = require('../closure');
 

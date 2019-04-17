@@ -1,3 +1,4 @@
+import { c } from 'erte'
 import Zoroaster from 'zoroaster'
 
 /**
@@ -5,7 +6,13 @@ import Zoroaster from 'zoroaster'
  */
 export default class Context {
   static get BIN() {
-    return process.env.ALAMODE_ENV == 'test-build' ? 'depack/bin/typal' : 'src/bin'
+    const [,, line] = new Error().stack.split('\n', 3)
+    const [, from] = /\((.+?)\)$/.exec(line)
+    if (process.env.ALAMODE_ENV == 'test-build') {
+      const b = 'depack/bin/typal.js'
+      console.log('Testing %s at %s', c(b, 'yellow'), from)
+      return b
+    } else return 'src/bin'
   }
   get typesLocation() {
     return 'test/fixture/types.xml'

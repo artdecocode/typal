@@ -11,8 +11,8 @@ if (_help) {
     usage,
     description: `Embeds and maintains Closure-compatible types JSDoc in
 JavaScript source code from an external types.xml file.`,
-    line: 'typal source [--closure|externs] [-o output] [-hv]',
-    example: 'typal types/index.xml -c',
+    line: 'typal source [--closure|externs] [--migrate] [-o output] [-hv]',
+    example: 'typal src/index.js -c',
   }))
   process.exit()
 } else if (_version) {
