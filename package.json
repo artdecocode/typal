@@ -1,7 +1,7 @@
 {
   "name": "typal",
   "version": "1.2.3",
-  "description": "Keeps JSDoc types in XML files and converts them to JavaScript and Markdown.",
+  "description": "Organises TypeDefs By Placing Them Into Types.Xml File To Be Embedded Into Source Code Compatible With VSCode And Google Closure Compiler, Generates Externs And Allows To Place Documentation In README Markdown.",
   "main": "build/index.js",
   "module": "src/index.js",
   "scripts": {
@@ -44,9 +44,11 @@
   "keywords": [
     "typal",
     "jsdoc",
+    "typedef",
+    "type",
+    "types",
     "documentation",
     "doc",
-    "types",
     "gcc",
     "closure",
     "google closure compiler",
