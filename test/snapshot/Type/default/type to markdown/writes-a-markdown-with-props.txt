@@ -10,13 +10,13 @@ __[`Type`](t-type)__: A test type.
   ],
   [
     "__root*__",
-    "_string_",
+    "<em>string</em>",
     "Root directory string.",
     "-"
   ],
   [
     "maxage",
-    "_number_",
+    "<em>number</em>",
     "Browser cache max-age in milliseconds.",
     "`0`"
   ]

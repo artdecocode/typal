@@ -15,7 +15,7 @@
   ],
   [
     "__prop1*__",
-    "_string_",
+    "<em>string</em>",
     "`echo abc \\| node consume.js`"
   ]
 ]
@@ -39,7 +39,7 @@
   ],
   [
     "__prop1*__",
-    "_string \\| number_",
+    "<em>string \\| number</em>",
     "The prop."
   ]
 ]

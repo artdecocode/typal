@@ -11,12 +11,17 @@ const ts = {
   'can link types in Object'() {
     const type = 'Object.<string, Type>'
     const res = getLinks([{ fullName: 'Type' }], type)
-    equal(res, 'Object.<string, [Type](#type-type)>')
+    equal(res, 'Object<string, [Type](#type-type)>')
   },
   'can link types in Promise'() {
     const type = 'Promise.<Type>'
     const res = getLinks([{ fullName: 'Type' }], type)
-    equal(res, 'Promise.<[Type](#type-type)>')
+    equal(res, 'Promise<[Type](#type-type)>')
+  },
+  'can link types in function'() {
+    const type = 'function(Type)'
+    const res = getLinks([{ fullName: 'Type' }], type)
+    equal(res, 'function([Type](#type-type))')
   },
 }
 

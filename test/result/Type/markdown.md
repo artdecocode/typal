@@ -18,12 +18,12 @@ __[`Test`](t-type)__
   ],
   [
     "__p*__",
-    "_boolean_",
+    "<em>boolean</em>",
     "Prop desc"
   ],
   [
     "p1",
-    "_string_",
+    "<em>string</em>",
     "Prop desc"
   ]
 ]
@@ -51,7 +51,7 @@ __[`Test`](t-type)__
   ],
   [
     "__p*__",
-    "_[!stream.Readable](#type-streamreadable)_",
+    "<em>[!stream.Readable](#type-streamreadable)</em>",
     "Prop desc"
   ]
 ]

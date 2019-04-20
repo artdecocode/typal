@@ -179,7 +179,14 @@ const getSpread = (properties = [], closure = false) => {
   const types = m.map(({ gen, generic, string = '', t }) => {
     if (gen) {
       const pp = getLinks(allTypes, generic)
-      return `${gen}.<${string}${pp}>`
+      return `${gen}<${string}${pp}>`
+    } else if (/^function\(.+?\)$/.test(t)) {
+      const [,vars] = /^function\((.+?)\)$/.exec(t)
+      const allVars = vars.split(',').map(v => v.trim())
+      const pp = allVars.map(v => {
+        return getLinks(allTypes, v)
+      })
+      return `function(${pp.join(', ')})`
     }
     const link = getLinkToType(allTypes, t)
     if (!link) return t
@@ -203,7 +210,7 @@ const getSpread = (properties = [], closure = false) => {
       getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type)
     const name = prop.optional ? prop.name : `__${prop.name}*__`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
-    return [name, `_${esc(linkedType)}_`, esc(prop.description), d]
+    return [name, `<em>${esc(linkedType)}</em>`, esc(prop.description), d]
   })
   const pre = [h, ...ps]
   const res = anyHaveDefault

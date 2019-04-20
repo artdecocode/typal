@@ -9,7 +9,7 @@
   ],
   [
     "__prop1*__",
-    "_string_",
+    "<em>string</em>",
     "`echo abc \\| node consume.js`"
   ]
 ]
