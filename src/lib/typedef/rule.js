@@ -1,6 +1,7 @@
 import read from '@wrote/read'
 import { makeBlock, importToTypedef } from '../'
 import Type from '../Type' // eslint-disable-line
+import JSTypal from '../JSTypal' // eslint-disable-line
 import parseFile from '../parse'
 import { closureJoinTypes, externsJoinTypes } from '../closure'
 
@@ -11,7 +12,7 @@ export const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\
 
 /**
  * @suppress {globalThis}
- * @type {function(this: { namespaces: !Array<string>, emit: function(string, *), LOG: function(...string), conf: { closure: boolean, externs: boolean } }, ...string): !Promise<string>}
+ * @type {function(this:JSTypal, ...string): !Promise<string>}
  */
 async function replacement(match, docOrTypal, location) {
   const { closure, externs } = this.conf // for closure, suppress typedef

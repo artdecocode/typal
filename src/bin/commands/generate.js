@@ -4,7 +4,7 @@ import { collect } from 'catchment'
 import readDirStructure, { getFiles } from '@wrote/read-dir-structure'
 import { lstat } from 'fs'
 import makePromise from 'makepromise'
-import JSTypal from '../../lib/JSTypal'
+import makeJSTypal from '../../lib/make-JSTypal'
 
 export default async (source, opts = {}) => {
   const { closure = false, externs = false, output } = opts
@@ -25,7 +25,7 @@ export default async (source, opts = {}) => {
 const processFiles = async (files, closure = false, externs = false, output = null) => {
   await Promise.all(files.map(async (file) => {
     const content = await read(file)
-    const js = new JSTypal({ closure, externs })
+    const js = makeJSTypal({ closure, externs })
     js.LOG = console.error
     js.end(content)
     const res = await collect(js)

@@ -425,10 +425,18 @@ restream@3.1.1:
   resolved "https://registry.yarnpkg.com/restream/-/restream-3.1.1.tgz#36084997bd3e765c2da484700e16b850c2f9ffb4"
   integrity sha512-mFHfHno39K371GeDxN07bDK6LtGqoA0PQVePRAQ1kwWVgjDiwkHhLif/4HrCoCWNIv6SXLHePCiMomX4j5Y5ZA==
 
-restream@^3.6.0, restream@^3.7.0:
+restream@^3.6.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/restream/-/restream-3.7.0.tgz#160d815878c507f76df3bba717bcf9434927e14d"
   integrity sha512-cLM0KJFXIm1cjuScEmrI6x/z9zpuUKJn1Kkxe1RPEbBauTcuwgaCT1bbNx/g7brAG1HsxOnvG9Q4jZlSknap0A==
+  dependencies:
+    "@artdeco/clean-stack" "^1.1.1"
+    catchment "^3.3.0"
+
+restream@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/restream/-/restream-3.7.1.tgz#4ffefbd2a008965413e90d50fa7f0898889b3a61"
+  integrity sha512-OZLcbqwcZ1VMW3MziEjE4xaeqXvl8r367pBmgviRNl3dywyzdi+ueKFW5p1qPaYaZwIRvaR/TqAlB0XKJVX90g==
   dependencies:
     "@artdeco/clean-stack" "^1.1.1"
     catchment "^3.3.0"
