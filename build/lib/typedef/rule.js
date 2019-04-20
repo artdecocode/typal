@@ -1,6 +1,7 @@
 let read = require('@wrote/read'); if (read && read.__esModule) read = read.default;
 const { makeBlock, importToTypedef } = require('../');
 const Type = require('../Type'); // eslint-disable-line
+const JSTypal = require('../JSTypal'); // eslint-disable-line
 const parseFile = require('../parse');
 const { closureJoinTypes, externsJoinTypes } = require('../closure');
 
@@ -11,7 +12,7 @@ const { closureJoinTypes, externsJoinTypes } = require('../closure');
 
 /**
  * @suppress {globalThis}
- * @type {function(this: { namespaces: !Array<string>, emit: function(string, *), LOG: function(...string), conf: { closure: boolean, externs: boolean } }, ...string): !Promise<string>}
+ * @type {function(this:JSTypal, ...string): !Promise<string>}
  */
 async function replacement(match, docOrTypal, location) {
   const { closure, externs } = this.conf // for closure, suppress typedef

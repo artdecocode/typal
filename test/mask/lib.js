@@ -1,6 +1,6 @@
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
-import JSTypal from '../../src/lib/JSTypal'
+import makeJSTypal from '../../src/lib/make-JSTypal'
 
 export default makeTestSuite('test/result/js-typal', {
   context: TempContext,
@@ -10,7 +10,7 @@ export default makeTestSuite('test/result/js-typal', {
   async getTransform({ write }) {
     if (this.types) await write('types.xml', this.types)
     let conf; this.conf && eval(`conf = ${this.conf}`)
-    const js = new JSTypal(conf)
+    const js = makeJSTypal(conf)
     js.LOG = () => {}
     return js
   },

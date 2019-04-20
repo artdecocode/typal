@@ -2,7 +2,7 @@ import { ok } from 'zoroaster/assert'
 import { collect } from 'catchment'
 import Zoroaster from 'zoroaster'
 import Context, { MarkdownSnapshot } from '../context'
-import Typal from '../../src/lib/JSTypal'
+import makeJsTypal from '../../src/lib/make-JSTypal'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {
@@ -11,7 +11,7 @@ const T = {
     const s = `/* documentary ${typesLocation} */
 
 `
-    const stream = new Typal()
+    const stream = makeJsTypal()
     stream.end(s)
     return stream
   },
@@ -24,7 +24,7 @@ const T = {
  */
 
 export default test`
-    const stream = new Typal()
+    const stream = makeJsTypal()
     stream.end(s)
     return stream
   },
@@ -40,7 +40,7 @@ export const meta = {
 /* documentary ${typesLocation} */
 
 `
-    const stream = new Typal()
+    const stream = makeJsTypal()
     stream.end(s)
     await collect(stream)
     ok('StaticConfig' in stream.types)
@@ -59,7 +59,7 @@ function configure(config) {
 /* documentary ${typesLocation} */
 
 export default configure`
-    const stream = new Typal()
+    const stream = makeJsTypal()
     stream.end(s)
     const res = await collect(stream)
     snapshotExtension('js')
@@ -81,7 +81,7 @@ function configure(config) {
 /* documentary ${typesLocation} */
 
 export default configure`
-    const stream = new Typal()
+    const stream = makeJsTypal()
     stream.end(s)
     const res = await collect(stream)
     snapshotExtension('js')
@@ -108,7 +108,7 @@ function configure(config) {
 /* documentary ${typesLocation} */
 
 export default configure`
-    const stream = new Typal()
+    const stream = makeJsTypal()
     stream.end(s)
     const res = await collect(stream)
     snapshotSource('expands the type in function\'s JSDoc', 'js')

@@ -1,11 +1,9 @@
 const { Replaceable } = require('restream');
-const typedefJsRule = require('./typedef/rule');
-const JSDocRule = require('./typedef/jsdoc');
 const Type = require('./Type'); // eslint-disable-line
 
                class JSTypal extends Replaceable {
-  constructor(conf = {}) {
-    super([typedefJsRule, JSDocRule])
+  constructor(rules, conf = {}) {
+    super(rules)
     this._types = {}
 
     this.on('types', typedefs => {
@@ -14,14 +12,15 @@ const Type = require('./Type'); // eslint-disable-line
     this.on('namespace', namespace => {
       this.addNamespace(namespace)
     })
+    /** @type {{ closure: boolean, externs: boolean }} */
     this.conf = conf
-    /** @type {Array<string>} */
+    /** @type {!Array<string>} */
     this.namespaces = []
     this.LOG = console.log
   }
   /**
    * Add types emitted during typedefJsRule replacement.
-   * @param {Array<Type>} typedefs
+   * @param {!Array<!Type>} typedefs
    */
   addTypes(typedefs) {
     const typedefsHash = typedefs.reduce((acc, typedef) => {
@@ -43,16 +42,11 @@ const Type = require('./Type'); // eslint-disable-line
       this.namespaces.push(namespace)
   }
   /**
-   * @type {Object.<string, Type>}
+   * @type {!Object.<string, !Type>}
    */
   get types() {
     return this._types
   }
 }
-
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {import('../lib/Type').default} Type
- */
 
 module.exports = JSTypal

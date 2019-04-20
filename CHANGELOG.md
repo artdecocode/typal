@@ -1,3 +1,9 @@
+## 20 April 2019
+
+### [1.3.2](https://github.com/artdecocode/typal/compare/v1.3.1...v1.3.2)
+
+- [feature] Basic parsing of the types in a function type, to link.
+
 ## 17 April 2019
 
 ### [1.3.1](https://github.com/artdecocode/typal/compare/v1.3.0...v1.3.1)

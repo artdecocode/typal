@@ -181,7 +181,8 @@ const getSpread = (properties = [], closure = false) => {
       const pp = getLinks(allTypes, generic)
       return `${gen}<${string}${pp}>`
     } else if (/^function\(.+?\)$/.test(t)) {
-      const [,vars] = /^function\((.+?)\)$/.exec(t)
+      const [,vars] = /** @type {!RegExpResult} */
+        (/^function\((.+?)\)$/.exec(t))
       const allVars = vars.split(',').map(v => v.trim())
       const pp = allVars.map(v => {
         return getLinks(allTypes, v)
