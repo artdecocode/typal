@@ -32,6 +32,7 @@ yarn add -DE typal
   * [*Externs*](#externs)
   * [_Typal_ Arguments](#typal-arguments)
   * [Migration](#migration)
+- [Schema](#schema)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -536,7 +537,7 @@ java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.
 ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
-Running Google Closure Compiler target...         
+Running Google Closure Compiler target..          
 ```
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
@@ -804,6 +805,21 @@ For example, the types above can be extracted into the types file using the <cod
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
 
+## Schema
+
+The types can be defined according to the following schema.
+
+**
+```xml
+<types
+  namespace>
+```
+**
+
+The single root element for the XML file.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+
 ## API
 
 The package is available by importing its named functions and classes:
@@ -814,19 +830,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -859,7 +875,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -917,7 +933,9 @@ _The result will contain Types and Imports:_
        noExpand: false,
        link: null,
        properties: [],
-       namespace: null },
+       namespace: null,
+       isConstructor: false,
+       extends: null },
      Type {
        name: 'StaticConfig',
        type: null,
@@ -953,7 +971,9 @@ _The result will contain Types and Imports:_
             hasDefault: true,
             default: false,
             optional: true } ],
-       namespace: null } ],
+       namespace: null,
+       isConstructor: false,
+       extends: null } ],
   imports: 
    [ { name: 'ServerResponse',
        from: 'http',
@@ -1008,7 +1028,9 @@ const getFile = async () => {
        noExpand: false,
        link: null,
        properties: [],
-       namespace: null },
+       namespace: null,
+       isConstructor: false,
+       extends: null },
      Type {
        name: 'GoodMorning',
        type: 'HelloWorld',
@@ -1020,7 +1042,9 @@ const getFile = async () => {
        noExpand: false,
        link: null,
        properties: [],
-       namespace: null },
+       namespace: null,
+       isConstructor: false,
+       extends: null },
      Type {
        name: 'Conf',
        type: null,
@@ -1040,11 +1064,13 @@ const getFile = async () => {
             hasDefault: false,
             default: null,
             optional: false } ],
-       namespace: null } ],
+       namespace: null,
+       isConstructor: false,
+       extends: null } ],
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
