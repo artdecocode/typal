@@ -19,7 +19,7 @@ async function replacement(match, docOrTypal, location) {
   try {
     this.LOG('Detected type marker: %s', location)
     const xml = await read(location)
-    const { namespace, types, imports } = parseFile(xml)
+    const { namespace = null, types, imports } = parseFile(xml)
 
     this.emit('types', types) // remember types for js-replace-stream
 
@@ -27,7 +27,7 @@ async function replacement(match, docOrTypal, location) {
     if (closure) {
       block = closureJoinTypes(imports, types)
     } else if (externs) {
-      block = externsJoinTypes(imports, types, namespace, this.namespaces) + '\n'
+      block = externsJoinTypes(types, namespace, this.namespaces) + '\n'
       if (namespace) this.emit('namespace', namespace)
     } else {
       block = joinTypes(imports, types)

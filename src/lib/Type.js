@@ -91,6 +91,7 @@ _ns.Type.prototype.constructor
     if (namespace) this.namespace = namespace
   }
   toExtern() {
+    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
     let s
     if (this.closureType) {
       s = ` * @typedef {${this.closureType}}`
@@ -133,6 +134,7 @@ _ns.Type.prototype.constructor
     return `${pre}${typedef}`
   }
   toPrototype() {
+    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
     const pp = []
     if (this.description) pp.push(` * ${this.description}`)
     if (this.extends) pp.push(` * @extends {${this.extends}}`)
@@ -142,7 +144,8 @@ _ns.Type.prototype.constructor
     const t = this.properties.map((p) => {
       let r = p.toExtern()
       r = makeBlock(r)
-      r = r + getExternDeclaration(`${this.fullName}.prototype`, p.name)
+      r = r + getExternDeclaration(`${this.fullName}.prototype`,
+        /** @type {string} */ (p.name))
       return r
     })
     const j = [s, ...t].join('\n')

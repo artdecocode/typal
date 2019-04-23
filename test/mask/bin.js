@@ -71,3 +71,27 @@ export const extract = makeTestSuite('test/result/bin/extract', {
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
 })
+
+export const externs = makeTestSuite('test/result/js-typal/externs', {
+  context: TempContext,
+  fork: {
+    module: Context.BIN,
+    /**
+     * @param {string} args
+     * @param {TempContext} t
+     */
+    async getArgs(args, { write }) {
+      if (this.types) await write('types.xml', this.types)
+      const p = await write('program.js', this.input)
+      return [p, '-e']
+    },
+  },
+  /**
+   * @param {TempContext} t
+   */
+  async getResults(input, { read }) {
+    return read('program.js')
+  },
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})

@@ -1,7 +1,7 @@
 let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
 const Property = require('./Property');
-const { getLink, addSuppress, makeBlock } = require('./');
+const { getLink, addSuppress, makeBlock, getExternDeclaration } = require('./');
 
 /**
  * A representation of a type.
@@ -40,12 +40,29 @@ const { getLink, addSuppress, makeBlock } = require('./');
      * @type {?string}
      */
     this.namespace = null
+    /**
+     * @type {boolean}
+     * Whether the externs should have the form of
+```js
+/＊＊ @constructor ＊/
+_ns.Type
+/＊＊ @boolean ＊/
+_ns.Type.prototype.constructor
+```
+     */
+    this.isConstructor = false
+    /**
+     * Types `@constructor`, `@interface` and `@record` can inherit properties from other types using `@extends`.
+     * @see https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type
+     * @type {?string}
+     */
+    this.extends = null
   }
   /**
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
-    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure,
+    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 'constructor': isConstructor, 'extends': ext,
   }, namespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -59,6 +76,8 @@ const { getLink, addSuppress, makeBlock } = require('./');
     this.noExpand = !!noExpand
     this.import = !!i
     if (link) this.link = link
+    if (isConstructor === true) this.isConstructor = isConstructor
+    if (ext) this.extends = ext
 
     if (content) {
       const ps = extractTags('prop', content)
@@ -71,14 +90,23 @@ const { getLink, addSuppress, makeBlock } = require('./');
     }
     if (namespace) this.namespace = namespace
   }
-  toExtern(nullable = false) {
+  toExtern() {
+    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
+    let s
     if (this.closureType) {
-      const s = ` * @typedef {${nullable ? '!' : ''}${this.closureType}}`
+      s = ` * @typedef {${this.closureType}}`
+    } else if (!this.isConstructor) {
+      const nn = getSpread(this.properties, true)
+      s = ` * @typedef {${nn}}`
+    }
+    if (s) {
+      if (this.description) s = ` * ${this.description}\n${s}`
+      s = makeBlock(s)
+      s = s + getExternDeclaration(this.namespace, this.name)
       return s
     }
-    const nn = getSpread(this.properties, true)
-    const s = ` * @typedef {${nullable ? '!' : ''}${nn}}`
-    return s
+    // constructor
+    return this.toPrototype()
   }
   toTypedef(closure = false) {
     const t = (closure ? this.closureType : this.type) || 'Object'
@@ -104,6 +132,24 @@ const { getLink, addSuppress, makeBlock } = require('./');
     if (closure) typedef = addSuppress(typedef)
     typedef = makeBlock(typedef)
     return `${pre}${typedef}`
+  }
+  toPrototype() {
+    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
+    const pp = []
+    if (this.description) pp.push(` * ${this.description}`)
+    if (this.extends) pp.push(` * @extends {${this.extends}}`)
+    pp.push(' * @constructor')
+    let s = makeBlock(pp.join('\n'))
+    s = s + getExternDeclaration(this.namespace, this.name)
+    const t = this.properties.map((p) => {
+      let r = p.toExtern()
+      r = makeBlock(r)
+      r = r + getExternDeclaration(`${this.fullName}.prototype`,
+        /** @type {string} */ (p.name))
+      return r
+    })
+    const j = [s, ...t].join('\n')
+    return j
   }
   get ns() {
     if (this.namespace) return `${this.namespace}.`

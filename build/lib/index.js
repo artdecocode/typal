@@ -71,9 +71,21 @@ ${line}`
   return m
 }
 
+/**
+ * @param {?string} namespace
+ * @param {string} name
+ */
+       const getExternDeclaration = (namespace, name) => {
+  const ns = namespace ? `${namespace}.` : ''
+  const v = namespace ? '' : 'var '
+  const res = `${v}${ns}${name}`
+  return res
+}
+
 module.exports.getNameWithDefault = getNameWithDefault
 module.exports.getPropType = getPropType
 module.exports.getLink = getLink
 module.exports.makeBlock = makeBlock
 module.exports.importToTypedef = importToTypedef
 module.exports.addSuppress = addSuppress
+module.exports.getExternDeclaration = getExternDeclaration

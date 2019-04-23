@@ -1,6 +1,6 @@
 const { builtinModules } = require('module');
 const Type = require('../Type'); // eslint-disable-line
-const { makeBlock, importToTypedef, addSuppress } = require('../');
+const { makeBlock, importToTypedef, addSuppress, getExternDeclaration } = require('../');
 
        const importToExtern = (Import, namespace) => {
   let a
@@ -14,13 +14,6 @@ const { makeBlock, importToTypedef, addSuppress } = require('../');
   }
   const b = makeBlock(` * @typedef {${a}}`)
   return `${b}${getExternDeclaration(namespace, Import.name)}`
-}
-
-const getExternDeclaration = (namespace, name) => {
-  const ns = namespace ? `${namespace}.` : ''
-  const v = namespace ? '' : 'var '
-  const res = `${v}${ns}${name}`
-  return res
 }
 
 /**
@@ -41,12 +34,14 @@ const getExternDeclaration = (namespace, name) => {
   return blocks.join('')
 }
 
-       const externsJoinTypes = (imports, types, namespace, currentNamespaces) => {
+/**
+ * @param {!Array<!Type>} types
+ * @param {?string} namespace
+ * @param {!Array<string>} currentNamespaces
+ */
+       const externsJoinTypes = (types, namespace, currentNamespaces) => {
   const tblocks = types.map((t) => {
-    const m = t.toExtern()
-    const b = makeBlock(m)
-    // const v = namespace ? 'var ' : ''
-    return `${b}${getExternDeclaration(namespace, t.name)}`
+    return t.toExtern()
   })
   const iblocks = [] // currently no imports in types.
   // imports.map((i) => {
