@@ -33,6 +33,9 @@ yarn add -DE typal
   * [_Typal_ Arguments](#typal-arguments)
   * [Migration](#migration)
 - [Schema](#schema)
+  * [Types](#types)
+  * [Type](#type)
+  * [Property](#property)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -807,15 +810,14 @@ For example, the types above can be extracted into the types file using the <cod
 
 ## Schema
 
-The types can be defined according to the following schema.
+The types can be defined according to the following schema. It consists of the `types`, `type` and `property` elements.
 
-<strong>
+### Types
 
 ```xml
 <types
   namespace?="_namespace">
 ```
-</strong>
 
 The single root element for the XML file.
 
@@ -844,7 +846,9 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
-<strong>
+### Type
+
+The type represents a _JSDoc_ type.
 
 ```xml
 <type
@@ -854,8 +858,9 @@ The single root element for the XML file.
   constructor?
   extends?="_namespace.ParentType"
   closure?="function(string): number">
+    <prop name="...">...</prop>
+</type>
 ```
-</strong>
 
 - `name`: the name of the type.
 - `desc` [_optional_]: the optional description.
@@ -873,11 +878,34 @@ The single root element for the XML file.
     _test.Test
     /**
      * A prop.
-     * @type {boolean}
+     * @type {(boolean|undefined)}
      */
     _test.Test.prototype.bool
     ```
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
+- `closure` [_optional_]: an override of the type when generating doc in closure mode.
+
+### Property
+
+The properties are found inside of the `Type` elements. At the moment, the *must* have a description, otherwise the parsing won't work.
+
+```xml
+<prop
+  name="property"
+  string? boolean? number? type?="Type"
+  opt? default?="The default value"
+  closure?="_ns.Type">
+Property Description.
+</prop>
+```
+
+- `name`: the name of the property.
+- `string` [_optional_]: sets the type to be `string`.
+- `boolean` [_optional_]: sets the type to be `boolean`.
+- `number` [_optional_]: sets the type to be `number`.
+- `type` [_optional_]: sets the type of the property. Default `*`.
+- `opt` [_optional_]: whether the property is optional. In externs this will result in `{ prop: (string|undefined) }`.
+- `default` [_optional_]: the default value of the property. Used to add the `Default: value.` to the property description, and `@param {type} [prop=default]` when annotating JS functions.
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>

@@ -1,14 +1,13 @@
 ## Schema
 
-The types can be defined according to the following schema.
+The types can be defined according to the following schema. It consists of the `types`, `type` and `property` elements.
 
-<strong>
+### Types
 
 ```xml
 <types
   namespace?="_namespace">
 ```
-</strong>
 
 The single root element for the XML file.
 
@@ -37,7 +36,9 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
-<strong>
+### Type
+
+The type represents a _JSDoc_ type.
 
 ```xml
 <type
@@ -50,7 +51,6 @@ The single root element for the XML file.
     <prop name="...">...</prop>
 </type>
 ```
-</strong>
 
 - `name`: the name of the type.
 - `desc` [_optional_]: the optional description.
@@ -60,7 +60,9 @@ The single root element for the XML file.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
-<strong>
+### Property
+
+The properties are found inside of the `Type` elements. At the moment, the *must* have a description, otherwise the parsing won't work.
 
 ```xml
 <prop
@@ -71,7 +73,6 @@ The single root element for the XML file.
 Property Description.
 </prop>
 ```
-</strong>
 
 - `name`: the name of the property.
 - `string` [_optional_]: sets the type to be `string`.
