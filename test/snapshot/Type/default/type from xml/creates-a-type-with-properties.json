@@ -28,5 +28,7 @@
       "optional": true
     }
   ],
-  "namespace": null
+  "namespace": null,
+  "isConstructor": false,
+  "extends": null
 }

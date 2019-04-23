@@ -9,5 +9,7 @@
   "noExpand": false,
   "link": null,
   "properties": [],
-  "namespace": null
+  "namespace": null,
+  "isConstructor": false,
+  "extends": null
 }

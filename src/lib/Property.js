@@ -75,6 +75,16 @@ export default class Property {
     const p = ` * @prop ${s}`
     return p
   }
+  toExtern() {
+    const pp = []
+    if (this.description) {
+      let d = ` * ${this.description}`
+      if (this.default) d += ` Default \`${this.default}\`.`
+      pp.push(d)
+    }
+    pp.push(` * @type {${this.closureType}}`)
+    return pp.join('\n')
+  }
   toParam(parentParam, ws = '', closure = false) {
     const s = this.toJSDoc(parentParam, closure)
     const p = `${ws} * @param ${s}`

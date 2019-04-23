@@ -70,3 +70,14 @@ export const addSuppress = (line) => {
 ${line}`
   return m
 }
+
+/**
+ * @param {?string} namespace
+ * @param {string} name
+ */
+export const getExternDeclaration = (namespace, name) => {
+  const ns = namespace ? `${namespace}.` : ''
+  const v = namespace ? '' : 'var '
+  const res = `${v}${ns}${name}`
+  return res
+}
