@@ -819,7 +819,7 @@ The types can be defined according to the following schema.
 
 The single root element for the XML file.
 
-- `namespace` [_optional_] is how all types will be prefixed in the source code and externs. The use of namespaces is generally only needed for when using _GCC_ to prevent clashes of types, e.g., it is common to name the config objects _"Config"_. The namespace will typically start with `_` to also prevent variable name clashes with extern namespaces.
+- `namespace` [_optional_]: how all types will be prefixed in the source code and externs. The use of namespaces is generally only needed for when using _GCC_ to prevent clashes of types, e.g., it is common to name the config objects _"Config"_. The namespace will typically start with `_` to also prevent variable name clashes with extern namespaces.
     ```js
     // SOURCE.js
     // The first line is to enable exporting via VSCode's typedef import.
@@ -843,6 +843,42 @@ The single root element for the XML file.
     /** @typedef { myType: boolean } */
     _namespace.Type
     ```
+
+<strong>
+
+```xml
+<type
+  name="Type"
+  desc="The description of the type."
+  type?="(name: string) => number"
+  constructor?
+  extends?="_namespace.ParentType"
+  closure?="function(string): number">
+```
+</strong>
+
+- `name`: the name of the type.
+- `desc` [_optional_]: the optional description.
+- `type` [_optional_]: what is the type, default `Object`.
+- `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the `prototype`:
+    ```js
+    /* typal example/schema/constructor.xml */
+    /** @const */
+    var _test = {}
+    /**
+     * The example type.
+     * @extends {_ns.ParentType}
+     * @constructor
+     */
+    _test.Test
+    /**
+     * A prop.
+     * @type {boolean}
+     */
+    _test.Test.prototype.bool
+    ```
+- `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
+- `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
 

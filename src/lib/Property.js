@@ -82,7 +82,8 @@ export default class Property {
       if (this.default) d += ` Default \`${this.default}\`.`
       pp.push(d)
     }
-    pp.push(` * @type {${this.closureType}}`)
+    const t = this.optional ? `(${this.closureType}|undefined)` : this.closureType
+    pp.push(` * @type {${t}}`)
     return pp.join('\n')
   }
   toParam(parentParam, ws = '', closure = false) {

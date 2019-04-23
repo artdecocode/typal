@@ -119,7 +119,7 @@ var Test
 <types>
   <type extends="_restream.Replaceable" constructor
     name="Test" desc="The test class.">
-    <prop boolean opt name="bool">A prop.</prop>
+    <prop boolean name="bool">A prop.</prop>
     <prop string name="str" default="hello">B prop.</prop>
   </type>
 </types>
@@ -140,7 +140,7 @@ var Test
 Test.prototype.bool
 /**
  * B prop. Default `hello`.
- * @type {string}
+ * @type {(string|undefined)}
  */
 Test.prototype.str
 
@@ -172,7 +172,7 @@ var _test = {}
 _test.Test
 /**
  * A prop.
- * @type {boolean}
+ * @type {(boolean|undefined)}
  */
 _test.Test.prototype.bool
 
