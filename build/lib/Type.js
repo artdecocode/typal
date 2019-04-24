@@ -10,9 +10,9 @@ const { getLink, addSuppress, makeBlock, getExternDeclaration } = require('./');
   constructor() {
     /**
      * The name of the type.
-     * @type {?string}
+     * @type {string}
      */
-    this.name = null
+    this.name = ''
     /** @type {?string} */
     this.type = null
     /**
@@ -52,6 +52,16 @@ _ns.Type.prototype.constructor
      */
     this.isConstructor = false
     /**
+     * @type {boolean}
+     * Same as `constructor`, but with `@interface` annotation.
+     */
+    this.isInterface = false
+    /**
+     * @type {boolean}
+     * Same as `constructor`, but with `@record` annotation.
+     */
+    this.isRecord = false
+    /**
      * Types `@constructor`, `@interface` and `@record` can inherit properties from other types using `@extends`.
      * @see https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type
      * @type {?string}
@@ -62,7 +72,7 @@ _ns.Type.prototype.constructor
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
-    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 'constructor': isConstructor, 'extends': ext,
+    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 'record': isRecord,
   }, namespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -77,6 +87,8 @@ _ns.Type.prototype.constructor
     this.import = !!i
     if (link) this.link = link
     if (isConstructor === true) this.isConstructor = isConstructor
+    if (isInterface === true) this.isInterface = isInterface
+    if (isRecord === true) this.isRecord = isRecord
     if (ext) this.extends = ext
 
     if (content) {
@@ -90,12 +102,14 @@ _ns.Type.prototype.constructor
     }
     if (namespace) this.namespace = namespace
   }
+  get shouldPrototype() {
+    return this.isConstructor || this.isInterface || this.isRecord
+  }
   toExtern() {
-    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
     let s
     if (this.closureType) {
       s = ` * @typedef {${this.closureType}}`
-    } else if (!this.isConstructor) {
+    } else if (!this.shouldPrototype) {
       const nn = getSpread(this.properties, true)
       s = ` * @typedef {${nn}}`
     }
@@ -108,37 +122,66 @@ _ns.Type.prototype.constructor
     // constructor
     return this.toPrototype()
   }
-  toTypedef(closure = false) {
+  getFullNameForExtends(closure) {
+    const name = `${this.extends ? '$' : ''}${this.name}`
+    const n = closure ? `${this.ns}${name}` : name
+    return n
+  }
+  /** This covers both when extending and when not. */
+  toNaturalTypedef(closure) {
     const t = (closure ? this.closureType : this.type) || 'Object'
     const d = this.description ? ` ${this.description}` : ''
-    const dd = ` ${closure ? this.fullName : this.name}${d}`
+    const dd = ` ${this.getFullNameForExtends(closure)}${d}`
     const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
       const sp = pr.toProp(closure)
       return sp
     }) : []
+    let typedef = [s, ...p].join('\n')
+    if (closure) typedef = addSuppress(typedef)
+    typedef = makeBlock(typedef)
+    return typedef
+  }
+  toTypedef(closure = false) {
+    const d = this.description ? ` ${this.description}` : ''
+    const hasExtends = !!this.extends
+    const natural = this.toNaturalTypedef(closure)
+
+    const parts = []
     // need this to be able to import types from other programs,
     // /⁎⁎
     //  ⁎ @typedef {ns.Type} Type The type (that can be imported)
     //  ⁎ @typedef {Object} ns.Type The type (to use in current file)
     //  ⁎/
-    let pre = ''
+    // let pre = ''
+
     if (this.namespace && closure) {
       let td = ` * @typedef {${this.fullName}} ${this.name}${d}`
       if (closure) td = addSuppress(td)
-      pre = makeBlock(td)
+      td = makeBlock(td)
+      parts.push(td)
     }
-    let typedef = [s, ...p].join('\n')
-    if (closure) typedef = addSuppress(typedef)
-    typedef = makeBlock(typedef)
-    return `${pre}${typedef}`
+    if (hasExtends) {
+      let extended = ` * @typedef {${this.extends} & ${this.getFullNameForExtends(closure)}} ${closure ? this.fullName : this.name}${d}`
+      if (closure) extended = addSuppress(extended)
+      extended = makeBlock(extended)
+      parts.push(extended)
+    }
+    parts.push(natural)
+
+    return parts.join('')
+  }
+  get prototypeAnnotation() {
+    if (this.isConstructor) return 'constructor'
+    if (this.isInterface) return 'interface'
+    if (this.isRecord) return 'record'
+    throw new Error('Unknown prototype type (not constructor or interface).')
   }
   toPrototype() {
-    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
     const pp = []
     if (this.description) pp.push(` * ${this.description}`)
     if (this.extends) pp.push(` * @extends {${this.extends}}`)
-    pp.push(' * @constructor')
+    pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
     s = s + getExternDeclaration(this.namespace, this.name)
     const t = this.properties.map((p) => {

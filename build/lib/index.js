@@ -60,11 +60,6 @@ ${s}
 `
 }
 
-       const importToTypedef = (Import, includeNamespace = true) => {
-  const n = includeNamespace ? `${Import.from}.${Import.name}` : Import.name
-  return ` * @typedef {import('${Import.from}').${Import.name}} ${n}`
-}
-
        const addSuppress = (line) => {
   const m = ` * @suppress {nonStandardJsDocs}
 ${line}`
@@ -86,6 +81,5 @@ module.exports.getNameWithDefault = getNameWithDefault
 module.exports.getPropType = getPropType
 module.exports.getLink = getLink
 module.exports.makeBlock = makeBlock
-module.exports.importToTypedef = importToTypedef
 module.exports.addSuppress = addSuppress
 module.exports.getExternDeclaration = getExternDeclaration

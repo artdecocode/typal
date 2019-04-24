@@ -1,7 +1,8 @@
 let read = require('@wrote/read'); if (read && read.__esModule) read = read.default;
-const { makeBlock, importToTypedef } = require('../');
+const { makeBlock } = require('../');
 const Type = require('../Type'); // eslint-disable-line
 const JSTypal = require('../JSTypal'); // eslint-disable-line
+const Import = require('../Import'); // eslint-disable-line
 const parseFile = require('../parse');
 const { closureJoinTypes, externsJoinTypes } = require('../closure');
 
@@ -49,13 +50,13 @@ const typedefRule = {
 
 /**
  * Creates a single typedef block from all imports and types.
- * @param {Array<{name:string, from:string}>} imports
+ * @param {Array<Import>} imports
  * @param {Array<Type>} types
  */
 const joinTypes = (imports, types) => {
   const ts = types.map(tt => tt.toTypedef())
 
-  const is = imports.map((i) => importToTypedef(i, false))
+  const is = imports.map((i) => i.toTypedef(false))
 
   const iss = is.map(makeBlock).join('')
   const tss = ts.join('')

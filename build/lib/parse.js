@@ -1,5 +1,6 @@
 let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
 const Type = require('./Type');
+const Import = require('./Import');
 
 /**
  * Parse the types.xml file.
@@ -32,11 +33,13 @@ const parseFile = (xml, rootNamespace) => {
     return type
   })
 
+
   const imports = extractTags('import', Root)
-    .map(({ props: {
-      'name': name, 'from': from,
-      'desc': desc, 'link': link,
-    } }) => ({ name, from, desc, link }))
+    .map(({ props }) => {
+      const im = new Import()
+      im.fromXML(props)
+      return im
+    })
 
   return { namespace, types, imports }
 }
