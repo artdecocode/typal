@@ -1,10 +1,8 @@
+{externs: true}
+
 ## generates externs
 /* typal test/fixture/types.xml */
 
-
-/*@ conf */
-{externs: true}
-/*@*/
 
 /*@ expected */
 /* typal test/fixture/types.xml */
@@ -24,10 +22,6 @@ var StaticConfig
 ## generates externs with closure types
 /* typal test/temp/types.xml */
 
-
-/*@ conf */
-{externs: true}
-/*@*/
 
 /*@ types */
 <types>
@@ -51,10 +45,6 @@ var Test
 
 /* typal test/temp/types.xml */
 
-
-/*@ conf */
-{externs: true}
-/*@*/
 
 /*@ types */
 <types namespace="ns">
@@ -85,10 +75,6 @@ ns.Test
 /* typal test/temp/types.xml */
 
 
-/*@ conf */
-{externs: true}
-/*@*/
-
 /*@ types */
 <types>
   <type name="Test">
@@ -110,10 +96,6 @@ var Test
 ## generates constructors
 /* typal test/temp/types.xml */
 
-
-/*@ conf */
-{externs: true}
-/*@*/
 
 /*@ types */
 <types>
@@ -149,10 +131,6 @@ Test.prototype.str
 ## generates constructors with namespace
 /* typal test/temp/types.xml */
 
-
-/*@ conf */
-{externs: true}
-/*@*/
 
 /*@ types */
 <types namespace="_test">

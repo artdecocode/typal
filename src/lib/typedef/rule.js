@@ -1,7 +1,8 @@
 import read from '@wrote/read'
-import { makeBlock, importToTypedef } from '../'
+import { makeBlock } from '../'
 import Type from '../Type' // eslint-disable-line
 import JSTypal from '../JSTypal' // eslint-disable-line
+import Import from '../Import' // eslint-disable-line
 import parseFile from '../parse'
 import { closureJoinTypes, externsJoinTypes } from '../closure'
 
@@ -49,13 +50,13 @@ const typedefRule = {
 
 /**
  * Creates a single typedef block from all imports and types.
- * @param {Array<{name:string, from:string}>} imports
+ * @param {Array<Import>} imports
  * @param {Array<Type>} types
  */
 const joinTypes = (imports, types) => {
   const ts = types.map(tt => tt.toTypedef())
 
-  const is = imports.map((i) => importToTypedef(i, false))
+  const is = imports.map((i) => i.toTypedef(false))
 
   const iss = is.map(makeBlock).join('')
   const tss = ts.join('')

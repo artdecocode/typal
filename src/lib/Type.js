@@ -10,9 +10,9 @@ export default class Type {
   constructor() {
     /**
      * The name of the type.
-     * @type {?string}
+     * @type {string}
      */
-    this.name = null
+    this.name = ''
     /** @type {?string} */
     this.type = null
     /**
@@ -91,7 +91,6 @@ _ns.Type.prototype.constructor
     if (namespace) this.namespace = namespace
   }
   toExtern() {
-    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
     let s
     if (this.closureType) {
       s = ` * @typedef {${this.closureType}}`
@@ -134,7 +133,6 @@ _ns.Type.prototype.constructor
     return `${pre}${typedef}`
   }
   toPrototype() {
-    if (!this.name) throw new Error('The type has not been constructed. Use `fromXML` method first.')
     const pp = []
     if (this.description) pp.push(` * ${this.description}`)
     if (this.extends) pp.push(` * @extends {${this.extends}}`)

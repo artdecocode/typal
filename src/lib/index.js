@@ -60,11 +60,6 @@ ${s}
 `
 }
 
-export const importToTypedef = (Import, includeNamespace = true) => {
-  const n = includeNamespace ? `${Import.from}.${Import.name}` : Import.name
-  return ` * @typedef {import('${Import.from}').${Import.name}} ${n}`
-}
-
 export const addSuppress = (line) => {
   const m = ` * @suppress {nonStandardJsDocs}
 ${line}`

@@ -1,25 +1,26 @@
-import { builtinModules } from 'module'
 import Type from '../Type' // eslint-disable-line
-import { makeBlock, importToTypedef, addSuppress, getExternDeclaration } from '../'
+import Import from '../Import' // eslint-disable-line
+import { makeBlock, addSuppress } from '../'
 
-export const importToExtern = (Import, namespace) => {
-  let a
-  if (builtinModules.includes(Import.from)) {
-    const from = ['process', 'console', 'module']
-      .includes(Import.from) ? `_${Import.from}` : Import.from
-    a = `${from}.${Import.name}`
-  } else {
-    console.warn('Unknown import in externs: %s.%s', Import.from, Import.name)
-    a = `import('${Import.from}').${Import.name}`
-  }
-  const b = makeBlock(` * @typedef {${a}}`)
-  return `${b}${getExternDeclaration(namespace, Import.name)}`
-}
+// import { builtinModules } from 'module'
+// export const importToExtern = (Import, namespace) => {
+//   let a
+//   if (builtinModules.includes(Import.from)) {
+//     const from = ['process', 'console', 'module']
+//       .includes(Import.from) ? `_${Import.from}` : Import.from
+//     a = `${from}.${Import.name}`
+//   } else {
+//     console.warn('Unknown import in externs: %s.%s', Import.from, Import.name)
+//     a = `import('${Import.from}').${Import.name}`
+//   }
+//   const b = makeBlock(` * @typedef {${a}}`)
+//   return `${b}${getExternDeclaration(namespace, Import.name)}`
+// }
 
 /**
  * Creates multiple blocks from all imports and types with suppressed `nonStandardJsDocs` warning for Google Closure Compiler.
- * @param {Array<{name:string, from:string}>} imports
- * @param {Array<Type>} types
+ * @param {!Array<!Import>} imports
+ * @param {!Array<!Type>} types
  */
 export const closureJoinTypes = (imports, types) => {
   const tblocks = types.map((t) => {
@@ -27,7 +28,7 @@ export const closureJoinTypes = (imports, types) => {
     return m
   })
   const iblocks = imports.map((i) => {
-    const m = makeBlock(addSuppress(importToTypedef(i)))
+    const m = makeBlock(addSuppress(i.toTypedef()))
     return m
   })
   const blocks = [...tblocks, ...iblocks]
@@ -43,7 +44,7 @@ export const externsJoinTypes = (types, namespace, currentNamespaces) => {
   const tblocks = types.map((t) => {
     return t.toExtern()
   })
-  const iblocks = [] // currently no imports in types.
+  const iblocks = [] // currently no imports in externs.
   // imports.map((i) => {
   //   const m = importToExtern(i, namespace)
   //   return m

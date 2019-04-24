@@ -9,7 +9,8 @@ export default makeTestSuite('test/result/js-typal', {
    */
   async getTransform({ write }) {
     if (this.types) await write('types.xml', this.types)
-    let conf; this.conf && eval(`conf = ${this.conf}`)
+    let conf; this.preamble && eval(`conf = ${this.preamble}`)
+    this.conf && eval(`conf = ${this.conf}`)
     const js = makeJSTypal(conf)
     js.LOG = () => {}
     return js

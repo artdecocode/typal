@@ -1,7 +1,4 @@
-```s
-TODO FOR ZOROASTER:
-ALLOW TO SPECIFY SINGLE CONFIG AT THE TOP BEFORE TESTS
-```
+{closure: true}
 
 ## generates both ns and non-ns types for Closure
 /**
@@ -11,10 +8,6 @@ var a = (param) => {}
 
 /* typal test/fixture/ns.xml */
 
-
-/*@ conf */
-{closure: true}
-/*@*/
 
 /*@ expected */
 /**
@@ -44,10 +37,6 @@ var a = (param) => {}
 
 /* typal test/temp/types.xml */
 
-
-/*@ conf */
-{closure: true}
-/*@*/
 
 /*@ types */
 <types namespace="ns">
@@ -88,13 +77,10 @@ var a = (param) => {}
 /* typal test/temp/types.xml */
 
 
-/*@ conf */
-{closure: true}
-/*@*/
-
 /*@ types */
 <types namespace="ns">
   <import from="stream" name="Readable" />
+  <import from="restream" name="ReplaceableInterface" ns="_restream" />
 </types>
 /*@*/
 
@@ -108,6 +94,10 @@ var a = (param) => {}
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('stream').Readable} stream.Readable
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('restream').ReplaceableInterface} _restream.ReplaceableInterface
  */
 
 /*@*/
