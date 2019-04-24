@@ -41,7 +41,9 @@ const t = (a, b, c, d, e) => {
     }
     c = d.command ? c : `--${c}`;
     d.short && (c = `${c}, -${d.short}`);
-    b[c] = d.description;
+    let e = d.description;
+    d.default && (e = `${e}\nDefault: ${d.default}.`);
+    b[c] = e;
     return b;
   }, {});
 };
