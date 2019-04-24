@@ -861,15 +861,15 @@ The type represents a _JSDoc_ type.
 <type
   name="Type"
   desc="The description of the type."
-  type?="(name: string) => number"
-  constructor?
-  extends?="_namespace.ParentType"
-  closure?="function(string): number">
+  type="(name: string) => number"
+  constructor interface record
+  extends="_namespace.ParentType"
+  closure="function(string): number">
     <prop name="...">...</prop>
 </type>
 ```
 
-- `name`: the name of the type.
+- `name`: [<code><code>required</code></code>]: the name of the type.
 - `desc` [_optional_]: the optional description.
 - `type` [_optional_]: what is the type, default `Object`.
 - `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
