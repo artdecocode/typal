@@ -126,9 +126,9 @@ The properties are found inside of the `Type` elements. At the moment, the *must
 ```xml
 <prop
   name="property"
-  string? boolean? number? type?="Type"
-  opt? default?="The default value"
-  closure?="_ns.Type">
+  string boolean number type="Type"
+  opt default="The default value"
+  closure="_ns.Type">
 Property Description.
 </prop>
 ```
