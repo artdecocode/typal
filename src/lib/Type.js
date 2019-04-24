@@ -57,6 +57,11 @@ _ns.Type.prototype.constructor
      */
     this.isInterface = false
     /**
+     * @type {boolean}
+     * Same as `constructor`, but with `@record` annotation.
+     */
+    this.isRecord = false
+    /**
      * Types `@constructor`, `@interface` and `@record` can inherit properties from other types using `@extends`.
      * @see https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type
      * @type {?string}
@@ -67,7 +72,7 @@ _ns.Type.prototype.constructor
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
-    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 'constructor': isConstructor, 'extends': ext, 'interface': isInterface,
+    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 'record': isRecord,
   }, namespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -83,6 +88,7 @@ _ns.Type.prototype.constructor
     if (link) this.link = link
     if (isConstructor === true) this.isConstructor = isConstructor
     if (isInterface === true) this.isInterface = isInterface
+    if (isRecord === true) this.isRecord = isRecord
     if (ext) this.extends = ext
 
     if (content) {
@@ -97,7 +103,7 @@ _ns.Type.prototype.constructor
     if (namespace) this.namespace = namespace
   }
   get shouldPrototype() {
-    return this.isConstructor || this.isInterface
+    return this.isConstructor || this.isInterface || this.isRecord
   }
   toExtern() {
     let s
@@ -139,7 +145,7 @@ _ns.Type.prototype.constructor
   toTypedef(closure = false) {
     const d = this.description ? ` ${this.description}` : ''
     const hasExtends = !!this.extends
-    const natural = this.toNaturalTypedef(closure, hasExtends)
+    const natural = this.toNaturalTypedef(closure)
 
     const parts = []
     // need this to be able to import types from other programs,
@@ -168,6 +174,7 @@ _ns.Type.prototype.constructor
   get prototypeAnnotation() {
     if (this.isConstructor) return 'constructor'
     if (this.isInterface) return 'interface'
+    if (this.isRecord) return 'record'
     throw new Error('Unknown prototype type (not constructor or interface).')
   }
   toPrototype() {

@@ -11,5 +11,7 @@
   "properties": [],
   "namespace": null,
   "isConstructor": false,
+  "isInterface": false,
+  "isRecord": false,
   "extends": null
 }
