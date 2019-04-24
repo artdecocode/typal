@@ -36,6 +36,8 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
+%~ width="20"%
+
 ### Type
 
 The type represents a _JSDoc_ type.
@@ -57,7 +59,7 @@ The type represents a _JSDoc_ type.
 - `type` [_optional_]: what is the type, default `Object`.
 - `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
     <details>
-    <summary>Show prototype notation</summary>
+    <summary><strong>Show [Prototype Notation](t)</strong></summary>
 
     %FORK-js src/bin/typal example/schema/constructor.js -e -o -%
     </details>
@@ -65,9 +67,9 @@ The type represents a _JSDoc_ type.
 - `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
     <details>
-    <summary>Show JSDoc & Externs Output</summary>
+    <summary><strong>Show [Extends Notation](t)</strong></summary>
     <table>
-    <tr><th>Extends Type (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
+    <tr><th>Extends Type (<a href="example/schema/extends.xml">view extends.xml</a>)</th></tr>
     <tr><td>
 
     %FORK-js src/bin/typal example/schema/extends.js -c -o -%
@@ -88,10 +90,10 @@ The type represents a _JSDoc_ type.
     </details>
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
     <details>
-    <summary>Show Closure Override</summary>
+    <summary><strong>Show [Closure Override](t)</strong></summary>
 
     <table>
-    <tr><th>Closure Override (<a href="example/schema/closure.xml">view types.xml</a>)</th></tr>
+    <tr><th>Closure Override (<a href="example/schema/closure.xml">view closure.xml</a>)</th></tr>
     <tr><td>
 
     %FORK-js src/bin/typal example/schema/closure.js -c -o -%
@@ -106,10 +108,12 @@ The type represents a _JSDoc_ type.
     </td></tr>
     <tr><td><md2html>
 
-    In standard mode, only the `type` attribute is displayed.
+    In standard mode, only the `type` attribute is displayed. This is not compatible with _GCC_, therefore should only be used for [_JSDoc_ approach](#jsdoc-approach) programming.
     </md2html></tr></td>
     </table>
     </details>
+
+%~ width="20"%
 
 ### Property
 

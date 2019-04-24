@@ -35,6 +35,9 @@ yarn add -DE typal
 - [Schema](#schema)
   * [Types](#types)
   * [Type](#type)
+    * [Prototype Notation](#prototype-notation)
+    * [Extends Notation](#extends-notation)
+    * [Closure Override](#closure-override)
   * [Property](#property)
 - [API](#api)
   * [class `Type`](#class-type)
@@ -848,6 +851,8 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="20"></a></p>
+
 ### Type
 
 The type represents a _JSDoc_ type.
@@ -869,7 +874,7 @@ The type represents a _JSDoc_ type.
 - `type` [_optional_]: what is the type, default `Object`.
 - `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
     <details>
-    <summary>Show prototype notation</summary>
+    <summary><strong>Show <a name="prototype-notation">Prototype Notation</a></strong></summary>
 
     ```js
     /* typal example/schema/constructor.xml */
@@ -892,9 +897,9 @@ The type represents a _JSDoc_ type.
 - `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
     <details>
-    <summary>Show JSDoc & Externs Output</summary>
+    <summary><strong>Show <a name="extends-notation">Extends Notation</a></strong></summary>
     <table>
-    <tr><th>Extends Type (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
+    <tr><th>Extends Type (<a href="example/schema/extends.xml">view extends.xml</a>)</th></tr>
     <tr><td>
 
     ```js
@@ -939,10 +944,10 @@ The type represents a _JSDoc_ type.
     </details>
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
     <details>
-    <summary>Show Closure Override</summary>
+    <summary><strong>Show <a name="closure-override">Closure Override</a></strong></summary>
 
     <table>
-    <tr><th>Closure Override (<a href="example/schema/closure.xml">view types.xml</a>)</th></tr>
+    <tr><th>Closure Override (<a href="example/schema/closure.xml">view closure.xml</a>)</th></tr>
     <tr><td>
 
     ```js
@@ -967,9 +972,11 @@ The type represents a _JSDoc_ type.
      */
     ```
     </td></tr>
-    <tr><td>In standard mode, only the <code>type</code> attribute is displayed.</tr></td>
+    <tr><td>In standard mode, only the <code>type</code> attribute is displayed. This is not compatible with <em>GCC</em>, therefore should only be used for [<em>JSDoc</em> approach](#jsdoc-approach) programming.</tr></td>
     </table>
     </details>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="20"></a></p>
 
 ### Property
 
@@ -994,7 +1001,7 @@ Property Description.
 - `default` [_optional_]: the default value of the property. Used to add the `Default: value.` to the property description, and `@param {type} [prop=default]` when annotating JS functions.
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -1006,19 +1013,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -1051,7 +1058,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -1258,7 +1265,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
