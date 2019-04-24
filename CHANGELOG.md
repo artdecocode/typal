@@ -1,3 +1,10 @@
+## 24 April 2019
+
+### [1.4.0](https://github.com/artdecocode/typal/compare/v1.3.2...v1.4.0)
+
+- [doc] Document schema.
+- [feature] Prototypes notation, `@constructors`, `@interfaces` and `@records`; _extends_ annotations.
+
 ## 20 April 2019
 
 ### [1.3.2](https://github.com/artdecocode/typal/compare/v1.3.1...v1.3.2)
