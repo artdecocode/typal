@@ -55,15 +55,19 @@ The type represents a _JSDoc_ type.
 - `name`: the name of the type.
 - `desc` [_optional_]: the optional description.
 - `type` [_optional_]: what is the type, default `Object`.
-- `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the `prototype`:
+- `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
+    <details>
+    <summary>Show prototype notation</summary>
+
     %FORK-js src/bin/typal example/schema/constructor.js -e -o -%
-- `interface` [_optional_]: for externs, same as `@constructor`, but add the `@interface` annotation.
-- `record` [_optional_]: for externs, same as `@constructor`, but add the `@record` annotation.
+    </details>
+- `interface` [_optional_]: for externs, same as `@constructor`, but adds the `@interface` annotation.
+- `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
     <details>
-    <summary>Show JSDoc and Externs output</summary>
+    <summary>Show JSDoc & Externs Output</summary>
     <table>
-    <tr><th>Generated types (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
+    <tr><th>Extends Type (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
     <tr><td>
 
     %FORK-js src/bin/typal example/schema/extends.js -c -o -%
@@ -82,8 +86,30 @@ The type represents a _JSDoc_ type.
     </md2html></tr></td>
     </table>
     </details>
-
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
+    <details>
+    <summary>Show Closure Override</summary>
+
+    <table>
+    <tr><th>Closure Override (<a href="example/schema/closure.xml">view types.xml</a>)</th></tr>
+    <tr><td>
+
+    %FORK-js src/bin/typal example/schema/closure.js -c -o -%
+    </td></tr>
+    <tr><td><md2html>
+
+    In _Closure_ mode, _Typal_ will print the value of the `closure` property. This is helpful for displaying user-readable documentation in README files, but using the types for compilation. There's no way to use both in source code (i.e., the standard type for _VSCode_ and the closure type for _GCC_).
+    </md2html></tr></td>
+    <tr><td>
+
+    %FORK-js src/bin/typal example/schema/closure.js -o -%
+    </td></tr>
+    <tr><td><md2html>
+
+    In standard mode, only the `type` attribute is displayed.
+    </md2html></tr></td>
+    </table>
+    </details>
 
 ### Property
 

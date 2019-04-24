@@ -867,7 +867,10 @@ The type represents a _JSDoc_ type.
 - `name`: the name of the type.
 - `desc` [_optional_]: the optional description.
 - `type` [_optional_]: what is the type, default `Object`.
-- `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the `prototype`:
+- `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
+    <details>
+    <summary>Show prototype notation</summary>
+
     ```js
     /* typal example/schema/constructor.xml */
     /** @const */
@@ -884,13 +887,14 @@ The type represents a _JSDoc_ type.
      */
     _test.Test.prototype.bool
     ```
-- `interface` [_optional_]: for externs, same as `@constructor`, but add the `@interface` annotation.
-- `record` [_optional_]: for externs, same as `@constructor`, but add the `@record` annotation.
+    </details>
+- `interface` [_optional_]: for externs, same as `@constructor`, but adds the `@interface` annotation.
+- `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
     <details>
-    <summary>Show JSDoc and Externs output</summary>
+    <summary>Show JSDoc & Externs Output</summary>
     <table>
-    <tr><th>Generated types (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
+    <tr><th>Extends Type (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
     <tr><td>
 
     ```js
@@ -933,8 +937,39 @@ The type represents a _JSDoc_ type.
     <tr><td><em>Externs</em> just add the <code>@extends</code> marker when the type is either <code>@constructor</code>, <code>@interface</code> or <code>@record</code>.</tr></td>
     </table>
     </details>
-
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
+    <details>
+    <summary>Show Closure Override</summary>
+
+    <table>
+    <tr><th>Closure Override (<a href="example/schema/closure.xml">view types.xml</a>)</th></tr>
+    <tr><td>
+
+    ```js
+    /* typal example/schema/closure.xml */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {_test.Example} Example
+     */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {function(string): number} _test.Example
+     */
+    ```
+    </td></tr>
+    <tr><td>In <em>Closure</em> mode, <em>Typal</em> will print the value of the <code>closure</code> property. This is helpful for displaying user-readable documentation in README files, but using the types for compilation. There's no way to use both in source code (i.e., the standard type for <em>VSCode</em> and the closure type for <em>GCC</em>).</tr></td>
+    <tr><td>
+
+    ```js
+    /* typal example/schema/closure.xml */
+    /**
+     * @typedef {(string) => number} Example
+     */
+    ```
+    </td></tr>
+    <tr><td>In standard mode, only the <code>type</code> attribute is displayed.</tr></td>
+    </table>
+    </details>
 
 ### Property
 

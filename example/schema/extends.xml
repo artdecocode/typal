@@ -1,0 +1,5 @@
+<types namespace="_test">
+  <type name="Test" record extends="_ns.ParentType" desc="The example type.">
+    <prop boolean opt name="bool">A prop.</prop>
+  </type>
+</types>
