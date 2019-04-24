@@ -1043,6 +1043,26 @@ Property Description.
  */
 ```
 </td></tr>
+<tr><td>In standard mode, <em>Typal</em> does not use namespaces.</tr></td>
+<tr><td>
+
+```js
+/* typal example/schema/import.xml */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('restream').Rule} _restream.Rule
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('restream/src/markers').Marker} _restream.Marker
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('stream').Readable} stream.Readable
+ */
+```
+</td></tr>
+<tr><td>In <em>Closure</em> mode, <em>Typal</em> adds namespaces so that they will match externs.</tr></td>
 </table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>

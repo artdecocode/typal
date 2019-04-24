@@ -172,6 +172,18 @@ Property Description.
 
 %FORK-js src/bin/typal example/schema/import.js -o -%
 </td></tr>
+<tr><td><md2html>
+
+In standard mode, _Typal_ does not use namespaces.
+</md2html></tr></td>
+<tr><td>
+
+%FORK-js src/bin/typal example/schema/import.js -c -o -%
+</td></tr>
+<tr><td><md2html>
+
+In _Closure_ mode, _Typal_ adds namespaces so that they will match externs.
+</md2html></tr></td>
 </table>
 
 %~%
