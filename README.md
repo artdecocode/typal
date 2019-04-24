@@ -1006,6 +1006,52 @@ Property Description.
 - `default` [_optional_]: the default value of the property. Used to add the `Default: value.` to the property description, and `@param {type} [prop=default]` when annotating JS functions.
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
+<table>
+<tr><th>
+  Properties (<a href="example/schema/import.xml">view property.xml</a>)
+</th></tr>
+<tr><td>
+
+```xml
+<types>
+  <type name="Example">
+    <prop boolean name="boolean">The boolean property.</prop>
+    <prop number name="number">The number property.</prop>
+    <prop string name="string">The string property.</prop>
+    <prop type="Example" name="example">The custom type property.</prop>
+    <prop opt type="Example" name="optional">The optional property.</prop>
+    <prop string name="default" default="hello-world">
+      The default property.
+    </prop>
+    <prop type="Example" closure="_ns.Example" name="closure">
+      The Closure override property.
+    </prop>
+  </type>
+</types>
+```
+</td></tr>
+<tr><td>The properties are listed inside of types and must have descriptions which are trimmed.</tr></td>
+<tr><td>
+
+```js
+/* typal example/schema/property.xml */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} Example
+ * @prop {boolean} boolean The boolean property.
+ * @prop {number} number The number property.
+ * @prop {string} string The string property.
+ * @prop {Example} example The custom type property.
+ * @prop {Example} [optional] The optional property.
+ * @prop {string} [default="hello-world"] The default property. Default `hello-world`.
+ * @prop {_ns.Example} closure The Closure override property.
+ */
+```
+</td></tr>
+<tr><td><em>Typal</em> will extract properties from xml file and insert them into <em>JSDoc</em>.</tr></td>
+</table>
+
+
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
 ### Import

@@ -1,0 +1,15 @@
+<types>
+  <type name="Example">
+    <prop boolean name="boolean">The boolean property.</prop>
+    <prop number name="number">The number property.</prop>
+    <prop string name="string">The string property.</prop>
+    <prop type="Example" name="example">The custom type property.</prop>
+    <prop opt type="Example" name="optional">The optional property.</prop>
+    <prop string name="default" default="hello-world">
+      The default property.
+    </prop>
+    <prop type="Example" closure="_ns.Example" name="closure">
+      The Closure override property.
+    </prop>
+  </type>
+</types>

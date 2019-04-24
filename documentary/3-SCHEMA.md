@@ -142,6 +142,29 @@ Property Description.
 - `default` [_optional_]: the default value of the property. Used to add the `Default: value.` to the property description, and `@param {type} [prop=default]` when annotating JS functions.
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
+<table>
+<tr><th>
+  Properties (<a href="example/schema/import.xml">view property.xml</a>)
+</th></tr>
+<tr><td>
+
+%EXAMPLE: example/schema/property.xml%
+</td></tr>
+<tr><td><md2html>
+
+The properties are listed inside of types and must have descriptions which are trimmed.
+</md2html></tr></td>
+<tr><td>
+
+%FORK-js src/bin/typal example/schema/prop.js -c -o -%
+</td></tr>
+<tr><td><md2html>
+
+_Typal_ will extract properties from xml file and insert them into _JSDoc_.
+</md2html></tr></td>
+</table>
+
+
 %~%
 
 ### Import
