@@ -57,7 +57,32 @@ The type represents a _JSDoc_ type.
 - `type` [_optional_]: what is the type, default `Object`.
 - `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the `prototype`:
     %FORK-js src/bin/typal example/schema/constructor.js -e -o -%
+- `interface` [_optional_]: for externs, same as `@constructor`, but add the `@interface` annotation.
+- `record` [_optional_]: for externs, same as `@constructor`, but add the `@record` annotation.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
+    <details>
+    <summary>Show JSDoc and Externs output</summary>
+    <table>
+    <tr><th>Generated types (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
+    <tr><td>
+
+    %FORK-js src/bin/typal example/schema/extends.js -c -o -%
+    </td></tr>
+    <tr><td><md2html>
+
+    _JSDoc_ typedefs will contain an extra class denoted with `$` to be able to extend the parent class, because there's no other way to do it: if the typedef had the parent in its type notation (instead of `{Object}`), then the properties wouldn't be applied.
+    </md2html></tr></td>
+    <tr><td>
+
+    %FORK-js src/bin/typal example/schema/extends.js -e -o -%
+    </td></tr>
+    <tr><td><md2html>
+
+    _Externs_ just add the `@extends` marker when the type is either `@constructor`, `@interface` or `@record`.
+    </md2html></tr></td>
+    </table>
+    </details>
+
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
 ### Property

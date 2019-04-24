@@ -208,10 +208,10 @@ From that point onward, the JSDoc documentation is managed from the separate fil
 
 __<a name="type-rule">`Rule`</a>__: The replacement rule.
 
-|       Name       |              Type               |            Description             |
-| ---------------- | ------------------------------- | ---------------------------------- |
-| __regex*__       | _RegExp_                        | The regular expression.            |
-| __replacement*__ | _(...args:string) =&gt; string_ | The function used to update input. |
+|       Name       |                  Type                  |            Description             |
+| ---------------- | -------------------------------------- | ---------------------------------- |
+| __regex*__       | <em>RegExp</em>                        | The regular expression.            |
+| __replacement*__ | <em>(...args:string) =&gt; string</em> | The function used to update input. |
 
 The link to the _Rule_ type was also added to the Table of Contents, however it can be skipped if the `type` element had the `noToc` property set on it. We also added the `link` property to the `import` element to place a link to Node.JS API docs in documentation.
 
@@ -537,10 +537,11 @@ java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.
 ../../depack/src/node_modules/@depack/externs/v8/stream.js --externs \
 ../../depack/src/node_modules/@depack/externs/v8/events.js --externs \
 ../../depack/src/node_modules/@depack/externs/v8/global.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/global/buffer.js --externs \
 ../../depack/src/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
-Running Google Closure Compiler target.           
+Running Google Closure Compiler target            
 ```
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
@@ -685,6 +686,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     /** @const */
     var _typal = {}
     /**
+     * The configuration object.
      * @typedef {{ source: string, closeOnFinish: (boolean|undefined) }}
      */
     _typal.Conf
@@ -882,7 +884,56 @@ The type represents a _JSDoc_ type.
      */
     _test.Test.prototype.bool
     ```
+- `interface` [_optional_]: for externs, same as `@constructor`, but add the `@interface` annotation.
+- `record` [_optional_]: for externs, same as `@constructor`, but add the `@record` annotation.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
+    <details>
+    <summary>Show JSDoc and Externs output</summary>
+    <table>
+    <tr><th>Generated types (<a href="example/schema/extends.xml">view types.xml</a>)</th></tr>
+    <tr><td>
+
+    ```js
+    /* typal example/schema/extends.xml */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {_test.Test} Test The example type.
+     */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {_ns.ParentType & _test.$Test} _test.Test The example type.
+     */
+    /**
+     * @suppress {nonStandardJsDocs}
+     * @typedef {Object} _test.$Test The example type.
+     * @prop {boolean} [bool] A prop.
+     */
+    ```
+    </td></tr>
+    <tr><td><em>JSDoc</em> typedefs will contain an extra class denoted with <code>$</code> to be able to extend the parent class, because there's no other way to do it: if the typedef had the parent in its type notation (instead of <code>{Object}</code>), then the properties wouldn't be applied.</tr></td>
+    <tr><td>
+
+    ```js
+    /* typal example/schema/extends.xml */
+    /** @const */
+    var _test = {}
+    /**
+     * The example type.
+     * @extends {_ns.ParentType}
+     * @record
+     */
+    _test.Test
+    /**
+     * A prop.
+     * @type {(boolean|undefined)}
+     */
+    _test.Test.prototype.bool
+    ```
+    </td></tr>
+    <tr><td><em>Externs</em> just add the <code>@extends</code> marker when the type is either <code>@constructor</code>, <code>@interface</code> or <code>@record</code>.</tr></td>
+    </table>
+    </details>
+
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
 
 ### Property
@@ -1025,6 +1076,8 @@ _The result will contain Types and Imports:_
        properties: [],
        namespace: null,
        isConstructor: false,
+       isInterface: false,
+       isRecord: false,
        extends: null },
      Type {
        name: 'StaticConfig',
@@ -1063,9 +1116,13 @@ _The result will contain Types and Imports:_
             optional: true } ],
        namespace: null,
        isConstructor: false,
+       isInterface: false,
+       isRecord: false,
        extends: null } ],
   imports: 
-   [ { name: 'ServerResponse',
+   [ Import {
+       ns: 'http',
+       name: 'ServerResponse',
        from: 'http',
        desc: undefined,
        link: undefined } ] }
@@ -1120,6 +1177,8 @@ const getFile = async () => {
        properties: [],
        namespace: null,
        isConstructor: false,
+       isInterface: false,
+       isRecord: false,
        extends: null },
      Type {
        name: 'GoodMorning',
@@ -1134,6 +1193,8 @@ const getFile = async () => {
        properties: [],
        namespace: null,
        isConstructor: false,
+       isInterface: false,
+       isRecord: false,
        extends: null },
      Type {
        name: 'Conf',
@@ -1156,6 +1217,8 @@ const getFile = async () => {
             optional: false } ],
        namespace: null,
        isConstructor: false,
+       isInterface: false,
+       isRecord: false,
        extends: null } ],
   imports: [] }
 ```
