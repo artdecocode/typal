@@ -73,14 +73,14 @@ The type represents a _JSDoc_ type.
     <details>
     <summary><strong>Show [Extends Notation](t)</strong></summary>
     <table>
-    <tr><th>Extends Type (<a href="example/schema/extends.xml">view extends.xml</a>)</th></tr>
+    <tr><th align="center">Extends Type (<a href="example/schema/extends.xml">view extends.xml</a>)</th></tr>
     <tr><td>
 
     %FORK-js src/bin/typal example/schema/extends.js -c -o -%
     </td></tr>
     <tr><td><md2html>
 
-    _JSDoc_ typedefs will contain an extra class denoted with `$` to be able to extend the parent class, because there's no other way to do it: if the typedef had the parent in its type notation (instead of `{Object}`), then the properties wouldn't be applied.
+    _JSDoc_ typedefs will contain an extra class denoted with `$` to be able to extend the parent class, because there's no other way to do it: if the typedef had the parent in its type notation (instead of `{Object}`), then the properties wouldn't be applied. The internal `$` class is then merged with the parent class using the `&` symbol which is _TypeScript_-specific, but understood by _VSCode_ (not part of the _JSDoc_ spec, but should be).
     </md2html></tr></td>
     <tr><td>
 
@@ -97,7 +97,7 @@ The type represents a _JSDoc_ type.
     <summary><strong>Show [Closure Override](t)</strong></summary>
 
     <table>
-    <tr><th>Closure Override (<a href="example/schema/closure.xml">view closure.xml</a>)</th></tr>
+    <tr><th align="center">Closure Override (<a href="example/schema/closure.xml">view closure.xml</a>)</th></tr>
     <tr><td>
 
     %FORK-js src/bin/typal example/schema/closure.js -c -o -%
@@ -112,7 +112,7 @@ The type represents a _JSDoc_ type.
     </td></tr>
     <tr><td><md2html>
 
-    In standard mode, only the `type` attribute is displayed. This is not compatible with _GCC_, therefore should only be used for [_JSDoc_ approach](#jsdoc-approach) programming.
+    In standard mode, only the `type` attribute is displayed. This is not compatible with _GCC_, therefore should only be used for <a href="#jsdoc-approach">_JSDoc_ approach</a> programming.
     </md2html></tr></td>
     </table>
     </details>

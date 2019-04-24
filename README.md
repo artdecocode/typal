@@ -904,7 +904,7 @@ The type represents a _JSDoc_ type.
     <details>
     <summary><strong>Show <a name="extends-notation">Extends Notation</a></strong></summary>
     <table>
-    <tr><th>Extends Type (<a href="example/schema/extends.xml">view extends.xml</a>)</th></tr>
+    <tr><th align="center">Extends Type (<a href="example/schema/extends.xml">view extends.xml</a>)</th></tr>
     <tr><td>
 
     ```js
@@ -924,7 +924,7 @@ The type represents a _JSDoc_ type.
      */
     ```
     </td></tr>
-    <tr><td><em>JSDoc</em> typedefs will contain an extra class denoted with <code>$</code> to be able to extend the parent class, because there's no other way to do it: if the typedef had the parent in its type notation (instead of <code>{Object}</code>), then the properties wouldn't be applied.</tr></td>
+    <tr><td><em>JSDoc</em> typedefs will contain an extra class denoted with <code>$</code> to be able to extend the parent class, because there's no other way to do it: if the typedef had the parent in its type notation (instead of <code>{Object}</code>), then the properties wouldn't be applied. The internal <code>$</code> class is then merged with the parent class using the <code>&</code> symbol which is <em>TypeScript</em>-specific, but understood by <em>VSCode</em> (not part of the <em>JSDoc</em> spec, but should be).</tr></td>
     <tr><td>
 
     ```js
@@ -952,7 +952,7 @@ The type represents a _JSDoc_ type.
     <summary><strong>Show <a name="closure-override">Closure Override</a></strong></summary>
 
     <table>
-    <tr><th>Closure Override (<a href="example/schema/closure.xml">view closure.xml</a>)</th></tr>
+    <tr><th align="center">Closure Override (<a href="example/schema/closure.xml">view closure.xml</a>)</th></tr>
     <tr><td>
 
     ```js
@@ -977,7 +977,7 @@ The type represents a _JSDoc_ type.
      */
     ```
     </td></tr>
-    <tr><td>In standard mode, only the <code>type</code> attribute is displayed. This is not compatible with <em>GCC</em>, therefore should only be used for [<em>JSDoc</em> approach](#jsdoc-approach) programming.</tr></td>
+    <tr><td>In standard mode, only the <code>type</code> attribute is displayed. This is not compatible with <em>GCC</em>, therefore should only be used for <a href="#jsdoc-approach"><em>JSDoc</em> approach</a> programming.</tr></td>
     </table>
     </details>
 
