@@ -6,7 +6,11 @@ The types can be defined according to the following schema. It consists of the `
 
 ```xml
 <types
-  namespace?="_namespace">
+  namespace="_namespace">
+  <import .../>
+  <type ...>...</type>
+</types>
+
 ```
 
 The single root element for the XML file.
@@ -54,7 +58,7 @@ The type represents a _JSDoc_ type.
 </type>
 ```
 
-- `name`: [<code><code>required</code></code>]: the name of the type.
+- `name`: [_required_]: the name of the type.
 - `desc` [_optional_]: the optional description.
 - `type` [_optional_]: what is the type, default `Object`.
 - `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
@@ -137,5 +141,37 @@ Property Description.
 - `opt` [_optional_]: whether the property is optional. In externs this will result in `{ prop: (string|undefined) }`.
 - `default` [_optional_]: the default value of the property. Used to add the `Default: value.` to the property description, and `@param {type} [prop=default]` when annotating JS functions.
 - `closure` [_optional_]: an override of the type when generating doc in closure mode.
+
+%~%
+
+### Import
+
+```xml
+<type
+  name="Type"
+  desc="The description of the type."
+  type="(name: string) => number"
+  constructor interface record
+  extends="_namespace.ParentType"
+  closure="function(string): number">
+    <prop name="...">...</prop>
+</type>
+```
+
+- `name`: the name of the imported type.
+- `from`: the package (`restream`) or path (`restream/src/Rule`) to import from.
+- `ns` [_optional_]: if different from the path, the namespace with which the type will be imported.
+- `link` [_optional_]: the link to display in documentation with _Documentary_.
+- `desc` [_optional_]: the description to print in documentation.
+
+<table>
+<tr><th>
+  Imports (<a href="example/schema/import.xml">view import.xml</a>)
+</th></tr>
+<tr><td>
+
+%FORK-js src/bin/typal example/schema/import.js -o -%
+</td></tr>
+</table>
 
 %~%

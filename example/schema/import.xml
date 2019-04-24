@@ -1,0 +1,6 @@
+<types>
+  <import from="restream" name="Rule" ns="_restream" />
+  <import from="restream/src/markers" name="Marker" ns="_restream" />
+  <import from="stream" name="Readable"
+    link="https://nodejs.org/api/stream.html#stream_class_stream_readable" />
+</types>

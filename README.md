@@ -39,6 +39,7 @@ yarn add -DE typal
     * [Extends Notation](#extends-notation)
     * [Closure Override](#closure-override)
   * [Property](#property)
+  * [Import](#import)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
@@ -821,7 +822,11 @@ The types can be defined according to the following schema. It consists of the `
 
 ```xml
 <types
-  namespace?="_namespace">
+  namespace="_namespace">
+  <import .../>
+  <type ...>...</type>
+</types>
+
 ```
 
 The single root element for the XML file.
@@ -869,7 +874,7 @@ The type represents a _JSDoc_ type.
 </type>
 ```
 
-- `name`: [<code><code>required</code></code>]: the name of the type.
+- `name`: [_required_]: the name of the type.
 - `desc` [_optional_]: the optional description.
 - `type` [_optional_]: what is the type, default `Object`.
 - `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
@@ -1003,6 +1008,45 @@ Property Description.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
+### Import
+
+```xml
+<type
+  name="Type"
+  desc="The description of the type."
+  type="(name: string) => number"
+  constructor interface record
+  extends="_namespace.ParentType"
+  closure="function(string): number">
+    <prop name="...">...</prop>
+</type>
+```
+
+- `name`: the name of the imported type.
+- `from`: the package (`restream`) or path (`restream/src/Rule`) to import from.
+- `ns` [_optional_]: if different from the path, the namespace with which the type will be imported.
+- `link` [_optional_]: the link to display in documentation with _Documentary_.
+- `desc` [_optional_]: the description to print in documentation.
+
+<table>
+<tr><th>
+  Imports (<a href="example/schema/import.xml">view import.xml</a>)
+</th></tr>
+<tr><td>
+
+```js
+/* typal example/schema/import.xml */
+/**
+ * @typedef {import('restream').Rule} Rule
+ * @typedef {import('restream/src/markers').Marker} Marker
+ * @typedef {import('fs').Readable} Readable
+ */
+```
+</td></tr>
+</table>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+
 ## API
 
 The package is available by importing its named functions and classes:
@@ -1013,19 +1057,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -1058,7 +1102,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -1265,7 +1309,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
