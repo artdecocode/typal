@@ -42,7 +42,7 @@ const ts = {
     'links Promises'({ allTypes, wrapApp }) {
       const type = '!Promise<!Type>'
       const res = getLinks(allTypes, type)
-      equal(res, `!Promise${wrapApp('![Type](#type-type)')}`)
+      equal(res, `!Promise${wrapApp('[!Type](#type-type)')}`)
     },
     'links Arrays'({ allTypes, wrapApp }) {
       const type = '!Promise<!Array<Type>>'
@@ -52,25 +52,25 @@ const ts = {
     'links nested Types'({ allTypes, wrapApp }) {
       const type = '!Promise<!Type<Type>>'
       const res = getLinks(allTypes, type)
-      let w = `![Type](#type-type)${wrapApp('[Type](#type-type)')}`
+      let w = `[!Type](#type-type)${wrapApp('[Type](#type-type)')}`
       w = `!Promise${wrapApp(w)}`
       equal(res, w)
     },
     'links Objects'({ allTypes, wrapApp }) {
       const type = 'Object<string, !Type>'
       const res = getLinks(allTypes, type)
-      equal(res, `Object${wrapApp('string, ![Type](#type-type)')}`)
+      equal(res, `Object${wrapApp('string, [!Type](#type-type)')}`)
     },
     'links nested Objects'({ allTypes, wrapApp }) {
       const type = 'Object<string, !Object<!Type>>'
       const res = getLinks(allTypes, type)
-      let w = '!Object' + wrapApp('![Type](#type-type)')
+      let w = '!Object' + wrapApp('[!Type](#type-type)')
       equal(res, `Object${wrapApp(`string, ${w}`)}`)
     },
     'links Objects with dot'({ allTypes, wrapApp }) {
       const type = 'Object.<string, !Type>'
       const res = getLinks(allTypes, type)
-      equal(res, `Object${wrapApp('string, ![Type](#type-type)')}`)
+      equal(res, `Object${wrapApp('string, [!Type](#type-type)')}`)
     },
   },
   'functions': {

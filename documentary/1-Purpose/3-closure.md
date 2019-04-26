@@ -218,12 +218,12 @@ To continue, we run `depack example/restream/program -c -a -p --externs restream
 <tr><th>[Result Of Compilation](t)</th></tr>
 <tr><td>
 
-%FORK-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --externs example/restream/externs.js%
+%FORK-js node_modules/depack/src/depack example/restream/program -c -a -p --externs example/restream/externs.js%
 </td></tr>
 <tr><td><em>stdout</em></td></tr>
 <tr><td>
 
-%FORKERR-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --externs example/restream/externs.js%
+%FORKERR-js node_modules/depack/src/depack example/restream/program -c -a -p --externs example/restream/externs.js%
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
 <!-- <tr><td>stderr</td></tr> -->
@@ -235,7 +235,7 @@ Although we've generated the externs and passed them to the compiler, we don't a
 <tr><th>[Externs As Types](t)</th></tr>
 <tr><td>
 
-%FORK-js node_modules/depack/src/bin/depack example/restream/program -c -a -p --js example/restream/externs.js%
+%FORK-js node_modules/depack/src/depack example/restream/program -c -a -p --js example/restream/externs.js%
 </td></tr>
 <tr><td>
 <md2html>

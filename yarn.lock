@@ -39,10 +39,10 @@
   resolved "https://registry.yarnpkg.com/@depack/split/-/split-1.0.0.tgz#37fea28d9bc6f01e5a2da87d393f402781bb7e99"
   integrity sha512-PNJPl01VFMKtyN7qBZ2cds4N/lO2KvzLrR7JamODFiuuL2X8mGoTKp1SI8fxlT2MwLV8mScCUKn55QPwsUX7iA==
 
-"@typedefs/parser@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.0.2.tgz#3450636ce0685a92baa0add4e2377b75ef41a724"
-  integrity sha512-gktmuJBP2yx8feheG9zXrC8ZCKy5pzOp9xY5o13r8RkqNQqo79mHxzAHwpfIWU1hh4IlBANJ2wv/RtSkB14MYA==
+"@typedefs/parser@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.0.3.tgz#90820cb69c5872fc065255ea5252848ad300a111"
+  integrity sha512-Cv67xqDE+6tM3+C6WXaKyYCB0gig/H9HM4h6Lmws3Iw4QBTRyqSMn6Zg/q11Yy58dtaS9ce8EusPtpLCQ5pVFA==
 
 "@wrote/clone@^1.1.1", "@wrote/clone@^1.2.1":
   version "1.2.1"
@@ -132,7 +132,7 @@ alamode@^2.0.0:
   resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.0.0.tgz#5dcbc8fdb7fe52b7e23ee9daddd61660adcd33c0"
   integrity sha512-k5757fuxMEKxQMdpo0auMmsR3/2jE1E6qnb59RGg+kDt9YeYH66NISclsqHfWrwHQTTAlmU7FQjFwjdX2qLwcQ==
 
-argufy@^1.5.0, argufy@^1.6.3, argufy@^1.7.0:
+argufy@^1.5.0, argufy@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.7.0.tgz#189109155b6200c283350b1c23dbeee2a7519f7b"
   integrity sha512-iK7Nx5wv4XXbid/udPVu54EN6pA8w1RqkPp6NOZqBB/8cmpaxdjuWszw8VpPYQN6WWqAXJuLMNXZHEgFTvm0eA==
@@ -209,7 +209,7 @@ difflib@~0.2.1:
   dependencies:
     heap ">= 0.2.0"
 
-documentary@^1.26.0:
+documentary@^1.26.1:
   version "1.26.1"
   resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.26.1.tgz#b718b8e5025d3873f2a054f6f210ab3f3bce45e7"
   integrity sha512-dlJCDcq9hHdbbRC/Iz3TKlrovpmlrC5FbTneIyOsFVkQdS1vhp3Wqm7Thmi+uEn4rFBfmNNzvIWoHaZE1a/xGQ==

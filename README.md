@@ -538,14 +538,14 @@ java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --externs example/restream/externs.js --package_json_entry_names module,main \
 --entry_point example/restream/program.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/stream.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/events.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/global.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/global/buffer.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/nodejs.js
+../../depack/depack/node_modules/@depack/externs/v8/stream.js --externs \
+../../depack/depack/node_modules/@depack/externs/v8/events.js --externs \
+../../depack/depack/node_modules/@depack/externs/v8/global.js --externs \
+../../depack/depack/node_modules/@depack/externs/v8/global/buffer.js --externs \
+../../depack/depack/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
-Running Google Closure Compiler target            
+Running Google Closure Compiler target...         
 ```
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
@@ -1085,7 +1085,7 @@ Property Description.
 /**
  * @typedef {import('restream').Rule} Rule
  * @typedef {import('restream/src/markers').Marker} Marker
- * @typedef {import('fs').Readable} Readable
+ * @typedef {import('stream').Readable} Readable
  */
 ```
 </td></tr>

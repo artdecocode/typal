@@ -282,8 +282,9 @@ const getSpread = (properties = [], closure = false) => {
  */
 const parsedToString = (type, allTypes) => {
   let s = ''
-  if (type.nullable) s += '?'
-  else if (type.nullable === false) s += '!'
+  let nullable
+  if (type.nullable) nullable = '?'
+  else if (type.nullable === false) nullable = '!'
 
   if (type.function) {
     s += type.name + '(' // Function or function
@@ -319,7 +320,7 @@ const parsedToString = (type, allTypes) => {
     s += rs.join(', ')
     s += ' }'
   } else if (type.application) {
-    s += getTypeWithLink(type.name, allTypes) + '<'
+    s += getTypeWithLink(type.name, allTypes, nullable) + '<'
     const apps = type.application.map((a) => {
       return parsedToString(a, allTypes)
     })
@@ -334,15 +335,16 @@ const parsedToString = (type, allTypes) => {
     s += ')'
   } else {
     const name = type.name == 'any' ? '*' : type.name
-    s += getTypeWithLink(name, allTypes)
+    s += getTypeWithLink(name, allTypes, nullable)
   }
   return esc(s)
 }
 
-const getTypeWithLink = (type, allTypes) => {
+const getTypeWithLink = (type, allTypes, nullable = '') => {
   const link = getLinkToType(allTypes, type)
-  if (!link) return type
-  const typeWithLink = `[${type}](#${link})`
+  const n = `${nullable}${type}`
+  if (!link) return n
+  const typeWithLink = `[${n}](#${link})`
   return typeWithLink
 }
 

@@ -15,7 +15,7 @@
     "dev": "alanode src/bin/typal",
     "doc": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar NODE_DEBUG=doc doc -o README.md",
     "b": "alamode src -o build -s -i bin",
-    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack-dev src/bin/typal -c -o depack/bin -a -p -s",
+    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack src/bin/typal -c -o depack/bin -a -p -s",
     "depack1": "depack-dev depack/t.js -c -o t/tt.js -a -p",
     "depack2": "depack-dev depack/prop/index.js -c -a -p",
     "depack-compat": "depack-dev example/restream/compat -c -a -p",
@@ -65,9 +65,9 @@
     "@wrote/read-dir-structure": "^1.2.0",
     "@wrote/write": "^1.0.4",
     "alamode": "^2.0.0",
-    "argufy": "^1.6.3",
+    "argufy": "^1.7.0",
     "catchment": "^3.3.0",
-    "documentary": "^1.26.0",
+    "documentary": "^1.26.1",
     "erotic": "^2.1.1",
     "eslint-config-artdeco": "1.0.1",
     "makepromise": "^3.1.0",
@@ -79,7 +79,7 @@
     "zoroaster": "^3.13.0"
   },
   "dependencies": {
-    "@typedefs/parser": "^1.0.2",
+    "@typedefs/parser": "^1.0.3",
     "mismatch": "^1.2.0",
     "rexml": "^1.4.0"
   }
