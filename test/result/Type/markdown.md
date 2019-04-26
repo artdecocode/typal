@@ -51,7 +51,7 @@ __[`Test`](t-type)__
   ],
   [
     "__p*__",
-    "<em>[!stream.Readable](#type-streamreadable)</em>",
+    "<em>![stream.Readable](#type-streamreadable)</em>",
     "Prop desc"
   ]
 ]

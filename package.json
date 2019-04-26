@@ -79,6 +79,7 @@
     "zoroaster": "^3.13.0"
   },
   "dependencies": {
+    "@typedefs/parser": "^1.0.2",
     "mismatch": "^1.2.0",
     "rexml": "^1.4.0"
   }

@@ -1,5 +1,6 @@
 import extractTags from 'rexml'
 import mismatch from 'mismatch'
+import parse from '@typedefs/parser'
 import Property from './Property'
 import { getLink, addSuppress, makeBlock, getExternDeclaration } from './'
 
@@ -260,30 +261,89 @@ const getSpread = (properties = [], closure = false) => {
  * @param {string} type
  */
 export const getLinks = (allTypes, type) => {
-  const m = mismatch(
-    /(?:(.+)\.<(string, *)?(.+?)>)|([^|]+)/g,
-    type,
-    ['gen', 'string', 'generic', 't'],
-  )
-  const types = m.map(({ gen, generic, string = '', t }) => {
-    if (gen) {
-      const pp = getLinks(allTypes, generic)
-      return `${gen}<${string}${pp}>`
-    } else if (/^function\(.+?\)$/.test(t)) {
-      const [,vars] = /** @type {!RegExpResult} */
-        (/^function\((.+?)\)$/.exec(t))
-      const allVars = vars.split(',').map(v => v.trim())
-      const pp = allVars.map(v => {
-        return getLinks(allTypes, v)
-      })
-      return `function(${pp.join(', ')})`
+  let parsed
+  try {
+    parsed = parse(type)
+    if (!parsed) {
+      console.log('Could not parse %s', type)
     }
-    const link = getLinkToType(allTypes, t)
-    if (!link) return t
-    const typeWithLink = `[${t}](#${link})`
-    return typeWithLink
-  }).join(' | ')
-  return types
+  } catch (err) {
+    console.log('Could not parse %s', type)
+    console.error(err.message)
+  }
+  if (!parsed) return type
+  const s = parsedToString(parsed, allTypes)
+  return s
+}
+
+/**
+ * @param {!_typedefsParser.Type} type
+ * @param {!Array<!Type>} allTypes
+ */
+const parsedToString = (type, allTypes) => {
+  let s = ''
+  if (type.nullable) s += '?'
+  else if (type.nullable === false) s += '!'
+
+  if (type.function) {
+    s += type.name + '(' // Function or function
+    const args = []
+    if (type.function.this) {
+      let t = 'this: '
+      t += parsedToString(type.function.this, allTypes)
+      args.push(t)
+    }
+    if (type.function.new) {
+      let t = 'new: '
+      t += parsedToString(type.function.new, allTypes)
+      args.push(t)
+    }
+    type.function.args.forEach((a) => {
+      let t = parsedToString(a, allTypes)
+      if (a.optional) t += '='
+      args.push(t)
+    })
+    const argsJoined = args.join(', ')
+    s += argsJoined + ')'
+    if (type.function.return) {
+      s += ': ' + parsedToString(type.function.return, allTypes)
+    }
+  } else if (type.record) {
+    s += '{ '
+    const rs = Object.keys(type.record).map((key) => {
+      const val = type.record[key]
+      if (!val) return key
+      const v = parsedToString(val, allTypes)
+      return `${key}: ${v}`
+    })
+    s += rs.join(', ')
+    s += ' }'
+  } else if (type.application) {
+    s += getTypeWithLink(type.name, allTypes) + '<'
+    const apps = type.application.map((a) => {
+      return parsedToString(a, allTypes)
+    })
+    s += apps.join(', ')
+    s += '>'
+  } else if (type.union) {
+    s += '('
+    const union = type.union.map((u) => {
+      return parsedToString(u, allTypes)
+    })
+    s += union.join(' | ')
+    s += ')'
+  } else {
+    const name = type.name == 'any' ? '*' : type.name
+    s += getTypeWithLink(name, allTypes)
+  }
+  return esc(s)
+}
+
+const getTypeWithLink = (type, allTypes) => {
+  const link = getLinkToType(allTypes, type)
+  if (!link) return type
+  const typeWithLink = `[${type}](#${link})`
+  return typeWithLink
 }
 
 /**
@@ -322,8 +382,12 @@ const esc = (s = '') => {
 }
 
 const getLinkToType = (allTypes, type) => {
-  const typeName = type.replace(/^[!?]/, '')
-  const linkedType = allTypes.find(({ fullName }) => fullName == typeName)
+  const linkedType = allTypes.find(({ fullName }) => fullName == type)
   const link = linkedType ? getLink(linkedType.fullName, 'type') : undefined
   return link
 }
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type
+ */
