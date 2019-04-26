@@ -1024,7 +1024,7 @@ The type represents a _JSDoc_ type.
     ```js
     /* typal example/schema/closure.xml */
     /**
-     * @typedef {(string) => number} Example
+     * @typedef {(s: string) => number} Example
      */
     ```
     </td></tr>

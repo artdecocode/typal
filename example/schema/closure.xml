@@ -1,6 +1,6 @@
 <types namespace="_test">
   <type
-    type="(string) => number"
+    type="(s: string) => number"
     closure="function(string): number" name="Example">
   </type>
 </types>
