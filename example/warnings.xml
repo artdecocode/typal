@@ -1,0 +1,4 @@
+<types namespace="_ns">
+  <import from="stream" name="Writable" />
+  <type name="Type"></type>
+</types>

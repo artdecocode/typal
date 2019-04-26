@@ -8,6 +8,7 @@
  * @param {Promise<MissingType>} promise
  * @param {Object<string, _ns.MissingType>} object
  * @param {(Type | MissingType | _ns.Type)} union
+ * @param {(s: string) => number} error
  * @param {string} string
  * @param {number} number
  * @param {boolean} boolean
@@ -19,6 +20,7 @@ function(
   writable, readable,
   type, missingType,
   array, promise, object, union,
+  error,
   string, number, boolean, symbol, _null, _undefined,
 ) {}
 /* typal test/temp/types.xml */
@@ -51,6 +53,9 @@ Type Type in (Type | MissingType | _ns.Type) was not found.
 test/temp/program.js:9:11
 Type MissingType in (Type | MissingType | _ns.Type) was not found.
 test/temp/program.js:9:11
+Error while parsing the type (s: string) => number
+Expecting | for union
+test/temp/program.js:10:11
 /*@*/
 
 ## warns of missing types

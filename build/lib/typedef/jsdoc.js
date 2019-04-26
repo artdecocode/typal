@@ -22,15 +22,24 @@ const JSDocRule = {
 function replacement(match, ws, typeName, optional, paramName, rest, position) {
   const { closure } = this.conf
   let parsed
+  const logLocation = () => {
+    if (this.lines && this.file) {
+      const { line, column }
+        = getLineAndColumn(this.lines, position, ws.length + 11)
+      this.LOG('%s:%s:%s', this.file, line, column)
+    }
+  }
   try {
     parsed = parser(typeName)
   } catch (err) {
     this.LOG('Error while parsing the type %s', typeName)
-    this.LOG(err.stack)
+    this.LOG(process.env['DEBUG'] ? err.stack : err.message)
+    logLocation()
     return match
   }
   if (!parsed) {
     this.LOG('Could not parse the type %s', typeName)
+    logLocation()
     return match
   }
   const allTypes = Object.values(this.types).map(({ name, fullName }) => {
@@ -38,7 +47,7 @@ function replacement(match, ws, typeName, optional, paramName, rest, position) {
     return name
   })
 
-  const e = checkExists(parsed, allTypes, this.LOG, typeName, position, this.lines, this.file, ws)
+  const e = checkExists(parsed, allTypes, this.LOG, typeName, logLocation)
 
   if (!e) return match
 
@@ -59,12 +68,9 @@ const isPrimitive = t => ['string', 'number', 'boolean', 'null', 'undefined', 's
  * @param {!Array<string>} types
  * @param {Function} log
  * @param {string} original
- * @param {number} position
- * @param {Array<string|undefined>} lines
- * @param {?string} file
- * @param {string} ws
+ * @param {Function} logLocation
  */
-const checkExists = (parsed, types, log, original, position, lines, file, ws) => {
+const checkExists = (parsed, types, log, original, logLocation) => {
   const name = parsed.name
   if (name && isPrimitive(name)) return
   if (name && !parsed.application) {
@@ -72,14 +78,10 @@ const checkExists = (parsed, types, log, original, position, lines, file, ws) =>
     if (!exists) {
       log('Type %s%s was not found.',
         name, original != name ? ` in ${original}` : '')
-      if (lines && file) {
-        const { line, column }
-          = getLineAndColumn(lines, position, ws.length + 11)
-        log('%s:%s:%s', file, line, column)
-      }
+      logLocation()
     } else return true
   }
-  const args = [types, log, original, position, lines, file, ws]
+  const args = [types, log, original, logLocation]
   if (parsed.application) parsed.application.forEach((p) => {
     checkExists(p, ...args)
   })
@@ -96,7 +98,7 @@ const checkExists = (parsed, types, log, original, position, lines, file, ws) =>
 }
 
 /**
- * @param {!Array<string>} string
+ * @param {!Array<string>} lines
  * @param {number} position
  * @param {number} offset
  */

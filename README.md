@@ -31,6 +31,7 @@ yarn add -DE typal
   * [*Closure*](#closure)
   * [*Externs*](#externs)
   * [_Typal_ Arguments](#typal-arguments)
+  * [Missing Types Warnings](#missing-types-warnings)
   * [Migration](#migration)
 - [Schema](#schema)
   * [Types](#types)
@@ -745,6 +746,56 @@ The following arguments are supported by this software.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
 
+### Missing Types Warnings
+
+When placing _JSDoc_ into source code files where functions are annotated with `@params`, _Typal_ in addition to expanding object arguments into the developer-friendly notation as discussed above, will check to see if the types were found in the xml files specified in via the `/* typal types.xml */` marker to warn of possible errors. This feature aims at helping to identify when some annotations were not done properly, e.g., when missing a namespace, an import, or when type names become outdated. This does not work for record types such as `{}` since although we have a parser for types themselves, we only use a regular expression which cannot understand things like `@param {{ s: string, t }}` at the moment. Also only [Closure-style types](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System#optional) are parsed, i.e., _VSCode_ JSDoc is not supported right now, and the union must be explicitly put in parenthesis.
+
+```js
+/**
+ * @param {stream.Writable} writable
+ * @param {stream.Readable} readable
+ * @param {_ns.Type} type
+ * @param {_ns.MissingType} missingType
+ * @param {Array<_ns.MissingType>} array
+ * @param {Promise<MissingType>} promise
+ * @param {Object<string, _ns.MissingType>} object
+ * @param {(Type | MissingType | _ns.Type)} union
+ * @param {(s: string) => number} error
+ * @param {string} string
+ */
+function example (
+  writable, readable,
+  type, missingType,
+  array, promise, object, union,
+  error,
+  string,
+) {}
+
+/* typal example/warnings.xml */
+```
+```
+Detected type marker: example/warnings.xml
+Type stream.Readable was not found.
+example/warnings.js:3:11
+Type _ns.MissingType was not found.
+example/warnings.js:5:11
+Type _ns.MissingType in Array<_ns.MissingType> was not found.
+example/warnings.js:6:11
+Type MissingType in Promise<MissingType> was not found.
+example/warnings.js:7:11
+Type _ns.MissingType in Object<string, _ns.MissingType> was not found.
+example/warnings.js:8:11
+Type Type in (Type | MissingType | _ns.Type) was not found.
+example/warnings.js:9:11
+Type MissingType in (Type | MissingType | _ns.Type) was not found.
+example/warnings.js:9:11
+Error while parsing the type (s: string) => number
+Expecting | for union
+example/warnings.js:10:11
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
+
 ### Migration
 
 When there are JSDoc types written in JavaScript files, and they need to be put in the `types.xml` file, it can be done automatically with the `--migrate` command. In this case, _Typal_ will scan the source code for the type definitions and their properties, defined as `@prop` or `@property` tags, and place them either in the output file when specified, or print to the stdout. This will help to move all types into XML declarations, which can then be manually adjusted if necessary, and embedded into the source code using the `/* typal types.xml */` marker, and in README documentation using [_Documentary_](https://artdecocode.com/documentary/).
@@ -812,7 +863,7 @@ For example, the types above can be extracted into the types file using the <cod
 </td></tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
 ## Schema
 
@@ -856,7 +907,7 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="20"></a></p>
 
 ### Type
 
@@ -981,7 +1032,7 @@ The type represents a _JSDoc_ type.
     </table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="20"></a></p>
 
 ### Property
 
@@ -1052,7 +1103,7 @@ Property Description.
 </table>
 
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ### Import
 
@@ -1111,7 +1162,7 @@ Property Description.
 <tr><td>In <em>Closure</em> mode, <em>Typal</em> adds namespaces so that they will match externs.</tr></td>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -1123,19 +1174,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -1168,7 +1219,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -1375,7 +1426,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
