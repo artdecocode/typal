@@ -96,7 +96,7 @@ const checkExists = (parsed, types, log, original, position, lines, file, ws) =>
 }
 
 /**
- * @param {!Array<string>} string
+ * @param {!Array<string>} lines
  * @param {number} position
  * @param {number} offset
  */

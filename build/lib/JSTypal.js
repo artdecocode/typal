@@ -18,6 +18,9 @@ const Import = require('./Import'); // eslint-disable-line
     /** @type {!Array<string>} */
     this.namespaces = []
     this.LOG = console.log
+    this.file = null
+    /** @type {!Array<string>} */
+    this.lines = []
   }
   static get Type() {
     return Type
