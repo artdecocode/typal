@@ -1,5 +1,6 @@
 const { Replaceable } = require('restream');
 const Type = require('./Type'); // eslint-disable-line
+const Import = require('./Import'); // eslint-disable-line
 
                class JSTypal extends Replaceable {
   constructor(rules, conf = {}) {
@@ -18,9 +19,15 @@ const Type = require('./Type'); // eslint-disable-line
     this.namespaces = []
     this.LOG = console.log
   }
+  static get Type() {
+    return Type
+  }
+  static get Import() {
+    return Import
+  }
   /**
    * Add types emitted during typedefJsRule replacement.
-   * @param {!Array<!Type>} typedefs
+   * @param {!Array<!Type|Import>} typedefs
    */
   addTypes(typedefs) {
     const typedefsHash = typedefs.reduce((acc, typedef) => {
@@ -42,7 +49,7 @@ const Type = require('./Type'); // eslint-disable-line
       this.namespaces.push(namespace)
   }
   /**
-   * @type {!Object.<string, !Type>}
+   * @type {!Object.<string, !(Type|Import)>}
    */
   get types() {
     return this._types

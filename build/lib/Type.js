@@ -202,11 +202,21 @@ _ns.Type.prototype.constructor
   get fullName() {
     return `${this.ns}${this.name}`
   }
-  toParam(paramName, optional, ws = '', nullable = false, closure = false) {
+  /**
+   * Makes JSDoc for a function.
+   * @param {string} paramName The name of the argument.
+   * @param {boolean|undefined} optional Whether the argument is optional (wrapped in [argument])
+   * @param {string} ws The whitespace prior to the param.
+   * @param {boolean|undefined} nullable Whether the argument had ! or ?.
+   */
+  toParam(paramName, optional, ws, nullable, closure = false) {
+    let n = ''
+    if (nullable === true) n = '?'
+    else if (nullable === false) n = '!'
     const d = this.description ? ` ${this.description}` : ''
     const nn = this.spread ? getSpread(this.properties) : (closure ? this.fullName : this.name)
     const pn = optional ? `[${paramName}]` : paramName
-    const s = `${ws} * @param {${nullable ? '!' : ''}${nn}} ${pn}${d}`
+    const s = `${ws || ''} * @param {${n}${nn}} ${pn}${d}`
     const p = this.properties && !this.noExpand ? this.properties.map((pr) => {
       const sp = pr.toParam(paramName, ws, closure)
       return sp

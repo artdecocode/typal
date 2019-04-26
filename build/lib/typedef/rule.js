@@ -23,6 +23,7 @@ async function replacement(match, docOrTypal, location) {
     const { namespace = null, types, imports } = parseFile(xml)
 
     this.emit('types', types) // remember types for js-replace-stream
+    this.emit('types', imports)
 
     let block
     if (closure) {

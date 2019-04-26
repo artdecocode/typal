@@ -41,6 +41,19 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Depack",
+      "program": "${workspaceFolder}/depack/bin/typal.js",
+      "console": "integratedTerminal",
+      "args": [
+        "test/temp/program.js",
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Tool",
       "program": "${workspaceFolder}/node_modules/.bin/alanode",
       "console": "integratedTerminal",

@@ -40,8 +40,11 @@
     this.link = link
     this.ns = ns || this.from
   }
+  get fullName() {
+    return `${this.ns}.${this.name}`
+  }
   toTypedef(includeNamespace = true) {
-    const n = includeNamespace ? `${this.ns}.${this.name}` : this.name
+    const n = includeNamespace ? this.fullName : this.name
     return ` * @typedef {import('${this.from}').${this.name}} ${n}`
   }
 }

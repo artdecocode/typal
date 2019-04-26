@@ -38,7 +38,7 @@ function replacement(match, ws, typeName, optional, paramName) {
     return name
   })
 
-  const e = checkExists(parsed, allTypes, this.LOG.bind(this), typeName)
+  const e = checkExists(parsed, allTypes, this.LOG, typeName)
 
   if (!e) return match
 
