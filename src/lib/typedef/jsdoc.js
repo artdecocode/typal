@@ -46,6 +46,7 @@ function replacement(match, ws, typeName, optional, paramName) {
     if (closure) return fullName == parsed.name
     return name == parsed.name
   })
+  if (found instanceof JSTypal.Import) return match
 
   const s = found.toParam(paramName, optional, ws, parsed.nullable, closure)
   return s
@@ -56,7 +57,7 @@ const isPrimitive = t => ['string', 'number', 'boolean', 'null', 'undefined', 's
 /**
  * @param {!_typedefsParser.Type} parsed
  * @param {!Array<string>} types
- * @param {function} log
+ * @param {Function} log
  * @param {string} original
  */
 const checkExists = (parsed, types, log, original) => {

@@ -58,6 +58,14 @@ function configureInverse(config) {}
     const res = mismatch(jsDocRe, g, ['ws', 'type', 'opt', 'name', 'rest'])
     return res
   },
+  'matches applications'() {
+    const g = `
+ * @param {Array<_ns.MissingType>} array
+ * @param {Promise<MissingType>} promise
+ * @param {Object<string, _ns.MissingType>} object`
+    const res = mismatch(jsDocRe, g, ['ws', 'type', 'opt', 'name', 'rest'])
+    return res
+  },
 }
 
 export default T

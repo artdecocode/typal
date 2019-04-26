@@ -95,3 +95,27 @@ export const externs = makeTestSuite('test/result/js-typal/externs', {
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
 })
+
+export const paramsCheck = makeTestSuite('test/result/common/check', {
+  context: TempContext,
+  fork: {
+    module: Context.BIN,
+    /**
+     * @param {string} args
+     * @param {TempContext} t
+     */
+    async getArgs(args, { write }) {
+      if (this.types) await write('types.xml', this.types)
+      const p = await write('program.js', this.input)
+      let conf = {}; this.conf && eval(`conf = ${this.conf}`)
+      const a = [p]
+      if (conf.closure) a.push('-c')
+      return a
+    },
+  },
+  mapActual({ stderr }) {
+    return stderr.trim()
+  },
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})

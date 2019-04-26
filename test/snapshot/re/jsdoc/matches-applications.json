@@ -1,0 +1,20 @@
+[
+  {
+    "ws": "",
+    "type": "Array<_ns.MissingType>",
+    "name": "array",
+    "rest": ""
+  },
+  {
+    "ws": "",
+    "type": "Promise<MissingType>",
+    "name": "promise",
+    "rest": ""
+  },
+  {
+    "ws": "",
+    "type": "Object<string, _ns.MissingType>",
+    "name": "object",
+    "rest": ""
+  }
+]
