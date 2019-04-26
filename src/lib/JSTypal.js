@@ -18,6 +18,9 @@ export default class JSTypal extends Replaceable {
     /** @type {!Array<string>} */
     this.namespaces = []
     this.LOG = console.log
+    this.file = null
+    /** @type {!Array<string>} */
+    this.lines = []
   }
   static get Type() {
     return Type

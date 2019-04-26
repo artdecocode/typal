@@ -38,12 +38,19 @@ function(
 /*@ expected */
 Detected type marker: test/temp/types.xml
 Type stream.Readable was not found.
+test/temp/program.js:3:11
 Type _ns.MissingType was not found.
+test/temp/program.js:5:11
 Type _ns.MissingType in Array<_ns.MissingType> was not found.
+test/temp/program.js:6:11
 Type MissingType in Promise<MissingType> was not found.
+test/temp/program.js:7:11
 Type _ns.MissingType in Object<string, _ns.MissingType> was not found.
+test/temp/program.js:8:11
 Type Type in (Type | MissingType | _ns.Type) was not found.
+test/temp/program.js:9:11
 Type MissingType in (Type | MissingType | _ns.Type) was not found.
+test/temp/program.js:9:11
 /*@*/
 
 ## warns of missing types
@@ -82,10 +89,17 @@ function(
 /*@ expected */
 Detected type marker: test/temp/types.xml
 Type Readable was not found.
+test/temp/program.js:3:11
 Type MissingType was not found.
+test/temp/program.js:5:11
 Type MissingType in Array<MissingType> was not found.
+test/temp/program.js:6:11
 Type _ns.MissingType in Promise<_ns.MissingType> was not found.
+test/temp/program.js:7:11
 Type MissingType in Object<string, MissingType> was not found.
+test/temp/program.js:8:11
 Type _ns.MissingType in (Type | _ns.MissingType | _ns.Type) was not found.
+test/temp/program.js:9:11
 Type _ns.Type in (Type | _ns.MissingType | _ns.Type) was not found.
+test/temp/program.js:9:11
 /*@*/

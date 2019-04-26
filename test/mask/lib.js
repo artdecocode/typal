@@ -31,6 +31,8 @@ export const checks = makeTestSuite('test/result/common/check', {
     this.conf && eval(`conf = ${this.conf}`)
     const js = makeJSTypal(conf)
     const logged = []
+    js.file = 'test/temp/program.js'
+    js.lines = input.split('\n')
     js.LOG = (s, ...a) => {
       let i = 0
       logged.push(s.replace(/%s/g, () => {
