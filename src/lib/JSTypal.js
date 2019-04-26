@@ -18,6 +18,9 @@ export default class JSTypal extends Replaceable {
     this.namespaces = []
     this.LOG = console.log
   }
+  static get Type() {
+    return Type
+  }
   /**
    * Add types emitted during typedefJsRule replacement.
    * @param {!Array<!Type>} typedefs
