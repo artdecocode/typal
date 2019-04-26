@@ -27,4 +27,4 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     </tr></td></table>
     </details>
 
-%~ width="20"%
+%~ width="25"%

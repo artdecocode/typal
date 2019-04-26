@@ -138,7 +138,7 @@ However, there are 2 problems with that:
       <img src="doc/restream2.png" title="VSCode does not show properties of a type">
     </p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
 
 _**<a name="jsdoc-approach">JSDoc approach</a>**: Now let's refactor the code that we have, and place the types definitions in the `types.xml` file instead of the source code:_
 
@@ -226,7 +226,7 @@ Another advantage, is that the `Rule` type was expanded into individual properti
   <img src="doc/restream3.png" title="JSDoc expansion of properties above functions.">
 </p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
 
 _**<a name="closure-approach">Closure approach</a>**: Finally, if we want to allow our package to be compiled as part of other packages with GCC (or compile a binary from the lib we've written), we need to make sure the JSDoc is in the format that it accepts._
 
@@ -699,7 +699,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     </tr></td></table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
 
 ### _Typal_ Arguments
 
@@ -744,7 +744,7 @@ The following arguments are supported by this software.
   <tr><td>--version</td><td>-v</td><td>Show the version's number and exit.</td></tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
 ### Missing Types Warnings
 
@@ -794,7 +794,7 @@ Expecting | for union
 example/warnings.js:10:11
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
 
 ### Migration
 
@@ -907,7 +907,7 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
 
 ### Type
 
@@ -1032,7 +1032,7 @@ The type represents a _JSDoc_ type.
     </table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
 
 ### Property
 

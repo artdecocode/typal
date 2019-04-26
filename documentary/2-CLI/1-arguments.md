@@ -8,4 +8,4 @@ The following arguments are supported by this software.
 
 <argufy>types/arguments.xml</argufy>
 
-%~ width="20"%
+%~ width="25"%

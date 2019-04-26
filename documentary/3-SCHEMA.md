@@ -40,7 +40,7 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
-%~ width="20"%
+%~ width="25"%
 
 ### Type
 
@@ -117,7 +117,7 @@ The type represents a _JSDoc_ type.
     </table>
     </details>
 
-%~ width="20"%
+%~ width="25"%
 
 ### Property
 

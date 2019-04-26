@@ -22,4 +22,4 @@ Another advantage, is that the `Rule` type was expanded into individual properti
   <img src="doc/restream3.png" title="JSDoc expansion of properties above functions.">
 </p>
 
-%~ width="20"%
+%~ width="25"%

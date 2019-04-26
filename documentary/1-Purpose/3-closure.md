@@ -257,5 +257,5 @@ And so that's it! We've successfully compiled our Node.JS program with _Google C
 
 When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs if it finds it. Packages can publish their externs and point to them using the `externs` field in their **package.json** file, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
 
-<!-- %~ width="20"% -->
+<!-- %~ width="25"% -->
 %~%

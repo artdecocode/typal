@@ -43,4 +43,4 @@ However, there are 2 problems with that:
       <img src="doc/restream2.png" title="VSCode does not show properties of a type">
     </p>
 
-%~ width="20"%
+%~ width="25"%
