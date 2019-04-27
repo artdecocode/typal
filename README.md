@@ -761,6 +761,7 @@ When placing _JSDoc_ into source code files where functions are annotated with `
  * @param {Object<string, _ns.MissingType>} object
  * @param {(Type | MissingType | _ns.Type)} union
  * @param {(s: string) => number} error
+ * @param {MissingType & Type2} partial Only first type will be parsed
  * @param {string} string
  */
 function example (
@@ -792,6 +793,8 @@ example/warnings.js:9:11
 Error while parsing the type (s: string) => number
 Expecting | for union
 example/warnings.js:10:11
+Type MissingType in MissingType & Type2 was not found.
+example/warnings.js:11:11
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>

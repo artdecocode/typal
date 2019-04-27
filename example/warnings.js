@@ -8,6 +8,7 @@
  * @param {Object<string, _ns.MissingType>} object
  * @param {(Type | MissingType | _ns.Type)} union
  * @param {(s: string) => number} error
+ * @param {MissingType & Type2} intersection Only first type will be parsed
  * @param {string} string
  */
 function example (

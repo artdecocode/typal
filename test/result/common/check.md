@@ -8,6 +8,7 @@
  * @param {Promise<MissingType>} promise
  * @param {Object<string, _ns.MissingType>} object
  * @param {(Type | MissingType | _ns.Type)} union
+ * @param {_ns.Type | MissingType} parenthesisLessUnion
  * @param {(s: string) => number} error
  * @param {string} string
  * @param {number} number
@@ -16,10 +17,10 @@
  * @param {null} _null
  * @param {undefined} _undefined
  */
-function(
+function test (
   writable, readable,
   type, missingType,
-  array, promise, object, union,
+  array, promise, object, union, unionWithoutParenthesis,
   error,
   string, number, boolean, symbol, _null, _undefined,
 ) {}
@@ -53,9 +54,11 @@ Type Type in (Type | MissingType | _ns.Type) was not found.
 test/temp/program.js:9:11
 Type MissingType in (Type | MissingType | _ns.Type) was not found.
 test/temp/program.js:9:11
-Error while parsing the type (s: string) => number
-Expecting | for union
+Type MissingType in _ns.Type | MissingType was not found.
 test/temp/program.js:10:11
+Error while parsing the type (s: string) => number
+Expecting closing )
+test/temp/program.js:11:11
 /*@*/
 
 ## warns of missing types
@@ -68,6 +71,8 @@ test/temp/program.js:10:11
  * @param {Promise<_ns.MissingType>} promise
  * @param {Object<string, MissingType>} object
  * @param {(Type | _ns.MissingType | _ns.Type)} union
+ * @param {Type | MissingType} parenthesisLessUnion
+ * @param {(s: string) => number} error
  * @param {string} string
  * @param {number} number
  * @param {boolean} boolean
@@ -75,10 +80,11 @@ test/temp/program.js:10:11
  * @param {null} _null
  * @param {undefined} _undefined
  */
-function(
+function test(
   writable, readable,
   type, missingType,
-  array, promise, object, union,
+  array, promise, object, union, unionWithoutParenthesis,
+  error,
   string, number, boolean, symbol, _null, _undefined,
 ) {}
 /* typal test/temp/types.xml */
@@ -107,4 +113,9 @@ Type _ns.MissingType in (Type | _ns.MissingType | _ns.Type) was not found.
 test/temp/program.js:9:11
 Type _ns.Type in (Type | _ns.MissingType | _ns.Type) was not found.
 test/temp/program.js:9:11
+Type MissingType in Type | MissingType was not found.
+test/temp/program.js:10:11
+Error while parsing the type (s: string) => number
+Expecting closing )
+test/temp/program.js:11:11
 /*@*/
