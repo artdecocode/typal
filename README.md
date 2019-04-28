@@ -1176,15 +1176,15 @@ _Typal_ allows to paste types into documentation using _Documentary_ package. It
 
 __<a name="type-type">`Type`</a>__: A type which can be linked.
 
-__<a name="type-example">`Example`</a>__
+__<a name="type-example">`Example`</a>__: An example type which can link to other types.
 
-|       Name       |                                             Type                                             |                 Description                  |
-| ---------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| __type*__        | <em>[?Type](#type-type)</em>                                                                 | The type itself, possibly nullable.          |
-| __union*__       | <em>([Type](#type-type) \\| string)</em>                                                     | The union of types.                          |
-| __record*__      | <em>{ t: [Type](#type-type), r }</em>                                                        | The record with a type.                      |
-| __application*__ | <em>Object&lt;string, [Type](#type-type)&gt;</em>                                            | The application with a type.                 |
-| __function*__    | <em>function(this: [Type](#type-type), string, [!Type](#type-type)): [Type](#type-type)</em> | The function with arguments and return type. |
+|    Name     |                                             Type                                             |                 Description                  |
+| ----------- | -------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| type        | <em>[?Type](#type-type)</em>                                                                 | The type itself, possibly nullable.          |
+| union       | <em>([Type](#type-type) \\| string)</em>                                                     | The union of types.                          |
+| record      | <em>{ t: [Type](#type-type), r }</em>                                                        | The record with a type.                      |
+| application | <em>Object&lt;string, [Type](#type-type)&gt;</em>                                            | The application with a type.                 |
+| function    | <em>function(this: [Type](#type-type), string, [!Type](#type-type)): [Type](#type-type)</em> | The function with arguments and return type. |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
