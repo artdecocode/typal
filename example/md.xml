@@ -5,7 +5,7 @@
     <prop opt type="?Type" name="type">
       The type itself, possibly nullable.
     </prop>
-    <prop opt type="(Type|string)" name="union">
+    <prop opt type="!(Type|string)" name="union">
       The union of types.
     </prop>
     <prop opt type="{ t: Type, r }" name="record">
@@ -15,7 +15,13 @@
       The application with a type.
     </prop>
     <prop opt type="function(this: Type, string, !Type): Type" name="function">
-      The function with arguments and return type.
+      The function with arguments and return type. The ... for variable argument types are not currently supported.
+    </prop>
+    <prop opt type="function(...Type)" name="variable-args-function">
+      Functions with ... for variable argument types are not currently supported.
+    </prop>
+    <prop opt type="(type: Type, s: string) => Type" name="vscode-function">
+      Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment.
     </prop>
   </type>
 </types>
