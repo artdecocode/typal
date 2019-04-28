@@ -1,5 +1,9 @@
 ## 29 April 2019
 
+### [1.6.0](https://github.com/artdecocode/typal/compare/v1.5.0...v1.6.0)
+
+- [feature] Support variable arguments linking.
+
 ### [1.5.0](https://github.com/artdecocode/typal/compare/v1.4.0...v1.5.0)
 
 - [feature] Use `@typedefs/parser` for better types linking and source code warnings.
