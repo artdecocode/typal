@@ -315,8 +315,9 @@ const parsedToString = (type, allTypes) => {
       args.push(t)
     })
     if (type.function.variableArgs) {
-      s += '...'
-      s += parsedToString(type.function.variableArgs, allTypes)
+      let t = '...'
+      t += parsedToString(type.function.variableArgs, allTypes)
+      args.push(t)
     }
     const argsJoined = args.join(', ')
     s += argsJoined + ')'
