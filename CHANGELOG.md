@@ -1,3 +1,9 @@
+## 29 April 2019
+
+### [1.5.0](https://github.com/artdecocode/typal/compare/v1.4.0...v1.5.0)
+
+- [feature] Use `@typedefs/parser` for better types linking and source code warnings.
+
 ## 24 April 2019
 
 ### [1.4.0](https://github.com/artdecocode/typal/compare/v1.3.2...v1.4.0)
