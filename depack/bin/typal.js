@@ -4,7 +4,7 @@ const fs = require('fs');
 const stream = require('stream');
 const os = require('os');
 const path = require('path');             
-const t = (a, b, c, d, e) => {
+const r = (a, b, c, d, e) => {
   d = void 0 === d ? !1 : d;
   e = void 0 === e ? !1 : e;
   const f = c ? new RegExp(`^-(${c}|-${b})`) : new RegExp(`^--${b}`);
@@ -33,7 +33,7 @@ const t = (a, b, c, d, e) => {
   }
   return b;
 }, ba = () => {
-  var a = v;
+  var a = u;
   return Object.keys(a).reduce((b, c) => {
     const d = a[c];
     if ("string" == typeof d) {
@@ -47,7 +47,7 @@ const t = (a, b, c, d, e) => {
     return b;
   }, {});
 };
-const v = {source:{description:"The path to the source file or directory with files to embed types into.", command:!0}, output:{description:"The destination where to save output.\nIf not passed, the file will be overwritten.\nIf `-` is passed, prints to stdout.", short:"o"}, closure:{description:"Whether to generate types in _Closure_ mode.", boolean:!0, short:"c"}, externs:{description:"Whether to generate externs for _GCC_.", boolean:!0, short:"e"}, migrate:{description:"Extracts types from JavaScript source code and saves them\ninto the types.xml file specified in the output option.", 
+const u = {source:{description:"The path to the source file or directory with files to embed types into.", command:!0}, output:{description:"The destination where to save output.\nIf not passed, the file will be overwritten.\nIf `-` is passed, prints to stdout.", short:"o"}, closure:{description:"Whether to generate types in _Closure_ mode.", boolean:!0, short:"c"}, externs:{description:"Whether to generate externs for _GCC_.", boolean:!0, short:"e"}, migrate:{description:"Extracts types from JavaScript source code and saves them\ninto the types.xml file specified in the output option.", 
 boolean:!0, short:"m"}, help:{description:"Print the help information and exit.", boolean:!0, short:"h"}, version:{description:"Show the version's number and exit.", boolean:!0, short:"v"}}, w = function(a, b) {
   a = void 0 === a ? {} : a;
   b = void 0 === b ? process.argv : b;
@@ -65,23 +65,23 @@ boolean:!0, short:"m"}, help:{description:"Print the help information and exit."
     const h = a[f];
     let k;
     if ("string" == typeof h) {
-      ({value:k, argv:e} = t(e, f, h));
+      ({value:k, argv:e} = r(e, f, h));
     } else {
       try {
         const {short:l, boolean:m, number:n, command:p, multiple:q} = h;
-        p && q && c.length ? (k = c, d = !0) : p && c.length ? (k = c[0], d = !0) : {value:k, argv:e} = t(e, f, l, m, n);
+        p && q && c.length ? (k = c, d = !0) : p && c.length ? (k = c[0], d = !0) : {value:k, argv:e} = r(e, f, l, m, n);
       } catch (l) {
         return Object.assign({}, {j:e}, g);
       }
     }
     return void 0 === k ? Object.assign({}, {j:e}, g) : Object.assign({}, {j:e}, g, {[f]:k});
   }, {j:b});
-}(v), x = w.source, y = w.output, ca = w.closure, da = w.externs, ea = w.migrate, fa = w.help, ha = w.version;
+}(u), x = w.source, y = w.output, ca = w.closure, da = w.externs, ea = w.migrate, fa = w.help, ha = w.version;
 function ia(a = {usage:{}}) {
   const {usage:b = {}, description:c, line:d, example:e} = a;
   a = Object.keys(b);
   const f = Object.values(b), [g] = a.reduce(([l = 0, m = 0], n) => {
-    const p = b[n].split("\n").reduce((q, r) => r.length > q ? r.length : q, 0);
+    const p = b[n].split("\n").reduce((q, t) => t.length > q ? t.length : q, 0);
     p > m && (m = p);
     n.length > l && (l = n.length);
     return [l, m];
@@ -94,8 +94,8 @@ function ia(a = {usage:{}}) {
     m = h(m, g);
     const [p, ...q] = n;
     m = `${m}\t${p}`;
-    const r = h("", g);
-    n = q.map(u => `${r}\t${u}`);
+    const t = h("", g);
+    n = q.map(v => `${t}\t${v}`);
     return [...l, m, ...n];
   }, []).map(l => `\t${l}`);
   const k = [c, `  ${d || ""}`].filter(l => l ? l.trim() : l).join("\n\n");
@@ -563,9 +563,9 @@ class La {
   !0 === n && (a.a = n);
   !0 === p && (a.b = p);
   m && (a.extends = m);
-  b && (a.f = T("prop", b).map(({content:r, v:u}) => {
+  b && (a.f = T("prop", b).map(({content:t, v}) => {
     const D = new La;
-    Ja(D, r, u);
+    Ja(D, t, v);
     return D;
   }));
   q && (a.i = q);
@@ -925,25 +925,27 @@ function fb(a, b, c, d, e, f, g) {
   return c instanceof Za.a ? a : c.C(e, d, b, k.nullable, h);
 }
 const Z = (a, b, c, d, e) => {
-  const f = a.name;
-  if (!f || !"string number boolean null undefined symbol".split(" ").includes(f)) {
-    if (f && !a.application) {
-      if (b.includes(f)) {
-        return !0;
+  if (a) {
+    var f = a.name;
+    if (!f || !"string number boolean null undefined symbol".split(" ").includes(f)) {
+      if (f && !a.application && !a.function) {
+        if (b.includes(f)) {
+          return !0;
+        }
+        c("Type %s%s was not found.", f, d != f ? ` in ${d}` : "");
+        e();
       }
-      c("Type %s%s was not found.", f, d != f ? ` in ${d}` : "");
-      e();
+      var g = [b, c, d, e];
+      a.application ? a.application.forEach(h => {
+        Z(h, ...g);
+      }) : a.record ? Object.keys(a.record).forEach(h => {
+        Z(a.record[h], ...g);
+      }) : a.union ? a.union.forEach(h => {
+        Z(h, ...g);
+      }) : a.function && (Z(a.function.this, ...g), Z(a.function.new, ...g), a.function.args.forEach(h => {
+        Z(h, ...g);
+      }), Z(a.function.variableArgs, ...g), Z(a.function.return, ...g));
     }
-    var g = [b, c, d, e];
-    a.application ? a.application.forEach(h => {
-      Z(h, ...g);
-    }) : a.record ? Object.keys(a.record).forEach(h => {
-      (h = a.record[h]) && Z(h, ...g);
-    }) : a.union ? a.union.forEach(h => {
-      Z(h, ...g);
-    }) : a.function && a.function.args.forEach(h => {
-      Z(h, ...g);
-    });
   }
 };
 var ib = async() => {
@@ -988,10 +990,10 @@ class lb extends A {
       {
         h = ["string", "number", "boolean"].includes(k) ? ` ${k}` : ` type="${k}"`;
         var q = void 0 !== m;
-        const r = q ? ` default="${m}"` : "";
+        const t = q ? ` default="${m}"` : "";
         q = p && !q ? " opt" : "";
-        const u = " ".repeat(4), D = " ".repeat(6);
-        h = `${u}<prop${q}${h} name="${l}"${r}${n ? `>\n${D}${n}\n${u}</prop>` : "/>"}\n`;
+        const v = " ".repeat(4), D = " ".repeat(6);
+        h = `${v}<prop${q}${h} name="${l}"${t}${n ? `>\n${D}${n}\n${v}</prop>` : "/>"}\n`;
       }
       this.push(h);
     });

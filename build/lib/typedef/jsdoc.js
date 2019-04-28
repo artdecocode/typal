@@ -64,16 +64,17 @@ function replacement(match, ws, typeName, optional, paramName, rest, position) {
 const isPrimitive = t => ['string', 'number', 'boolean', 'null', 'undefined', 'symbol'].includes(t)
 
 /**
- * @param {!_typedefsParser.Type} parsed
+ * @param {(?_typedefsParser.Type|undefined)} parsed
  * @param {!Array<string>} types
  * @param {Function} log
  * @param {string} original
  * @param {Function} logLocation
  */
 const checkExists = (parsed, types, log, original, logLocation) => {
+  if (!parsed) return
   const name = parsed.name
   if (name && isPrimitive(name)) return
-  if (name && !parsed.application) {
+  if (name && !parsed.application && !parsed.function) {
     const exists = types.includes(name)
     if (!exists) {
       log('Type %s%s was not found.',
@@ -87,14 +88,20 @@ const checkExists = (parsed, types, log, original, logLocation) => {
   })
   else if (parsed.record) Object.keys(parsed.record).forEach(key => {
     const val = parsed.record[key]
-    if (val) checkExists(val, ...args)
+    checkExists(val, ...args)
   })
   else if (parsed.union) parsed.union.forEach((u) => {
     checkExists(u, ...args)
   })
-  else if (parsed.function) parsed.function.args.forEach((a) => {
-    checkExists(a, ...args)
-  })
+  else if (parsed.function) {
+    checkExists(parsed.function.this, ...args)
+    checkExists(parsed.function.new, ...args)
+    parsed.function.args.forEach((a) => {
+      checkExists(a, ...args)
+    })
+    checkExists(parsed.function.variableArgs, ...args)
+    checkExists(parsed.function.return, ...args)
+  }
 }
 
 /**
