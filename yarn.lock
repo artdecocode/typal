@@ -39,10 +39,10 @@
   resolved "https://registry.yarnpkg.com/@depack/split/-/split-1.0.0.tgz#37fea28d9bc6f01e5a2da87d393f402781bb7e99"
   integrity sha512-PNJPl01VFMKtyN7qBZ2cds4N/lO2KvzLrR7JamODFiuuL2X8mGoTKp1SI8fxlT2MwLV8mScCUKn55QPwsUX7iA==
 
-"@typedefs/parser@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.1.1.tgz#97eb47b456ccfc4927b092b55ce70ac762bb3271"
-  integrity sha512-YLMtQLVh6crF1Ktadc30HgKbFTaPcyLiyqeoDQfHL1eC4B4wwn65AgAt5N+RlHv8sG/cOyNvNsdJUXYadpAmOw==
+"@typedefs/parser@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.2.0.tgz#9afdbc0c76f5221b29ef15577a53f4087fb85bc1"
+  integrity sha512-PlRyE9enBG4CRa1DMqz0hZR49f9TScTV2HkSQFWPdGVo5kGIYKt2oChL6rFC9SJC5Mu23YNdCnFygV5oaCbwSA==
 
 "@wrote/clone@^1.1.1", "@wrote/clone@^1.2.1":
   version "1.2.1"
