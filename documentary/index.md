@@ -7,7 +7,7 @@
 The package's main use is as the CLI tool to generate typedefs, but it also has an API for parsing types and properties with regular expressions.
 
 ```sh
-yarn add -DE typal
+yarn add -D typal
 ```
 
 %~%

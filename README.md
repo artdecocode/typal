@@ -7,7 +7,7 @@
 The package's main use is as the CLI tool to generate typedefs, but it also has an API for parsing types and properties with regular expressions.
 
 ```sh
-yarn add -DE typal
+yarn add -D typal
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -47,6 +47,9 @@ yarn add -DE typal
   * [`getNameWithDefault(name: string, defaultValue: ?(string|boolean|number), type: string=, parentParam: string=): string`](#getnamewithdefaultname-stringdefaultvalue-stringbooleannumbertype-stringparentparam-string-string)
   * [`parseFile(xml: string, rootNamespace: string=): { types, imports, namespace }`](#parsefilexml-stringrootnamespace-string--types-imports-namespace-)
     * [Root Namespace](#root-namespace)
+- [Markdown Documentation](#markdown-documentation)
+  * [`Type`](#type-type)
+  * [`Example`](#type-example)
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
@@ -761,7 +764,7 @@ When placing _JSDoc_ into source code files where functions are annotated with `
  * @param {Object<string, _ns.MissingType>} object
  * @param {(Type | MissingType | _ns.Type)} union
  * @param {(s: string) => number} error
- * @param {MissingType & Type2} partial Only first type will be parsed
+ * @param {MissingType & Type2} intersection Only first type will be parsed
  * @param {string} string
  */
 function example (
@@ -791,7 +794,7 @@ example/warnings.js:9:11
 Type MissingType in (Type | MissingType | _ns.Type) was not found.
 example/warnings.js:9:11
 Error while parsing the type (s: string) => number
-Expecting | for union
+Expecting closing )
 example/warnings.js:10:11
 Type MissingType in MissingType & Type2 was not found.
 example/warnings.js:11:11
@@ -1430,6 +1433,24 @@ const getFile = async () => {
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
+
+## Markdown Documentation
+
+_Typal_ allows to paste types into documentation using _Documentary_ package. It will also link the types it knows about for easier navigation. The supported types are based on the [Google Closure Compiler types](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System#optional) and include the following:
+
+__<a name="type-type">`Type`</a>__: A type which can be linked.
+
+__<a name="type-example">`Example`</a>__
+
+|       Name       |                        Type                        |                 Description                  |
+| ---------------- | -------------------------------------------------- | -------------------------------------------- |
+| __type*__        | <em>[?Type](#type-type)</em>                       | The type itself, possibly nullable.          |
+| __union*__       | <em>(Type \| string)</em>                          | The union of types.                          |
+| __record*__      | <em>{ t: Type, r }</em>                            | The record with a type.                      |
+| __application*__ | <em>Object&lt;string, Type&gt;</em>                | The application with a type.                 |
+| __function*__    | <em>function(this: Type, string, !Type): Type</em> | The function with arguments and return type. |
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---

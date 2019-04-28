@@ -1,0 +1,21 @@
+<types>
+  <type name="Type" desc="A type which can be linked.">
+  </type>
+  <type name="Example">
+    <prop type="?Type" name="type">
+      The type itself, possibly nullable.
+    </prop>
+    <prop type="(Type|string)" name="union">
+      The union of types.
+    </prop>
+    <prop type="{ t: Type, r }" name="record">
+      The record with a type.
+    </prop>
+    <prop type="Object<string, Type>" name="application">
+      The application with a type.
+    </prop>
+    <prop type="function(this: Type, string, !Type): Type" name="function">
+      The function with arguments and return type.
+    </prop>
+  </type>
+</types>
