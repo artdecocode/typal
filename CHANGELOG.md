@@ -1,5 +1,9 @@
 ## 29 April 2019
 
+### [1.6.1](https://github.com/artdecocode/typal/compare/v1.6.0...v1.6.1)
+
+- [fix] Fix order of joining function's linked args.
+
 ### [1.6.0](https://github.com/artdecocode/typal/compare/v1.5.0...v1.6.0)
 
 - [feature] Support variable arguments linking.
