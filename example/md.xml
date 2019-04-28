@@ -15,7 +15,7 @@
       The application with a type.
     </prop>
     <prop opt type="function(this: Type, string, !Type): Type" name="function">
-      The function with arguments and return type. The ... for variable argument types are not currently supported.
+      The function with arguments and return type.
     </prop>
     <prop opt type="function(...Type)" name="variable-args">
       Functions with `...` for variable argument types.
