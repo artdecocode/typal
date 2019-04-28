@@ -63,43 +63,43 @@ boolean:!0, short:"m"}, help:{description:"Print the help information and exit."
       return Object.assign({}, {j:e}, g);
     }
     const h = a[f];
-    let m;
+    let k;
     if ("string" == typeof h) {
-      ({value:m, argv:e} = t(e, f, h));
+      ({value:k, argv:e} = t(e, f, h));
     } else {
       try {
-        const {short:k, boolean:l, number:n, command:p, multiple:q} = h;
-        p && q && c.length ? (m = c, d = !0) : p && c.length ? (m = c[0], d = !0) : {value:m, argv:e} = t(e, f, k, l, n);
-      } catch (k) {
+        const {short:l, boolean:m, number:n, command:p, multiple:q} = h;
+        p && q && c.length ? (k = c, d = !0) : p && c.length ? (k = c[0], d = !0) : {value:k, argv:e} = t(e, f, l, m, n);
+      } catch (l) {
         return Object.assign({}, {j:e}, g);
       }
     }
-    return void 0 === m ? Object.assign({}, {j:e}, g) : Object.assign({}, {j:e}, g, {[f]:m});
+    return void 0 === k ? Object.assign({}, {j:e}, g) : Object.assign({}, {j:e}, g, {[f]:k});
   }, {j:b});
 }(v), x = w.source, y = w.output, ca = w.closure, da = w.externs, ea = w.migrate, fa = w.help, ha = w.version;
 function ia(a = {usage:{}}) {
   const {usage:b = {}, description:c, line:d, example:e} = a;
   a = Object.keys(b);
-  const f = Object.values(b), [g] = a.reduce(([k = 0, l = 0], n) => {
+  const f = Object.values(b), [g] = a.reduce(([l = 0, m = 0], n) => {
     const p = b[n].split("\n").reduce((q, r) => r.length > q ? r.length : q, 0);
-    p > l && (l = p);
-    n.length > k && (k = n.length);
-    return [k, l];
-  }, []), h = (k, l) => {
-    l = " ".repeat(l - k.length);
-    return `${k}${l}`;
+    p > m && (m = p);
+    n.length > l && (l = n.length);
+    return [l, m];
+  }, []), h = (l, m) => {
+    m = " ".repeat(m - l.length);
+    return `${l}${m}`;
   };
-  a = a.reduce((k, l, n) => {
+  a = a.reduce((l, m, n) => {
     n = f[n].split("\n");
-    l = h(l, g);
+    m = h(m, g);
     const [p, ...q] = n;
-    l = `${l}\t${p}`;
+    m = `${m}\t${p}`;
     const r = h("", g);
     n = q.map(u => `${r}\t${u}`);
-    return [...k, l, ...n];
-  }, []).map(k => `\t${k}`);
-  const m = [c, `  ${d || ""}`].filter(k => k ? k.trim() : k).join("\n\n");
-  a = `${m ? `${m}\n` : ""}
+    return [...l, m, ...n];
+  }, []).map(l => `\t${l}`);
+  const k = [c, `  ${d || ""}`].filter(l => l ? l.trim() : l).join("\n\n");
+  a = `${k ? `${k}\n` : ""}
 ${a.join("\n")}
 `;
   return e ? `${a}
@@ -159,25 +159,25 @@ class ua extends na {
     var b = a || {}, c = Object.assign({}, b);
     const d = void 0 === b.binary ? !1 : b.binary, e = void 0 === b.rs ? null : b.rs;
     b = (delete c.binary, delete c.rs, c);
-    const {G:f = G(!0), proxyError:g} = a || {}, h = (m, k) => f(k);
+    const {G:f = G(!0), proxyError:g} = a || {}, h = (k, l) => f(l);
     super(b);
     this.a = [];
-    this.D = new Promise((m, k) => {
+    this.D = new Promise((k, l) => {
       this.on("finish", () => {
-        let l;
-        d ? l = Buffer.concat(this.a) : l = this.a.join("");
-        m(l);
+        let m;
+        d ? m = Buffer.concat(this.a) : m = this.a.join("");
+        k(m);
         this.a = [];
       });
-      this.once("error", l => {
-        if (-1 == l.stack.indexOf("\n")) {
-          h`${l}`;
+      this.once("error", m => {
+        if (-1 == m.stack.indexOf("\n")) {
+          h`${m}`;
         } else {
-          const n = F(l.stack);
-          l.stack = n;
-          g && h`${l}`;
+          const n = F(m.stack);
+          m.stack = n;
+          g && h`${m}`;
         }
-        k(l);
+        l(m);
       });
       e && ta(this, e).pipe(this);
     });
@@ -226,12 +226,12 @@ async function L(a, b, c) {
     throw Error("Function does not accept any arguments.");
   }
   return await new Promise((f, g) => {
-    const h = (k, l) => k ? (k = d(k), g(k)) : f(c || l);
-    let m = [h];
-    Array.isArray(b) ? (b.forEach((k, l) => {
-      K(e, l);
-    }), m = [...b, h]) : 1 < Array.from(arguments).length && (K(e, 0), m = [b, h]);
-    a(...m);
+    const h = (l, m) => l ? (l = d(l), g(l)) : f(c || m);
+    let k = [h];
+    Array.isArray(b) ? (b.forEach((l, m) => {
+      K(e, m);
+    }), k = [...b, h]) : 1 < Array.from(arguments).length && (K(e, 0), k = [b, h]);
+    a(...k);
   });
 }
 ;const {join:M} = path;
@@ -360,38 +360,35 @@ function Da(a) {
 });
 function Ha(a) {
   let b = 0;
-  const c = d => {
+  const c = (d, e) => {
     d = void 0 === d ? !0 : d;
-    var e = {}, f, g = a[b];
+    e = void 0 === e ? [] : e;
+    var f = {}, g = a[b];
     if (["nullable", "nonNullable"].includes(g)) {
       if (!d) {
         throw Error(`${g} not allowed after .`);
       }
-      e.nullable = "nullable" === g;
+      f.nullable = "nullable" === g;
       b++;
     }
     g = a[b];
     if ("(" == g) {
       b++;
-      e = Object.assign({}, c(), e);
+      f = Object.assign({}, c(!0, []), f);
       if (")" != a[b]) {
         throw Error("Expecting closing )");
       }
       b++;
-      return e;
+      return f;
     }
     if ("{" == g) {
       b++;
-      d = e;
-      for (f = {}; "}" != a[b];) {
-        g = a[b];
+      e = f;
+      for (d = {}; "}" != a[b];) {
+        var h = a[b];
         b++;
-        f[g] = null;
-        if (":" == a[b]) {
-          b++;
-          var h = c();
-          f[g] = h;
-        }
+        d[h] = null;
+        ":" == a[b] && (b++, g = c(), d[h] = g);
         if ("}" == a[b]) {
           b++;
           break;
@@ -401,8 +398,8 @@ function Ha(a) {
         }
         b++;
       }
-      d.record = f;
-      return e;
+      e.record = d;
+      return f;
     }
     if (["nonNullable", "nullable"].includes(g)) {
       throw Error("Nullability already defined.");
@@ -410,19 +407,20 @@ function Ha(a) {
     if (/[=),:.<>}|]/.test(g)) {
       throw Error(`Unexpected token ${g}.`);
     }
-    e.name = a[b];
+    f.name = a[b];
     b++;
     if (["function", "Function"].includes(g)) {
-      f = e;
+      h = f;
       g = {return:null, args:[]};
       if ("(" != a[b]) {
         throw Error("Expecting opening (");
       }
-      for (b++; ")" != a[b];) {
-        if (h && "this" == a[b]) {
+      b++;
+      for (var k; ")" != a[b];) {
+        if (k && "this" == a[b]) {
           throw Error("this must come first in function arguments");
         }
-        if (h && "new" == a[b]) {
+        if (k && "new" == a[b]) {
           throw Error("new must come first in function arguments");
         }
         if ("this" == a[b]) {
@@ -441,10 +439,10 @@ function Ha(a) {
             b++;
             g.new = c();
           } else {
-            h = c(), g.args.push(h), "=" == a[b] && (h.optional = !0, b++);
+            k = c(), g.args.push(k), "=" == a[b] && (k.optional = !0, b++);
           }
         }
-        h = !0;
+        k = !0;
         if (")" == a[b]) {
           break;
         }
@@ -455,16 +453,16 @@ function Ha(a) {
         }
       }
       b++;
-      ":" == a[b] && (b++, h = c(), g.return = h);
-      f.function = g;
+      ":" == a[b] && (b++, k = c(), g.return = k);
+      h.function = g;
     } else {
-      if ("<" == a[b] || (f = "." == a[b] && "<" == a[b + 1])) {
+      if ("<" == a[b] || (h = "." == a[b] && "<" == a[b + 1])) {
         b++;
-        f && b++;
-        f = e;
+        h && b++;
+        h = f;
         for (g = []; ">" != a[b];) {
-          h = c();
-          g.push(h);
+          k = c();
+          g.push(k);
           if (">" == a[b]) {
             break;
           }
@@ -475,23 +473,23 @@ function Ha(a) {
           }
         }
         b++;
-        f.application = g;
+        h.application = g;
       }
     }
     for (; "." == a[b];) {
-      e.name += ".";
+      f.name += ".";
       b++;
-      ({name:f} = c(!1));
-      if (!f) {
+      ({name:h} = c(!1));
+      if (!h) {
         throw Error("Expected to see the name after .");
       }
-      e.name += f;
+      f.name += h;
     }
     if ("|" != a[b] || !d) {
-      return e;
+      return f;
     }
-    for (e = [e]; "|" == a[b];) {
-      b++, d = c(!0), e.push(...d.union ? d.union : [d]);
+    for (e.push(f); "|" == a[b];) {
+      b++, f = c(!0, e), f.union !== e && e.push(f);
     }
     return {union:e};
   };
@@ -501,16 +499,16 @@ function Ha(a) {
   a = Ga(a);
   return Ha(a);
 }
-;function Ja(a, b, {name:c, string:d, "boolean":e, opt:f, number:g, type:h, "default":m, closure:k}) {
+;function Ja(a, b, {name:c, string:d, "boolean":e, opt:f, number:g, type:h, "default":k, closure:l}) {
   if (!c) {
     throw Error("Property does not have a name.");
   }
   a.name = c;
   b && (a.description = b.trim());
   a.type = ya({number:g, J:d, boolean:e, type:h});
-  k ? a.c = k : a.c = a.type;
-  void 0 !== m && (a.a = !0);
-  a.a && (a.default = m);
+  l ? a.c = l : a.c = a.type;
+  void 0 !== k && (a.a = !0);
+  a.a && (a.default = k);
   if (f || a.a) {
     a.optional = !0;
   }
@@ -539,21 +537,21 @@ class La {
     return `${b} * @param ${a}`;
   }
 }
-;function Ma(a, b, {name:c, type:d, desc:e, spread:f, noExpand:g, link:h, closure:m, constructor:k, "extends":l, "interface":n, record:p}, q) {
+;function Ma(a, b, {name:c, type:d, desc:e, spread:f, noExpand:g, link:h, closure:k, constructor:l, "extends":m, "interface":n, record:p}, q) {
   if (!c) {
     throw Error("Type does not have a name.");
   }
   a.name = c;
   d && (a.type = d);
-  m ? a.c = m : a.c = a.type;
+  k ? a.c = k : a.c = a.type;
   e && (a.description = e.trim());
   a.u = !!f;
   a.m = !!g;
   h && (a.link = h);
-  !0 === k && (a.isConstructor = k);
+  !0 === l && (a.isConstructor = l);
   !0 === n && (a.a = n);
   !0 === p && (a.b = p);
-  l && (a.extends = l);
+  m && (a.extends = m);
   b && (a.f = T("prop", b).map(({content:r, v:u}) => {
     const D = new La;
     Ja(D, r, u);
@@ -724,17 +722,17 @@ class Sa extends A {
       } else {
         const e = [];
         let f;
-        const g = b.replace(c, (h, ...m) => {
+        const g = b.replace(c, (h, ...k) => {
           f = Error();
           try {
             if (this.a) {
               return e.length ? e.push(Promise.resolve(h)) : h;
             }
-            const k = d.call(this, h, ...m);
-            k instanceof Promise && e.push(k);
-            return k;
-          } catch (k) {
-            Qa(f, k);
+            const l = d.call(this, h, ...k);
+            l instanceof Promise && e.push(l);
+            return l;
+          } catch (l) {
+            Qa(f, l);
           }
         });
         if (e.length) {
@@ -829,9 +827,9 @@ class Za extends Sa {
   }
   const [{content:b, v:{namespace:c, ns:d = c}}] = a, e = void 0 == d ? void 0 : d;
   a = T("type", b).map(({content:g, v:h}) => {
-    const m = new X;
-    Ma(m, g, h, e);
-    return m;
+    const k = new X;
+    Ma(k, g, h, e);
+    return k;
   });
   const f = T("import", b).map(({v:g}) => {
     const h = new Xa;
@@ -867,12 +865,12 @@ const db = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
   const {s:d, A:e} = this.m;
   try {
     this.h("Detected type marker: %s", c);
-    const f = await I(c), {i:g = null, types:h, imports:m} = $a(f);
+    const f = await I(c), {i:g = null, types:h, imports:k} = $a(f);
     this.emit("types", h);
-    this.emit("types", m);
-    let k;
-    d ? k = ab(m, h) : e ? (k = bb(h, g, this.b) + "\n", g && this.emit("namespace", g)) : k = cb(m, h);
-    return `/* ${b} ${c} */\n${k}`;
+    this.emit("types", k);
+    let l;
+    d ? l = ab(k, h) : e ? (l = bb(h, g, this.b) + "\n", g && this.emit("namespace", g)) : l = cb(k, h);
+    return `/* ${b} ${c} */\n${l}`;
   } catch (f) {
     return this.h("(%s) Could not process typedef-js: %s", c, f.message), a;
   }
@@ -885,35 +883,35 @@ const db = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
 const gb = {re:/( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm, replacement:fb};
 function fb(a, b, c, d, e, f, g) {
   const {s:h} = this.m;
-  let m;
+  let k;
   f = () => {
     if (this.lines && this.file) {
-      var l;
+      var m;
       {
-        let q = l = 0;
+        let q = m = 0;
         for (; q < g;) {
-          q += this.lines[l].length, l++;
+          q += this.lines[m].length, m++;
         }
-        l = {line:l, F:b.length + 11};
+        m = {line:m, F:b.length + 11};
       }
-      const {line:n, F:p} = l;
+      const {line:n, F:p} = m;
       this.h("%s:%s:%s", this.file, n, p);
     }
   };
   try {
-    m = Ia(c);
-  } catch (l) {
-    return this.h("Error while parsing the type %s", c), this.h(process.env.DEBUG ? l.stack : l.message), f(), a;
+    k = Ia(c);
+  } catch (m) {
+    return this.h("Error while parsing the type %s", c), this.h(process.env.DEBUG ? m.stack : m.message), f(), a;
   }
-  if (!m) {
+  if (!k) {
     return this.h("Could not parse the type %s", c), f(), a;
   }
-  const k = Object.values(this.types).map(({name:l, g:n}) => h ? n : l);
-  if (!Z(m, k, this.h, c, f)) {
+  const l = Object.values(this.types).map(({name:m, g:n}) => h ? n : m);
+  if (!Z(k, l, this.h, c, f)) {
     return a;
   }
-  c = Object.values(this.types).find(({name:l, g:n}) => h ? n == m.name : l == m.name);
-  return c instanceof Za.a ? a : c.C(e, d, b, m.nullable, h);
+  c = Object.values(this.types).find(({name:m, g:n}) => h ? n == k.name : m == k.name);
+  return c instanceof Za.a ? a : c.C(e, d, b, k.nullable, h);
 }
 const Z = (a, b, c, d, e) => {
   const f = a.name;
@@ -975,14 +973,14 @@ class lb extends A {
     a = d && d.startsWith("import") ? mb(d, e) : kb(d, e, f, g);
     this.push(a);
     g.forEach(h => {
-      var {type:m, name:k, default:l, description:n, optional:p} = h;
+      var {type:k, name:l, default:m, description:n, optional:p} = h;
       {
-        h = ["string", "number", "boolean"].includes(m) ? ` ${m}` : ` type="${m}"`;
-        var q = void 0 !== l;
-        const r = q ? ` default="${l}"` : "";
+        h = ["string", "number", "boolean"].includes(k) ? ` ${k}` : ` type="${k}"`;
+        var q = void 0 !== m;
+        const r = q ? ` default="${m}"` : "";
         q = p && !q ? " opt" : "";
         const u = " ".repeat(4), D = " ".repeat(6);
-        h = `${u}<prop${q}${h} name="${k}"${r}${n ? `>\n${D}${n}\n${u}</prop>` : "/>"}\n`;
+        h = `${u}<prop${q}${h} name="${l}"${r}${n ? `>\n${D}${n}\n${u}</prop>` : "/>"}\n`;
       }
       this.push(h);
     });
@@ -1005,15 +1003,15 @@ class nb extends A {
   _transform(a, b, c) {
     var [, d, e, f, g] = a;
     a = Da(g).map(h => {
-      var m = Object.assign({}, h), k = h.defaultValue;
-      const l = h.Default;
+      var k = Object.assign({}, h), l = h.defaultValue;
+      const m = h.Default;
       var n = h.opt;
       const p = h.name;
       h = h.type;
-      m = (delete m.defaultValue, delete m.Default, delete m.opt, delete m.name, delete m.type, m);
-      n = Object.assign({}, m, {name:p, type:h}, k ? {defaultValue:jb(k)} : {}, l ? {o:jb(l)} : {}, n ? {optional:!0} : {});
-      if (k || l) {
-        k ? k !== l && void 0 !== n.o && (k = P(p, l, h), console.error("%s[%s] does not match Default `%s`.", e, k, n.o)) : (k = P(p, l, h), console.error("%s[%s] got from Default.", e, k)), n.default = "defaultValue" in n ? n.defaultValue : n.o, delete n.defaultValue, delete n.o;
+      k = (delete k.defaultValue, delete k.Default, delete k.opt, delete k.name, delete k.type, k);
+      n = Object.assign({}, k, {name:p, type:h}, l ? {defaultValue:jb(l)} : {}, m ? {o:jb(m)} : {}, n ? {optional:!0} : {});
+      if (l || m) {
+        l ? l !== m && void 0 !== n.o && (l = P(p, m, h), console.error("%s[%s] does not match Default `%s`.", e, l, n.o)) : (l = P(p, m, h), console.error("%s[%s] got from Default.", e, l)), n.default = "defaultValue" in n ? n.defaultValue : n.o, delete n.defaultValue, delete n.o;
       }
       return n;
     });
