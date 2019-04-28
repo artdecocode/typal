@@ -9,6 +9,7 @@
  * @param {Object<string, _ns.MissingType>} object
  * @param {(Type | MissingType | _ns.Type)} union
  * @param {_ns.Type | MissingType} parenthesisLessUnion
+ * @param {function(this: MissingTypeA, _ns.Type, MissingTypeB, ...MissingTypeC)} function
  * @param {(s: string) => number} error
  * @param {string} string
  * @param {number} number
@@ -20,7 +21,7 @@
 function test (
   writable, readable,
   type, missingType,
-  array, promise, object, union, unionWithoutParenthesis,
+  array, promise, object, union, parenthesisLessUnion, function,
   error,
   string, number, boolean, symbol, _null, _undefined,
 ) {}
@@ -56,9 +57,15 @@ Type MissingType in (Type | MissingType | _ns.Type) was not found.
 test/temp/program.js:9:11
 Type MissingType in _ns.Type | MissingType was not found.
 test/temp/program.js:10:11
+Type MissingTypeA in function(this: MissingTypeA, _ns.Type, MissingTypeB, ...MissingTypeC) was not found.
+test/temp/program.js:11:11
+Type MissingTypeB in function(this: MissingTypeA, _ns.Type, MissingTypeB, ...MissingTypeC) was not found.
+test/temp/program.js:11:11
+Type MissingTypeC in function(this: MissingTypeA, _ns.Type, MissingTypeB, ...MissingTypeC) was not found.
+test/temp/program.js:11:11
 Error while parsing the type (s: string) => number
 Expecting closing )
-test/temp/program.js:11:11
+test/temp/program.js:12:11
 /*@*/
 
 ## warns of missing types
