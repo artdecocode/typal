@@ -41,15 +41,15 @@ yarn add -D typal
     * [Closure Override](#closure-override)
   * [Property](#property)
   * [Import](#import)
+- [Markdown Documentation](#markdown-documentation)
+  * [`Type`](#type-type)
+  * [`Example`](#type-example)
 - [API](#api)
   * [class `Type`](#class-type)
   * [class `Property`](#class-property)
   * [`getNameWithDefault(name: string, defaultValue: ?(string|boolean|number), type: string=, parentParam: string=): string`](#getnamewithdefaultname-stringdefaultvalue-stringbooleannumbertype-stringparentparam-string-string)
   * [`parseFile(xml: string, rootNamespace: string=): { types, imports, namespace }`](#parsefilexml-stringrootnamespace-string--types-imports-namespace-)
     * [Root Namespace](#root-namespace)
-- [Markdown Documentation](#markdown-documentation)
-  * [`Type`](#type-type)
-  * [`Example`](#type-example)
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
@@ -1170,6 +1170,24 @@ Property Description.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
+## Markdown Documentation
+
+_Typal_ allows to paste types into documentation using _Documentary_ package. It will also link the types it knows about for easier navigation. The supported types are based on the [Google Closure Compiler types](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System#optional) and include the following:
+
+__<a name="type-type">`Type`</a>__: A type which can be linked.
+
+__<a name="type-example">`Example`</a>__
+
+|       Name       |                        Type                        |                 Description                  |
+| ---------------- | -------------------------------------------------- | -------------------------------------------- |
+| __type*__        | <em>[?Type](#type-type)</em>                       | The type itself, possibly nullable.          |
+| __union*__       | <em>(Type \| string)</em>                          | The union of types.                          |
+| __record*__      | <em>{ t: Type, r }</em>                            | The record with a type.                      |
+| __application*__ | <em>Object&lt;string, Type&gt;</em>                | The application with a type.                 |
+| __function*__    | <em>function(this: Type, string, !Type): Type</em> | The function with arguments and return type. |
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+
 ## API
 
 The package is available by importing its named functions and classes:
@@ -1180,19 +1198,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -1225,7 +1243,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -1431,24 +1449,6 @@ const getFile = async () => {
        extends: null } ],
   imports: [] }
 ```
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
-
-## Markdown Documentation
-
-_Typal_ allows to paste types into documentation using _Documentary_ package. It will also link the types it knows about for easier navigation. The supported types are based on the [Google Closure Compiler types](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System#optional) and include the following:
-
-__<a name="type-type">`Type`</a>__: A type which can be linked.
-
-__<a name="type-example">`Example`</a>__
-
-|       Name       |                        Type                        |                 Description                  |
-| ---------------- | -------------------------------------------------- | -------------------------------------------- |
-| __type*__        | <em>[?Type](#type-type)</em>                       | The type itself, possibly nullable.          |
-| __union*__       | <em>(Type \| string)</em>                          | The union of types.                          |
-| __record*__      | <em>{ t: Type, r }</em>                            | The record with a type.                      |
-| __application*__ | <em>Object&lt;string, Type&gt;</em>                | The application with a type.                 |
-| __function*__    | <em>function(this: Type, string, !Type): Type</em> | The function with arguments and return type. |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true"></a></p>
 
