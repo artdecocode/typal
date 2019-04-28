@@ -439,7 +439,18 @@ function Ha(a) {
             b++;
             g.new = c();
           } else {
-            k = c(), g.args.push(k), "=" == a[b] && (k.optional = !0, b++);
+            if ("." == a[b] && "." == a[b + 1] && "." == a[b + 2]) {
+              b++;
+              b++;
+              b++;
+              k = c();
+              if (")" != a[b]) {
+                throw Error("Variable args must come last");
+              }
+              g.variableArgs = k;
+            } else {
+              k = c(), g.args.push(k), "=" == a[b] && (k.optional = !0, b++);
+            }
           }
         }
         k = !0;

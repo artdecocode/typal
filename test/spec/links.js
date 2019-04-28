@@ -99,6 +99,11 @@ const ts = {
       const res = getLinks(allTypes, type)
       equal(res, 'Function(this: [Type](#type-type), [Type](#type-type))')
     },
+    'links variable args'({ allTypes }) {
+      const type = 'function(...Type)'
+      const res = getLinks(allTypes, type)
+      equal(res, 'function(...[Type](#type-type))')
+    },
   },
 }
 

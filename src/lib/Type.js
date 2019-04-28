@@ -314,6 +314,10 @@ const parsedToString = (type, allTypes) => {
       if (a.optional) t += '='
       args.push(t)
     })
+    if (type.function.variableArgs) {
+      s += '...'
+      s += parsedToString(type.function.variableArgs, allTypes)
+    }
     const argsJoined = args.join(', ')
     s += argsJoined + ')'
     if (type.function.return) {

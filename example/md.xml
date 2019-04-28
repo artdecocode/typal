@@ -17,8 +17,8 @@
     <prop opt type="function(this: Type, string, !Type): Type" name="function">
       The function with arguments and return type. The ... for variable argument types are not currently supported.
     </prop>
-    <prop opt type="function(...Type)" name="variable-args-function">
-      Functions with ... for variable argument types are not currently supported.
+    <prop opt type="function(...Type)" name="variable-args">
+      Functions with `...` for variable argument types.
     </prop>
     <prop opt type="(type: Type, s: string) => Type" name="vscode-function">
       Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment.
