@@ -24,7 +24,7 @@ const parseFile = (xml, rootNamespace) => {
     const type = new Type()
     type.fromXML(content, props, ns)
     if (rootNamespace) {
-      const s = new RegExp(`([!?])?${rootNamespace}\\.`)
+      const s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')
       type.properties.forEach((p) => {
         p.type = p.type.replace(s, '$1')
       })
