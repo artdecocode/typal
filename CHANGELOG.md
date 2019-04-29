@@ -1,5 +1,9 @@
 ## 29 April 2019
 
+### [1.6.3](https://github.com/artdecocode/typal/compare/v1.6.2...v1.6.3)
+
+- [fix] Fix disabling the root namespace for multiple properties of a type.
+
 ### [1.6.2](https://github.com/artdecocode/typal/compare/v1.6.1...v1.6.2)
 
 - [fix] Fix multiple escapes in types' names.
