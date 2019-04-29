@@ -335,24 +335,24 @@ const parsedToString = (type, allTypes) => {
     s += rs.join(', ')
     s += ' }'
   } else if (type.application) {
-    s += getTypeWithLink(type.name, allTypes, nullable) + '<'
+    s += getTypeWithLink(type.name, allTypes, nullable) + '&lt;'
     const apps = type.application.map((a) => {
       return parsedToString(a, allTypes)
     })
     s += apps.join(', ')
-    s += '>'
+    s += '&gt;'
   } else if (type.union) {
     s += '('
     const union = type.union.map((u) => {
       return parsedToString(u, allTypes)
     })
-    s += union.join(' | ')
+    s += union.join(' \\| ')
     s += ')'
   } else {
     const name = type.name == 'any' ? '*' : type.name
     s += getTypeWithLink(name, allTypes, nullable)
   }
-  return esc(s)
+  return s
 }
 
 const getTypeWithLink = (type, allTypes, nullable = '') => {

@@ -104,6 +104,11 @@ const ts = {
       const res = getLinks(allTypes, type)
       equal(res, 'function(...[Type](#type-type))')
     },
+    'escapes return union correctly'({ allTypes }) {
+      const type = 'function(): Promise|void'
+      const res = getLinks(allTypes, type)
+      equal(res, 'function(): (Promise \\| void)')
+    },
   },
 }
 
