@@ -47,7 +47,7 @@ const t = (a, b, c, d, e) => {
     return b;
   }, {});
 };
-const u = {source:{description:"The path to the source file or directory with files to embed types into.", command:!0}, output:{description:"The destination where to save output.\nIf not passed, the file will be overwritten.\nIf `-` is passed, prints to stdout.", short:"o"}, closure:{description:"Whether to generate types in _Closure_ mode.", boolean:!0, short:"c"}, externs:{description:"Whether to generate externs for _GCC_.", boolean:!0, short:"e"}, types:{description:"Comma-separated location of files to read types from.", 
+const u = {source:{description:"The path to the source file or directory with files to embed types into.", command:!0, multiple:!0}, output:{description:"The destination where to save output.\nIf not passed, the file will be overwritten.\nIf `-` is passed, prints to stdout.", short:"o"}, closure:{description:"Whether to generate types in _Closure_ mode.", boolean:!0, short:"c"}, externs:{description:"Whether to generate externs for _GCC_.", boolean:!0, short:"e"}, types:{description:"Comma-separated location of files to read types from.", 
 short:"t"}, migrate:{description:"Extracts types from JavaScript source code and saves them\ninto the types.xml file specified in the output option.", boolean:!0, short:"m"}, help:{description:"Print the help information and exit.", boolean:!0, short:"h"}, version:{description:"Show the version's number and exit.", boolean:!0, short:"v"}}, w = function(a, b) {
   a = void 0 === a ? {} : a;
   b = void 0 === b ? process.argv : b;
@@ -122,16 +122,16 @@ const B = (a, b = 0, c = !1) => {
   return a;
 };
 const {homedir:qa} = os;
-const D = /\s+at.*(?:\(|\s)(.*)\)?/, ra = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, sa = qa(), F = a => {
+const E = /\s+at.*(?:\(|\s)(.*)\)?/, ra = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, sa = qa(), F = a => {
   const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(ra.source.replace("IGNORED_MODULES", d));
   return a.replace(/\\/g, "/").split("\n").filter(f => {
-    f = f.match(D);
+    f = f.match(E);
     if (null === f || !f[1]) {
       return !0;
     }
     f = f[1];
     return f.includes(".app/Contents/Resources/electron.asar") || f.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(f);
-  }).filter(f => f.trim()).map(f => b ? f.replace(D, (g, h) => g.replace(h, h.replace(sa, "~"))) : f).join("\n");
+  }).filter(f => f.trim()).map(f => b ? f.replace(E, (g, h) => g.replace(h, h.replace(sa, "~"))) : f).join("\n");
 };
 function ta(a, b, c = !1) {
   return function(d) {
@@ -564,9 +564,9 @@ class Ma {
   !0 === p && (a.b = p);
   l && (a.extends = l);
   b && (a.f = T("prop", b).map(({content:r, v}) => {
-    const E = new Ma;
-    Ka(E, r, v);
-    return E;
+    const D = new Ma;
+    Ka(D, r, v);
+    return D;
   }));
   q && (a.i = q);
 }
@@ -956,10 +956,12 @@ const Z = (a, b, c, d, e) => {
 };
 var jb = async() => {
   const {s:a = !1, A:b = !1, B:c, types:d} = {s:ca, A:da, B:y, types:ea};
-  var e = await L(z, x);
-  let f;
-  e.isFile() ? f = [x] : e.isDirectory() && (e = await N(x), f = O(e.content, x));
-  await ib(f, a, b, c, d);
+  await Promise.all(x.map(async e => {
+    var f = await L(z, e);
+    let g;
+    f.isFile() ? g = [e] : f.isDirectory() && (f = await N(e), g = O(f.content, e));
+    await ib(g, a, b, c, d);
+  }));
 };
 const ib = async(a, b = !1, c = !1, d = null, e = null) => {
   const f = [];
@@ -1005,8 +1007,8 @@ class mb extends A {
         var q = void 0 !== l;
         const r = q ? ` default="${l}"` : "";
         q = p && !q ? " opt" : "";
-        const v = " ".repeat(4), E = " ".repeat(6);
-        h = `${v}<prop${q}${h} name="${m}"${r}${n ? `>\n${E}${n}\n${v}</prop>` : "/>"}\n`;
+        const v = " ".repeat(4), D = " ".repeat(6);
+        h = `${v}<prop${q}${h} name="${m}"${r}${n ? `>\n${D}${n}\n${v}</prop>` : "/>"}\n`;
       }
       this.push(h);
     });
@@ -1067,9 +1069,11 @@ async function pb(a) {
 }
 ;var qb = async() => {
   const {B:a} = {B:y};
-  var b = await I(x);
-  b = await pb(b);
-  a ? await J(a, b) : console.log(b);
+  await Promise.all(x.map(async b => {
+    b = await I(b);
+    b = await pb(b);
+    a ? await J(a, b) : console.log(b);
+  }));
 };
 if (ha) {
   const a = ba();
