@@ -1,5 +1,4 @@
 import extractTags from 'rexml'
-import mismatch from 'mismatch'
 import parse from '@typedefs/parser'
 import Property from './Property'
 import { getLink, addSuppress, makeBlock, getExternDeclaration } from './'

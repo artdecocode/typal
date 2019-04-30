@@ -41,7 +41,24 @@ const parseFile = (xml, rootNamespace) => {
       return im
     })
 
-  return { namespace, types, imports }
+  /**
+   * Imports parsed into types.
+   */
+  const Imports = imports
+    .map(({ name, from, desc, link, ns: importNs }) => {
+      const type = new Type()
+      type.fromXML('', {
+        name,
+        type: `import('${from}').${name}`,
+        noToc: true,
+        import: true,
+        desc,
+        link,
+      }, importNs)
+      return type
+    })
+
+  return { namespace, types, imports, Imports }
 }
 
 export default parseFile
