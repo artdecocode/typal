@@ -854,7 +854,7 @@ function example(config = {}) {
 
 In future, we plan to introduce full-scale management of types so that all import statements will be added automatically by _Typal_.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
 
 ### Migration
 

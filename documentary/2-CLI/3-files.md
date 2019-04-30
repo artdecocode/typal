@@ -18,4 +18,4 @@ The types can be placed in there with `typal types.js` command. But if we wanted
 
 In future, we plan to introduce full-scale management of types so that all import statements will be added automatically by _Typal_.
 
-%~%
+%~ width="25"%

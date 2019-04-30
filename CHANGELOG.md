@@ -1,3 +1,10 @@
+## 30 April 2019
+
+### [1.7.0](https://github.com/artdecocode/typal/compare/v1.6.3...v1.7.0)
+
+- [feature] Pass `-t` flag to fetch types' info from a given file.
+- [doc] Fix import schema, discuss **Structural Interfaces**.
+
 ## 29 April 2019
 
 ### [1.6.3](https://github.com/artdecocode/typal/compare/v1.6.2...v1.6.3)
