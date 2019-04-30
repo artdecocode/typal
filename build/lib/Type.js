@@ -1,7 +1,7 @@
 let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
 let parse = require('@typedefs/parser'); if (parse && parse.__esModule) parse = parse.default;
 const Property = require('./Property');
-const { getLink, addSuppress, makeBlock, getExternDeclaration } = require('./');
+const { getLink, addSuppress, makeBlock, getExternDeclaration, makeOptional } = require('./');
 
 /**
  * A representation of a type.
@@ -254,7 +254,7 @@ const getSpread = (properties = [], closure = false) => {
     if (p.optional && !closure) {
       n = `${p.name}?`
     } else if (p.optional && closure) {
-      t = `(${type}|undefined)`
+      t = `(${makeOptional(type)})`
     }
     const st = `${n}: ${t}`
     return st

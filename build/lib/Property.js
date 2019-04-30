@@ -1,4 +1,4 @@
-const { getPropType, getNameWithDefault } = require('./');
+const { getPropType, getNameWithDefault, makeOptional } = require('./');
 
 /**
  * Representation of a property of a type.
@@ -22,9 +22,9 @@ const { getPropType, getNameWithDefault } = require('./');
     this.type = '*'
     /**
      * The override on the type in externs.
-     * @type {?string}
+     * @type {string}
      */
-    this.closureType = null
+    this.closureType = ''
     /**
      * Whether the property has the default value.
      * @type {boolean}
@@ -82,7 +82,7 @@ const { getPropType, getNameWithDefault } = require('./');
       if (this.default) d += ` Default \`${this.default}\`.`
       pp.push(d)
     }
-    const t = this.optional ? `(${this.closureType}|undefined)` : this.closureType
+    const t = this.optional ? makeOptional(this.closureType) : this.closureType
     pp.push(` * @type {${t}}`)
     return pp.join('\n')
   }

@@ -22,9 +22,9 @@ export default class Property {
     this.type = '*'
     /**
      * The override on the type in externs.
-     * @type {?string}
+     * @type {string}
      */
-    this.closureType = null
+    this.closureType = ''
     /**
      * Whether the property has the default value.
      * @type {boolean}

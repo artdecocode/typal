@@ -53,6 +53,17 @@
   return `${prefix}-${l}`
 }
 
+/**
+ * Prevent incorrect undefined ending.
+ * @param {string} type
+ */
+       const makeOptional = (type) => {
+  let t
+  if (/[^\w\d._]/.test(type)) t = `(${type})`
+  else t = type
+  return `${t}|undefined`
+}
+
        const makeBlock = (s) => {
   return `/**
 ${s}
@@ -80,6 +91,7 @@ ${line}`
 module.exports.getNameWithDefault = getNameWithDefault
 module.exports.getPropType = getPropType
 module.exports.getLink = getLink
+module.exports.makeOptional = makeOptional
 module.exports.makeBlock = makeBlock
 module.exports.addSuppress = addSuppress
 module.exports.getExternDeclaration = getExternDeclaration
