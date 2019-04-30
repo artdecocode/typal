@@ -16,7 +16,7 @@ The types can be placed in there with `typal types.js` command. We also add the 
 %EXAMPLE: example/files%
 %FORK-js src/bin/typal example/files/index.js -c -t example/files/types.xml -o -%
 
-Any external types referenced in properties must be manually imported, because otherwise their types will be unknown in the scope of the file. This can be done with the snippet that can be put either in the workspace directory as `.vscode/import.code-snippets`, or configured to be included in _[User Snippet](t)s_ (<key>⌘</key><key>⇧</key><key>P</key> > Preferences: Configure User Snippets).
+Any external types referenced in properties must be manually imported, because otherwise their types will be unknown in the scope of the file. This can be done with the snippet that can be put either in the workspace directory as `.vscode/import.code-snippets`, or configured to be included in _[User Snippet](t)s_ (<kbd>⌘</kbd><kbd>⇧</kbd><kbd>P</kbd> > Preferences: Configure User Snippets).
 
 %EXAMPLE: .vscode/import.code-snippets, json%
 

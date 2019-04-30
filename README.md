@@ -762,9 +762,9 @@ function sourceCode() {}
 _ // remember new line!
 ```
 
-- <key>closure</key>: enable the closure mode;
-- <key>externs</key>: enable the externs mode;
-- <key>noSuppress</key>: don't add `@suppress` annotations (see the [files](#keeping-types-in-separate-file) section below).
+- <kbd>closure</kbd>: enable the closure mode;
+- <kbd>externs</kbd>: enable the externs mode;
+- <kbd>noSuppress</kbd>: don't add `@suppress` annotations (see the [files](#keeping-types-in-separate-file) section below).
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
@@ -871,7 +871,7 @@ function example(config = {}) {
  */
 ```
 
-Any external types referenced in properties must be manually imported, because otherwise their types will be unknown in the scope of the file. This can be done with the snippet that can be put either in the workspace directory as `.vscode/import.code-snippets`, or configured to be included in _<a name="user-snippet">User Snippet</a>s_ (<key>⌘</key><key>⇧</key><key>P</key> > Preferences: Configure User Snippets).
+Any external types referenced in properties must be manually imported, because otherwise their types will be unknown in the scope of the file. This can be done with the snippet that can be put either in the workspace directory as `.vscode/import.code-snippets`, or configured to be included in _<a name="user-snippet">User Snippet</a>s_ (<kbd>⌘</kbd><kbd>⇧</kbd><kbd>P</kbd> > Preferences: Configure User Snippets).
 
 ```json
 {

@@ -17,8 +17,8 @@ function sourceCode() {}
 _ // remember new line!
 ```
 
-- <key>closure</key>: enable the closure mode;
-- <key>externs</key>: enable the externs mode;
-- <key>noSuppress</key>: don't add `@suppress` annotations (see the [files](#keeping-types-in-separate-file) section below).
+- <kbd>closure</kbd>: enable the closure mode;
+- <kbd>externs</kbd>: enable the externs mode;
+- <kbd>noSuppress</kbd>: don't add `@suppress` annotations (see the [files](#keeping-types-in-separate-file) section below).
 
 %~ width="25"%
