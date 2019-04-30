@@ -1,5 +1,4 @@
 let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
-let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
 let parse = require('@typedefs/parser'); if (parse && parse.__esModule) parse = parse.default;
 const Property = require('./Property');
 const { getLink, addSuppress, makeBlock, getExternDeclaration } = require('./');

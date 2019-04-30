@@ -54,7 +54,7 @@ const parseFile = (xml, rootNamespace) => {
         import: true,
         desc,
         link,
-      }, importNs)
+      }, importNs == rootNamespace ? undefined : importNs)
       return type
     })
 
