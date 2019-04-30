@@ -1,5 +1,11 @@
 ## 30 April 2019
 
+### [1.11.0](https://github.com/artdecocode/typal/compare/v1.10.0...v1.11.0)
+
+- [fix] Group types when optional is given to prevent merging with `undefined`.
+- [fix] Don't escape `\\|` twice if the link to a type.
+- [feature] Add `title` attribute to the link to a type if it has description.
+
 ### [1.10.0](https://github.com/artdecocode/typal/compare/v1.9.2...v1.10.0)
 
 - [feature] Ignore types from the marker.
