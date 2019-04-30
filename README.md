@@ -1451,7 +1451,24 @@ _The result will contain Types and Imports:_
        name: 'ServerResponse',
        from: 'http',
        desc: undefined,
-       link: undefined } ] }
+       link: undefined } ],
+  Imports: 
+   [ Type {
+       name: 'ServerResponse',
+       type: 'import(\'http\').ServerResponse',
+       closureType: 'import(\'http\').ServerResponse',
+       description: null,
+       noToc: true,
+       spread: false,
+       import: true,
+       noExpand: false,
+       link: null,
+       properties: [],
+       namespace: 'http',
+       isConstructor: false,
+       isInterface: false,
+       isRecord: false,
+       extends: null } ] }
 ```
 
 #### Root Namespace
@@ -1546,7 +1563,8 @@ const getFile = async () => {
        isInterface: false,
        isRecord: false,
        extends: null } ],
-  imports: [] }
+  imports: [],
+  Imports: [] }
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/19.svg?sanitize=true"></a></p>
