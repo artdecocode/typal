@@ -9,7 +9,7 @@ function example(config = {}) {
 // manually add the namespace and dependencies' imports
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('stream').Readable}
+ * @typedef {import('stream').Readable} stream.Readable
  */
 /**
  * @suppress {nonStandardJsDocs}

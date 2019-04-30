@@ -14,7 +14,7 @@ export {} // important for enabling of importing
 The types can be placed in there with `typal types.js` command. We also add the `noSuppress` command because the file will not be imported and checked by the _Google Closure Compiler_ therefore the `@suppress` annotations would be redundant. Now the aim is to update the source code which has a variable of a particular type that we want to expand and we run `typal src/index.js -t types/index.xml` to do that:
 
 %EXAMPLE: example/files%
-%FORK-js src/bin/typal example/files/index.js -c -t example/files/types.xml -o -%
+%!FORK-js src/bin/typal example/files/index.js -c -t example/files/types.xml -o -%
 
 Any external types referenced in properties must be manually imported, because otherwise their types will be unknown in the scope of the file. This can be done with the snippet that can be put either in the workspace directory as `.vscode/import.code-snippets`, or configured to be included in _[User Snippet](t)s_ (<kbd>⌘</kbd><kbd>⇧</kbd><kbd>P</kbd> > Preferences: Configure User Snippets).
 

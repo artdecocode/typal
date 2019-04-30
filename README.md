@@ -848,7 +848,7 @@ function example(config = {}) {
 // manually add the namespace and dependencies' imports
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('stream').Readable}
+ * @typedef {import('stream').Readable} stream.Readable
  */
 /**
  * @suppress {nonStandardJsDocs}
@@ -860,11 +860,17 @@ function example(config = {}) {
 /**
  * @param {_ns.Config} config The config for the program
  * @param {string} config.test The test property.
+ * @param {stream.Readable} config.rs The stream to read.
  */
 function example(config = {}) {
   const { test } = config
 }
 
+// manually add the namespace and dependencies' imports
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('stream').Readable} stream.Readable
+ */
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('../types').Config} _ns.Config
