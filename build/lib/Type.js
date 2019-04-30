@@ -291,11 +291,12 @@ const getSpread = (properties = [], closure = false) => {
  */
 const parsedToString = (type, allTypes) => {
   let s = ''
-  let nullable
+  let nullable = ''
   if (type.nullable) nullable = '?'
   else if (type.nullable === false) nullable = '!'
 
   if (type.function) {
+    s += nullable
     s += type.name + '(' // Function or function
     const args = []
     if (type.function.this) {
@@ -341,6 +342,7 @@ const parsedToString = (type, allTypes) => {
     s += apps.join(', ')
     s += '&gt;'
   } else if (type.union) {
+    s += nullable
     s += '('
     const union = type.union.map((u) => {
       return parsedToString(u, allTypes)

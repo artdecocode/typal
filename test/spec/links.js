@@ -109,6 +109,11 @@ const ts = {
       const res = getLinks(allTypes, type)
       equal(res, 'function(): (Promise \\| void)')
     },
+    'adds return nullability'({ allTypes }) {
+      const type = '?function(): !(Promise|string)'
+      const res = getLinks(allTypes, type)
+      equal(res, '?function(): !(Promise \\| string)')
+    },
   },
 }
 

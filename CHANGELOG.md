@@ -1,3 +1,9 @@
+## 1 May 2019
+
+### [1.11.1](https://github.com/artdecocode/typal/compare/v1.11.0...v1.11.1)
+
+- [fix] Print nullability in linking.
+
 ## 30 April 2019
 
 ### [1.11.0](https://github.com/artdecocode/typal/compare/v1.10.0...v1.11.0)
