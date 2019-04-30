@@ -1,5 +1,9 @@
 ## 30 April 2019
 
+### [1.10.0](https://github.com/artdecocode/typal/compare/v1.9.2...v1.10.0)
+
+- [feature] Ignore types from the marker.
+
 ### [1.9.2](https://github.com/artdecocode/typal/compare/v1.9.1...v1.9.2)
 
 - [package] Publish again as registry does not find `v1.9.1`.
