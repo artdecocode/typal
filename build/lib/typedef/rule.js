@@ -16,10 +16,18 @@ const { closureJoinTypes, externsJoinTypes } = require('../closure');
  * @type {function(this:JSTypal, ...string): !Promise<string>}
  */
 async function replacement(match, docOrTypal, location) {
-  const { closure, externs } = this.conf // for closure, suppress typedef
+  const [loc, ...args] = location.split(/\s+/)
+  const argsClosure = args.includes('closure')
+  const argsExterns = args.includes('externs')
+  const noSuppress = args.includes('noSuppress')
+
+  let { closure, externs } = this.conf // for closure, suppress typedef
+  if (argsClosure) closure = true
+  if (argsExterns) externs = true
+
   try {
     this.LOG('Detected type marker: %s', location)
-    const xml = await read(location)
+    const xml = await read(loc)
     const { namespace = null, types, imports } = parseFile(xml)
 
     this.emit('types', types) // remember types for js-replace-stream
@@ -27,7 +35,7 @@ async function replacement(match, docOrTypal, location) {
 
     let block
     if (closure) {
-      block = closureJoinTypes(imports, types)
+      block = closureJoinTypes(imports, types, noSuppress)
     } else if (externs) {
       block = externsJoinTypes(types, namespace, this.namespaces) + '\n'
       if (namespace) this.emit('namespace', namespace)

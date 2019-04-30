@@ -129,7 +129,7 @@ _ns.Type.prototype.constructor
     return n
   }
   /** This covers both when extending and when not. */
-  toNaturalTypedef(closure) {
+  toNaturalTypedef(closure, noSuppress) {
     const t = (closure ? this.closureType : this.type) || 'Object'
     const d = this.description ? ` ${this.description}` : ''
     const dd = ` ${this.getFullNameForExtends(closure)}${d}`
@@ -139,14 +139,14 @@ _ns.Type.prototype.constructor
       return sp
     }) : []
     let typedef = [s, ...p].join('\n')
-    if (closure) typedef = addSuppress(typedef)
+    if (closure && !noSuppress) typedef = addSuppress(typedef)
     typedef = makeBlock(typedef)
     return typedef
   }
-  toTypedef(closure = false) {
+  toTypedef(closure = false, noSuppress = false) {
     const d = this.description ? ` ${this.description}` : ''
     const hasExtends = !!this.extends
-    const natural = this.toNaturalTypedef(closure)
+    const natural = this.toNaturalTypedef(closure, noSuppress)
 
     const parts = []
     // need this to be able to import types from other programs,
@@ -158,13 +158,13 @@ _ns.Type.prototype.constructor
 
     if (this.namespace && closure) {
       let td = ` * @typedef {${this.fullName}} ${this.name}${d}`
-      if (closure) td = addSuppress(td)
+      if (closure && !noSuppress) td = addSuppress(td)
       td = makeBlock(td)
       parts.push(td)
     }
     if (hasExtends) {
       let extended = ` * @typedef {${this.extends} & ${this.getFullNameForExtends(closure)}} ${closure ? this.fullName : this.name}${d}`
-      if (closure) extended = addSuppress(extended)
+      if (closure && !noSuppress) extended = addSuppress(extended)
       extended = makeBlock(extended)
       parts.push(extended)
     }
