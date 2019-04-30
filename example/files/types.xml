@@ -1,5 +1,7 @@
 <types namespace="_ns">
+  <import from="stream" name="Readable" />
   <type name="Config" desc="The config for the program">
     <prop string name="test">The test property.</prop>
+    <prop type="Readable" name="rs">The stream to read.</prop>
   </type>
 </types>

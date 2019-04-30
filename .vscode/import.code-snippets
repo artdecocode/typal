@@ -1,0 +1,12 @@
+{
+	"Import Type And Suppress": {
+		"prefix": "@typedef",
+		"body": [
+			"/**",
+			" * @suppress {nonStandardJsDocs}",
+			" * @typedef {import('$1')$2} $3",
+			" */"
+		],
+		"description": "Insert import typedef"
+	}
+}

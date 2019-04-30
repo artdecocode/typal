@@ -33,6 +33,7 @@ yarn add -D typal
   * [_Typal_ Arguments](#typal-arguments)
   * [Missing Types Warnings](#missing-types-warnings)
   * [Keeping Types In Separate File](#keeping-types-in-separate-file)
+    * [User Snippet](#user-snippet)
   * [Migration](#migration)
 - [Schema](#schema)
   * [Types](#types)
@@ -752,6 +753,19 @@ The following arguments are supported by this software.
   <tr><td>--version</td><td>-v</td><td>Show the version's number and exit.</td></tr>
 </table>
 
+_Typal_ will look for its marker in the source files, and insert all types definitions below it. There **must** be a single new line after the marker, even at the bottom of the file. It is possible to override the arguments, or pass them via the marker itself. When these are specified, there is no need to supply them via the CLI.
+
+```js
+function sourceCode() {}
+
+/* typal types/index.xml [closure|externs] [noSuppress] */
+_ // remember new line!
+```
+
+- <key>closure</key>: enable the closure mode;
+- <key>externs</key>: enable the externs mode;
+- <key>noSuppress</key>: don't add `@suppress` annotations (see the [files](#keeping-types-in-separate-file) section below).
+
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
 ### Missing Types Warnings
@@ -816,11 +830,11 @@ _For example, we can create a `types.js` file with the `typal` marker:_
 ```js
 // types.js
 export {} // important for enabling of importing
-/* typal types/index.xml */
+/* typal types/index.xml closure noSuppress */
 
 ```
 
-The types can be placed in there with `typal types.js` command. But if we wanted to update the source code which has a variable of a particular type that we want to expand, we can run `typal src/index.js -t types/index.xml` to do that:
+The types can be placed in there with `typal types.js` command. We also add the `noSuppress` command because the file will not be imported and checked by the _Google Closure Compiler_ therefore the `@suppress` annotations would be redundant. Now the aim is to update the source code which has a variable of a particular type that we want to expand and we run `typal src/index.js -t types/index.xml` to do that:
 
 ```js
 // src/index.js
@@ -831,6 +845,11 @@ function example(config = {}) {
   const { test } = config
 }
 
+// manually add the namespace and dependencies' imports
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('stream').Readable}
+ */
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('../types').Config} _ns.Config
@@ -850,6 +869,23 @@ function example(config = {}) {
  * @suppress {nonStandardJsDocs}
  * @typedef {import('../types').Config} _ns.Config
  */
+```
+
+Any external types referenced in properties must be manually imported, because otherwise their types will be unknown in the scope of the file. This can be done with the snippet that can be put either in the workspace directory as `.vscode/import.code-snippets`, or configured to be included in _<a name="user-snippet">User Snippet</a>s_ (<key>⌘</key><key>⇧</key><key>P</key> > Preferences: Configure User Snippets).
+
+```json
+{
+	"Import Type And Suppress": {
+		"prefix": "@typedef",
+		"body": [
+			"/**",
+			" * @suppress {nonStandardJsDocs}",
+			" * @typedef {import('$1')$2} $3",
+			" */"
+		],
+		"description": "Insert import typedef"
+	}
+}
 ```
 
 In future, we plan to introduce full-scale management of types so that all import statements will be added automatically by _Typal_.
