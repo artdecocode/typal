@@ -1050,7 +1050,7 @@ The type represents a _JSDoc_ type.
     _test.Test
     /**
      * A prop.
-     * @type {(boolean|undefined)}
+     * @type {boolean|undefined}
      */
     _test.Test.prototype.bool
     ```
@@ -1096,7 +1096,7 @@ The type represents a _JSDoc_ type.
     _test.Test
     /**
      * A prop.
-     * @type {(boolean|undefined)}
+     * @type {boolean|undefined}
      */
     _test.Test.prototype.bool
     ```
