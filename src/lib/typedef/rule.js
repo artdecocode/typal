@@ -20,6 +20,10 @@ async function replacement(match, docOrTypal, location) {
   const argsClosure = args.includes('closure')
   const argsExterns = args.includes('externs')
   const noSuppress = args.includes('noSuppress')
+  let ignore = args.find((a) => {
+    return a.startsWith('ignore:')
+  })
+  ignore = ignore ? ignore.replace('ignore:', '').split(',') : []
 
   let { closure, externs } = this.conf // for closure, suppress typedef
   if (argsClosure) closure = true
@@ -28,7 +32,15 @@ async function replacement(match, docOrTypal, location) {
   try {
     this.LOG('Detected type marker: %s', location)
     const xml = await read(loc)
-    const { namespace = null, types, imports } = parseFile(xml)
+    let { namespace = null, types, imports } = parseFile(xml)
+    types = types.filter(({ fullName }) => {
+      if (ignore.includes(fullName)) return false
+      return true
+    })
+    imports = imports.filter(({ fullName }) => {
+      if (ignore.includes(fullName)) return false
+      return true
+    })
 
     this.emit('types', types) // remember types for js-replace-stream
     this.emit('types', imports)

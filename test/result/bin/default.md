@@ -106,3 +106,25 @@ const a = (param) => {}
  */
 
 /*@*/
+
+## ignores types
+-c
+
+/*@ program */
+/* typal test/fixture/closure.xml noSuppress ignore:fs.Readable,Extra */
+
+/*@*/
+
+/*@ expected */
+# program.js
+
+/* typal test/fixture/closure.xml noSuppress ignore:fs.Readable,Extra */
+/**
+ * @typedef {Object} Conf config
+ * @prop {string} propName The prop description.
+ */
+/**
+ * @typedef {import('fs').Writable} fs.Writable
+ */
+
+/*@*/
