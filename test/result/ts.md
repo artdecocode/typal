@@ -39,7 +39,7 @@
   ],
   [
     "__prop1*__",
-    "<em>(string \\\\| number)</em>",
+    "<em>(string \\| number)</em>",
     "The prop."
   ]
 ]

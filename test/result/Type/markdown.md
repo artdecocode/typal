@@ -30,6 +30,32 @@ __[`Test`](t-type)__
 ```
 /**/
 
+## escapes the types correctly
+<types>
+  <type name="Test">
+    <prop type="string|number" name="p">Prop desc</prop>
+  </type>
+</types>
+
+/* expected */
+__[`Test`](t-type)__
+
+```table
+[
+  [
+    "Name",
+    "Type",
+    "Description"
+  ],
+  [
+    "__p*__",
+    "<em>(string \\| number)</em>",
+    "Prop desc"
+  ]
+]
+```
+/**/
+
 ## generates the table for imports
 <types>
   <import from="stream" name="Readable" />
