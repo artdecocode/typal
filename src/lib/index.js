@@ -53,6 +53,17 @@ export const getLink = (title, prefix = '') => {
   return `${prefix}-${l}`
 }
 
+/**
+ * Prevent incorrect undefined ending.
+ * @param {string} type
+ */
+export const makeOptional = (type) => {
+  let t
+  if (/[^\w\d._]/.test(type)) t = `(${type})`
+  else t = type
+  return `${t}|undefined`
+}
+
 export const makeBlock = (s) => {
   return `/**
 ${s}

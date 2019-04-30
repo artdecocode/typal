@@ -1,4 +1,4 @@
-import { getPropType, getNameWithDefault } from './'
+import { getPropType, getNameWithDefault, makeOptional } from './'
 
 /**
  * Representation of a property of a type.
@@ -82,7 +82,7 @@ export default class Property {
       if (this.default) d += ` Default \`${this.default}\`.`
       pp.push(d)
     }
-    const t = this.optional ? `(${this.closureType}|undefined)` : this.closureType
+    const t = this.optional ? makeOptional(this.closureType) : this.closureType
     pp.push(` * @type {${t}}`)
     return pp.join('\n')
   }

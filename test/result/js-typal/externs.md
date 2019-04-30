@@ -122,7 +122,7 @@ var Test
 Test.prototype.bool
 /**
  * B prop. Default `hello`.
- * @type {(string|undefined)}
+ * @type {string|undefined}
  */
 Test.prototype.str
 
@@ -150,8 +150,34 @@ var _test = {}
 _test.Test
 /**
  * A prop.
- * @type {(boolean|undefined)}
+ * @type {boolean|undefined}
  */
 _test.Test.prototype.bool
+
+/*@*/
+
+## generates records
+/* typal test/temp/types.xml */
+
+
+/*@ types */
+<types>
+  <type record name="Test">
+    <prop opt type="function(): Promise" name="f">A prop.</prop>
+  </type>
+</types>
+/*@*/
+
+/*@ expected */
+/* typal test/temp/types.xml */
+/**
+ * @record
+ */
+var Test
+/**
+ * A prop.
+ * @type {(function(): Promise)|undefined}
+ */
+Test.prototype.f
 
 /*@*/

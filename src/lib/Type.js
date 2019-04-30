@@ -1,7 +1,7 @@
 import extractTags from 'rexml'
 import parse from '@typedefs/parser'
 import Property from './Property'
-import { getLink, addSuppress, makeBlock, getExternDeclaration } from './'
+import { getLink, addSuppress, makeBlock, getExternDeclaration, makeOptional } from './'
 
 /**
  * A representation of a type.
@@ -254,7 +254,7 @@ const getSpread = (properties = [], closure = false) => {
     if (p.optional && !closure) {
       n = `${p.name}?`
     } else if (p.optional && closure) {
-      t = `(${type}|undefined)`
+      t = `(${makeOptional(type)})`
     }
     const st = `${n}: ${t}`
     return st
@@ -355,11 +355,14 @@ const parsedToString = (type, allTypes) => {
 }
 
 const getTypeWithLink = (type, allTypes, nullable = '') => {
-  const link = getLinkToType(allTypes, type)
+  const l = getLinkToType(allTypes, type)
   const n = `${nullable}${type}`
-  if (!link) return n
-  const typeWithLink = `[${n}](#${link})`
-  return typeWithLink
+  if (!l) return n
+  const { link, type: t } = l
+  if (!t.description) return `[${n}](#${link})`
+  return `<a href="#${link}" title="${t.description}">${n}</a>`
+  // const typeWithLink = `[${n}](#${link})`
+  // return typeWithLink
 }
 
 /**
@@ -397,10 +400,14 @@ const esc = (s = '') => {
     .replace(/>/, '&gt;')
 }
 
+/**
+ * @param {!Array<!Type>} allTypes
+ */
 const getLinkToType = (allTypes, type) => {
   const linkedType = allTypes.find(({ fullName }) => fullName == type)
-  const link = linkedType ? getLink(linkedType.fullName, 'type') : undefined
-  return link
+  if (!linkedType) return
+  const link = getLink(linkedType.fullName, 'type')
+  return { link, type: linkedType }
 }
 
 /**
