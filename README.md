@@ -32,6 +32,7 @@ yarn add -D typal
   * [*Externs*](#externs)
   * [_Typal_ Arguments](#typal-arguments)
   * [Missing Types Warnings](#missing-types-warnings)
+  * [Keeping Types In Separate File](#keeping-types-in-separate-file)
   * [Migration](#migration)
 - [Schema](#schema)
   * [Types](#types)
@@ -735,6 +736,10 @@ The following arguments are supported by this software.
     Whether to generate externs for <em>GCC</em>.
   </td>
   </tr>
+  <tr><td>--types</td><td>-t</td><td>
+    Comma-separated location of files to read types from.
+  </td>
+  </tr>
   <tr>
     <td>--migrate</td>
     <td>-m</td>
@@ -801,6 +806,55 @@ example/warnings.js:11:11
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
+
+### Keeping Types In Separate File
+
+If the types are numerous and it is desired to put them in a separate JS file (like `types.d.ts` but for JSDoc) and then import them in code from there for expansions of function's configs, it is possible with the `-t` argument pointing to the location of XML files. Keeping all files in a `types.js` file allows to import them from anywhere in the code, or other packages (the file needs to be added to the `files` field of `package.json`, if such field exists).
+
+_For example, we can create a `types.js` file with the `typal` marker:_
+
+```js
+// types.js
+export {} // important for enabling of importing
+/* typal types/index.xml */
+
+```
+
+The types can be placed in there with `typal types.js` command. But if we wanted to update the source code which has a variable of a particular type that we want to expand, we can run `typal src/index.js -t types/index.xml` to do that:
+
+```js
+// src/index.js
+/**
+ * @param {_ns.Config} config
+ */
+function example(config = {}) {
+  const { test } = config
+}
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../types').Config} _ns.Config
+ */
+```
+```js
+// src/index.js
+/**
+ * @param {_ns.Config} config The config for the program
+ * @param {string} config.test The test property.
+ */
+function example(config = {}) {
+  const { test } = config
+}
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../types').Config} _ns.Config
+ */
+```
+
+In future, we plan to introduce full-scale management of types so that all import statements will be added automatically by _Typal_.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
 ### Migration
 
@@ -869,7 +923,7 @@ For example, the types above can be extracted into the types file using the <cod
 </td></tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 ## Schema
 
@@ -913,7 +967,7 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
 
 ### Type
 
@@ -956,7 +1010,7 @@ The type represents a _JSDoc_ type.
     ```
     </details>
 - `interface` [_optional_]: for externs, same as `@constructor`, but adds the `@interface` annotation.
-- `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation.
+- `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation. This type is called [Structural Interfaces](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler) and is the best choice for configs _etc_. Types without `@constructor`/`@interface`/`@record` in externs will be presented as `{{ a: string, b: number }}` but when denoted with `@record`, externs will have the same meaning, but will be easier to read. However, `@record` types can be nullable, whereas simple `{{ record }}` types are explicitly non-nullable.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
     <details>
     <summary><strong>Show <a name="extends-notation">Extends Notation</a></strong></summary>
@@ -1038,7 +1092,7 @@ The type represents a _JSDoc_ type.
     </table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
 
 ### Property
 
@@ -1109,20 +1163,18 @@ Property Description.
 </table>
 
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ### Import
 
 ```xml
-<type
+<import
   name="Type"
-  desc="The description of the type."
-  type="(name: string) => number"
-  constructor interface record
-  extends="_namespace.ParentType"
-  closure="function(string): number">
-    <prop name="...">...</prop>
-</type>
+  from="package-name/src"
+  ns="_packageName"
+  link="https://docs.page/package-name"
+  desc="The imported type from another package.">
+</import>
 ```
 
 - `name`: the name of the imported type.
@@ -1168,7 +1220,7 @@ Property Description.
 <tr><td>In <em>Closure</em> mode, <em>Typal</em> adds namespaces so that they will match externs.</tr></td>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## Markdown Documentation
 
@@ -1188,7 +1240,7 @@ __<a name="type-example">`Example`</a>__: An example type which can link to othe
 | variable-args   | <em>function(...[Type](#type-type))</em>                                                     | Functions with `...` for variable argument types.                                 |
 | vscode-function | <em>(type: Type, s: string) =&gt; Type</em>                                                  | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -1200,19 +1252,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -1245,7 +1297,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -1452,7 +1504,7 @@ const getFile = async () => {
   imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/19.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---

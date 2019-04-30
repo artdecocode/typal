@@ -68,7 +68,7 @@ The type represents a _JSDoc_ type.
     %FORK-js src/bin/typal example/schema/constructor.js -e -o -%
     </details>
 - `interface` [_optional_]: for externs, same as `@constructor`, but adds the `@interface` annotation.
-- `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation.
+- `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation. This type is called [Structural Interfaces](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler) and is the best choice for configs _etc_. Types without `@constructor`/`@interface`/`@record` in externs will be presented as `{{ a: string, b: number }}` but when denoted with `@record`, externs will have the same meaning, but will be easier to read. However, `@record` types can be nullable, whereas simple `{{ record }}` types are explicitly non-nullable.
 - `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
     <details>
     <summary><strong>Show [Extends Notation](t)</strong></summary>
@@ -170,15 +170,13 @@ _Typal_ will extract properties from xml file and insert them into _JSDoc_.
 ### Import
 
 ```xml
-<type
+<import
   name="Type"
-  desc="The description of the type."
-  type="(name: string) => number"
-  constructor interface record
-  extends="_namespace.ParentType"
-  closure="function(string): number">
-    <prop name="...">...</prop>
-</type>
+  from="package-name/src"
+  ns="_packageName"
+  link="https://docs.page/package-name"
+  desc="The imported type from another package.">
+</import>
 ```
 
 - `name`: the name of the imported type.

@@ -1,0 +1,5 @@
+<types namespace="_ns">
+  <type name="Config" desc="The config for the program">
+    <prop string name="test">The test property.</prop>
+  </type>
+</types>
