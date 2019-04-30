@@ -218,10 +218,10 @@ From that point onward, the JSDoc documentation is managed from the separate fil
 
 __<a name="type-rule">`Rule`</a>__: The replacement rule.
 
-|       Name       |                  Type                  |            Description             |
-| ---------------- | -------------------------------------- | ---------------------------------- |
-| __regex*__       | <em>RegExp</em>                        | The regular expression.            |
-| __replacement*__ | <em>(...args:string) =&gt; string</em> | The function used to update input. |
+|       Name       |                Type                 |            Description             |
+| ---------------- | ----------------------------------- | ---------------------------------- |
+| __regex*__       | <em>RegExp</em>                     | The regular expression.            |
+| __replacement*__ | <em>(...args:string) => string</em> | The function used to update input. |
 
 The link to the _Rule_ type was also added to the Table of Contents, however it can be skipped if the `type` element had the `noToc` property set on it. We also added the `link` property to the `import` element to place a link to Node.JS API docs in documentation.
 
@@ -1276,15 +1276,15 @@ __<a name="type-type">`Type`</a>__: A type which can be linked.
 
 __<a name="type-example">`Example`</a>__: An example type which can link to other types.
 
-|      Name       |                                             Type                                             |                                    Description                                    |
-| --------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| type            | <em>[?Type](#type-type)</em>                                                                 | The type itself, possibly nullable.                                               |
-| union           | <em>([Type](#type-type) \\| string)</em>                                                     | The union of types.                                                               |
-| record          | <em>{ t: [Type](#type-type), r }</em>                                                        | The record with a type.                                                           |
-| application     | <em>Object&lt;string, [Type](#type-type)&gt;</em>                                            | The application with a type.                                                      |
-| function        | <em>function(this: [Type](#type-type), string, [!Type](#type-type)): [Type](#type-type)</em> | The function with arguments and return type.                                      |
-| variable-args   | <em>function(...[Type](#type-type))</em>                                                     | Functions with `...` for variable argument types.                                 |
-| vscode-function | <em>(type: Type, s: string) =&gt; Type</em>                                                  | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
+|      Name       |                                                                                                                   Type                                                                                                                    |                                    Description                                    |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| type            | <em><a href="#type-type" title="A type which can be linked.">?Type</a></em>                                                                                                                                                               | The type itself, possibly nullable.                                               |
+| union           | <em>(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                                                                                                    | The union of types.                                                               |
+| record          | <em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em>                                                                                                                                                      | The record with a type.                                                           |
+| application     | <em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em>                                                                                                                                          | The application with a type.                                                      |
+| function        | <em>function(this: <a href="#type-type" title="A type which can be linked.">Type</a>, string, <a href="#type-type" title="A type which can be linked.">!Type</a>): <a href="#type-type" title="A type which can be linked.">Type</a></em> | The function with arguments and return type.                                      |
+| variable-args   | <em>function(...<a href="#type-type" title="A type which can be linked.">Type</a>)</em>                                                                                                                                                   | Functions with `...` for variable argument types.                                 |
+| vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                                                                                                  | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
