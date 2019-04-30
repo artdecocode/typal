@@ -59,7 +59,7 @@ const a = (param) => {}
 
 /*@*/
 
-## !can read types from a file
+## can read types from a file
 -t test/fixture/conf.xml
 
 /*@ program */
