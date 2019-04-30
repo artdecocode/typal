@@ -1,5 +1,9 @@
 ## 30 April 2019
 
+### [1.9.2](https://github.com/artdecocode/typal/compare/v1.9.1...v1.9.2)
+
+- [package] Publish again as registry does not find `v1.9.1`.
+
 ### [1.9.1](https://github.com/artdecocode/typal/compare/v1.9.0...v1.9.1)
 
 - [fix] Correct the imports with namespace printing and linking (including for the `rootNamespace`); return `Imports` in from the _parse_ method.
