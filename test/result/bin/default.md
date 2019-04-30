@@ -78,3 +78,31 @@ const a = (param) => {}
  */
 const a = (param) => {}
 /*@*/
+
+## uses args from the tag
+--nothing
+
+/*@ program */
+/* typal test/fixture/closure.xml closure noSuppress */
+
+/*@*/
+
+/*@ expected */
+# program.js
+
+/* typal test/fixture/closure.xml closure noSuppress */
+/**
+ * @typedef {Object} Conf config
+ * @prop {string} propName The prop description.
+ */
+/**
+ * @typedef {Array<string>} Extra other type
+ */
+/**
+ * @typedef {import('fs').Readable} fs.Readable
+ */
+/**
+ * @typedef {import('fs').Writable} fs.Writable
+ */
+
+/*@*/

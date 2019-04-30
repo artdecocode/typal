@@ -21,14 +21,17 @@ import { makeBlock, addSuppress } from '../'
  * Creates multiple blocks from all imports and types with suppressed `nonStandardJsDocs` warning for Google Closure Compiler.
  * @param {!Array<!Import>} imports
  * @param {!Array<!Type>} types
+ * @param {boolean} noSuppress
  */
-export const closureJoinTypes = (imports, types) => {
+export const closureJoinTypes = (imports, types, noSuppress) => {
   const tblocks = types.map((t) => {
-    const m = t.toTypedef(true)
+    const m = t.toTypedef(true, noSuppress)
     return m
   })
   const iblocks = imports.map((i) => {
-    const m = makeBlock(addSuppress(i.toTypedef()))
+    const t = i.toTypedef()
+    const s = noSuppress ? t : addSuppress(t)
+    const m = makeBlock(s)
     return m
   })
   const blocks = [...tblocks, ...iblocks]
