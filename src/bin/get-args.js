@@ -19,6 +19,10 @@ export const argsConfig = {
     boolean: true,
     short: 'e',
   },
+  'types': {
+    description: 'Comma-separated location of files to read types from.',
+    short: 't',
+  },
   'migrate': {
     description: 'Extracts types from JavaScript source code and saves them\ninto the types.xml file specified in the output option.',
     boolean: true,
@@ -58,6 +62,11 @@ export const _closure = /** @type {boolean} */ (args['closure'])
  * Whether to generate externs for _GCC_.
  */
 export const _externs = /** @type {boolean} */ (args['externs'])
+
+/**
+ * Comma-separated location of files to read types from.
+ */
+export const _types = /** @type {string} */ (args['types'])
 
 /**
  * Extracts types from JavaScript source code and saves them

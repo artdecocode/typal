@@ -1,4 +1,4 @@
-import { _source, _closure, _externs, _output, _help, _version, _migrate,
+import { _source, _closure, _externs, _output, _help, _version, _migrate, _types,
   argsConfig } from './get-args'
 import usually from 'usually'
 import { reduceUsage } from 'argufy'
@@ -31,6 +31,7 @@ JavaScript source code from an external types.xml file.`,
       closure: _closure,
       externs: _externs,
       output: _output,
+      types: _types,
     })
   } catch (err) {
     if (process.env['DEBUG']) console.log(err.stack)

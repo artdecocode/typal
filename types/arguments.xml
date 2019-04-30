@@ -13,6 +13,9 @@
   <arg boolean name="externs" short="e">
     Whether to generate externs for _GCC_.
   </arg>
+  <arg name="types" short="t">
+    Comma-separated location of files to read types from.
+  </arg>
   <arg boolean name="migrate" short="m">
     Extracts types from JavaScript source code and saves them
     into the types.xml file specified in the output option.

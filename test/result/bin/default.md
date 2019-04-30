@@ -58,3 +58,23 @@ const a = (param) => {}
  */
 
 /*@*/
+
+## !can read types from a file
+-t test/fixture/conf.xml
+
+/*@ program */
+/**
+ * @param {Conf} param
+ */
+const a = (param) => {}
+/*@*/
+
+/*@ expected */
+# program.js
+
+/**
+ * @param {Conf} param config
+ * @param {string} param.propName The prop description.
+ */
+const a = (param) => {}
+/*@*/

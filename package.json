@@ -23,7 +23,6 @@
     "compat": "yarn dev example/restream/compat.js -c",
     "d": "NODE_DEBUG=doc doc src/index.js -g",
     "build": "yarn-s d b doc",
-    "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "alanode",
     "example/": "yarn e example/example.js",
     "splendid": "splendid-dev",
@@ -31,7 +30,10 @@
     "typal": "depack/bin/typal.js",
     "args": "argufy types/arguments.xml -o src/bin/get-args.js"
   },
-  "bin": "depack/bin/typal.js",
+  "bin": {
+    "typal": "depack/bin/typal.js",
+    "typal-dev": "src/bin/index.js"
+  },
   "files": [
     "build",
     "src",
