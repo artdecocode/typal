@@ -716,9 +716,12 @@ The following arguments are supported by this software.
 
 <table>
   <tr><th>Argument</th><th>Short</th><th>Description</th></tr>
-  <tr><td>source</td><td></td><td>
-    The path to the source file or directory with files to embed types into.
-  </td>
+  <tr>
+    <td>source</td>
+    <td></td>
+    <td>
+      The path to the source file or directory with files to embed types into. Can specify multiple values, e.g., <code>typal types/index.js types/vendor.js</code>.
+    </td>
   </tr>
   <tr>
     <td>--output</td>

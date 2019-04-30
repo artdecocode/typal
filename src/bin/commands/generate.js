@@ -9,15 +9,18 @@ import parseFile from '../../lib/parse'
 
 export default async (source, opts = {}) => {
   const { closure = false, externs = false, output, types } = opts
-  const ls = await makePromise(lstat, source)
-  let files
-  if (ls.isFile()) {
-    files = [source]
-  } else if (ls.isDirectory()) {
-    const dir = await readDirStructure(source)
-    files = getFiles(/** @type {!_readDirStructure.Content } */(dir.content), source)
-  }
-  await processFiles(files, closure, externs, output, types)
+  await Promise.all(source.map(async (s) => {
+    const ls = await makePromise(lstat, s)
+    let files
+    if (ls.isFile()) {
+      files = [s]
+    } else if (ls.isDirectory()) {
+      const dir = await readDirStructure(s)
+      files = getFiles(
+        /** @type {!_readDirStructure.Content } */(dir.content), s)
+    }
+    await processFiles(files, closure, externs, output, types)
+  }))
 }
 
 /**

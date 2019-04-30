@@ -4,11 +4,13 @@ import extract from '../../lib/extract'
 
 export default async (source, opts = {}) => {
   const { output } = opts
-  const data = await read(source)
-  const types = await extract(data)
-  if (output) {
-    await write(output, types)
-  } else {
-    console.log(types)
-  }
+  await Promise.all(source.map(async (s) => {
+    const data = await read(s)
+    const types = await extract(data)
+    if (output) {
+      await write(output, types)
+    } else {
+      console.log(types)
+    }
+  }))
 }

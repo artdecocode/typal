@@ -33,7 +33,22 @@
       "args": [
         "src/bin/typal",
         "test/temp/program.js",
+        "-m"
       ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch For Package",
+      "program": "${workspaceFolder}/src/bin/index.js",
+      "console": "integratedTerminal",
+      "args": [
+        "types.js",
+      ],
+      "cwd": "${workspaceFolder}/../../contexttesting/mask",
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]

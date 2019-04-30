@@ -4,6 +4,7 @@ export const argsConfig = {
   'source': {
     description: 'The path to the source file or directory with files to embed types into.',
     command: true,
+    multiple: true,
   },
   'output': {
     description: 'The destination where to save output.\nIf not passed, the file will be overwritten.\nIf `-` is passed, prints to stdout.',
@@ -44,7 +45,7 @@ const args = argufy(argsConfig)
 /**
  * The path to the source file or directory with files to embed types into.
  */
-export const _source = /** @type {string} */ (args['source'])
+export const _source = /** @type {(!Array<string>|string)} */ (args['source'])
 
 /**
  * The destination where to save output.

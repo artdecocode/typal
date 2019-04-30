@@ -1,6 +1,6 @@
 <arguments>
-  <arg command name="source">
-    The path to the source file or directory with files to embed types into.
+  <arg command multiple name="source">
+    The path to the source file or directory with files to embed types into. Can specify multiple values, e.g., `typal types/index.js types/vendor.js`.
   </arg>
   <arg name="output" short="o">
     The destination where to save output.

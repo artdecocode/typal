@@ -34,9 +34,10 @@ export const dir = makeTestSuite('test/result/bin/dir', {
      * @param {TempContext} t
      */
     async getArgs(args, { write }) {
-      await write('program.js', this.program)
-      await write('program2.js', this.program)
-      return ['test/temp', ...args]
+      const p1 = await write('program.js', this.program)
+      const p2 = await write('program2.js', this.program)
+      if (args[0] == '--nothing') return ['test/temp', ...args]
+      return [p1, p2]
     },
   },
   /**
