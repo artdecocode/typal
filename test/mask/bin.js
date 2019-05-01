@@ -18,7 +18,7 @@ export default makeTestSuite('test/result/bin/default', {
   /**
    * @param {TempContext} t
    */
-  async getResults(input, { snapshot }) {
+  async getResults({ snapshot }) {
     return snapshot()
   },
   propStartRe: /\/\*@/,
@@ -43,7 +43,7 @@ export const dir = makeTestSuite('test/result/bin/dir', {
   /**
    * @param {TempContext} t
    */
-  async getResults(input, { snapshot }) {
+  async getResults({ snapshot }) {
     return snapshot()
   },
   propStartRe: /\/\*@/,
@@ -66,8 +66,8 @@ export const extract = makeTestSuite('test/result/bin/extract', {
   /**
    * @param {TempContext} t
    */
-  async getResults(input, { read }) {
-    if (/-o /.test(input)) return read('types.xml')
+  async getResults({ read }) {
+    if (/-o /.test(this.input)) return read('types.xml')
   },
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
@@ -90,7 +90,7 @@ export const externs = makeTestSuite('test/result/js-typal/externs', {
   /**
    * @param {TempContext} t
    */
-  async getResults(input, { read }) {
+  async getResults({ read }) {
     return read('program.js')
   },
   propStartRe: /\/\*@/,

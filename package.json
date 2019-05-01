@@ -67,6 +67,7 @@
     "@wrote/read": "^1.0.4",
     "@wrote/read-dir-structure": "^1.2.0",
     "@wrote/write": "^1.0.4",
+    "@zoroaster/mask": "^2.0.4",
     "alamode": "^2.0.0",
     "argufy": "^1.7.0",
     "catchment": "^3.3.0",

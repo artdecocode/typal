@@ -101,3 +101,38 @@ var a = (param) => {}
  */
 
 /*@*/
+
+## adds tags
+/* typal test/temp/types.xml noSuppress */
+
+
+/*@ types */
+<types namespace="ns">
+  <type record name="Record" desc="Hello"/>
+  <type constructor name="Constructor" desc="World"/>
+  <type interface name="Interface" />
+</types>
+/*@*/
+
+/*@ expected */
+/* typal test/temp/types.xml noSuppress */
+/**
+ * @typedef {ns.Record} Record `@record` Hello
+ */
+/**
+ * @typedef {Object} ns.Record `@record` Hello
+ */
+/**
+ * @typedef {ns.Constructor} Constructor `@constructor` World
+ */
+/**
+ * @typedef {Object} ns.Constructor `@constructor` World
+ */
+/**
+ * @typedef {ns.Interface} Interface `@interface`
+ */
+/**
+ * @typedef {Object} ns.Interface `@interface`
+ */
+
+/*@*/

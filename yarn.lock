@@ -127,6 +127,11 @@
     erte "^1.1.7"
     mismatch "^1.2.0"
 
+"@zoroaster/mask@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.0.4.tgz#b3f9dc73bd16aa1ed01f94f4ca0d22acc9b68a01"
+  integrity sha512-/+vTebr3pf7+2iSYZg2PClxgyHRxBGI9NH/8vnML0gEJcMWkRMR/K7mXIqVd6NT+Ew+PXxuOt4V8iJSSU1JQEg==
+
 "@zoroaster/reducer@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@zoroaster/reducer/-/reducer-1.1.0.tgz#745eca1403eb6240f83c6d949c46a3f529f9bd1d"

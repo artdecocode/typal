@@ -25,14 +25,14 @@ export const checks = makeTestSuite('test/result/common/check', {
   /**
    * @param {TempContext} t
    */
-  async getResults(input, { write }) {
+  async getResults({ write }) {
     await write('types.xml', this.types)
     let conf; this.preamble && eval(`conf = ${this.preamble}`)
     this.conf && eval(`conf = ${this.conf}`)
     const js = makeJSTypal(conf)
     const logged = []
     js.file = 'test/temp/program.js'
-    js.lines = input.split('\n')
+    js.lines = this.input.split('\n')
     js.LOG = (s, ...a) => {
       let i = 0
       logged.push(s.replace(/%s/g, () => {
@@ -41,7 +41,7 @@ export const checks = makeTestSuite('test/result/common/check', {
         return r
       }))
     }
-    js.end(input)
+    js.end(this.input)
     await collect(js)
     return logged.join('\n')
   },

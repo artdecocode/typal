@@ -4,8 +4,8 @@ import parseFile from '../../src/lib/parse'
 
 export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
   context: TempContext,
-  getResults(input) {
-    const { types, Imports } = parseFile(input)
+  getResults() {
+    const { types, Imports } = parseFile(this.input)
 
     const all = [...Imports, ...types]
     return all.map((t) => {
