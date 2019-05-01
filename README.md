@@ -1068,15 +1068,15 @@ The type represents a _JSDoc_ type.
     /* typal example/schema/extends.xml */
     /**
      * @suppress {nonStandardJsDocs}
-     * @typedef {_test.Test} Test The example type.
+     * @typedef {_test.Test} Test `@record` The example type.
      */
     /**
      * @suppress {nonStandardJsDocs}
-     * @typedef {_ns.ParentType & _test.$Test} _test.Test The example type.
+     * @typedef {_ns.ParentType & _test.$Test} _test.Test `@record` The example type.
      */
     /**
      * @suppress {nonStandardJsDocs}
-     * @typedef {Object} _test.$Test The example type.
+     * @typedef {Object} _test.$Test `@record` The example type.
      * @prop {boolean} [bool] A prop.
      */
     ```
