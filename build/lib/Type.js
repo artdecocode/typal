@@ -130,8 +130,7 @@ _ns.Type.prototype.constructor
   /** This covers both when extending and when not. */
   toNaturalTypedef(closure, noSuppress) {
     const t = (closure ? this.closureType : this.type) || 'Object'
-    const d = this.description ? ` ${this.description}` : ''
-    const dd = ` ${this.getFullNameForExtends(closure)}${d}`
+    const dd = ` ${this.getFullNameForExtends(closure)}${this.descriptionWithTag}`
     const s = ` * @typedef {${t}}${dd}`
     const p = this.properties ? this.properties.map((pr) => {
       const sp = pr.toProp(closure)
@@ -142,8 +141,12 @@ _ns.Type.prototype.constructor
     typedef = makeBlock(typedef)
     return typedef
   }
-  toTypedef(closure = false, noSuppress = false) {
+  get descriptionWithTag() {
     const d = this.description ? ` ${this.description}` : ''
+    const t = this.tag ? ` \`@${this.tag}\`` : ''
+    return `${t}${d}`
+  }
+  toTypedef(closure = false, noSuppress = false) {
     const hasExtends = !!this.extends
     const natural = this.toNaturalTypedef(closure, noSuppress)
 
@@ -156,13 +159,13 @@ _ns.Type.prototype.constructor
     // let pre = ''
 
     if (this.namespace && closure) {
-      let td = ` * @typedef {${this.fullName}} ${this.name}${d}`
+      let td = ` * @typedef {${this.fullName}} ${this.name}${this.descriptionWithTag}`
       if (closure && !noSuppress) td = addSuppress(td)
       td = makeBlock(td)
       parts.push(td)
     }
     if (hasExtends) {
-      let extended = ` * @typedef {${this.extends} & ${this.getFullNameForExtends(closure)}} ${closure ? this.fullName : this.name}${d}`
+      let extended = ` * @typedef {${this.extends} & ${this.getFullNameForExtends(closure)}} ${closure ? this.fullName : this.name}${this.descriptionWithTag}`
       if (closure && !noSuppress) extended = addSuppress(extended)
       extended = makeBlock(extended)
       parts.push(extended)
@@ -172,11 +175,20 @@ _ns.Type.prototype.constructor
     return parts.join('')
   }
   get prototypeAnnotation() {
+    const tag = this.tag
+    if (!tag)
+      throw new Error('Unknown prototype type (not constructor or interface).')
+    return tag
+  }
+  get tag() {
     if (this.isConstructor) return 'constructor'
     if (this.isInterface) return 'interface'
     if (this.isRecord) return 'record'
-    throw new Error('Unknown prototype type (not constructor or interface).')
+    return ''
   }
+  /**
+   * Only used in externs.
+   */
   toPrototype() {
     const pp = []
     if (this.description) pp.push(` * ${this.description}`)
