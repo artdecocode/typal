@@ -1,5 +1,9 @@
 ## 1 May 2019
 
+### [1.12.0](https://github.com/artdecocode/typal/compare/v1.11.1...v1.12.0)
+
+- [feature] Add tags (`@constructor/record/interface`) to JSDoc typedefs' description.
+
 ### [1.11.1](https://github.com/artdecocode/typal/compare/v1.11.0...v1.11.1)
 
 - [fix] Print nullability in linking.
