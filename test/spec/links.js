@@ -1,4 +1,4 @@
-import { equal } from 'zoroaster/assert'
+import { equal } from '@zoroaster/assert'
 import { getLinks } from '../../src/lib/Type'
 
 /** */

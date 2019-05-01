@@ -1,5 +1,6 @@
 import { throws } from 'assert'
-import { equal } from 'zoroaster/assert'
+import { equal } from '@zoroaster/assert'
+import Zoroaster from 'zoroaster'
 import Property from '../../src/lib/Property'
 
 class context {
@@ -25,7 +26,14 @@ class context {
 
 /** @type {Object.<string, (c: context)>} */
 const PropertyFromXml = {
-  context,
+  context: [context, class extends Zoroaster {
+    /**
+     * @param {Property} prop
+     */
+    static serialise(prop) {
+      return { ...prop }
+    }
+  }],
   'creates a string property'({ p, name, desc }) {
     const props = { string: true, name }
     p.fromXML(desc, props)

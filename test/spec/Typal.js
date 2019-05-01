@@ -1,4 +1,4 @@
-import { ok } from 'zoroaster/assert'
+import { ok } from '@zoroaster/assert'
 import { collect } from 'catchment'
 import Zoroaster from 'zoroaster'
 import Context, { MarkdownSnapshot } from '../context'

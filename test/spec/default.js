@@ -1,4 +1,4 @@
-import { equal, ok } from 'zoroaster/assert'
+import { equal, ok } from '@zoroaster/assert'
 import Context from '../context'
 import typal from '../../src'
 

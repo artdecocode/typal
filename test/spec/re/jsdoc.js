@@ -1,4 +1,4 @@
-import { equal } from 'zoroaster/assert'
+import { equal } from '@zoroaster/assert'
 import mismatch from 'mismatch'
 import Context, { MarkdownSnapshot } from '../../context'
 import { jsDocRe } from '../../../src/lib/typedef/jsdoc'

@@ -1,5 +1,6 @@
 import { throws } from 'assert'
-import { equal } from 'zoroaster/assert'
+import { equal } from '@zoroaster/assert'
+import Zoroaster from 'zoroaster'
 import Type from '../../../src/lib/Type'
 
 class context {
@@ -31,7 +32,16 @@ class context {
 
 /** @type {Object.<string, (c: context)>} */
 const TypeFromXml = {
-  context,
+  context: [context, class extends Zoroaster {
+    /**
+     * @param {Type} type
+     */
+    static serialise(type) {
+      return { ...type, properties: type.properties.map((p) => {
+        return { ...p }
+      }) }
+    }
+  }],
   'creates a type without properties'({ t, name, desc }) {
     const props = { name, desc, noToc: true }
     t.fromXML('', props)

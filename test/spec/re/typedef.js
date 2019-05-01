@@ -1,4 +1,4 @@
-import { equal } from 'zoroaster/assert'
+import { equal } from '@zoroaster/assert'
 import mismatch from 'mismatch'
 import Context from '../../context'
 import { typedefJsRe } from '../../../src/lib/typedef/rule'
