@@ -1,6 +1,6 @@
 {
   "name": "typal",
-  "version": "1.11.1",
+  "version": "1.12.0",
   "description": "Organises TypeDefs By Placing Them Into Types.Xml File To Be Embedded Into Source Code Compatible With VSCode And Google Closure Compiler, Generates Externs And Allows To Place Documentation In README Markdown.",
   "main": "build/index.js",
   "module": "src/index.js",
