@@ -7,7 +7,7 @@ import makeJsTypal from '../../src/lib/make-JSTypal'
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: [Context, MarkdownSnapshot],
-  async 'places types declaration'({ typesLocation }) {
+  'places types declaration'({ typesLocation }) {
     const s = `/* documentary ${typesLocation} */
 
 `
@@ -15,7 +15,7 @@ const T = {
     stream.end(s)
     return stream
   },
-  async 'places types declaration with existing typedef'({ typesLocation }) {
+  'places types declaration with existing typedef'({ typesLocation }) {
     const s = `/* documentary ${typesLocation} */
 
 /**

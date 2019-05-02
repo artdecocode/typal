@@ -102,9 +102,9 @@
   integrity sha512-/+vTebr3pf7+2iSYZg2PClxgyHRxBGI9NH/8vnML0gEJcMWkRMR/K7mXIqVd6NT+Ew+PXxuOt4V8iJSSU1JQEg==
 
 alamode@^2.0.0, alamode@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.1.0.tgz#49c2bee5051a4e69cb67809dbc17421a251044b7"
-  integrity sha512-GIq4i6IMUs8qfT9vDS4JG09oFYFi6g9CuIqFN6YKvCMiL+aoFsmmP8P+2ccQZY7v2xRr76vP8p91INTZz2iViw==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.1.1.tgz#d8c8b2745cd9cedd1aa292b7dfb860779024a66d"
+  integrity sha512-4LrtXymoO0jIYIWgiVoWA8yndE1cSD7q1nW68/C+DhnnEE/jx9yOaE1eCRdBdv4aFVAajYgCQ7Gw6xnEvYJ0Aw==
 
 argufy@^1.7.0:
   version "1.7.0"
@@ -306,10 +306,10 @@ yarn-s@1.1.0:
   dependencies:
     spawncommand "1.1.0"
 
-zoroaster@^4.0.0-alpha:
-  version "4.0.0-alpha"
-  resolved "https://registry.yarnpkg.com/zoroaster/-/zoroaster-4.0.0-alpha.tgz#5a9ad21722700ef47991490be6d1a34c6d842f18"
-  integrity sha512-tfTbFqVy4QpLSZeekSFZs+G2qqrH5k9k9OHoP14NTEY0+AlF+MLgdLrf3xUFxH/ac4wfThnCUgMvOTMrWYvkwg==
+zoroaster@^4.1.0-alpha:
+  version "4.1.0-alpha"
+  resolved "https://registry.yarnpkg.com/zoroaster/-/zoroaster-4.1.0-alpha.tgz#9eb37e92c7d06b2ea6c47b2a24813480a4444de2"
+  integrity sha512-vx4fSF/RKeCGkQLV41Ojy4CtJw9nG6ZUPT+hZX0abwvNmy/MxUlh3V5e1OtZL4bQ4ypg59OiLISnt47XMI2fwA==
   dependencies:
     "@zoroaster/assert" "^1.0.1"
     "@zoroaster/mask" "^2.0.4"
