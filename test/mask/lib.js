@@ -6,6 +6,7 @@ import makeJSTypal from '../../src/lib/make-JSTypal'
 export default makeTestSuite('test/result/js-typal', {
   context: TempContext,
   /**
+   * Returns the JSTypal which embeds JSDoc.
    * @param {TempContext} t
    */
   async getTransform({ write }) {
