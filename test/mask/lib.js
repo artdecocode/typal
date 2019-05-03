@@ -10,12 +10,14 @@ export default makeTestSuite('test/result/js-typal', {
    */
   async getTransform({ write }) {
     if (this.types) await write('types.xml', this.types)
-    let conf; this.preamble && eval(`conf = ${this.preamble}`)
-    this.conf && eval(`conf = ${this.conf}`)
+    let conf
+    if (this.preamble) conf = this.preamble
+    if (this.conf) conf = { ...conf, ...this.conf }
     const js = makeJSTypal(conf)
     js.LOG = () => {}
     return js
   },
+  jsProps: ['preamble', 'conf'],
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
 })
@@ -27,8 +29,9 @@ export const checks = makeTestSuite('test/result/common/check', {
    */
   async getResults({ write }) {
     await write('types.xml', this.types)
-    let conf; this.preamble && eval(`conf = ${this.preamble}`)
-    this.conf && eval(`conf = ${this.conf}`)
+    let conf
+    if (this.preamble) conf = this.preamble
+    if (this.conf) conf = { ...conf, ...this.conf }
     const js = makeJSTypal(conf)
     const logged = []
     js.file = 'test/temp/program.js'
@@ -45,6 +48,7 @@ export const checks = makeTestSuite('test/result/common/check', {
     await collect(js)
     return logged.join('\n')
   },
+  jsProps: ['conf', 'preamble'],
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
 })

@@ -108,12 +108,12 @@ export const paramsCheck = makeTestSuite('test/result/common/check', {
     async getArgs(args, { write }) {
       if (this.types) await write('types.xml', this.types)
       const p = await write('program.js', this.input)
-      let conf = {}; this.conf && eval(`conf = ${this.conf}`)
       const a = [p]
-      if (conf.closure) a.push('-c')
+      if (this.conf && this.conf.closure) a.push('-c')
       return a
     },
   },
+  jsProps: ['conf'],
   mapActual({ stderr }) {
     return stderr.trim()
   },
