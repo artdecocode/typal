@@ -42,8 +42,9 @@ export const closureJoinTypes = (imports, types, noSuppress) => {
  * @param {!Array<!Type>} types
  * @param {?string} namespace
  * @param {!Array<string>} currentNamespaces
+ * @param {boolean} skipNsDecl
  */
-export const externsJoinTypes = (types, namespace, currentNamespaces) => {
+export const externsJoinTypes = (types, namespace, currentNamespaces, skipNsDecl = false) => {
   const tblocks = types.map((t) => {
     return t.toExtern()
   })
@@ -54,7 +55,7 @@ export const externsJoinTypes = (types, namespace, currentNamespaces) => {
   // })
   const blocks = [...tblocks, ...iblocks]
     .join('\n')
-  const n = namespace && !currentNamespaces.includes(namespace) ? `/** @const */
+  const n = namespace && !skipNsDecl && !currentNamespaces.includes(namespace) ? `/** @const */
 var ${namespace} = {}
 ` : ''
   return `${n}${blocks}`

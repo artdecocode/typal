@@ -544,11 +544,11 @@ java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --externs example/restream/externs.js --package_json_entry_names module,main \
 --entry_point example/restream/program.js --externs \
-../../depack/depack/node_modules/@depack/externs/v8/stream.js --externs \
-../../depack/depack/node_modules/@depack/externs/v8/events.js --externs \
-../../depack/depack/node_modules/@depack/externs/v8/global.js --externs \
-../../depack/depack/node_modules/@depack/externs/v8/global/buffer.js --externs \
-../../depack/depack/node_modules/@depack/externs/v8/nodejs.js
+../../depack/src/node_modules/@depack/externs/v8/stream.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/events.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/global.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/global/buffer.js --externs \
+../../depack/src/node_modules/@depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
 Running Google Closure Compiler target...         
@@ -761,7 +761,7 @@ _Typal_ will look for its marker in the source files, and insert all types defin
 ```js
 function sourceCode() {}
 
-/* typal types/index.xml [closure|externs] [noSuppress] [ignore:_ns.Type,Type] */
+/* typal types/index.xml [closure|externs] [skipNsDecl] [noSuppress] [ignore:_ns.Type,Type] */
 _ // remember new line!
 ```
 
@@ -769,6 +769,7 @@ _ // remember new line!
 - <kbd>externs</kbd>: enable the externs mode;
 - <kbd>noSuppress</kbd>: don't add `@suppress` annotations (see the [files](#keeping-types-in-separate-file) section below).
 - <kbd>ignore:_nsType,Type</kbd>: the types to ignore when placing JSDoc into JS files. This can be useful, for example, when the package is built with _Depack_ and has no dependencies, but depends on imported types from other packages. Therefore, these imported types need to be vendored using a separate file, and then imported from there, rather than from their original source file. See [`@zoroaster/mask/types/vendor.js`](https://github.com/contexttesting/mask/blob/master/types/vendor.js) and [`@zoroaster/mask/types/index.js`](https://github.com/contexttesting/mask/blob/master/types/index.js) for a practical application.
+- <kbd>skipNsDecl</kbd>: Disables the declaration of the namespace. The types will still be prefixed with a namespace, but it won't be declared at the top as `/** @const */ var ns = {}`. This is useful when the externs are split by multiple files, and the namespace will only need to appear in one of them, otherwise the `Variable _ns declared more than once.` error will be thrown.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
@@ -1279,7 +1280,7 @@ __<a name="type-example">`Example`</a>__: An example type which can link to othe
 |      Name       |                                                                                                                   Type                                                                                                                    |                                    Description                                    |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | type            | <em><a href="#type-type" title="A type which can be linked.">?Type</a></em>                                                                                                                                                               | The type itself, possibly nullable.                                               |
-| union           | <em>(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                                                                                                    | The union of types.                                                               |
+| union           | <em>!(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                                                                                                   | The union of types.                                                               |
 | record          | <em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em>                                                                                                                                                      | The record with a type.                                                           |
 | application     | <em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em>                                                                                                                                          | The application with a type.                                                      |
 | function        | <em>function(this: <a href="#type-type" title="A type which can be linked.">Type</a>, string, <a href="#type-type" title="A type which can be linked.">!Type</a>): <a href="#type-type" title="A type which can be linked.">Type</a></em> | The function with arguments and return type.                                      |

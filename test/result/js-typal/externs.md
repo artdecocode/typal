@@ -181,3 +181,24 @@ var Test
 Test.prototype.f
 
 /*@*/
+
+## skips ns declaration
+/* typal test/temp/types.xml skipNsDecl */
+
+
+/*@ types */
+<types namespace="ns">
+  <type name="Test">
+    <prop type="error" closure="actual" name="prop"></prop>
+  </type>
+</types>
+/*@*/
+
+/*@ expected */
+/* typal test/temp/types.xml skipNsDecl */
+/**
+ * @typedef {{ prop: actual }}
+ */
+ns.Test
+
+/*@*/

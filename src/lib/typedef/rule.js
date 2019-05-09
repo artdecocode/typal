@@ -20,6 +20,8 @@ async function replacement(match, docOrTypal, location) {
   const argsClosure = args.includes('closure')
   const argsExterns = args.includes('externs')
   const noSuppress = args.includes('noSuppress')
+  const skipNsDecl = args.includes('skipNsDecl')
+
   let ignore = args.find((a) => {
     return a.startsWith('ignore:')
   })
@@ -49,7 +51,7 @@ async function replacement(match, docOrTypal, location) {
     if (closure) {
       block = closureJoinTypes(imports, types, noSuppress)
     } else if (externs) {
-      block = externsJoinTypes(types, namespace, this.namespaces) + '\n'
+      block = externsJoinTypes(types, namespace, this.namespaces, skipNsDecl) + '\n'
       if (namespace) this.emit('namespace', namespace)
     } else {
       block = joinTypes(imports, types)
