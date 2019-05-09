@@ -42,8 +42,9 @@ const { makeBlock, addSuppress } = require('../');
  * @param {!Array<!Type>} types
  * @param {?string} namespace
  * @param {!Array<string>} currentNamespaces
+ * @param {boolean} skipNsDecl
  */
-       const externsJoinTypes = (types, namespace, currentNamespaces) => {
+       const externsJoinTypes = (types, namespace, currentNamespaces, skipNsDecl = false) => {
   const tblocks = types.map((t) => {
     return t.toExtern()
   })
@@ -54,7 +55,7 @@ const { makeBlock, addSuppress } = require('../');
   // })
   const blocks = [...tblocks, ...iblocks]
     .join('\n')
-  const n = namespace && !currentNamespaces.includes(namespace) ? `/** @const */
+  const n = namespace && !skipNsDecl && !currentNamespaces.includes(namespace) ? `/** @const */
 var ${namespace} = {}
 ` : ''
   return `${n}${blocks}`
