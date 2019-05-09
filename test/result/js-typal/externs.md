@@ -114,7 +114,7 @@ var Test
  * @extends {_restream.Replaceable}
  * @constructor
  */
-var Test
+var Test = function() {}
 /**
  * A prop.
  * @type {boolean}
@@ -147,7 +147,7 @@ var _test = {}
 /**
  * @constructor
  */
-_test.Test
+_test.Test = function() {}
 /**
  * A prop.
  * @type {boolean|undefined}
@@ -200,5 +200,24 @@ Test.prototype.f
  * @typedef {{ prop: actual }}
  */
 ns.Test
+
+/*@*/
+
+## generates interfaces
+/* typal test/temp/types.xml */
+
+
+/*@ types */
+<types>
+  <type interface name="Test"/>
+</types>
+/*@*/
+
+/*@ expected */
+/* typal test/temp/types.xml */
+/**
+ * @interface
+ */
+var Test = function() {}
 
 /*@*/

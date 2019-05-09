@@ -80,10 +80,12 @@ ${line}`
 /**
  * @param {?string} namespace
  * @param {string} name
+ * @param {string} [constr] The signature of the constructor for constructors and interfaces.
  */
-export const getExternDeclaration = (namespace, name) => {
+export const getExternDeclaration = (namespace, name, constr) => {
   const ns = namespace ? `${namespace}.` : ''
   const v = namespace ? '' : 'var '
-  const res = `${v}${ns}${name}`
+  let res = `${v}${ns}${name}`
+  if (constr) res = res + ` = ${constr}`
   return res
 }
