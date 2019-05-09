@@ -1,3 +1,9 @@
+## 9 May 2019
+
+### [1.13.0](https://github.com/artdecocode/typal/compare/v1.12.0...v1.13.0)
+
+- [feature] Add the `skipNsDecl` tag to prevent adding of the namespace declaration.
+
 ## 1 May 2019
 
 ### [1.12.0](https://github.com/artdecocode/typal/compare/v1.11.1...v1.12.0)
