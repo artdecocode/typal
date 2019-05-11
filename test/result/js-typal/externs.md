@@ -114,7 +114,7 @@ var Test
  * @extends {_restream.Replaceable}
  * @constructor
  */
-var Test = function() {}
+var Test
 /**
  * A prop.
  * @type {boolean}
@@ -147,7 +147,7 @@ var _test = {}
 /**
  * @constructor
  */
-_test.Test = function() {}
+_test.Test
 /**
  * A prop.
  * @type {boolean|undefined}
@@ -218,6 +218,6 @@ ns.Test
 /**
  * @interface
  */
-var Test = function() {}
+var Test
 
 /*@*/

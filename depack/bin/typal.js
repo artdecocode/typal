@@ -550,8 +550,8 @@ class Ka {
   a.import = !!k;
   l && (a.link = l);
   !0 === n && (a.isConstructor = n);
-  !0 === q && (a.m = q);
-  !0 === r && (a.a = r);
+  !0 === q && (a.l = q);
+  !0 === r && (a.m = r);
   p && (a.extends = p);
   b && (a.f = V("prop", b).map(({content:w, w:x}) => {
     const aa = new Ka;
@@ -569,7 +569,7 @@ function La(a) {
 ${b.join("\n")}
  */
 `;
-  b += T(a.i, a.name, a.a ? void 0 : "function() {}");
+  b += T(a.i, a.name, void 0);
   const c = a.f.map(d => {
     var e = [];
     if (d.description) {
@@ -592,7 +592,7 @@ function Ma(a, b) {
   return b ? `${a.o}${c}` : c;
 }
 function Na(a, b, c) {
-  var d = ` * @typedef {${(b ? a.b : a.type) || "Object"}}${` ${Ma(a, b)}${a.l}`}`;
+  var d = ` * @typedef {${(b ? a.b : a.type) || "Object"}}${` ${Ma(a, b)}${a.g}`}`;
   a = a.f ? a.f.map(e => Ja(e, b)) : [];
   d = [d, ...a].join("\n");
   b && !c && (d = S(d));
@@ -604,7 +604,7 @@ ${d}
 function Oa(a, b = !1, c = !1) {
   const d = !!a.extends, e = Na(a, b, c), f = [];
   if (a.i && b) {
-    let g = ` * @typedef {${a.c}} ${a.name}${a.l}`;
+    let g = ` * @typedef {${a.c}} ${a.name}${a.g}`;
     b && !c && (g = S(g));
     g = `/**
 ${g}
@@ -612,7 +612,7 @@ ${g}
 `;
     f.push(g);
   }
-  d && (a = ` * @typedef {${a.extends} & ${Ma(a, b)}} ${b ? a.c : a.name}${a.l}`, b && !c && (a = S(a)), a = `/**
+  d && (a = ` * @typedef {${a.extends} & ${Ma(a, b)}} ${b ? a.c : a.name}${a.g}`, b && !c && (a = S(a)), a = `/**
 ${a}
  */
 `, f.push(a));
@@ -625,24 +625,24 @@ class Y {
     this.link = this.v = this.import = this.G = this.H = this.description = this.b = this.type = null;
     this.f = [];
     this.i = null;
-    this.a = this.m = this.isConstructor = !1;
+    this.m = this.l = this.isConstructor = !1;
     this.extends = null;
   }
   get M() {
-    return this.isConstructor || this.m || this.a;
+    return this.isConstructor || this.l || this.m;
   }
-  get l() {
-    return `${this.g ? ` \`@${this.g}\`` : ""}${this.description ? ` ${this.description}` : ""}`;
+  get g() {
+    return `${this.a ? ` \`@${this.a}\`` : ""}${this.description ? ` ${this.description}` : ""}`;
   }
   get L() {
-    const a = this.g;
+    const a = this.a;
     if (!a) {
       throw Error("Unknown prototype type (not constructor or interface).");
     }
     return a;
   }
-  get g() {
-    return this.isConstructor ? "constructor" : this.m ? "interface" : this.a ? "record" : "";
+  get a() {
+    return this.isConstructor ? "constructor" : this.l ? "interface" : this.m ? "record" : "";
   }
   get o() {
     return this.i ? `${this.i}.` : "";

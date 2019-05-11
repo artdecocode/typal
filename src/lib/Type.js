@@ -195,7 +195,11 @@ _ns.Type.prototype.constructor
     if (this.extends) pp.push(` * @extends {${this.extends}}`)
     pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
-    s = s + getExternDeclaration(this.namespace, this.name, this.isRecord ? undefined : 'function() {}')
+    let constr
+    // if (this.isConstructor || this.isInterface) {
+    //   constr = 'function() {}'
+    // }
+    s = s + getExternDeclaration(this.namespace, this.name, constr)
     const t = this.properties.map((p) => {
       let r = p.toExtern()
       r = makeBlock(r)
