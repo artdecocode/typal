@@ -1,3 +1,9 @@
+## 15 May 2019
+
+### [1.13.1](https://github.com/artdecocode/typal/compare/v1.13.0...v1.13.1)
+
+- [fix] Fix escaping `null` in property table.
+
 ## 9 May 2019
 
 ### [1.13.0](https://github.com/artdecocode/typal/compare/v1.12.0...v1.13.0)
