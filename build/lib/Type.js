@@ -412,6 +412,7 @@ ${j}
 }
 
 const esc = (s = '') => {
+  if (s === null) s = ''
   return s
     .replace(/\|/g, '\\|')
     .replace(/</g, '&lt;')
