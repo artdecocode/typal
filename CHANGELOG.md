@@ -1,3 +1,10 @@
+## 20 June 2019
+
+### [1.14.0](https://github.com/artdecocode/typal/compare/v1.13.1...v1.14.0)
+
+- [deps] Upgrade `rexml` to 2.0.0 (major).
+- [fix] Print `＠` (Fullwidth Commercial At) instead of `@` in JSDoc tags (e.g., `@interface`) for _TypeScript_ [3.5](https://github.com/microsoft/TypeScript/issues/31993).
+
 ## 15 May 2019
 
 ### [1.13.1](https://github.com/artdecocode/typal/compare/v1.13.0...v1.13.1)
