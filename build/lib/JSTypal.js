@@ -2,7 +2,7 @@ const { Replaceable } = require('restream');
 const Type = require('./Type'); // eslint-disable-line
 const Import = require('./Import'); // eslint-disable-line
 
-               class JSTypal extends Replaceable {
+class JSTypal extends Replaceable {
   constructor(rules, conf = {}) {
     super(rules)
     this._types = {}

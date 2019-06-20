@@ -1,4 +1,4 @@
-let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
+const extractTags = require('rexml');
 const Type = require('./Type');
 const Import = require('./Import');
 

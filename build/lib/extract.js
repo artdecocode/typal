@@ -1,6 +1,6 @@
 const { Transform } = require('stream');
 let createRegexTransformStream = require('restream'); if (createRegexTransformStream && createRegexTransformStream.__esModule) createRegexTransformStream = createRegexTransformStream.default;
-let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
+const mismatch = require('mismatch');
 const { collect } = require('catchment');
 const { getNameWithDefault } = require('./');
 
@@ -12,7 +12,7 @@ const getVal = (val) => {
   return v !== undefined ? v : val
 }
 
-       const propExtractRe = /^ \* @prop {(.+?)} (\[)?(.+?)(?:=(["'])?(.+?)\4)?(?:])?(?: (.+?))?(?: Default `(.+?)`.)?$/gm
+const propExtractRe = /^ \* @prop {(.+?)} (\[)?(.+?)(?:=(["'])?(.+?)\4)?(?:])?(?: (.+?))?(?: Default `(.+?)`.)?$/gm
 const propRe = / \* @prop(?:erty)? .+\n/
 const keys = ['type', 'opt', 'name', 'quote', 'defaultValue', 'description', 'Default']
 
@@ -127,7 +127,7 @@ class Properties extends Transform {
 /**
  * Process a JavaScript file to extract typedefs and place them in an XML file.
  */
-               async function extractTypedef(input) {
+async function extractTypedef(input) {
   const ts = createRegexTransformStream(typedefRe)
   const ps = new Properties()
   const xml = new XML()

@@ -143,7 +143,7 @@ _ns.Type.prototype.constructor
   }
   get descriptionWithTag() {
     const d = this.description ? ` ${this.description}` : ''
-    const t = this.tag ? ` \`@${this.tag}\`` : ''
+    const t = this.tag ? ` \`＠${this.tag}\`` : ''
     return `${t}${d}`
   }
   toTypedef(closure = false, noSuppress = false) {

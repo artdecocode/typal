@@ -16,7 +16,7 @@
  * [parentParam.optionalDefaultParamString="test"]
  * [parentParam.optionalParam]
  */
-       const getNameWithDefault = (name, defaultValue, type, parentParam) => {
+const getNameWithDefault = (name, defaultValue, type, parentParam) => {
   if (!name) throw new Error('The name of the property is not given')
   const n = `${parentParam ? `${parentParam}.` : ''}${name}`
 
@@ -32,7 +32,7 @@
   return nn
 }
 
-       const getPropType = ({ number, string, boolean, type }) => {
+const getPropType = ({ number, string, boolean, type }) => {
   if (string) return 'string'
   if (number) return 'number'
   if (boolean) return 'boolean'
@@ -41,7 +41,7 @@
 }
 
 // update this to match what documentary has
-       const getLink = (title, prefix = '') => {
+const getLink = (title, prefix = '') => {
   const l = title
     .replace(/<\/?code>/g, '')
     .replace(/<\/?strong>/g, '')
@@ -57,21 +57,21 @@
  * Prevent incorrect undefined ending.
  * @param {string} type
  */
-       const makeOptional = (type) => {
+const makeOptional = (type) => {
   let t
   if (/[^\w\d._]/.test(type)) t = `(${type})`
   else t = type
   return `${t}|undefined`
 }
 
-       const makeBlock = (s) => {
+const makeBlock = (s) => {
   return `/**
 ${s}
  */
 `
 }
 
-       const addSuppress = (line) => {
+const addSuppress = (line) => {
   const m = ` * @suppress {nonStandardJsDocs}
 ${line}`
   return m
@@ -82,7 +82,7 @@ ${line}`
  * @param {string} name
  * @param {string} [constr] The signature of the constructor for constructors and interfaces.
  */
-       const getExternDeclaration = (namespace, name, constr) => {
+const getExternDeclaration = (namespace, name, constr) => {
   const ns = namespace ? `${namespace}.` : ''
   const v = namespace ? '' : 'var '
   let res = `${v}${ns}${name}`

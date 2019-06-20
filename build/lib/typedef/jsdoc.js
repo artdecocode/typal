@@ -1,11 +1,11 @@
-let parser = require('@typedefs/parser'); if (parser && parser.__esModule) parser = parser.default;
+const parser = require('@typedefs/parser');
 const JSTypal = require('../JSTypal'); // eslint-disable-line
 
 /**
  * _JSDoc regex_ detects the ` * @param {Type}` declaration above functions, and the _JSDoc rule_ updates them according to existing types that were detected with the `typedefRule` rule.
  */
 
-       const jsDocRe = /( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm
+const jsDocRe = /( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm
 
 /**
  * @type {_restream.Rule}

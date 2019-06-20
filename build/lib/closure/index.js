@@ -23,7 +23,7 @@ const { makeBlock, addSuppress } = require('../');
  * @param {!Array<!Type>} types
  * @param {boolean} noSuppress
  */
-       const closureJoinTypes = (imports, types, noSuppress) => {
+const closureJoinTypes = (imports, types, noSuppress) => {
   const tblocks = types.map((t) => {
     const m = t.toTypedef(true, noSuppress)
     return m
@@ -44,7 +44,7 @@ const { makeBlock, addSuppress } = require('../');
  * @param {!Array<string>} currentNamespaces
  * @param {boolean} skipNsDecl
  */
-       const externsJoinTypes = (types, namespace, currentNamespaces, skipNsDecl = false) => {
+const externsJoinTypes = (types, namespace, currentNamespaces, skipNsDecl = false) => {
   const tblocks = types.map((t) => {
     return t.toExtern()
   })

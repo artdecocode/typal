@@ -9,7 +9,7 @@ const { closureJoinTypes, externsJoinTypes } = require('../closure');
 /**
  * The regex to detect the marker for `typal`. Will return everything until blank line which must be present even at the end of the file.
  */
-       const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg
+const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg
 
 /**
  * @suppress {globalThis}

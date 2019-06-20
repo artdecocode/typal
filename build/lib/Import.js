@@ -1,7 +1,7 @@
 /**
  * The representation of a parsed import.
  */
-               class Import {
+class Import {
   constructor() {
     /**
      * Store import's namespace which by default is equal to the from property.

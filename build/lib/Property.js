@@ -3,7 +3,7 @@ const { getPropType, getNameWithDefault, makeOptional } = require('./');
 /**
  * Representation of a property of a type.
  */
-               class Property {
+class Property {
   constructor() {
     /**
      * The name of the property.

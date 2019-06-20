@@ -1,12 +1,12 @@
-let extractTags = require('rexml'); if (extractTags && extractTags.__esModule) extractTags = extractTags.default;
-let parse = require('@typedefs/parser'); if (parse && parse.__esModule) parse = parse.default;
+const extractTags = require('rexml');
+const parse = require('@typedefs/parser');
 const Property = require('./Property');
 const { getLink, addSuppress, makeBlock, getExternDeclaration, makeOptional } = require('./');
 
 /**
  * A representation of a type.
  */
-               class Type {
+class Type {
   constructor() {
     /**
      * The name of the type.
@@ -143,7 +143,7 @@ _ns.Type.prototype.constructor
   }
   get descriptionWithTag() {
     const d = this.description ? ` ${this.description}` : ''
-    const t = this.tag ? ` \`@${this.tag}\`` : ''
+    const t = this.tag ? ` \`＠${this.tag}\`` : ''
     return `${t}${d}`
   }
   toTypedef(closure = false, noSuppress = false) {
@@ -285,7 +285,7 @@ const getSpread = (properties = [], closure = false) => {
  * @param {!Array<!Type>} allTypes
  * @param {string} type
  */
-       const getLinks = (allTypes, type) => {
+const getLinks = (allTypes, type) => {
   let parsed
   try {
     parsed = parse(type)
@@ -387,7 +387,7 @@ const getTypeWithLink = (type, allTypes, nullable = '') => {
  * @param {!Array<!Property>} [props]
  * @param {!Array<!Type>} [allTypes]
  */
-       const makePropsTable = (props = [], allTypes = []) => {
+const makePropsTable = (props = [], allTypes = []) => {
   if (!props.length) return ''
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
