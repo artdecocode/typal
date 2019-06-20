@@ -247,10 +247,17 @@ rexml@^1.4.0:
   resolved "https://registry.yarnpkg.com/rexml/-/rexml-1.4.0.tgz#64368db531b4e86acf1a3e69a4cbbed94acc5232"
   integrity sha512-Pl2ZBXcHiIXBKMBJZp141jlfekTCgKVsMSw0NJ8QYYxAV6p3mXUC9DvGI5tUW3GqWr27ieGiAuZTBm8sqsX96w==
 
-rexml@^2.0.0, rexml@^2.0.1:
+rexml@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/rexml/-/rexml-2.0.1.tgz#964516e7bb6636decc832fb000620dd517d4a6c4"
   integrity sha512-O5NsTMpdyltN/qZ3Z9KyIUEa1oMDcZnk86OPyYdlgIDeEpfveF02O+7NzLUl/bfm68yhUdGLr3HXzqjviJYVww==
+  dependencies:
+    mismatch "^1.2.0"
+
+rexml@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/rexml/-/rexml-2.0.2.tgz#e1e6b04aab7d26c72f5f732887c1d6abf0a1d92b"
+  integrity sha512-dfMmsI2M5x0xZdT9FhOieHcajXvcGrT9/RRkg/RvWUm055+srQoGuBJwhEYYeBe+zygmtN33lS5hGnxaqwCT4g==
   dependencies:
     mismatch "^1.2.0"
 

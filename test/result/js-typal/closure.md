@@ -117,22 +117,22 @@ var a = (param) => {}
 /*@ expected */
 /* typal test/temp/types.xml noSuppress */
 /**
- * @typedef {ns.Record} Record `@record` Hello
+ * @typedef {ns.Record} Record `＠record` Hello
  */
 /**
- * @typedef {Object} ns.Record `@record` Hello
+ * @typedef {Object} ns.Record `＠record` Hello
  */
 /**
- * @typedef {ns.Constructor} Constructor `@constructor` World
+ * @typedef {ns.Constructor} Constructor `＠constructor` World
  */
 /**
- * @typedef {Object} ns.Constructor `@constructor` World
+ * @typedef {Object} ns.Constructor `＠constructor` World
  */
 /**
- * @typedef {ns.Interface} Interface `@interface`
+ * @typedef {ns.Interface} Interface `＠interface`
  */
 /**
- * @typedef {Object} ns.Interface `@interface`
+ * @typedef {Object} ns.Interface `＠interface`
  */
 
 /*@*/
