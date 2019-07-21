@@ -9,7 +9,7 @@ export default class Context {
     const [,, line] = new Error().stack.split('\n', 3)
     const [, from] = /\((.+?)\)$/.exec(line)
     if (process.env.ALAMODE_ENV == 'test-build') {
-      const b = 'depack/bin/typal.js'
+      const b = 'compile/bin/typal.js'
       console.log('Testing %s at %s', c(b, 'yellow'), from)
       return b
     } else return 'src/bin'

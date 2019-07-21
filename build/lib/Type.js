@@ -330,6 +330,7 @@ const parsedToString = (type, allTypes, flatten) => {
   let nullable = ''
   if (type.nullable) nullable = '?'
   else if (type.nullable === false) nullable = '!'
+  const p2s = (arg) => parsedToString(arg, allTypes, flatten)
 
   if (type.function) {
     s += nullable
@@ -337,43 +338,43 @@ const parsedToString = (type, allTypes, flatten) => {
     const args = []
     if (type.function.this) {
       let t = 'this: '
-      t += parsedToString(type.function.this, allTypes)
+      t += p2s(type.function.this)
       args.push(t)
     }
     if (type.function.new) {
       let t = 'new: '
-      t += parsedToString(type.function.new, allTypes)
+      t += p2s(type.function.new)
       args.push(t)
     }
     type.function.args.forEach((a) => {
-      let t = parsedToString(a, allTypes)
+      let t = p2s(a)
       if (a.optional) t += '='
       args.push(t)
     })
     if (type.function.variableArgs) {
       let t = '...'
-      t += parsedToString(type.function.variableArgs, allTypes)
+      t += p2s(type.function.variableArgs)
       args.push(t)
     }
     const argsJoined = args.join(', ')
     s += argsJoined + ')'
     if (type.function.return) {
-      s += ': ' + parsedToString(type.function.return, allTypes)
+      s += ': ' + p2s(type.function.return)
     }
   } else if (type.record) {
     s += '{ '
     const rs = Object.keys(type.record).map((key) => {
       const val = type.record[key]
       if (!val) return key
-      const v = parsedToString(val, allTypes)
+      const v = p2s(val)
       return `${key}: ${v}`
     })
     s += rs.join(', ')
     s += ' }'
   } else if (type.application) {
-    s += getTypeWithLink(type.name, allTypes, nullable) + '&lt;'
+    s += getTypeWithLink(type.name, allTypes, nullable, flatten) + '&lt;'
     const apps = type.application.map((a) => {
-      return parsedToString(a, allTypes)
+      return p2s(a)
     })
     s += apps.join(', ')
     s += '&gt;'
@@ -381,24 +382,32 @@ const parsedToString = (type, allTypes, flatten) => {
     s += nullable
     s += '('
     const union = type.union.map((u) => {
-      return parsedToString(u, allTypes)
+      return p2s(u)
     })
     s += union.join(' \\| ')
     s += ')'
   } else {
     const name = type.name == 'any' ? '*' : type.name
-    s += getTypeWithLink(name, allTypes, nullable)
+    s += getTypeWithLink(name, allTypes, nullable, flatten)
   }
   return s
 }
 
-const getTypeWithLink = (type, allTypes, nullable = '') => {
+const getTypeWithLink = (type, allTypes, nullable = '', flatten = false) => {
   const l = getLinkToType(allTypes, type)
   const n = `${nullable}${type}`
   if (!l) return n
-  const { link, type: t } = l
-  if (!t.description) return `[${n}](#${link})`
-  return `<a href="#${link}" title="${t.description}">${n}</a>`
+  let { link, type: { description } } = l
+  link = `#${link}`
+  if (flatten) {
+    const found = allTypes.find(({ fullName }) => fullName == type)
+    if (found && found.link) {
+      link = found.link
+    }
+    if (!description && found.desc) description = found.desc
+  }
+  if (!description) return `[${n}](${link})`
+  return `<a href="${link}" title="${description}">${n}</a>`
   // const typeWithLink = `[${n}](#${link})`
   // return typeWithLink
 }
