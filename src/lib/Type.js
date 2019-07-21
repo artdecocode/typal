@@ -270,6 +270,7 @@ _ns.Type.prototype.constructor
         e += `href="${foundExt.link}">${this.extends}</a>`
       }
       line += ` extends ${e}`
+      flatten(this.extends)
     }
     line += `__${d}`
     const table = makePropsTable(this.properties, allTypes, { narrow, flatten })
