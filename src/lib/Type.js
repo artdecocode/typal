@@ -239,8 +239,13 @@ _ns.Type.prototype.constructor
     const st = [s, ...p].join('\n')
     return st
   }
-  /** @param {!Array<!Type>} allTypes */
-  toMarkdown(allTypes = []) {
+  /**
+   * @param {!Array<!Type>} [allTypes]
+   * @param {!Object} [opts]
+   * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
+   */
+  toMarkdown(allTypes = [], opts = {}) {
+    const { narrow } = opts
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
     const codedName = `\`${this.fullName}\``
@@ -266,7 +271,7 @@ _ns.Type.prototype.constructor
       line += ` extends ${e}`
     }
     line += `__${d}`
-    const table = makePropsTable(this.properties, allTypes)
+    const table = makePropsTable(this.properties, allTypes, narrow)
     const r = `${line}${table}`
     return r
   }
@@ -399,23 +404,28 @@ const getTypeWithLink = (type, allTypes, nullable = '') => {
 /**
  * @param {!Array<!Property>} [props]
  * @param {!Array<!Type>} [allTypes]
+ * @param {boolean} [narrow=false]
  */
-export const makePropsTable = (props = [], allTypes = []) => {
+export const makePropsTable = (props = [], allTypes = [], narrow = false) => {
   if (!props.length) return ''
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
-  const h = ['Name', 'Type', 'Description', 'Default']
+  const h = ['Name', ...(narrow ? ['Type & Description'] : ['Type', 'Description']), 'Default']
   const ps = props.map((prop) => {
     const linkedType =
       getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type)
     const name = prop.optional ? prop.name : `__${prop.name}*__`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
-    return [name, `<em>${linkedType}</em>`, esc(prop.description), d]
+    return [name,
+      ...(narrow ?
+        [`<em>${linkedType}</em><br>${esc(prop.description)}`] :
+        [`<em>${linkedType}</em>`, esc(prop.description)])
+      , d]
   })
   const pre = [h, ...ps]
   const res = anyHaveDefault
     ? pre
-    : pre.map(([name, type, desc]) => [name, type, desc])
+    : pre.map(p => { p.pop(); return p })
   const j = JSON.stringify(res, null, 2)
   return `
 

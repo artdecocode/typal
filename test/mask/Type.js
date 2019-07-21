@@ -13,3 +13,15 @@ export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
     }).join('\n')
   },
 })
+
+export const narrow = makeTestSuite('test/result/Type/narrow', {
+  context: TempContext,
+  getResults() {
+    const { types, Imports } = parseFile(this.input)
+
+    const all = [...Imports, ...types]
+    return all.map((t) => {
+      return t.toMarkdown(all, { narrow: true })
+    }).join('\n')
+  },
+})
