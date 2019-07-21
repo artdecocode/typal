@@ -1,3 +1,11 @@
+## 21 July 2019
+
+### [1.15.0](https://github.com/artdecocode/typal/compare/v1.14.0...v1.15.0)
+
+- [feature] Write `extends` information and link to external source if present.
+- [feature] Flatten links, i.e., don't link on the same page but to the `link`ed location straight away, and display the description (`desc`) in the title attribute.
+- [feature] Narrow display style, for GitHub Wiki.
+
 ## 20 June 2019
 
 ### [1.14.0](https://github.com/artdecocode/typal/compare/v1.13.1...v1.14.0)
