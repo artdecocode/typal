@@ -111,3 +111,36 @@ __[`Test`](t-type)__
 ]
 ```
 /**/
+
+## shows extended class with a link and description
+<types>
+  <import name="Server" from="http" desc="The server class to handle connections." link="https://nodejs.com/api/http.html#Server"/>
+  <type extends="http.Server" name="Test"/>
+</types>
+
+/* expected */
+[`import('http').Server`](https://nodejs.com/api/http.html#Server) __[`http.Server`](l-type)__: The server class to handle connections.
+__[`Test`](t-type) extends <a title="The server class to handle connections." href="https://nodejs.com/api/http.html#Server">http.Server</a>__
+/**/
+
+## shows extended class with a link
+<types>
+  <import name="Server" from="http" link="https://nodejs.com/api/http.html#Server"/>
+  <type extends="http.Server" name="Test"/>
+</types>
+
+/* expected */
+[`import('http').Server`](https://nodejs.com/api/http.html#Server) __[`http.Server`](l-type)__
+__[`Test`](t-type) extends <a href="https://nodejs.com/api/http.html#Server">http.Server</a>__
+/**/
+
+## shows extended class
+<types>
+  <import name="Server" from="http" />
+  <type extends="http.Server" name="Test"/>
+</types>
+
+/* expected */
+`import('http').Server` __[`http.Server`](l-type)__
+__[`Test`](t-type) extends http.Server__
+/**/

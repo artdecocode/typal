@@ -1086,3 +1086,5 @@ if (ia) {
   }
 })();
 
+
+//# sourceMappingURL=typal.js.map

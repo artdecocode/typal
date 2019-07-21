@@ -14,9 +14,9 @@
     "test-watch": "yarn test -w",
     "lint": "eslint .",
     "dev": "alanode src/bin/typal",
-    "doc": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar NODE_DEBUG=doc doc -o README.md",
+    "doc": "NODE_DEBUG=doc doc -o README.md",
     "b": "alamode src -o build -s -i bin",
-    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack src/bin/typal -c -o depack/bin -a -p -s -S",
+    "compile": "depack-dev src/bin/typal -c -o compile/bin -a -p -s",
     "depack1": "depack-dev depack/t.js -c -o t/tt.js -a -p",
     "depack2": "depack-dev depack/prop/index.js -c -a -p",
     "depack-compat": "depack-dev example/restream/compat -c -a -p",
@@ -31,13 +31,13 @@
     "args": "argufy types/arguments.xml -o src/bin/get-args.js"
   },
   "bin": {
-    "typal": "depack/bin/typal.js",
+    "typal": "compile/bin/typal.js",
     "typal-dev": "src/bin/index.js"
   },
   "files": [
     "build",
     "src",
-    "depack"
+    "compile"
   ],
   "repository": {
     "type": "git",

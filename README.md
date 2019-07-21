@@ -10,7 +10,7 @@ The package's main use is as the CLI tool to generate typedefs, but it also has 
 yarn add -D typal
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/0.svg?sanitize=true"></a></p>
 
 ## Table Of Contents
 
@@ -55,7 +55,7 @@ yarn add -D typal
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
 ## Purpose And Use-Cases
 
@@ -143,7 +143,7 @@ However, there are 2 problems with that:
       <img src="doc/restream2.png" title="VSCode does not show properties of a type">
     </p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/2.svg?sanitize=true" width="25"></a></p>
 
 _**<a name="jsdoc-approach">JSDoc approach</a>**: Now let's refactor the code that we have, and place the types definitions in the `types.xml` file instead of the source code:_
 
@@ -231,7 +231,7 @@ Another advantage, is that the `Rule` type was expanded into individual properti
   <img src="doc/restream3.png" title="JSDoc expansion of properties above functions.">
 </p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
 
 _**<a name="closure-approach">Closure approach</a>**: Finally, if we want to allow our package to be compiled as part of other packages with GCC (or compile a binary from the lib we've written), we need to make sure the JSDoc is in the format that it accepts._
 
@@ -540,18 +540,16 @@ e.end("__hello world__");
 <tr><td>
 
 ```js
-java -jar /Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar \
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --externs example/restream/externs.js --package_json_entry_names module,main \
---entry_point example/restream/program.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/stream.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/events.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/global.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/global/buffer.js --externs \
-../../depack/src/node_modules/@depack/externs/v8/nodejs.js
+--entry_point example/restream/program.js --externs ../../depack/externs/v8/stream.js \
+--externs ../../depack/externs/v8/events.js --externs ../../depack/externs/v8/global.js \
+--externs ../../depack/externs/v8/global/buffer.js --externs \
+../../depack/externs/v8/nodejs.js
 Modules: example/restream/compat.js
 Built-ins: stream
-Running Google Closure Compiler target...         
+Running Google Closure Compiler 20190709.           
 ```
 </td></tr>
 <tr><td><em>stderr</em></td></tr>
@@ -624,7 +622,7 @@ restream.end('__hello world__')
 
 When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs if it finds it. Packages can publish their externs and point to them using the `externs` field in their **package.json** file, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/4.svg?sanitize=true"></a></p>
 
 ## CLI
 
@@ -704,7 +702,7 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     </tr></td></table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
 
 ### _Typal_ Arguments
 
@@ -771,7 +769,7 @@ _ // remember new line!
 - <kbd>ignore:_nsType,Type</kbd>: the types to ignore when placing JSDoc into JS files. This can be useful, for example, when the package is built with _Depack_ and has no dependencies, but depends on imported types from other packages. Therefore, these imported types need to be vendored using a separate file, and then imported from there, rather than from their original source file. See [`@zoroaster/mask/types/vendor.js`](https://github.com/contexttesting/mask/blob/master/types/vendor.js) and [`@zoroaster/mask/types/index.js`](https://github.com/contexttesting/mask/blob/master/types/index.js) for a practical application.
 - <kbd>skipNsDecl</kbd>: Disables the declaration of the namespace. The types will still be prefixed with a namespace, but it won't be declared at the top as `/** @const */ var ns = {}`. This is useful when the externs are split by multiple files, and the namespace will only need to appear in one of them, otherwise the `Variable _ns declared more than once.` error will be thrown.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
 ### Missing Types Warnings
 
@@ -824,7 +822,7 @@ Type MissingType in MissingType & Type2 was not found.
 example/warnings.js:11:11
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
 
 ### Keeping Types In Separate File
 
@@ -901,7 +899,7 @@ Any external types referenced in properties must be manually imported, because o
 
 In future, we plan to introduce full-scale management of types so that all import statements will be added automatically by _Typal_.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
 
 ### Migration
 
@@ -970,7 +968,7 @@ For example, the types above can be extracted into the types file using the <cod
 </td></tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 ## Schema
 
@@ -1014,7 +1012,7 @@ The single root element for the XML file.
     _namespace.Type
     ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
 
 ### Type
 
@@ -1069,15 +1067,15 @@ The type represents a _JSDoc_ type.
     /* typal example/schema/extends.xml */
     /**
      * @suppress {nonStandardJsDocs}
-     * @typedef {_test.Test} Test `@record` The example type.
+     * @typedef {_test.Test} Test `＠record` The example type.
      */
     /**
      * @suppress {nonStandardJsDocs}
-     * @typedef {_ns.ParentType & _test.$Test} _test.Test `@record` The example type.
+     * @typedef {_ns.ParentType & _test.$Test} _test.Test `＠record` The example type.
      */
     /**
      * @suppress {nonStandardJsDocs}
-     * @typedef {Object} _test.$Test `@record` The example type.
+     * @typedef {Object} _test.$Test `＠record` The example type.
      * @prop {boolean} [bool] A prop.
      */
     ```
@@ -1139,7 +1137,7 @@ The type represents a _JSDoc_ type.
     </table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
 
 ### Property
 
@@ -1210,7 +1208,7 @@ Property Description.
 </table>
 
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ### Import
 
@@ -1267,7 +1265,7 @@ Property Description.
 <tr><td>In <em>Closure</em> mode, <em>Typal</em> adds namespaces so that they will match externs.</tr></td>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## Markdown Documentation
 
@@ -1287,7 +1285,7 @@ __<a name="type-example">`Example`</a>__: An example type which can link to othe
 | variable-args   | <em>function(...<a href="#type-type" title="A type which can be linked.">Type</a>)</em>                                                                                                                                                   | Functions with `...` for variable argument types.                                 |
 | vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                                                                                                  | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -1299,19 +1297,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/17.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -1344,7 +1342,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/18.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -1569,7 +1567,7 @@ const getFile = async () => {
   Imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/19.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/19.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
@@ -1584,14 +1582,15 @@ Optional And Default
   <tr>
     <th>
       <a href="https://artd.eco">
-        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" />
+        <img width="100" src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png"
+          alt="Art Deco">
       </a>
     </th>
     <th>© <a href="https://artd.eco">Art Deco</a>   2019</th>
     <th>
       <a href="https://www.technation.sucks" title="Tech Nation Visa">
-        <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif"
-          alt="Tech Nation Visa" />
+        <img width="100" src="https://raw.githubusercontent.com/idiocc/cookies/master/wiki/arch4.jpg"
+          alt="Tech Nation Visa">
       </a>
     </th>
     <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
