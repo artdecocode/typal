@@ -243,6 +243,7 @@ _ns.Type.prototype.constructor
    * @param {!Array<!Type>} [allTypes]
    * @param {!Object} [opts]
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
+   * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
    */
   toMarkdown(allTypes = [], opts = {}) {
     const { narrow, flatten } = opts
@@ -415,9 +416,9 @@ const getTypeWithLink = (type, allTypes, nullable = '', flatten = false) => {
 /**
  * @param {!Array<!Property>} [props]
  * @param {!Array<!Type>} [allTypes]
- * @param {boolean} [opts]
+ * @param {!Object} [opts]
  * @param {boolean} [opts.narrow=false] Merge Type and Description columns
- * @param {boolean} [opts.flatten=false] Whether to follow the link to external types.
+ * @param {boolean|function(string)} [opts.flatten=false] Whether to follow the link to external types. If function is passed, will be called with the named of the flattened package.
  */
 const makePropsTable = (props = [], allTypes = [], { narrow = false, flatten = false } = {}) => {
   if (!props.length) return ''

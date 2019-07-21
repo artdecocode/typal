@@ -243,6 +243,7 @@ _ns.Type.prototype.constructor
    * @param {!Array<!Type>} [allTypes]
    * @param {!Object} [opts]
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
+   * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
    */
   toMarkdown(allTypes = [], opts = {}) {
     const { narrow, flatten } = opts
