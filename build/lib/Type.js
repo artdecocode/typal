@@ -406,6 +406,7 @@ const getTypeWithLink = (type, allTypes, nullable = '', flatten = false) => {
       link = found.link
     }
     if (!description && found.desc) description = found.desc
+    if (typeof flatten == 'function') flatten(type)
   }
   if (!description) return `[${n}](${link})`
   return `<a href="${link}" title="${description}">${n}</a>`

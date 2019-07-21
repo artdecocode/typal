@@ -1,5 +1,9 @@
 ## 21 July 2019
 
+### [1.15.1](https://github.com/artdecocode/typal/compare/v1.15.0...v1.15.1)
+
+- [fix] Call flatten callback.
+
 ### [1.15.0](https://github.com/artdecocode/typal/compare/v1.14.0...v1.15.0)
 
 - [feature] Write `extends` information and link to external source if present.
