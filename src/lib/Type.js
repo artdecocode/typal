@@ -245,7 +245,7 @@ _ns.Type.prototype.constructor
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
    */
   toMarkdown(allTypes = [], opts = {}) {
-    const { narrow } = opts
+    const { narrow, flatten } = opts
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
     const codedName = `\`${this.fullName}\``
@@ -271,7 +271,7 @@ _ns.Type.prototype.constructor
       line += ` extends ${e}`
     }
     line += `__${d}`
-    const table = makePropsTable(this.properties, allTypes, narrow)
+    const table = makePropsTable(this.properties, allTypes, { narrow, flatten })
     const r = `${line}${table}`
     return r
   }
@@ -302,8 +302,9 @@ const getSpread = (properties = [], closure = false) => {
  * Iterates through the type and creates a link for it.
  * @param {!Array<!Type>} allTypes
  * @param {string} type
+ * @param {boolean} flatten
  */
-export const getLinks = (allTypes, type) => {
+export const getLinks = (allTypes, type, flatten = false) => {
   let parsed
   try {
     parsed = parse(type)
@@ -315,15 +316,16 @@ export const getLinks = (allTypes, type) => {
     console.error(err.message)
   }
   if (!parsed) return type
-  const s = parsedToString(parsed, allTypes)
+  const s = parsedToString(parsed, allTypes, flatten)
   return s
 }
 
 /**
  * @param {!_typedefsParser.Type} type
  * @param {!Array<!Type>} allTypes
+ * @param {boolean} [flatten] If the type has link, follow it.
  */
-const parsedToString = (type, allTypes) => {
+const parsedToString = (type, allTypes, flatten) => {
   let s = ''
   let nullable = ''
   if (type.nullable) nullable = '?'
@@ -404,16 +406,18 @@ const getTypeWithLink = (type, allTypes, nullable = '') => {
 /**
  * @param {!Array<!Property>} [props]
  * @param {!Array<!Type>} [allTypes]
- * @param {boolean} [narrow=false]
+ * @param {boolean} [opts]
+ * @param {boolean} [opts.narrow=false] Merge Type and Description columns
+ * @param {boolean} [opts.flatten=false] Whether to follow the link to external types.
  */
-export const makePropsTable = (props = [], allTypes = [], narrow = false) => {
+export const makePropsTable = (props = [], allTypes = [], { narrow = false, flatten = false } = {}) => {
   if (!props.length) return ''
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
   const h = ['Name', ...(narrow ? ['Type & Description'] : ['Type', 'Description']), 'Default']
   const ps = props.map((prop) => {
     const linkedType =
-      getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type)
+      getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type, flatten)
     const name = prop.optional ? prop.name : `__${prop.name}*__`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
     return [name,
