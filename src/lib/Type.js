@@ -258,21 +258,21 @@ _ns.Type.prototype.constructor
     }
     const d = this.description ? `: ${this.description}` : ''
     const twl = typeWithLink ? `${typeWithLink} ` : ''
-    let line = `${twl}__${nn}`
+    let line = `${twl}<strong>${nn}`
     if (this.extends) {
-      let e = this.extends
+      let e = `\`${this.extends}\``
       const foundExt = allTypes.find(({ fullName }) => {
         return fullName == this.extends
       })
       if (foundExt && foundExt.link) {
         e = '<a '
         if (foundExt.description) e += `title="${foundExt.description}" `
-        e += `href="${foundExt.link}">${this.extends}</a>`
+        e += `href="${foundExt.link}">\`${this.extends}\`</a>`
       }
       line += ` extends ${e}`
       flatten(this.extends)
     }
-    line += `__${d}`
+    line += `</strong>${d}`
     const table = makePropsTable(this.properties, allTypes, { narrow, flatten })
     const r = `${line}${table}`
     return r
