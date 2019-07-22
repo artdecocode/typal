@@ -120,7 +120,7 @@ __[`Test`](t-type)__
 
 /* expected */
 [`import('http').Server`](https://nodejs.com/api/http.html#Server) __[`http.Server`](l-type)__: The server class to handle connections.
-__[`Test`](t-type) extends <a title="The server class to handle connections." href="https://nodejs.com/api/http.html#Server">http.Server</a>__
+__[`Test`](t-type) extends <a title="The server class to handle connections." href="https://nodejs.com/api/http.html#Server">`http.Server`</a>__
 /**/
 
 ## shows extended class with a link
@@ -131,7 +131,7 @@ __[`Test`](t-type) extends <a title="The server class to handle connections." hr
 
 /* expected */
 [`import('http').Server`](https://nodejs.com/api/http.html#Server) __[`http.Server`](l-type)__
-__[`Test`](t-type) extends <a href="https://nodejs.com/api/http.html#Server">http.Server</a>__
+__[`Test`](t-type) extends <a href="https://nodejs.com/api/http.html#Server">`http.Server`</a>__
 /**/
 
 ## shows extended class
@@ -142,5 +142,16 @@ __[`Test`](t-type) extends <a href="https://nodejs.com/api/http.html#Server">htt
 
 /* expected */
 `import('http').Server` __[`http.Server`](l-type)__
-__[`Test`](t-type) extends http.Server__
+__[`Test`](t-type) extends `http.Server`__
+/**/
+
+## shows extended strong
+<types>
+  <import name="Server" ns="_goa" from="http" link="https://nodejs.com/api/http.html#_section" />
+  <type extends="_goa.Server" name="Test"/>
+</types>
+
+/* expected */
+[`import('http').Server`](https://nodejs.com/api/http.html#_section) <strong>[`_goa.Server`](l-type)</strong>
+<strong>[`Test`](t-type) extends <a href="https://nodejs.com/api/http.html#_section">`_goa.Server`</a></strong>
 /**/

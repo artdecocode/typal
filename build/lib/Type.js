@@ -258,23 +258,38 @@ _ns.Type.prototype.constructor
     }
     const d = this.description ? `: ${this.description}` : ''
     const twl = typeWithLink ? `${typeWithLink} ` : ''
-    let line = `${twl}<strong>${nn}`
+    let LINE = twl// `${twl}<strong>${nn}`
+    let useTag = /_/.test(nn)
     if (this.extends) {
+      useTag = useTag || /_/.test(this.extends)
       let e = `\`${this.extends}\``
       const foundExt = allTypes.find(({ fullName }) => {
         return fullName == this.extends
       })
       if (foundExt && foundExt.link) {
+        useTag = useTag || /_/.test(foundExt.link)
         e = '<a '
-        if (foundExt.description) e += `title="${foundExt.description}" `
+        if (foundExt.description) {
+          e += `title="${foundExt.description}" `
+          useTag = useTag || /_/.test(foundExt.description)
+        }
         e += `href="${foundExt.link}">\`${this.extends}\`</a>`
       }
-      line += ` extends ${e}`
-      flatten(this.extends)
+      const extendS = ` extends ${e}`
+      if (useTag) LINE += '<strong>'
+      else LINE += '__'
+      LINE += nn + extendS
+      if (typeof flatten == 'function') flatten(this.extends)
+    } else {
+      if (useTag) LINE += '<strong>'
+      else LINE += '__'
+      LINE += nn
     }
-    line += `</strong>${d}`
+    if (useTag) LINE += '</strong>'
+    else LINE += '__'
+    LINE += d
     const table = makePropsTable(this.properties, allTypes, { narrow, flatten })
-    const r = `${line}${table}`
+    const r = `${LINE}${table}`
     return r
   }
 }
