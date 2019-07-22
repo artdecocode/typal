@@ -1,3 +1,9 @@
+## 22 July 2019
+
+### [1.15.2](https://github.com/artdecocode/typal/compare/v1.15.1...v1.15.2)
+
+- [fix] Use the `<strong>` tag in props.
+
 ## 21 July 2019
 
 ### [1.15.1](https://github.com/artdecocode/typal/compare/v1.15.0...v1.15.1)
