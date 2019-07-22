@@ -2,7 +2,7 @@ import argufy from 'argufy'
 
 export const argsConfig = {
   'source': {
-    description: 'The path to the source file or directory with files to embed types into.',
+    description: 'The path to the source file or directory with files to embed types into. Can specify multiple values, e.g., `typal types/index.js types/vendor.js`.',
     command: true,
     multiple: true,
   },
@@ -43,7 +43,7 @@ export const argsConfig = {
 const args = argufy(argsConfig)
 
 /**
- * The path to the source file or directory with files to embed types into.
+ * The path to the source file or directory with files to embed types into. Can specify multiple values, e.g., `typal types/index.js types/vendor.js`.
  */
 export const _source = /** @type {(!Array<string>|string)} */ (args['source'])
 
