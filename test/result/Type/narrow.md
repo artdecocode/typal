@@ -23,3 +23,29 @@ __[`Test`](t-type)__
 ]
 ```
 /**/
+
+## correct function() ? notation
+<types>
+  <type name="Test">
+    <prop type="function(): ?" name="inspect">
+      util.inspect() implementation, which just returns the JSON output.
+    </prop>
+  </type>
+</types>
+
+/* expected */
+__[`Test`](t-type)__
+
+```table
+[
+  [
+    "Name",
+    "Type & Description"
+  ],
+  [
+    "__inspect*__",
+    "<em>function(): ?</em><br>util.inspect() implementation, which just returns the JSON output."
+  ]
+]
+```
+/**/
