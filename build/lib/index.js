@@ -90,6 +90,39 @@ const getExternDeclaration = (namespace, name, constr) => {
   return res
 }
 
+/**
+ * @param {string} d
+ */
+const trimD = d => {
+  d = d.trimRight()
+
+  const m = /\S/.exec(d)
+  if (!m) return d
+  const i = m.index
+
+  if (i == 0) return d
+  const s = d.substr(0, i)
+  let n = s.lastIndexOf('\n')
+  // remove everything before first /n
+  if (n == -1) n = 0
+  else {
+    n++
+    d = d.substr(n)
+  }
+  const ws = i - n
+  const w = ' '.repeat(ws)
+  const dd = d.split('\n')
+  const a = dd.filter(b => /\S/.test(b))
+  const notWithSpace = a.find(b => {
+    const res = !b.startsWith(w)
+    return res
+  })
+  if (!notWithSpace) {
+    const re = new RegExp(`^ {${ws}}`)
+    return dd.map(b => b.replace(re, '')).join('\n')
+  } else return d.trim()
+}
+
 module.exports.getNameWithDefault = getNameWithDefault
 module.exports.getPropType = getPropType
 module.exports.getLink = getLink
@@ -97,3 +130,4 @@ module.exports.makeOptional = makeOptional
 module.exports.makeBlock = makeBlock
 module.exports.addSuppress = addSuppress
 module.exports.getExternDeclaration = getExternDeclaration
+module.exports.trimD = trimD
