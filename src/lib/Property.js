@@ -98,4 +98,13 @@ export default class Property {
     const p = `${ws} * @param ${s}`
     return p
   }
+  makeAlias(name) {
+    /**
+     * @type {!Property}
+     */
+    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    clone.description = `An alias for \`${this.name}\`.`
+    clone.name = name
+    return clone
+  }
 }

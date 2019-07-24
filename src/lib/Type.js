@@ -133,10 +133,16 @@ _ns.Type.prototype.constructor
     const t = (closure ? this.closureType : this.type) || 'Object'
     const dd = ` ${this.getFullNameForExtends(closure)}${this.descriptionWithTag}`
     const s = ` * @typedef {${t}}${dd}`
-    const p = this.properties ? this.properties.map((pr) => {
+    const properties = this.properties ? this.properties.reduce((acc, p) => {
+      acc.push(p)
+      const a = p.aliases.map(al => p.makeAlias(al))
+      acc.push(...a)
+      return acc
+    }, []) : []
+    const p = properties.map((pr) => {
       const sp = pr.toProp(closure)
       return sp
-    }) : []
+    })
     let typedef = [s, ...p].join('\n')
     if (closure && !noSuppress) typedef = addSuppress(typedef)
     typedef = makeBlock(typedef)
@@ -201,7 +207,13 @@ _ns.Type.prototype.constructor
     //   constr = 'function() {}'
     // }
     s = s + getExternDeclaration(this.namespace, this.name, constr)
-    const t = this.properties.map((p) => {
+    const properties = this.properties.reduce((acc, p) => {
+      acc.push(p)
+      const a = p.aliases.map(al => p.makeAlias(al))
+      acc.push(...a)
+      return acc
+    }, [])
+    const t = properties.map((p) => {
       let r = p.toExtern()
       r = makeBlock(r)
       r = r + getExternDeclaration(`${this.fullName}.prototype`,
@@ -311,6 +323,14 @@ _ns.Type.prototype.constructor
  * @param {boolean} [closure = false] Whether generate for Closure's externs.
  */
 const getSpread = (properties = [], closure = false) => {
+  properties = properties.reduce((acc, p) => {
+    acc.push(p)
+    const extra = p.aliases.map((a) => {
+      return { ...p, name: a }
+    })
+    acc.push(...extra)
+    return acc
+  }, [])
   const s = properties.map(p => {
     const type = closure ? p.closureType : p.type
     let n = p.name, t = type
