@@ -25,21 +25,16 @@
     mismatch "^1.2.0"
 
 "@depack/render@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@depack/render/-/render-1.2.0.tgz#014fb920195f207f2697d1533616faf46988a228"
-  integrity sha512-XfegLkYLxXBJLTZ4brXsU51tKFv8l1cuF4RGMYpnS48pXC+AUYw99kbws0/gbCNyFy3/H23rDSCHakVvh49zug==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@depack/render/-/render-1.2.1.tgz#c8454b2b39721b30656afdade764fee3f0ea90e0"
+  integrity sha512-c14hQdLYFncLJTp20Rk4tWgG4RqCVC1wqfik3liOEYlN2XE56yJCqiKhoQhg+LxKCQlARwKz5+bP3+/fTNRc9g==
 
 "@depack/split@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@depack/split/-/split-1.0.0.tgz#37fea28d9bc6f01e5a2da87d393f402781bb7e99"
   integrity sha512-PNJPl01VFMKtyN7qBZ2cds4N/lO2KvzLrR7JamODFiuuL2X8mGoTKp1SI8fxlT2MwLV8mScCUKn55QPwsUX7iA==
 
-"@typedefs/parser@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.3.0.tgz#f920d85654c72ce9b41c45e9ee762f0161c567da"
-  integrity sha512-WTH390S8kD3h8j+GjvyAYRYVNp6WSnZb3/yi1bFPW3DSWy15AhD1fnb4yZxmzQPniJICKGpexGBNOGUEjXqMlQ==
-
-"@typedefs/parser@^1.3.1":
+"@typedefs/parser@^1.3.0", "@typedefs/parser@^1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.3.1.tgz#1c20fd3852c3553b50d7000c6261e8824e91d3b6"
   integrity sha512-pTOxV2yeLQZz+SaBIJvstSFlkeyGu+52gBh71hKvvQZ3yp/dKNnhjJ936e7q1dsEulCr5c3mRGiTtEaVTI+KzQ==
@@ -53,14 +48,7 @@
     "@wrote/read-dir-structure" "^1.2.0"
     makepromise "^3.1.0"
 
-"@wrote/ensure-path@^1.0.6", "@wrote/ensure-path@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@wrote/ensure-path/-/ensure-path-1.0.8.tgz#68b985c851948dc5094f1019d0b0a979ccf585e9"
-  integrity sha512-IlK31uEKPlCTLG9E4WRWW6KqgF6LHOQ6erxdwycIc63Aa/6GwrJZG8mgxebOsPbTkcFyXxfiGzbb5eOZYyq2rA==
-  dependencies:
-    makepromise "^3.1.0"
-
-"@wrote/ensure-path@^1.1.0":
+"@wrote/ensure-path@^1.0.6", "@wrote/ensure-path@^1.0.8", "@wrote/ensure-path@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@wrote/ensure-path/-/ensure-path-1.1.0.tgz#2b5875dd4e215f209329c9c774702e4e67c3e07f"
   integrity sha512-yZigiFQhgAMAVrec9BoPdJzqjSBdHuCyDrAacWSHIUByxiMcmY9i/1dGM4RbGZg/bN8XWrxDDmcWLuPUmsJYFg==
@@ -113,12 +101,7 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.2.0.tgz#fecdcb6f863440519b91b51f09549b1e981e84da"
   integrity sha512-/k9B/ofxE4x9Vs6EOjXQjcsltraJzNLg/uxEwzfCZUN+foiJxK/j+YBiyJmN3Gwpnry2D3Qs0D3Qm+SMkLqkTg==
 
-alamode@^2.1.2:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.2.0.tgz#723f81246b19c966b3b819fcff6debb39228dbd2"
-  integrity sha512-+TLcQ4iKjs7zIUBzuchPlhna3TS2XAz2Lk2NMsSfnI/XrnUfSAUKyk67Wbaf9+hQ4wSxXguIrbBC/VV/vhE5Vg==
-
-alamode@^2.3.4:
+alamode@^2.1.2, alamode@^2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.3.4.tgz#b5c12e17458b38ba7611c6539cbf23fb59ce6ded"
   integrity sha512-fQSQU0zW1kDGH5d/BmJq74UIpkGmpnh9mqoQVArkBJ04AbVUpkETrHqXENtNmxDWp0HNwI5HHE70YVNchpkkdg==
@@ -222,14 +205,7 @@ mismatch@^1.2.0:
   resolved "https://registry.yarnpkg.com/mismatch/-/mismatch-1.2.0.tgz#3f5021861e8084e36a14c2c1f9489941cd18f790"
   integrity sha512-kuw1k8ZHS+12fBVAVOBXMBJBXcNGnByFTJIDzH4W4v84OocejZ/qzxmT4ll9CLX5OD23NXr+NvrQDus0BsQ8xw==
 
-pedantry@^2.3.1:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/pedantry/-/pedantry-2.3.2.tgz#d31f36e360a466f49a19384b726ba2e7a8bc79b4"
-  integrity sha512-dx7nkmHTD/n2jVZmcZ9ciN5nUY2Kei9ZzW7QSSvkpjiuYRJa3Z0hAbKbSF63I9zfyUWJPqJQe8cdH6U99Tx6rw==
-  dependencies:
-    "@wrote/read-dir-structure" "^1.2.0"
-
-pedantry@^2.4.0:
+pedantry@^2.3.1, pedantry@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/pedantry/-/pedantry-2.4.0.tgz#40cd31594b6f08002556abcdb443ec6dd928b4ff"
   integrity sha512-2AT5X23SdcMihajUdUo7AAvFXT+iRGT5o0JH3Wv3yQ1RtRku+zzXtvJ2ox3R1/9pDyq2NR0QHnMAbJf1hLY0rg==
@@ -256,14 +232,7 @@ restream@^3.7.1:
     "@artdeco/clean-stack" "^1.1.1"
     catchment "^3.3.0"
 
-rexml@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/rexml/-/rexml-2.0.1.tgz#964516e7bb6636decc832fb000620dd517d4a6c4"
-  integrity sha512-O5NsTMpdyltN/qZ3Z9KyIUEa1oMDcZnk86OPyYdlgIDeEpfveF02O+7NzLUl/bfm68yhUdGLr3HXzqjviJYVww==
-  dependencies:
-    mismatch "^1.2.0"
-
-rexml@^2.0.2:
+rexml@^2.0.0, rexml@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/rexml/-/rexml-2.0.2.tgz#e1e6b04aab7d26c72f5f732887c1d6abf0a1d92b"
   integrity sha512-dfMmsI2M5x0xZdT9FhOieHcajXvcGrT9/RRkg/RvWUm055+srQoGuBJwhEYYeBe+zygmtN33lS5hGnxaqwCT4g==
