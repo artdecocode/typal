@@ -1,3 +1,11 @@
+## 24 July 2019
+
+### [1.15.3](https://github.com/artdecocode/typal/compare/v1.15.2...v1.15.3)
+
+- [feature] Better trimming of info from XML files.
+- [feature] Aliases to types.
+- [feature] Narrow table for _Documentary_.
+
 ## 22 July 2019
 
 ### [1.15.2](https://github.com/artdecocode/typal/compare/v1.15.1...v1.15.2)
