@@ -105,7 +105,7 @@ export const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
     if (!description && found.desc) description = found.desc
     if (typeof flatten == 'function') flatten(type)
   }
-  const nn = nameProcess ? nameProcess(n) : nn
+  const nn = nameProcess ? nameProcess(n) : n
   if (!description) return `[${nn}](${link})`
   return `<a href="${link}" title="${description}">${nn}</a>`
   // const typeWithLink = `[${n}](#${link})`

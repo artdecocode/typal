@@ -20,8 +20,16 @@ export const narrow = makeTestSuite('test/result/Type/narrow', {
     const { types, Imports } = parseFile(this.input)
 
     const all = [...Imports, ...types]
-    return all.map((t) => {
-      return t.toMarkdown(all, { narrow: true })
-    }).join('\n')
+    const res = all.map((t) => {
+      const m = t.toMarkdown(all, { narrow: true })
+      if (m.table) {
+        m.table.props.forEach(a => {
+          a.prop = { ...a.prop }
+        })
+      }
+      return m
+    })
+    return res
   },
+  jsonProps: ['expected'],
 })

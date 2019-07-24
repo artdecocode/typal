@@ -7,45 +7,34 @@
 </types>
 
 /* expected */
-`import('stream/src').Readable` __[`stream.Readable`](l-type)__
-__[`Test`](t-type)__
-
-```table
 [
-  [
-    "Name",
-    "Type & Description"
-  ],
-  [
-    "__p*__",
-    "<em>[!stream.Readable](#type-streamreadable)</em><br>Prop desc"
-  ]
+  {
+    "LINE": "`import('stream/src').Readable` __[`stream.Readable`](l-type)__",
+    "table": ""
+  },
+  {
+    "LINE": "__[`Test`](t-type)__",
+    "table": {
+      "props": [
+        {
+          "prop": {
+            "name": "p",
+            "description": "Prop desc",
+            "type": "!stream.Readable",
+            "closureType": "!stream.Readable",
+            "hasDefault": false,
+            "default": null,
+            "optional": false,
+            "aliases": []
+          },
+          "typeName": "[!stream.Readable](#type-streamreadable)",
+          "name": "p*",
+          "de": "Prop desc",
+          "d": "-"
+        }
+      ],
+      "anyHaveDefault": false
+    }
+  }
 ]
-```
-/**/
-
-## correct function() ? notation
-<types>
-  <type name="Test">
-    <prop type="function(): ?" name="inspect">
-      util.inspect() implementation, which just returns the JSON output.
-    </prop>
-  </type>
-</types>
-
-/* expected */
-__[`Test`](t-type)__
-
-```table
-[
-  [
-    "Name",
-    "Type & Description"
-  ],
-  [
-    "__inspect*__",
-    "<em>function(): ?</em><br>util.inspect() implementation, which just returns the JSON output."
-  ]
-]
-```
 /**/

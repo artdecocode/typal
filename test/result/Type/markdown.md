@@ -155,3 +155,31 @@ __[`Test`](t-type) extends [`http.Server`](#type-httpserver)__
 [`import('http').Server`](https://nodejs.com/api/http.html#_section) <strong>[`_goa.Server`](l-type)</strong>
 <strong>[`Test`](t-type) extends <a href="https://nodejs.com/api/http.html#_section">`_goa.Server`</a></strong>
 /**/
+
+## correct function() ? notation
+<types>
+  <type name="Test">
+    <prop type="function(): ?" name="inspect">
+      util.inspect() implementation, which just returns the JSON output.
+    </prop>
+  </type>
+</types>
+
+/* expected */
+__[`Test`](t-type)__
+
+```table
+[
+  [
+    "Name",
+    "Type",
+    "Description"
+  ],
+  [
+    "__inspect*__",
+    "<em>function(): ?</em>",
+    "util.inspect() implementation, which just returns the JSON output."
+  ]
+]
+```
+/**/
