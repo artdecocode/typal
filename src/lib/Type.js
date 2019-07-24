@@ -2,19 +2,21 @@ import extractTags from 'rexml'
 import parse from '@typedefs/parser'
 import Property from './Property'
 import { addSuppress, makeBlock, getExternDeclaration, makeOptional } from './'
-import { getLink } from './'
+import { getLink, trimD } from './'
 
 /**
  * @param {!_typedefsParser.Type} type
  * @param {!Array<!Type>} allTypes
- * @param {boolean} [flatten] If the type has link, follow it.
+ * @param {Object} [opts] Options
+ * @param {boolean} [opts.flatten] If the type has link, follow it.
  */
-export const parsedToString = (type, allTypes, flatten) => {
+export const parsedToString = (type, allTypes, opts = {}) => {
+  const { flatten, escapePipe = true } = opts
   let s = ''
   let nullable = ''
   if (type.nullable) nullable = '?'
   else if (type.nullable === false) nullable = '!'
-  const p2s = (arg) => parsedToString(arg, allTypes, flatten)
+  const p2s = (arg) => parsedToString(arg, allTypes, opts)
 
   if (type.function) {
     s += nullable
@@ -68,7 +70,7 @@ export const parsedToString = (type, allTypes, flatten) => {
     const union = type.union.map((u) => {
       return p2s(u)
     })
-    s += union.join(' \\| ')
+    s += union.join(escapePipe ? ' \\| ' : ' | ')
     s += ')'
   } else {
     const name = type.name == 'any' ? '*' : type.name
@@ -186,7 +188,7 @@ _ns.Type.prototype.constructor
     if (type) this.type = type
     if (closure) this.closureType = closure
     else this.closureType = this.type
-    if (desc) this.description = desc.trim()
+    if (desc) this.description = trimD(desc)
     this.noToc = !!noToc
     this.spread = !!spread
     this.noExpand = !!noExpand
@@ -352,7 +354,7 @@ _ns.Type.prototype.constructor
    * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
    */
   toMarkdown(allTypes = [], opts = {}) {
-    const { narrow, flatten } = opts
+    const { narrow, flatten, preprocessDesc } = opts
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
     const codedName = `\`${this.fullName}\``
@@ -380,6 +382,9 @@ _ns.Type.prototype.constructor
           useTag = useTag || /_/.test(foundExt.description)
         }
         e += `href="${foundExt.link}">\`${this.extends}\`</a>`
+      } else {
+        e = getLinks(allTypes, this.extends, flatten)
+        useTag = useTag || /_/.test(e)
       }
       const extendS = ` extends ${e}`
       if (useTag) LINE += '<strong>'
@@ -394,7 +399,12 @@ _ns.Type.prototype.constructor
     if (useTag) LINE += '</strong>'
     else LINE += '__'
     LINE += d
-    const table = makePropsTable(this.properties, allTypes, { narrow, flatten })
+    const table = makePropsTable(this.properties, allTypes, {
+      narrow,
+      flatten,
+      preprocessDesc,
+    })
+    if (narrow) return { LINE, table }
     const r = `${LINE}${table}`
     return r
   }
@@ -425,9 +435,11 @@ const getSpread = (properties = [], closure = false) => {
  * Iterates through the type and creates a link for it.
  * @param {!Array<!Type>} allTypes
  * @param {string} type
- * @param {boolean} flatten
+ * @param {Object} [opts]
+ * @param {boolean} [opts.flatten]
+ * @param {boolean} [opts.escapePipe]
  */
-export const getLinks = (allTypes, type, flatten = false) => {
+export const getLinks = (allTypes, type, opts = {}) => {
   let parsed
   try {
     parsed = parse(type)
@@ -439,9 +451,10 @@ export const getLinks = (allTypes, type, flatten = false) => {
     console.error(err.message)
   }
   if (!parsed) return type
-  const s = parsedToString(parsed, allTypes, flatten)
+  const s = parsedToString(parsed, allTypes, opts)
   return s
 }
+
 
 /**
  * @param {!Array<!Property>} [props]
@@ -450,38 +463,59 @@ export const getLinks = (allTypes, type, flatten = false) => {
  * @param {boolean} [opts.narrow=false] Merge Type and Description columns
  * @param {boolean|function(string)} [opts.flatten=false] Whether to follow the link to external types. If function is passed, will be called with the named of the flattened package.
  */
-export const makePropsTable = (props = [], allTypes = [], { narrow = false, flatten = false } = {}) => {
+export const makePropsTable = (props = [], allTypes = [], { narrow = false, flatten = false, preprocessDesc } = {}) => {
   if (!props.length) return ''
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
-  const h = ['Name', ...(narrow ? ['Type & Description'] : ['Type', 'Description']), 'Default']
+  const h = ['Name',
+    ...(narrow ? ['Type & Description'] : ['Type', 'Description']),
+    ...(anyHaveDefault ? ['Default'] : [])]
   const ps = props.map((prop) => {
-    const linkedType =
-      getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type, flatten)
-    const name = prop.optional ? prop.name : `__${prop.name}*__`
+    const typeName =
+      getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type, {
+        flatten,
+        escapePipe: !narrow,
+      })
+    const name = prop.optional ? prop.name : `${prop.name}*`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
-    return [name,
-      ...(narrow ?
-        [`<em>${linkedType}</em><br>${esc(prop.description)}`] :
-        [`<em>${linkedType}</em>`, esc(prop.description)])
-      , d]
+    const de = preprocessDesc ? preprocessDesc(prop.description) : prop.description
+    return {
+      prop,
+      typeName,
+      name,
+      de: esc(de, !narrow),
+      d,
+    }
   })
-  const pre = [h, ...ps]
-  const res = anyHaveDefault
-    ? pre
-    : pre.map(p => { p.pop(); return p })
-  const j = JSON.stringify(res, null, 2)
-  return `
+  if (narrow) { // narrow is the newer API for Documentary
+    return { props: ps, anyHaveDefault }
+  } else {
+    const ar = ps.map(({
+      name, typeName, de, d, prop,
+    }) => {
+      const n = prop.optional ? name : `__${name}__`
+      return [n, `<em>${typeName}</em>`, de, ...(anyHaveDefault ? [d] : [])]
+    })
+
+    const j = JSON.stringify([h, ...ar], null, 2)
+    return `
 
 \`\`\`table
 ${j}
 \`\`\``
+  }
 }
 
-const esc = (s = '') => {
+// const li = (p) => {
+//   return p.replace(/(^\s*)- (.+)$/mg, `$1<li>$2</li>`)
+// }
+
+const esc = (s = '', escapePipe = true) => {
   if (s === null) s = ''
+  if (escapePipe) {
+    s = s.replace(/\|/g, '\\|')
+  }
   return s
-    .replace(/\|/g, '\\|')
     .replace(/</g, '&lt;')
     .replace(/>/, '&gt;')
 }

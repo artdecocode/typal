@@ -1,4 +1,4 @@
-import { getPropType, getNameWithDefault, makeOptional } from './'
+import { getPropType, getNameWithDefault, makeOptional, trimD } from './'
 
 /**
  * Representation of a property of a type.
@@ -40,6 +40,11 @@ export default class Property {
      * @type {boolean}
      */
     this.optional = false
+    /**
+     * What aliases the property has.
+     * @type {!Array<string>}
+     */
+    this.aliases = []
   }
   static fromXML(...args) {
     const prop = new Property()
@@ -47,11 +52,11 @@ export default class Property {
     return prop
   }
   fromXML(content,
-    { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type, 'default': def, 'closure': closure },
+    { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
-    if (content) this.description = content.trim()
+    if (content) this.description = trimD(content)
     const t = getPropType({ number, string, boolean, type })
     this.type = t
     if (closure) this.closureType = closure
@@ -59,6 +64,8 @@ export default class Property {
     if (def !== undefined) this.hasDefault = true
     if (this.hasDefault) this.default = def
     if (opt || this.hasDefault) this.optional = true
+    if (alias) this.aliases = [alias]
+    if (aliases) this.aliases = aliases.split(/\s*,\s*/)
   }
   toJSDoc(parentParam = null, closure = false) {
     if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
