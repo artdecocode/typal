@@ -73,7 +73,7 @@ export const extract = makeTestSuite('test/result/bin/extract', {
   propEndRe: /\/\*@\*\//,
 })
 
-export const externs = makeTestSuite('test/result/js-typal/externs', {
+export const externs = makeTestSuite('test/result/js-typal/externs.md', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -85,6 +85,56 @@ export const externs = makeTestSuite('test/result/js-typal/externs', {
       if (this.types) await write('types.xml', this.types)
       const p = await write('program.js', this.input)
       return [p, '-e']
+    },
+  },
+  /**
+   * @param {TempContext} t
+   */
+  async getResults({ read }) {
+    return read('program.js')
+  },
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})
+
+export const externs2 = makeTestSuite('test/result/common/externs', {
+  context: TempContext,
+  fork: {
+    module: Context.BIN,
+    /**
+     * @param {string} args
+     * @param {TempContext} t
+     */
+    async getArgs(args, { write }) {
+      await write('types.xml', this.input)
+      const prog = '/* typal test/temp/types.xml externs */\n'
+      const p = await write('program.js', prog)
+      return [p]
+    },
+  },
+  /**
+   * @param {TempContext} t
+   */
+  async getResults({ read }) {
+    return read('program.js')
+  },
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})
+
+export const closure = makeTestSuite('test/result/common/closure', {
+  context: TempContext,
+  fork: {
+    module: Context.BIN,
+    /**
+     * @param {string} args
+     * @param {TempContext} t
+     */
+    async getArgs(args, { write }) {
+      await write('types.xml', this.input)
+      const prog = '/* typal test/temp/types.xml closure */\n'
+      const p = await write('program.js', prog)
+      return [p]
     },
   },
   /**

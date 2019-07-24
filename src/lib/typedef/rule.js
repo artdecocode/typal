@@ -61,6 +61,7 @@ async function replacement(match, docOrTypal, location) {
     return typedef
   } catch (e) {
     this.LOG('(%s) Could not process typedef-js: %s', location, e.message)
+    if (process.env.DEBUG) console.error(e.stack)
     return match
   }
 }

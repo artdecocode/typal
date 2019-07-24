@@ -23,6 +23,48 @@ export default makeTestSuite('test/result/js-typal', {
   propEndRe: /\/\*@\*\//,
 })
 
+export const Externs = makeTestSuite('test/result/common/externs', {
+  context: TempContext,
+  /**
+   * Returns the JSTypal which embeds JSDoc.
+   * @param {TempContext} t
+   */
+  async getReadable({ write }) {
+    await write('types.xml', this.input)
+    let conf
+    if (this.preamble) conf = this.preamble
+    if (this.conf) conf = { ...conf, ...this.conf }
+    const js = makeJSTypal(conf)
+    js.LOG = () => {}
+    js.end('/* typal test/temp/types.xml externs */\n')
+    return js
+  },
+  jsProps: ['preamble', 'conf'],
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})
+
+export const Closure = makeTestSuite('test/result/common/closure', {
+  context: TempContext,
+  /**
+   * Returns the JSTypal which embeds JSDoc.
+   * @param {TempContext} t
+   */
+  async getReadable({ write }) {
+    await write('types.xml', this.input)
+    let conf
+    if (this.preamble) conf = this.preamble
+    if (this.conf) conf = { ...conf, ...this.conf }
+    const js = makeJSTypal(conf)
+    js.LOG = () => {}
+    js.end('/* typal test/temp/types.xml closure */\n')
+    return js
+  },
+  jsProps: ['preamble', 'conf'],
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})
+
 export const checks = makeTestSuite('test/result/common/check', {
   context: TempContext,
   /**

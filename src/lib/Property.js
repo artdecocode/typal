@@ -78,14 +78,15 @@ export default class Property {
     return s
   }
   toProp(closure = false) {
-    const s = this.toJSDoc(null, closure)
-    const p = ` * @prop ${s}`
+    const jsdoc = this.toJSDoc(null, closure)
+    const t = indentWithAster(jsdoc, true)
+    const p = ` * @prop ${t}`
     return p
   }
   toExtern() {
     const pp = []
     if (this.description) {
-      let d = ` * ${this.description}`
+      let d = indentWithAster(this.description)
       if (this.default) d += ` Default \`${this.default}\`.`
       pp.push(d)
     }
@@ -107,4 +108,15 @@ export default class Property {
     clone.name = name
     return clone
   }
+}
+
+const indentWithAster = (description, skipFirst = false) => {
+  const d = description.split('\n').map((l, i) => {
+    if (skipFirst && !i) return l
+    let s = ' *'
+    if (l.length) s += ' '
+    s += l
+    return s
+  }).join('\n')
+  return d
 }
