@@ -142,7 +142,7 @@ __[`Test`](t-type) extends <a href="https://nodejs.com/api/http.html#Server">`ht
 
 /* expected */
 `import('http').Server` __[`http.Server`](l-type)__
-__[`Test`](t-type) extends `http.Server`__
+__[`Test`](t-type) extends [`http.Server`](#type-httpserver)__
 /**/
 
 ## shows extended strong

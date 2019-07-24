@@ -11,7 +11,7 @@ import { getLink, trimD } from './'
  * @param {boolean} [opts.flatten] If the type has link, follow it.
  */
 export const parsedToString = (type, allTypes, opts = {}) => {
-  const { flatten, escapePipe = true } = opts
+  const { escapePipe = true } = opts
   let s = ''
   let nullable = ''
   if (type.nullable) nullable = '?'
@@ -58,7 +58,7 @@ export const parsedToString = (type, allTypes, opts = {}) => {
     s += rs.join(', ')
     s += ' }'
   } else if (type.application) {
-    s += getTypeWithLink(type.name, allTypes, nullable, flatten) + '&lt;'
+    s += getTypeWithLink(type.name, allTypes, nullable, opts) + '&lt;'
     const apps = type.application.map((a) => {
       return p2s(a)
     })
@@ -74,7 +74,7 @@ export const parsedToString = (type, allTypes, opts = {}) => {
     s += ')'
   } else {
     const name = type.name == 'any' ? '*' : type.name
-    s += getTypeWithLink(name, allTypes, nullable, flatten)
+    s += getTypeWithLink(name, allTypes, nullable, opts)
   }
   return s
 }
@@ -90,7 +90,8 @@ const getLinkToType = (allTypes, type) => {
 }
 
 
-export const getTypeWithLink = (type, allTypes, nullable = '', flatten = false) => {
+export const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
+  const { flatten = false, nameProcess } = opts
   const l = getLinkToType(allTypes, type)
   const n = `${nullable}${type}`
   if (!l) return n
@@ -104,8 +105,9 @@ export const getTypeWithLink = (type, allTypes, nullable = '', flatten = false) 
     if (!description && found.desc) description = found.desc
     if (typeof flatten == 'function') flatten(type)
   }
-  if (!description) return `[${n}](${link})`
-  return `<a href="${link}" title="${description}">${n}</a>`
+  const nn = nameProcess ? nameProcess(n) : nn
+  if (!description) return `[${nn}](${link})`
+  return `<a href="${link}" title="${description}">${nn}</a>`
   // const typeWithLink = `[${n}](#${link})`
   // return typeWithLink
 }
@@ -383,7 +385,10 @@ _ns.Type.prototype.constructor
         }
         e += `href="${foundExt.link}">\`${this.extends}\`</a>`
       } else {
-        e = getLinks(allTypes, this.extends, flatten)
+        e = getLinks(allTypes, this.extends, { flatten,
+          nameProcess(td) {
+            return `\`${td}\``
+          } })
         useTag = useTag || /_/.test(e)
       }
       const extendS = ` extends ${e}`
@@ -438,6 +443,7 @@ const getSpread = (properties = [], closure = false) => {
  * @param {Object} [opts]
  * @param {boolean} [opts.flatten]
  * @param {boolean} [opts.escapePipe]
+ * @param {boolean} [opts.nameProcess]
  */
 export const getLinks = (allTypes, type, opts = {}) => {
   let parsed
