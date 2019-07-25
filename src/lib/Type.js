@@ -252,6 +252,7 @@ _ns.Type.prototype.constructor
     const st = [s, ...p].join('\n')
     return st
   }
+
   /**
    * @param {!Array<!Type>} [allTypes]
    * @param {!Object} [opts]
@@ -262,8 +263,15 @@ _ns.Type.prototype.constructor
   toMarkdown(allTypes = [], opts = {}) {
     const { narrow, flatten, preprocessDesc, link } = opts
     const t = this.type ? `\`${this.type}\`` : ''
-    const typeWithLink = this.link ? `[${t}](${this.link})` : t
-    const codedName = `\`${this.fullName}\``
+    let typeWithLink = t, useCode = false
+    if (this.link) {
+      typeWithLink = `[${t}](${this.link})`
+    } else if (!this.import && this.type) {
+      typeWithLink = getLinks(allTypes, this.type, opts)
+      useCode = typeWithLink != this.type
+      typeWithLink = wrapCode(typeWithLink, useCode)
+    }
+    const codedName = wrapCode(this.fullName)
     let nn
     if (!this.import) {
       nn = this.noToc ? `[${codedName}](l-type)` : `[${codedName}](t-type)`
@@ -272,7 +280,7 @@ _ns.Type.prototype.constructor
     }
     const d = this.description ? `: ${this.description}` : ''
     const twl = typeWithLink ? `${typeWithLink} ` : ''
-    let LINE = twl// `${twl}<strong>${nn}`
+    let LINE = twl // `${twl}<strong>${nn}`
     let useTag = /_/.test(nn)
     if (this.extends) {
       useTag = useTag || /_/.test(this.extends)
@@ -320,6 +328,10 @@ _ns.Type.prototype.constructor
   }
 }
 
+const wrapCode = (s, useCode = false) => {
+  return `${useCode ? '<code>' : '`'}${s}${useCode ? '</code>' : '`'}`
+}
+
 /**
  * @param {Array<Property>} properties
  * @param {boolean} [closure = false] Whether generate for Closure's externs.
@@ -350,7 +362,7 @@ const getSpread = (properties = [], closure = false) => {
 }
 
 /**
- * Iterates through the type and creates a link for it.
+ * Iterates through the types to find the referenced one, and returns a string which contains a link to it.
  * @param {!Array<!Type>} allTypes
  * @param {string} type
  * @param {Object} [opts]

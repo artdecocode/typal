@@ -95,9 +95,9 @@ const ts = {
       equal(res, 'function(this: [Type](#type-type))')
     },
     'links this and args'({ allTypes }) {
-      const type = 'Function(this: Type, Type)'
+      const type = 'function(this: Type, Type)'
       const res = getLinks(allTypes, type)
-      equal(res, 'Function(this: [Type](#type-type), [Type](#type-type))')
+      equal(res, 'function(this: [Type](#type-type), [Type](#type-type))')
     },
     'links variable args'({ allTypes }) {
       const type = 'function(...Type)'

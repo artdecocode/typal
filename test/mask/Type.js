@@ -9,9 +9,10 @@ export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
 
     const all = [...Imports, ...types]
     return all.map((t) => {
-      return t.toMarkdown(all)
+      return t.toMarkdown(all, this.preamble)
     }).join('\n')
   },
+  jsProps: ['preamble'],
 })
 
 export const narrow = makeTestSuite('test/result/Type/narrow', {

@@ -438,7 +438,7 @@ function Ha(a) {
     }
     f.name = a[b];
     b++;
-    if (["function", "Function"].includes(g)) {
+    if ("function" == g) {
       h = f;
       g = {return:null, args:[]};
       if ("(" != a[b]) {
