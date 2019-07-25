@@ -297,10 +297,11 @@ _ns.Type.prototype.constructor
         }
         e += `href="${foundExt.link}">\`${this.extends}\`</a>`
       } else {
-        e = getLinks(allTypes, this.extends, { flatten,
+        const le = getLinks(allTypes, this.extends, { flatten,
           nameProcess(td) {
             return `\`${td}\``
           }, link })
+        if (this.extends != le) e = le
         useTag = useTag || /_/.test(e)
       }
       const extendS = ` extends ${e}`

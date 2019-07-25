@@ -30,6 +30,7 @@ const parseFile = (xml, rootNamespace) => {
         p.type = p.type.replace(s, '$1')
       })
       if (type.type) type.type = type.type.replace(s, '$1')
+      if (type.extends) type.extends = type.extends.replace(s, '$1')
     }
     return type
   })

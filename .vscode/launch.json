@@ -15,7 +15,7 @@
       "console": "integratedTerminal",
       "args": [
         "test/spec", "test/mask",
-        "-a", "-w", "-t", "9999999", "-i"
+        "-a", "-w", "-t", "9999999",
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"

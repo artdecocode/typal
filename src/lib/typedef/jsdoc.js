@@ -55,13 +55,14 @@ function replacement(match, ws, typeName, optional, paramName, rest, position) {
     if (closure) return fullName == parsed.name
     return name == parsed.name
   })
+  if (!found) return match
   if (found instanceof JSTypal.Import) return match
 
   const s = found.toParam(paramName, optional, ws, parsed.nullable, closure)
   return s
 }
 
-const isPrimitive = t => ['string', 'number', 'boolean', 'null', 'undefined', 'symbol', 'String', 'Boolean', 'Object', 'Date', 'Number', 'Symbol', 'Buffer', 'Function'].includes(t)
+const isPrimitive = t => ['string', 'number', 'boolean', 'null', 'undefined', 'symbol'].includes(t)
 
 /**
  * @param {(?_typedefsParser.Type|undefined)} parsed
@@ -75,7 +76,8 @@ const checkExists = (parsed, types, log, original, logLocation) => {
   const name = parsed.name
   if (name && isPrimitive(name)) return
   if (name && !parsed.application && !parsed.function) {
-    const exists = types.includes(name)
+    let exists = types.includes(name)
+    if (!exists) exists = API.includes(name)
     if (!exists) {
       log('Type %s%s was not found.',
         name, original != name ? ` in ${original}` : '')
@@ -103,6 +105,9 @@ const checkExists = (parsed, types, log, original, logLocation) => {
     checkExists(parsed.function.return, ...args)
   }
 }
+
+const API = ['String', 'Boolean', 'Object', 'Date', 'Number',
+  'Symbol', 'Buffer', 'Function']
 
 /**
  * @param {!Array<string>} lines
