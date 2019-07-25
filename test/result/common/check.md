@@ -126,3 +126,24 @@ Error while parsing the type (s: string) => number
 Expecting closing )
 test/temp/program.js:11:11
 /*@*/
+
+## does not warn of Primitives
+/**
+ * @param {String} string
+ * @param {Number} number
+ * @param {Date} date
+ * @param {Symbol} symbol
+ * @param {!Buffer} buffer
+ * @param {!Function} fn
+ */
+function test() {}
+/* typal test/temp/types.xml */
+
+
+/*@ types */
+<types namespace="_ns"></types>
+/*@*/
+
+/*@ expected */
+Detected type marker: test/temp/types.xml
+/*@*/

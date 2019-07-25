@@ -61,7 +61,7 @@ function replacement(match, ws, typeName, optional, paramName, rest, position) {
   return s
 }
 
-const isPrimitive = t => ['string', 'number', 'boolean', 'null', 'undefined', 'symbol'].includes(t)
+const isPrimitive = t => ['string', 'number', 'boolean', 'null', 'undefined', 'symbol', 'String', 'Boolean', 'Object', 'Date', 'Number', 'Symbol', 'Buffer', 'Function'].includes(t)
 
 /**
  * @param {(?_typedefsParser.Type|undefined)} parsed
