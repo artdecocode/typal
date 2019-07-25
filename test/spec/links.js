@@ -117,4 +117,16 @@ const ts = {
   },
 }
 
+export const params = {
+  'uses the link function'({ allTypes }) {
+    const type = '{ a, b: Type }'
+    const res = getLinks(allTypes, type, {
+      link({ link, type: t }) {
+        return `${t.fullName}#${link}`
+      },
+    })
+    equal(res, '{ a, b: [Type](Type#type-type) }')
+  },
+}
+
 export default ts

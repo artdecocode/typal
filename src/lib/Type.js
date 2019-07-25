@@ -357,6 +357,7 @@ const getSpread = (properties = [], closure = false) => {
  * @param {boolean} [opts.flatten]
  * @param {boolean} [opts.escapePipe]
  * @param {boolean} [opts.nameProcess]
+ * @param {!Function} [opts.link]
  */
 export const getLinks = (allTypes, type, opts = {}) => {
   let parsed
