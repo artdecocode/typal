@@ -928,10 +928,11 @@ class gb extends Ya {
     Pa(l, h, k, e);
     return l;
   });
-  const f = X("import", b).map(({C:h}) => {
-    const k = new eb;
-    cb(k, h);
-    return k;
+  const f = X("import", b).map(({C:h, content:k}) => {
+    const l = new eb;
+    k && (h.desc = U(k));
+    cb(l, h);
+    return l;
   }), g = f.map(({name:h, from:k, F:l, link:m, u:n}) => {
     const p = new Y;
     Pa(p, "", {name:h, type:`import('${k}').${h}`, L:!0, import:!0, F:l, link:m}, void 0 == n ? void 0 : n);

@@ -550,7 +550,7 @@ const getLinkToType = (allTypes, type) => {
   if (!linkedTypes.length) return
 
   // in case we're importing local types and imports have same names
-  const importType = linkedTypes.find(({ import: i }) => i)
+  const importType = linkedTypes.find(({ import: i }) => i || false)
   const actualType = linkedTypes.find(({ import: i }) => !i)
 
   let linkedType = actualType || importType
