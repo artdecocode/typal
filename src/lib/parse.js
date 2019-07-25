@@ -1,6 +1,7 @@
 import extractTags from 'rexml'
 import Type from './Type'
 import Import from './Import'
+import { trimD } from './'
 
 /**
  * Parse the types.xml file.
@@ -33,10 +34,10 @@ const parseFile = (xml, rootNamespace) => {
     return type
   })
 
-
   const imports = extractTags('import', Root)
-    .map(({ props }) => {
+    .map(({ props, content }) => {
       const im = new Import()
+      if (content) props['desc'] = trimD(content)
       im.fromXML(props)
       return im
     })

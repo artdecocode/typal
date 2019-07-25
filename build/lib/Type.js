@@ -257,9 +257,10 @@ _ns.Type.prototype.constructor
    * @param {!Object} [opts]
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
    * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
+   * @param {function()} [opts.link] A function to call for extra processing of links.
    */
   toMarkdown(allTypes = [], opts = {}) {
-    const { narrow, flatten, preprocessDesc } = opts
+    const { narrow, flatten, preprocessDesc, link } = opts
     const t = this.type ? `\`${this.type}\`` : ''
     const typeWithLink = this.link ? `[${t}](${this.link})` : t
     const codedName = `\`${this.fullName}\``
@@ -291,7 +292,7 @@ _ns.Type.prototype.constructor
         e = getLinks(allTypes, this.extends, { flatten,
           nameProcess(td) {
             return `\`${td}\``
-          } })
+          }, link })
         useTag = useTag || /_/.test(e)
       }
       const extendS = ` extends ${e}`
@@ -311,6 +312,7 @@ _ns.Type.prototype.constructor
       narrow,
       flatten,
       preprocessDesc,
+      link,
     })
     if (narrow) return { LINE, table }
     const r = `${LINE}${table}`
@@ -447,13 +449,17 @@ const parsedToString = (type, allTypes, opts = {}) => {
   return s
 }
 
+/**
+ * The function which generates a link for the type.
+ */
 const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
-  const { flatten = false, nameProcess } = opts
+  const { flatten = false, nameProcess,
+    link: linkFn = ({ link: l }) => { return `#${l}` } } = opts
   const l = getLinkToType(allTypes, type)
   const n = `${nullable}${type}`
   if (!l) return n
   let { link, type: { description } } = l
-  link = `#${link}`
+  link = linkFn(l)
   if (flatten) {
     const found = allTypes.find(({ fullName }) => fullName == type)
     if (found && found.link) {
@@ -464,7 +470,7 @@ const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
   }
   const nn = nameProcess ? nameProcess(n) : n
   if (!description) return `[${nn}](${link})`
-  return `<a href="${link}" title="${description}">${nn}</a>`
+  return `<a href="${link}" title="${description.replace(/"/g, '&quot;')}">${nn}</a>`
   // const typeWithLink = `[${n}](#${link})`
   // return typeWithLink
 }
@@ -476,7 +482,8 @@ const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
  * @param {boolean} [opts.narrow=false] Merge Type and Description columns
  * @param {boolean|function(string)} [opts.flatten=false] Whether to follow the link to external types. If function is passed, will be called with the named of the flattened package.
  */
-const makePropsTable = (props = [], allTypes = [], { narrow = false, flatten = false, preprocessDesc } = {}) => {
+const makePropsTable = (props = [], allTypes = [], opts = {}) => {
+  const { narrow = false, flatten = false, preprocessDesc, link } = opts
   if (!props.length) return ''
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
@@ -488,6 +495,7 @@ const makePropsTable = (props = [], allTypes = [], { narrow = false, flatten = f
       getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type, {
         flatten,
         escapePipe: !narrow,
+        link,
       })
     const name = prop.optional ? prop.name : `${prop.name}*`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
@@ -537,8 +545,15 @@ const esc = (s = '', escapePipe = true) => {
  * @param {!Array<!Type>} allTypes
  */
 const getLinkToType = (allTypes, type) => {
-  const linkedType = allTypes.find(({ fullName }) => fullName == type)
-  if (!linkedType) return
+  const linkedTypes = allTypes.filter(({ fullName }) => fullName == type)
+  if (!linkedTypes.length) return
+
+  // in case we're importing local types and imports have same names
+  const importType = linkedTypes.find(({ import: i }) => i)
+  const actualType = linkedTypes.find(({ import: i }) => !i)
+
+  let linkedType = actualType || importType
+
   const link = getLink(linkedType.fullName, 'type')
   return { link, type: linkedType }
 }
