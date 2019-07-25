@@ -1014,14 +1014,16 @@ function nb(a, b, c, d, e, f, g) {
     return a;
   }
   c = Object.values(this.types).find(({name:m, g:n}) => h ? n == k.name : m == k.name);
-  return c instanceof gb.b ? a : c.J(e, d, b, k.nullable, h);
+  return !c || c instanceof gb.b ? a : c.J(e, d, b, k.nullable, h);
 }
 const Z = (a, b, c, d, e) => {
   if (a) {
     var f = a.name;
     if (!f || !"string number boolean null undefined symbol".split(" ").includes(f)) {
       if (f && !a.application && !a.function) {
-        if (b.includes(f)) {
+        let h = b.includes(f);
+        h || (h = pb.includes(f));
+        if (h) {
           return !0;
         }
         c("Type %s%s was not found.", f, d != f ? ` in ${d}` : "");
@@ -1039,17 +1041,17 @@ const Z = (a, b, c, d, e) => {
       }), Z(a.function.variableArgs, ...g), Z(a.function.return, ...g));
     }
   }
-};
-var qb = async() => {
+}, pb = "String Boolean Object Date Number Symbol Buffer Function".split(" ");
+var rb = async() => {
   const {A:a = !1, G:b = !1, H:c, types:d} = {A:fa, G:ha, H:A, types:ia};
   await Promise.all(z.map(async e => {
     var f = await M(B, e);
     let g;
     f.isFile() ? g = [e] : f.isDirectory() && (f = await O(e), g = P(f.content, e));
-    await pb(g, a, b, c, d);
+    await qb(g, a, b, c, d);
   }));
 };
-const pb = async(a, b = !1, c = !1, d = null, e = null) => {
+const qb = async(a, b = !1, c = !1, d = null, e = null) => {
   const f = [];
   e && await Promise.all(e.split(",").map(async g => {
     g = await J(g);
@@ -1068,23 +1070,23 @@ const pb = async(a, b = !1, c = !1, d = null, e = null) => {
     "-" == d ? console.log(h) : d ? await K(d, h) : await K(g, h);
   }));
 };
-const rb = a => {
+const sb = a => {
   let b;
   "true" == a ? b = !0 : "false" == a ? b = !1 : /^\d+$/.test(a) && (b = parseInt(a, 10));
   return void 0 !== b ? b : a;
-}, sb = /^ \* @prop {(.+?)} (\[)?(.+?)(?:=(["'])?(.+?)\4)?(?:])?(?: (.+?))?(?: Default `(.+?)`.)?$/gm, tb = "type opt name quote defaultValue description Default".split(" "), bb = new RegExp(`^ \\* @typedef {(.+?)} (.+?)(?: (.+))?\\n((?:${/ \* @prop(?:erty)? .+\n/.source})*)`, "gm"), ub = (a, b, c, d) => {
+}, tb = /^ \* @prop {(.+?)} (\[)?(.+?)(?:=(["'])?(.+?)\4)?(?:])?(?: (.+?))?(?: Default `(.+?)`.)?$/gm, ub = "type opt name quote defaultValue description Default".split(" "), bb = new RegExp(`^ \\* @typedef {(.+?)} (.+?)(?: (.+))?\\n((?:${/ \* @prop(?:erty)? .+\n/.source})*)`, "gm"), vb = (a, b, c, d) => {
   d = d.length;
   a = a && "Object" != a ? ` type="${a}"` : "";
   c = c ? ` desc="${c}"` : "";
   return `${" ".repeat(2)}<type name="${b}"${a}${c}${d ? "" : " /"}>\n`;
 };
-class vb extends C {
+class wb extends C {
   constructor() {
     super({writableObjectMode:!0});
   }
   _transform(a, b, c) {
     var {type:d, name:e, description:f, h:g} = a;
-    a = d && d.startsWith("import") ? wb(d, e) : ub(d, e, f, g);
+    a = d && d.startsWith("import") ? xb(d, e) : vb(d, e, f, g);
     this.push(a);
     g.forEach(h => {
       var {type:k, name:l, default:m, description:n, optional:p} = h;
@@ -1102,7 +1104,7 @@ class vb extends C {
     c();
   }
 }
-const wb = (a, b) => {
+const xb = (a, b) => {
   const c = /import\((['"])(.+?)\1\)/.exec(a);
   if (!c) {
     throw Error(`Could not extract package from "${a}"`);
@@ -1110,20 +1112,20 @@ const wb = (a, b) => {
   [, , a] = c;
   return `${" ".repeat(2)}<import name="${b}" from="${a}" />\n`;
 };
-class xb extends C {
+class yb extends C {
   constructor() {
     super({objectMode:!0});
   }
   _transform(a, b, c) {
     var [, d, e, f, g] = a;
-    a = V(sb, g, tb).map(h => {
+    a = V(tb, g, ub).map(h => {
       var k = Object.assign({}, h), l = h.defaultValue;
       const m = h.Default;
       var n = h.opt;
       const p = h.name;
       h = h.type;
       k = (delete k.defaultValue, delete k.Default, delete k.opt, delete k.name, delete k.type, k);
-      n = Object.assign({}, k, {name:p, type:h}, l ? {defaultValue:rb(l)} : {}, m ? {w:rb(m)} : {}, n ? {optional:!0} : {});
+      n = Object.assign({}, k, {name:p, type:h}, l ? {defaultValue:sb(l)} : {}, m ? {w:sb(m)} : {}, n ? {optional:!0} : {});
       if (l || m) {
         l ? l !== m && void 0 !== n.w && (l = Q(p, m, h), console.error("%s[%s] does not match Default `%s`.", e, l, n.w)) : (l = Q(p, m, h), console.error("%s[%s] got from Default.", e, l)), n.default = "defaultValue" in n ? n.defaultValue : n.w, delete n.defaultValue, delete n.w;
       }
@@ -1133,8 +1135,8 @@ class xb extends C {
     c();
   }
 }
-async function yb(a) {
-  const b = Za(), c = new xb, d = new vb;
+async function zb(a) {
+  const b = Za(), c = new yb, d = new wb;
   b.pipe(c).pipe(d);
   b.end(a);
   b.on("error", e => {
@@ -1153,11 +1155,11 @@ async function yb(a) {
   ${(await I(d)).trim()}
 </types>`;
 }
-;var zb = async() => {
+;var Ab = async() => {
   const {H:a} = {H:A};
   await Promise.all(z.map(async b => {
     b = await J(b);
-    b = await yb(b);
+    b = await zb(b);
     a ? await K(a, b) : console.log(b);
   }));
 };
@@ -1170,7 +1172,7 @@ if (ka) {
 }
 (async() => {
   try {
-    return ja ? await zb() : await qb();
+    return ja ? await Ab() : await rb();
   } catch (a) {
     process.env.DEBUG ? console.log(a.stack) : console.log(a.message);
   }
