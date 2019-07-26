@@ -224,10 +224,10 @@ resolve-dependency@^1.0.2, resolve-dependency@^1.0.3:
   dependencies:
     "@wrote/exists" "^1.0.3"
 
-restream@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/restream/-/restream-3.7.1.tgz#4ffefbd2a008965413e90d50fa7f0898889b3a61"
-  integrity sha512-OZLcbqwcZ1VMW3MziEjE4xaeqXvl8r367pBmgviRNl3dywyzdi+ueKFW5p1qPaYaZwIRvaR/TqAlB0XKJVX90g==
+restream@^3.7.1, restream@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/restream/-/restream-3.7.2.tgz#657e06c1944161c190dcede2d688af0be207b859"
+  integrity sha512-nVffinRmO+TEdS6YlkyVeBKHTF2Qv1BU7ML02y3IlosDx0n7zsGUBMNydkVFMgJs/RHl4a4u/X1wNduh1dD1SQ==
   dependencies:
     "@artdeco/clean-stack" "^1.1.1"
     catchment "^3.3.0"
