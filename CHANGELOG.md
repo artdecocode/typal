@@ -1,3 +1,15 @@
+## 26 July 2019
+
+### [1.16.0](https://github.com/artdecocode/typal/compare/v1.15.3...v1.16.0)
+
+- [fix] Indent new lines in JSDoc descriptions with `*`.
+- [feature] Support aliases for properties.
+- [feature] Link types in a type's line tag (Closed #13).
+- [feature] Link types in extends.
+- [feature] Add the `link` property to be able to link types across _all files_.
+- [fix] Don't warn of global API types, such as Date, Buffer, _etc_.
+- [fix] Don't warn of `*` usage.
+
 ## 24 July 2019
 
 ### [1.15.3](https://github.com/artdecocode/typal/compare/v1.15.2...v1.15.3)

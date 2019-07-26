@@ -1019,7 +1019,7 @@ function nb(a, b, c, d, e, f, g) {
 const Z = (a, b, c, d, e) => {
   if (a) {
     var f = a.name;
-    if (!f || !"string number boolean null undefined symbol".split(" ").includes(f)) {
+    if (!f || !"string number boolean null undefined symbol any".split(" ").includes(f)) {
       if (f && !a.application && !a.function) {
         let h = b.includes(f);
         h || (h = pb.includes(f));
