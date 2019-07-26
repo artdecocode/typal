@@ -129,6 +129,7 @@ test/temp/program.js:11:11
 
 ## does not warn of Primitives
 /**
+ * @param {*} any
  * @param {String} string
  * @param {Number} number
  * @param {Date} date
