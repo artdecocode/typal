@@ -38,7 +38,7 @@ const processFiles = async (files, closure = false, externs = false, output = nu
   }
   await Promise.all(files.map(async (file) => {
     const content = await read(file)
-    const js = makeJSTypal({ closure, externs })
+    const js = makeJSTypal({ closure, externs }, externs)
     existingTypes.forEach(type => js.emit('types', type))
     js.file = file
     js.LOG = console.error
