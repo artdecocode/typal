@@ -1,3 +1,9 @@
+## 29 July 2019
+
+### [1.17.0](https://github.com/artdecocode/typal/compare/v1.16.0...v1.17.0)
+
+- [feature] Allow to write properties as functions.
+
 ## 26 July 2019
 
 ### [1.16.0](https://github.com/artdecocode/typal/compare/v1.15.3...v1.16.0)
