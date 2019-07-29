@@ -112,7 +112,7 @@ The type represents a _JSDoc_ type.
     </td></tr>
     <tr><td><md2html>
 
-    In standard mode, only the `type` attribute is displayed. This is not compatible with _GCC_, therefore should only be used for <a href="../wiki/3-use-cases#jsdoc-approach">_JSDoc_ approach</a> programming.
+    In standard mode, only the `type` attribute is displayed. This is not compatible with _GCC_, therefore should only be used for <a href="../../wiki/3-use-cases#jsdoc-approach">_JSDoc_ approach</a> programming.
     </md2html></tr></td>
     </table>
     </details>

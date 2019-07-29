@@ -61,7 +61,7 @@ The solutions provided by _Typal_ are:
 
 To tune in, start with the _Wiki Page_:
 
-<kbd>🥇🥈🥉[Naïve, JSDoc And Closure Use Cases For Typedefs](../wiki/3-use-cases)</kbd>
+<kbd>🥇🥈🥉[Naïve, JSDoc And Closure Use Cases For Typedefs](../../wiki/3-use-cases)</kbd>
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
@@ -585,7 +585,7 @@ The type represents a _JSDoc_ type.
      */
     ```
     </td></tr>
-    <tr><td>In standard mode, only the <code>type</code> attribute is displayed. This is not compatible with <em>GCC</em>, therefore should only be used for <a href="../wiki/3-use-cases#jsdoc-approach"><em>JSDoc</em> approach</a> programming.</tr></td>
+    <tr><td>In standard mode, only the <code>type</code> attribute is displayed. This is not compatible with <em>GCC</em>, therefore should only be used for <a href="../../wiki/3-use-cases#jsdoc-approach"><em>JSDoc</em> approach</a> programming.</tr></td>
     </table>
     </details>
 

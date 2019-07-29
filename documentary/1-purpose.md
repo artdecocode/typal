@@ -12,6 +12,6 @@ The solutions provided by _Typal_ are:
 
 To tune in, start with the _Wiki Page_:
 
-<kbd>🥇🥈🥉[Naïve, JSDoc And Closure Use Cases For Typedefs](../wiki/3-use-cases)</kbd>
+<kbd>🥇🥈🥉[Naïve, JSDoc And Closure Use Cases For Typedefs](../../wiki/3-use-cases)</kbd>
 
 %~%
