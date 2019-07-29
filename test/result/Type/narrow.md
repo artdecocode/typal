@@ -25,7 +25,12 @@
             "hasDefault": false,
             "default": null,
             "optional": false,
-            "aliases": []
+            "aliases": [],
+            "parsed": {
+              "nullable": false,
+              "name": "stream.Readable"
+            },
+            "noParams": false
           },
           "typeName": "[!stream.Readable](#type-streamreadable)",
           "name": "p*",

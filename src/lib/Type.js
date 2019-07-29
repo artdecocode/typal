@@ -232,7 +232,11 @@ _ns.Type.prototype.constructor
       r = makeBlock(r)
       r = r + getExternDeclaration(`${this.fullName}.prototype`,
         /** @type {string} */ (p.name))
-      if (p.type.startsWith('function(')) {
+      if (p.parsed && p.parsed.name == 'function') {
+        const { function: { args } } = p.parsed
+        const a = args.map((_, i) => `arg${i}`)
+        r += ` = function(${a.join(', ')}) {}`
+      } else if (p.type.startsWith('function(')) {
         r += ' = function() {}'
       }
       return r
@@ -411,7 +415,7 @@ export const getLinks = (allTypes, type, opts = {}) => {
  * @param {Object} [opts] Options
  * @param {boolean} [opts.flatten] If the type has link, follow it.
  */
-const parsedToString = (type, allTypes, opts = {}) => {
+export const parsedToString = (type, allTypes, opts = {}) => {
   const { escapePipe = true } = opts
   let s = ''
   let nullable = ''

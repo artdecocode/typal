@@ -31,6 +31,7 @@ export const narrow = makeTestSuite('test/result/Type/narrow', {
       return m
     })
     return res
+    // return JSON.stringify(res, null, 2)
   },
   jsonProps: ['expected'],
 })

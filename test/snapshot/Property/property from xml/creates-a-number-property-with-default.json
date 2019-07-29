@@ -6,5 +6,7 @@
   "hasDefault": true,
   "default": 0,
   "optional": true,
-  "aliases": []
+  "aliases": [],
+  "parsed": null,
+  "noParams": false
 }

@@ -17,7 +17,11 @@
       "hasDefault": false,
       "default": null,
       "optional": false,
-      "aliases": []
+      "aliases": [],
+      "parsed": {
+        "name": "string"
+      },
+      "noParams": false
     },
     {
       "name": "maxage",
@@ -27,7 +31,9 @@
       "hasDefault": true,
       "default": 0,
       "optional": true,
-      "aliases": []
+      "aliases": [],
+      "parsed": null,
+      "noParams": false
     }
   ],
   "namespace": null,

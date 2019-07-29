@@ -68,7 +68,7 @@ var Test
  * A prop.
  * @type {(function(): Promise)|undefined}
  */
-Test.prototype.f
+Test.prototype.f = function() {}
 
 /*@*/
 

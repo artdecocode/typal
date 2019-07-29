@@ -56,6 +56,15 @@ var Test
     <fn args="string" name="syncVoid">
       A function without return.
     </fn>
+    <fn async args="!Promise<string, !Array<boolean>>" name="app">
+      application
+    </fn>
+    <fn args="(string|boolean), { config: boolean }" name="more">
+      multiple
+    </fn>
+    <fn noParams args="(string|boolean), { config: boolean }" name="np">
+      no params
+    </fn>
   </type>
 </types>
 
@@ -67,8 +76,25 @@ var Test
 var Test
 /**
  * A function without return.
- * @type {function(string): void}
+ * @param {string} arg0
  */
-Test.prototype.syncVoid = function() {}
+Test.prototype.syncVoid = function(arg0) {}
+/**
+ * application
+ * @param {!Promise<string, !Array<boolean>>} arg0
+ * @return {!Promise}
+ */
+Test.prototype.app = function(arg0) {}
+/**
+ * multiple
+ * @param {(string|boolean)} arg0
+ * @param {{ config: boolean }} arg1
+ */
+Test.prototype.more = function(arg0, arg1) {}
+/**
+ * no params
+ * @type {function((string|boolean), { config: boolean }): void}
+ */
+Test.prototype.np = function() {}
 
 /*@*/
