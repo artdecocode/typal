@@ -26,13 +26,6 @@ yarn add -D typal
     * [User Snippet](#user-snippet)
   * [Migration](#migration)
 - [Schema](#schema)
-  * [Types](#types)
-  * [Type](#type)
-    * [Prototype Notation](#prototype-notation)
-    * [Extends Notation](#extends-notation)
-    * [Closure Override](#closure-override)
-  * [Property](#property)
-  * [Import](#import)
 - [Markdown Documentation](#markdown-documentation)
   * [`Type`](#type-type)
   * [`Example`](#type-example)
@@ -424,300 +417,24 @@ For example, the types above can be extracted into the types file using the <cod
 
 ## Schema
 
-The types can be defined according to the following schema. It consists of the `types`, `type` and `property` elements.
+The XML schema supports types, imports, properties and functions (which are aliases to properties with special attributes used to construct a function type).
 
-### Types
-
-```xml
-<types
-  namespace="_namespace">
-  <import .../>
-  <type ...>...</type>
-</types>
-
-```
-
-The single root element for the XML file.
-
-- `namespace` [_optional_]: how all types will be prefixed in the source code and externs. The use of namespaces is generally only needed for when using _GCC_ to prevent clashes of types, e.g., it is common to name the config objects _"Config"_. The namespace will typically start with `_` to also prevent variable name clashes with extern namespaces.
-    ```js
-    // SOURCE.js
-    // The first line is to enable exporting via VSCode's typedef import.
-    /**
-     * @typedef {_restream.Rule} Rule The replacement rule.
-     */
-    // The second line is to use within the source file, so that the externs
-    // match the annotated type.
-    /**
-     * @typedef {Object} _namespace.Rule The replacement rule.
-     */
-
-    /**
-     * @param {_namespace.Rule} rule
-     */
-    function hello(rule) {}
-
-    // EXTERNS.js
-    /** @const */
-    var _namespace = {}
-    /** @typedef { myType: boolean } */
-    _namespace.Type
-    ```
-
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
-
-### Type
-
-The type represents a _JSDoc_ type.
-
-```xml
-<type
-  name="Type"
-  desc="The description of the type."
-  type="(name: string) => number"
-  constructor interface record
-  extends="_namespace.ParentType"
-  closure="function(string): number">
-    <prop name="...">...</prop>
-</type>
-```
-
-- `name`: [_required_]: the name of the type.
-- `desc` [_optional_]: the optional description.
-- `type` [_optional_]: what is the type, default `Object`.
-- `constructor` [_optional_]: for externs, adds the `@constructor` annotation and declares the properties via the _prototype_.
-    <details>
-    <summary><strong>Show <a name="prototype-notation">Prototype Notation</a></strong></summary>
-
-    ```js
-    /* typal example/schema/constructor.xml */
-    /** @const */
-    var _test = {}
-    /**
-     * The example type.
-     * @extends {_ns.ParentType}
-     * @constructor
-     */
-    _test.Test
-    /**
-     * A prop.
-     * @type {boolean|undefined}
-     */
-    _test.Test.prototype.bool
-    ```
-    </details>
-- `interface` [_optional_]: for externs, same as `@constructor`, but adds the `@interface` annotation.
-- `record` [_optional_]: for externs, same as `@constructor`, but adds the `@record` annotation. This type is called [Structural Interfaces](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler) and is the best choice for configs _etc_. Types without `@constructor`/`@interface`/`@record` in externs will be presented as `{{ a: string, b: number }}` but when denoted with `@record`, externs will have the same meaning, but will be easier to read. However, `@record` types can be nullable, whereas simple `{{ record }}` types are explicitly non-nullable.
-- `extends` [_optional_]: for `constructors`, `interfaces` and `records` this allows to inherit properties from the parent types (see above).
-    <details>
-    <summary><strong>Show <a name="extends-notation">Extends Notation</a></strong></summary>
-    <table>
-    <tr><th align="center">Extends Type (<a href="example/schema/extends.xml">view extends.xml</a>)</th></tr>
-    <tr><td>
-
-    ```js
-    /* typal example/schema/extends.xml */
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {_test.Test} Test `＠record` The example type.
-     */
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {_ns.ParentType & _test.$Test} _test.Test `＠record` The example type.
-     */
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {Object} _test.$Test `＠record` The example type.
-     * @prop {boolean} [bool] A prop.
-     */
-    ```
-    </td></tr>
-    <tr><td><em>JSDoc</em> typedefs will contain an extra class denoted with <code>$</code> to be able to extend the parent class, because there's no other way to do it: if the typedef had the parent in its type notation (instead of <code>{Object}</code>), then the properties wouldn't be applied. The internal <code>$</code> class is then merged with the parent class using the <code>&</code> symbol which is <em>TypeScript</em>-specific, but understood by <em>VSCode</em> (not part of the <em>JSDoc</em> spec, but should be).</tr></td>
-    <tr><td>
-
-    ```js
-    /* typal example/schema/extends.xml */
-    /** @const */
-    var _test = {}
-    /**
-     * The example type.
-     * @extends {_ns.ParentType}
-     * @record
-     */
-    _test.Test
-    /**
-     * A prop.
-     * @type {boolean|undefined}
-     */
-    _test.Test.prototype.bool
-    ```
-    </td></tr>
-    <tr><td><em>Externs</em> just add the <code>@extends</code> marker when the type is either <code>@constructor</code>, <code>@interface</code> or <code>@record</code>.</tr></td>
-    </table>
-    </details>
-- `closure` [_optional_]: an override of the type when generating doc in closure mode.
-    <details>
-    <summary><strong>Show <a name="closure-override">Closure Override</a></strong></summary>
-
-    <table>
-    <tr><th align="center">Closure Override (<a href="example/schema/closure.xml">view closure.xml</a>)</th></tr>
-    <tr><td>
-
-    ```js
-    /* typal example/schema/closure.xml */
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {_test.Example} Example
-     */
-    /**
-     * @suppress {nonStandardJsDocs}
-     * @typedef {function(string): number} _test.Example
-     */
-    ```
-    </td></tr>
-    <tr><td>In <em>Closure</em> mode, <em>Typal</em> will print the value of the <code>closure</code> property. This is helpful for displaying user-readable documentation in README files, but using the types for compilation. There's no way to use both in source code (i.e., the standard type for <em>VSCode</em> and the closure type for <em>GCC</em>).</tr></td>
-    <tr><td>
-
-    ```js
-    /* typal example/schema/closure.xml */
-    /**
-     * @typedef {(s: string) => number} Example
-     */
-    ```
-    </td></tr>
-    <tr><td>In standard mode, only the <code>type</code> attribute is displayed. This is not compatible with <em>GCC</em>, therefore should only be used for <a href="../../wiki/3-use-cases#jsdoc-approach"><em>JSDoc</em> approach</a> programming.</tr></td>
-    </table>
-    </details>
-
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
-
-### Property
-
-The properties are found inside of the `Type` elements. At the moment, the *must* have a description, otherwise the parsing won't work.
-
-```xml
-<prop
-  name="property"
-  string boolean number type="Type"
-  opt default="The default value"
-  closure="_ns.Type">
-Property Description.
-</prop>
-```
-
-- `name`: the name of the property.
-- `string` [_optional_]: sets the type to be `string`.
-- `boolean` [_optional_]: sets the type to be `boolean`.
-- `number` [_optional_]: sets the type to be `number`.
-- `type` [_optional_]: sets the type of the property. Default `*`.
-- `opt` [_optional_]: whether the property is optional. In externs this will result in `{ prop: (string|undefined) }`.
-- `default` [_optional_]: the default value of the property. Used to add the `Default: value.` to the property description, and `@param {type} [prop=default]` when annotating JS functions.
-- `closure` [_optional_]: an override of the type when generating doc in closure mode.
-
-<table>
-<tr><th>
-  Properties (<a href="example/schema/import.xml">view property.xml</a>)
-</th></tr>
-<tr><td>
+<kbd>📝 [Typal Schema](../../wiki/Schema)</kbd>
 
 ```xml
 <types>
-  <type name="Example">
-    <prop boolean name="boolean">The boolean property.</prop>
-    <prop number name="number">The number property.</prop>
-    <prop string name="string">The string property.</prop>
-    <prop type="Example" name="example">The custom type property.</prop>
-    <prop opt type="Example" name="optional">The optional property.</prop>
-    <prop string name="default" default="hello-world">
-      The default property.
-    </prop>
-    <prop type="Example" closure="_ns.Example" name="closure">
-      The Closure override property.
-    </prop>
+  <import from="http" name="IncomingMessage"
+    link="https://nodejs.org/api/http.html#incoming_message"
+    desc="The readable stream from the connection." />
+
+  <type name="Example" >
+    <prop type="string" name="test">The property.</prop>
+    <fn async args="number" return="boolean">A method property.</fn>
   </type>
 </types>
 ```
-</td></tr>
-<tr><td>The properties are listed inside of types and must have descriptions which are trimmed.</tr></td>
-<tr><td>
 
-```js
-/* typal example/schema/property.xml */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {Object} Example
- * @prop {boolean} boolean The boolean property.
- * @prop {number} number The number property.
- * @prop {string} string The string property.
- * @prop {Example} example The custom type property.
- * @prop {Example} [optional] The optional property.
- * @prop {string} [default="hello-world"] The default property. Default `hello-world`.
- * @prop {_ns.Example} closure The Closure override property.
- */
-```
-</td></tr>
-<tr><td><em>Typal</em> will extract properties from xml file and insert them into <em>JSDoc</em>.</tr></td>
-</table>
-
-
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true"></a></p>
-
-### Import
-
-```xml
-<import
-  name="Type"
-  from="package-name/src"
-  ns="_packageName"
-  link="https://docs.page/package-name"
-  desc="The imported type from another package.">
-</import>
-```
-
-- `name`: the name of the imported type.
-- `from`: the package (`restream`) or path (`restream/src/Rule`) to import from.
-- `ns` [_optional_]: if different from the path, the namespace with which the type will be imported.
-- `link` [_optional_]: the link to display in documentation with _Documentary_.
-- `desc` [_optional_]: the description to print in documentation.
-
-<table>
-<tr><th>
-  Imports (<a href="example/schema/import.xml">view import.xml</a>)
-</th></tr>
-<tr><td>
-
-```js
-/* typal example/schema/import.xml */
-/**
- * @typedef {import('restream').Rule} Rule
- * @typedef {import('restream/src/markers').Marker} Marker
- * @typedef {import('stream').Readable} Readable
- */
-```
-</td></tr>
-<tr><td>In standard mode, <em>Typal</em> does not use namespaces.</tr></td>
-<tr><td>
-
-```js
-/* typal example/schema/import.xml */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {import('restream').Rule} _restream.Rule
- */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {import('restream/src/markers').Marker} _restream.Marker
- */
-/**
- * @suppress {nonStandardJsDocs}
- * @typedef {import('stream').Readable} stream.Readable
- */
-```
-</td></tr>
-<tr><td>In <em>Closure</em> mode, <em>Typal</em> adds namespaces so that they will match externs.</tr></td>
-</table>
-
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
 ## Markdown Documentation
 
@@ -737,7 +454,7 @@ __<a name="type-example">`Example`</a>__: An example type which can link to othe
 | variable-args   | <em>function(...<a href="#type-type" title="A type which can be linked.">Type</a>)</em>                                                                                                                                                   | Functions with `...` for variable argument types.                                 |
 | vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                                                                                                  | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -749,19 +466,19 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
 
 ### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
 
@@ -794,7 +511,7 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/16.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
 
 ### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
 
@@ -1031,7 +748,7 @@ const getFile = async () => {
   Imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/17.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
 Optional And Default
 ---
