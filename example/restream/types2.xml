@@ -7,7 +7,7 @@
     </prop>
     <prop type="(...args:string) => string"
       closure="function(...string): string" name="replacement">
-      The function used to update input.
+      The function to update input.
     </prop>
   </type>
   <type type="!Array<!_restream.Rule>" name="Rules"

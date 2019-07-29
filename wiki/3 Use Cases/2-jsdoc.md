@@ -1,4 +1,4 @@
-_**[JSDoc approach](t)**: Now let's refactor the code that we have, and place the types definitions in the `types.xml` file instead of the source code:_
+_**[JSDoc approach](##)**: Now let's refactor the code that we have, and place the types definitions in the `types.xml` file instead of the source code:_
 
 %EXAMPLE: example/restream/types.xml%
 
@@ -19,7 +19,7 @@ The link to the _Rule_ type was also added to the Table of Contents, however it 
 Another advantage, is that the `Rule` type was expanded into individual properties in JSDoc above the constructor method. It allows to preview all properties and their descriptions when hovering over functions:
 
 <p align="center">
-  <img src="doc/restream3.png" title="JSDoc expansion of properties above functions.">
+  [[restream3.png|alt=JSDoc expansion of properties above functions.]]
 </p>
 
-%~ width="25"%
+%~%

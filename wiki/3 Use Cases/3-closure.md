@@ -1,4 +1,4 @@
-_**[Closure approach](###)**: Finally, if we want to allow our package to be compiled as part of other packages with GCC (or compile a binary from the lib we've written), we need to make sure the JSDoc is in the format that it accepts._
+_**[Closure approach](##)**: Finally, if we want to allow our package to be compiled as part of other packages with GCC (or compile a binary from the lib we've written), we need to make sure the JSDoc is in the format that it accepts._
 
 <table>
 <tr>
@@ -24,10 +24,13 @@ Let's try to compile a program using _GCC_ now (using [_Depack_](https://github.
 <tr><td colspan="2">
 
 ```js
-java -jar google-closure-compiler-java/compiler.jar --compilation_level ADVANCED \
+java -jar google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED \
 --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
---externs @depack/externs/v8/stream.js --externs @depack/externs/v8/events.js \
---externs @depack/externs/v8/global.js --externs @depack/externs/v8/nodejs.js \
+--externs @depack/externs/v8/stream.js \
+--externs @depack/externs/v8/events.js \
+--externs @depack/externs/v8/global.js \
+--externs @depack/externs/v8/nodejs.js \
 --module_resolution NODE --output_wrapper "#!/usr/bin/env node
 'use strict';
 const stream = require('stream');%output%" \
@@ -51,8 +54,9 @@ The command above was generated with _Depack_ call on the right, where:
   <td>
 <em>
 
-```sh
-depack example/restream/program -c -a -p
+```console
+depack example/restream/program \
+       -c -a -p
 ```
 </em>
   </td>
@@ -72,26 +76,25 @@ restream/index2.js:6: WARNING - Bad type annotation. Unknown type Rule
    * @param {Rule} rule The replacement rule.
              ^
 
-restream/index2.js:8: WARNING - Bad type annotation. type not recognized due to syntax error.
-See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler
-for more information.
-   * @param {(...args:string) => string} rule.replacement The function used to update input.
+restream/index2.js:8: WARNING - Bad type annotation. type not recognized
+                      due to syntax error.
+See https://git.io/fjS4y for more information.
+   * @param {(...args:string) => string} rule.replacement The function ...
               ^
 
-restream/index2.js:9: WARNING - Bad type annotation. Unknown type TransformOptions
+restream/index2.js:9: WARNING - Bad type annotation. Unknown type
+                      TransformOptions
    * @param {TransformOptions} [options] Additional options for _Transform_.
              ^
 
 restream/index2.js:25: WARNING - Bad type annotation. expected closing }
-See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler
-for more information.
+See https://git.io/fjS4y for more information.
  * @typedef {import('stream').TransformOptions} TransformOptions
                    ^
 
-restream/index2.js:26: WARNING - Bad type annotation. type annotation incompatible with
-other annotations.
-See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler
-for more information.
+restream/index2.js:26: WARNING - Bad type annotation. type annotation
+                       incompatible with other annotations.
+See https://git.io/fjS4y for more information.
  * @typedef {Object} Rule The replacement rule.
    ^
 ```
@@ -116,7 +119,7 @@ This is because the traditional JSDoc annotation is not compatible with the comp
 <tr><td>
 
 1. Annotate the nullability of our types using **!**, since there's attention to *`null`* in _GCC_, not like traditional JS.
-1. We also add the `closure` property to the `prop` elements to make them use that type instead of the traditional one. Unfortunately, there's no way to use both in code for _VSCode_ and for _GCC_, however we can still use more readable `type` descriptions when generating README documentation.
+1. We also add the `closure` property to the `prop` elements to make them use that type in source code instead of the traditional one. The more readable `type` descriptions are retained to be placed in README documentation. This just means that the `type` attribute is what will be visible in documentation if using _Documentary_, but in code, the `closure` attribute will be used when compiling in _Closure_ mode.
 1. Add the namespace, because we're going to generate externs and if there are other programs that define the _Rule_ extern, there would be a conflict between the two. Adding namespace ensures that the chances of that happening are minimal. In addition, we prefix the namespace with `_` because we'll put it in externs, and if we or people using our library called a variable `restream`, the compiler will think that its related to the extern which it is not because it's a namespace in externs, but an instance of _Restream_ in source code.
 1. Finally, add another type _Rules_ just to illustrate how to reference types across and within namespaces. Although defined in the same namespace, the properties need to give full reference to the type.
 </td></tr>
@@ -141,7 +144,7 @@ The Source Code With [Closure-Compatible JSDoc](t) (<a href="example/restream/co
   There have to be some manual modifications to the source:
 
   - We rename the `@params` to use the namespace and make it non-nullable since it's a thing in _Closure_, i.e., if we don't do it the type of the param will actually be `(restream.Rule|null)`: `@param {_!restream.Rule} rule`;
-  - We also add the namespace to the internal module `@param {!stream.TransformOptions}`, because in _Closure_ the externs are provided for the `stream` namespace.
+  - We also add the namespace to the internal module `@param {!stream.TransformOptions}`, because in _Closure_ the externs are provided for the `stream` namespace by _Depack_.
   <hr/>
 
   The following changes are introduced automatically by _Typal_ after we started using the `--closure` mode:
@@ -159,7 +162,7 @@ The Source Code With [Closure-Compatible JSDoc](t) (<a href="example/restream/co
   * @suppress {nonStandardJsDocs}
   * @typedef {Object} _restream.Rule The replacement rule.
   * @prop {!RegExp} regex The regular expression.
-  * @prop {function(...string): string} replacement The function used to update input.
+  * @prop {function(...string): string} replacement Updates matches.
   */
 ```
 </td></tr>
@@ -190,7 +193,7 @@ The imports are now also suppressed (but the change will hopefully come into eff
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacement rules.
+ * @typedef {!Array<!_restream.Rule>} _restream.Rules Multiple replacements.
  */
 ```
 </td></tr>
@@ -258,4 +261,4 @@ And so that's it! We've successfully compiled our Node.JS program with _Google C
 When writing code that imports types from libraries, we can use the `{import('lib').Type}` notation for _VSCode_ to give us auto-completions, but we need to suppress it. However, because now we're naming imported types with the namespace, _Closure_ will pick them up from externs if it finds it. Packages can publish their externs and point to them using the `externs` field in their **package.json** file, which will be read by _Depack_ and passed to _GCC_ in the `--externs` flag.
 
 <!-- %~ width="25"% -->
-%~%
+<!-- %~% -->

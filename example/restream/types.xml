@@ -6,7 +6,7 @@
       The regular expression.
     </prop>
     <prop type="(...args:string) => string" name="replacement">
-      The function used to update input.
+      Updates matches.
     </prop>
   </type>
 </types>

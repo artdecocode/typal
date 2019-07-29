@@ -5,8 +5,8 @@ export class Restream extends Transform {
    * Sets up a transform stream that updates data using the regular expression.
    * @param {!_restream.Rule} rule The replacement rule.
    * @param {!RegExp} rule.regex The regular expression.
-   * @param {(...args:string) => string} rule.replacement The function used to update input.
-   * @param {!stream.TransformOptions} [options] Additional options for _Transform_.
+   * @param {(...args:string) => string} rule.replacement Updates matches.
+   * @param {!stream.TransformOptions} [options] Additional _Transform_ props.
    */
   constructor(rule, options) {
     super(options)

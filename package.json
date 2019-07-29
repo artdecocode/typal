@@ -15,6 +15,7 @@
     "lint": "eslint .",
     "dev": "alanode src/bin/typal",
     "doc": "NODE_DEBUG=doc doc -o README.md",
+    "wiki": "NODE_DEBUG=doc doc wiki -W ../typal.wiki",
     "b": "alamode src -o build -s -i bin",
     "compile": "depack-dev src/bin/typal -c -o compile/bin -a -p -s",
     "depack1": "depack-dev depack/t.js -c -o t/tt.js -a -p",
