@@ -232,6 +232,9 @@ _ns.Type.prototype.constructor
       r = makeBlock(r)
       r = r + getExternDeclaration(`${this.fullName}.prototype`,
         /** @type {string} */ (p.name))
+      if (p.type.startsWith('function(')) {
+        r += ' = function() {}'
+      }
       return r
     })
     const j = [s, ...t].join('\n')
@@ -389,7 +392,7 @@ const getSpread = (properties = [], closure = false) => {
 export const getLinks = (allTypes, type, opts = {}) => {
   let parsed
   try {
-    parsed = parse(type)
+    parsed = parse(type) // should parse type when added
     if (!parsed) {
       console.log('Could not parse %s', type)
     }

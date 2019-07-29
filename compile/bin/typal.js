@@ -364,7 +364,7 @@ const X = (a, b) => W(new RegExp(`<${a}${Ja.source}?(?:${/\s*\/>/.source}|${(new
   c = Ka(c);
   return {content:d, w:c};
 }), Ka = a => W(Ia, a, ["key", "val", "def", "f"]).reduce((b, {key:c, val:d}) => {
-  if (!d) {
+  if (void 0 === d) {
     return b[c] = !0, b;
   }
   b[c] = "true" == d ? !0 : "false" == d ? !1 : /^\d+$/.test(d) ? parseInt(d, 10) : d;
@@ -665,10 +665,12 @@ ${b.join("\n")}
     return d;
   }, []).map(d => {
     let e = d.I();
-    return e = `/**
+    e = `/**
 ${e}
  */
 ` + U(`${a.g}.prototype`, d.name);
+    d.type.startsWith("function(") && (e += " = function() {}");
+    return e;
   });
   return [b, ...c].join("\n");
 }

@@ -49,3 +49,26 @@ Test.prototype.test
 var Test
 
 /*@*/
+
+## adds a function declaration
+<types>
+  <type record name="Test">
+    <fn args="string" name="syncVoid">
+      A function without return.
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * @record
+ */
+var Test
+/**
+ * A function without return.
+ * @type {function(string): void}
+ */
+Test.prototype.syncVoid = function() {}
+
+/*@*/
