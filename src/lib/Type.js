@@ -99,7 +99,21 @@ _ns.Type.prototype.constructor
         pr.fromXML(c, p)
         return pr
       })
-      this.properties = props
+      const functions = extractTags('function', content)
+      const fns = extractTags('fn', content)
+      const fn = [...functions, ...fns]
+
+      const fnProps = fn.map(({ content: c, props: p }) => {
+        const { 'async': async, 'args': args = '', 'return': ret = 'void', ...rest } = p
+        let r = ret.replace(/\n\s*/g, ' ')
+        r = async ? `!Promise<${r}>` : r
+        const fnType = `function(${args}): ${r}`
+        rest['type'] = fnType
+        const pr = new Property()
+        pr.fromXML(c, rest)
+        return pr
+      })
+      this.properties = [...props, ...fnProps]
     }
     if (namespace) this.namespace = namespace
   }

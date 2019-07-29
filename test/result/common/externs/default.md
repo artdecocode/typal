@@ -28,3 +28,24 @@ var Test
 Test.prototype.test
 
 /*@*/
+
+## can write functions
+<types>
+  <type name="Test">
+    <function async args="string|number" return="!_namecheap.AddressDetail" name="getInfo">
+      Gets information for the requested address ID.
+    </function>
+    <fn args="string" name="syncVoid">
+      A function without return.
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * @typedef {{ getInfo: function(string|number): !Promise<!_namecheap.AddressDetail>, syncVoid: function(string): void }}
+ */
+var Test
+
+/*@*/
