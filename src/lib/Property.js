@@ -115,7 +115,13 @@ export default class Property {
     if (this.parsed && this.parsed.name == 'function') {
       const { function: { args, return: ret } } = this.parsed
       const a = args.map(parsedToString)
-      a.forEach((s, i) => pp.push(` * @param {${s}} arg${i}`))
+      a.forEach((s, i) => {
+        const { optional } = args[i]
+        let arg = `arg${i}`
+        if (optional) arg = `[${arg}]`
+
+        pp.push(` * @param {${s}} ${arg}`)
+      })
       if (ret.name != 'void') {
         const r = parsedToString(ret)
         pp.push(` * @return {${r}}`)

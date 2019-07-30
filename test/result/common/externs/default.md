@@ -98,3 +98,26 @@ Test.prototype.more = function(arg0, arg1) {}
 Test.prototype.np = function() {}
 
 /*@*/
+
+## writes optional args
+<types>
+  <type record name="Test">
+    <fn args="string=" name="syncVoid">
+      A function without return.
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * @record
+ */
+var Test
+/**
+ * A function without return.
+ * @param {string} [arg0]
+ */
+Test.prototype.syncVoid = function(arg0) {}
+
+/*@*/

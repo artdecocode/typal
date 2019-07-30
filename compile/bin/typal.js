@@ -759,7 +759,12 @@ class fb {
     }
     if (this.parsed && "function" == this.parsed.name) {
       const {function:{args:c, return:d}} = this.parsed;
-      c.map(X).forEach((e, f) => a.push(` * @param {${e}} arg${f}`));
+      c.map(X).forEach((e, f) => {
+        const {optional:g} = c[f];
+        f = `arg${f}`;
+        g && (f = `[${f}]`);
+        a.push(` * @param {${e}} ${f}`);
+      });
       "void" != d.name && (b = X(d), a.push(` * @return {${b}}`));
     } else {
       a.push(` * @type {${this.optional ? Ta(this.f) : this.f}}`);
