@@ -116,7 +116,7 @@ Test.prototype.np = function() {}
 var Test
 /**
  * A function without return.
- * @param {string} [arg0]
+ * @param {string=} [arg0]
  */
 Test.prototype.syncVoid = function(arg0) {}
 

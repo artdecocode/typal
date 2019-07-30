@@ -10,5 +10,6 @@
   "parsed": {
     "name": "any"
   },
-  "noParams": false
+  "noParams": false,
+  "args": []
 }

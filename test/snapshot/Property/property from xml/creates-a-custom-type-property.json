@@ -8,5 +8,6 @@
   "optional": true,
   "aliases": [],
   "parsed": null,
-  "noParams": false
+  "noParams": false,
+  "args": []
 }

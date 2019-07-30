@@ -1,6 +1,7 @@
 import extractTags from 'rexml'
 import parse from '@typedefs/parser'
 import Property from './Property'
+import Arg from './Arg'
 import { addSuppress, makeBlock, getExternDeclaration, makeOptional } from './'
 import { getLink, trimD } from './'
 
@@ -104,12 +105,37 @@ _ns.Type.prototype.constructor
       const fn = [...functions, ...fns]
 
       const fnProps = fn.map(({ content: c, props: p }) => {
-        const { 'async': async, 'args': args = '', 'return': ret = 'void', ...rest } = p
+        let ai = c.lastIndexOf('</arg>')
+        let argsArgs = []
+        if (ai != -1) {
+          ai = ai + '</arg>'.length
+          const pre = c.slice(0, ai)
+          c = c.slice(ai)
+          argsArgs = extractTags('arg', pre)
+          argsArgs = argsArgs.map(({ content: ac, props: ap }) => {
+            const ar = new Arg()
+            ar.fromXML(ac, ap)
+            return ar
+          })
+        }
+
+        const { 'async': async, 'return': ret = 'void', ...rest } = p
+        let { 'args': args = '' } = p
+        if (!args && argsArgs.length) {
+          args = argsArgs.map(({ type: at, optional }) => {
+            // optional can also just be set in type, e.g., type="string=",
+            // so check for null and not truthy
+            if (optional !== null) return `${at}=`
+            return at
+          }).join(',')
+        }
+
         let r = ret.replace(/\n\s*/g, ' ')
         r = async ? `!Promise<${r}>` : r
         const fnType = `function(${args}): ${r}`
         rest['type'] = fnType
-        const pr = new Property()
+        const pr = new Property(argsArgs)
+
         pr.fromXML(c, rest)
         return pr
       })
@@ -221,6 +247,7 @@ _ns.Type.prototype.constructor
     //   constr = 'function() {}'
     // }
     s = s + getExternDeclaration(this.namespace, this.name, constr)
+    /** @type {!Array<!Property>} */
     const properties = this.properties.reduce((acc, p) => {
       acc.push(p)
       const a = p.aliases.map(al => p.makeAlias(al))
@@ -234,7 +261,10 @@ _ns.Type.prototype.constructor
         /** @type {string} */ (p.name))
       if (p.parsed && p.parsed.name == 'function') {
         const { function: { args } } = p.parsed
-        const a = args.map((_, i) => `arg${i}`)
+        const a = args.map((_, i) => {
+          const { name = `arg${i}` } = p.args[i] || {}
+          return name
+        })
         r += ` = function(${a.join(', ')}) {}`
       } else if (p.type.startsWith('function(')) {
         r += ' = function() {}'

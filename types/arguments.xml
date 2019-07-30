@@ -16,6 +16,9 @@
   <arg name="types" short="t">
     Comma-separated location of files to read types from.
   </arg>
+  <arg name="template" short="T">
+    Scans the input file for `@type` comment in functions' JSDoc, and inserts the annotations from types' files.
+  </arg>
   <arg boolean name="migrate" short="m">
     Extracts types from JavaScript source code and saves them
     into the types.xml file specified in the output option.

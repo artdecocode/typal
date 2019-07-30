@@ -1,11 +1,16 @@
 import parse from '@typedefs/parser'
 import { getPropType, getNameWithDefault, makeOptional, trimD } from './'
+import Arg from './Arg' // eslint-disable-line
 
 /**
  * Representation of a property of a type.
  */
 export default class Property {
-  constructor() {
+  /**
+   * @param {!Array<!Arg>} [args] If a property was written as a function with inner
+   * <arg> elements, this array will contain parsed entries.
+   */
+  constructor(args = []) {
     /**
      * The name of the property.
      * @type {?string}
@@ -57,6 +62,8 @@ export default class Property {
      */
     this.noParams = false
     this.parsed = null
+
+    this.args = args
   }
   static fromXML(...args) {
     const prop = new Property()
@@ -105,7 +112,25 @@ export default class Property {
     const p = ` * @prop ${t}`
     return p
   }
-  toExtern() {
+  toFunctionJsDoc() {
+    const pp = []
+    const { function: { args, return: ret } } = this.parsed
+    const a = args.map(parsedToString)
+    a.forEach((s, i) => {
+      const { optional } = args[i]
+      const { name = `arg${i}`, description } = this.args[i] || {}
+      const arg = optional ? `[${name}]` : name
+      const d = description ? ` ${description}` : ''
+
+      pp.push(` * @param {${s}${optional ? '=' : ''}} ${arg}${d}`)
+    })
+    if (ret.name != 'void') {
+      const r = parsedToString(ret)
+      pp.push(` * @return {${r}}`)
+    }
+    return pp
+  }
+  toExtern(ws = '') {
     const pp = []
     if (this.description) {
       let d = indentWithAster(this.description)
@@ -113,24 +138,13 @@ export default class Property {
       pp.push(d)
     }
     if (this.parsed && this.parsed.name == 'function') {
-      const { function: { args, return: ret } } = this.parsed
-      const a = args.map(parsedToString)
-      a.forEach((s, i) => {
-        const { optional } = args[i]
-        let arg = `arg${i}`
-        if (optional) arg = `[${arg}]`
-
-        pp.push(` * @param {${s}} ${arg}`)
-      })
-      if (ret.name != 'void') {
-        const r = parsedToString(ret)
-        pp.push(` * @return {${r}}`)
-      }
+      const lines = this.toFunctionJsDoc()
+      pp.push(...lines)
     } else {
       const t = this.optional ? makeOptional(this.closureType) : this.closureType
       pp.push(` * @type {${t}}`)
     }
-    return pp.join('\n')
+    return pp.map(p => `${ws}${p}`).join('\n')
   }
   toParam(parentParam, ws = '', closure = false) {
     const s = this.toJSDoc(parentParam, closure)

@@ -10,5 +10,6 @@
   "parsed": {
     "name": "string"
   },
-  "noParams": false
+  "noParams": false,
+  "args": []
 }

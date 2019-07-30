@@ -21,7 +21,8 @@
       "parsed": {
         "name": "string"
       },
-      "noParams": false
+      "noParams": false,
+      "args": []
     },
     {
       "name": "maxage",
@@ -33,7 +34,8 @@
       "optional": true,
       "aliases": [],
       "parsed": null,
-      "noParams": false
+      "noParams": false,
+      "args": []
     }
   ],
   "namespace": null,

@@ -2,6 +2,7 @@ import extractTags from 'rexml'
 import Type from './Type'
 import Import from './Import'
 import { trimD } from './'
+import read from '@wrote/read'
 
 /**
  * Parse the types.xml file.
@@ -64,3 +65,20 @@ const parseFile = (xml, rootNamespace) => {
 }
 
 export default parseFile
+
+/**
+ * @param {string} path
+ */
+export const readTypesFile = async (path, ignore = []) => {
+  const xml = await read(path)
+  let { namespace = null, types, imports } = parseFile(xml)
+  types = types.filter(({ fullName }) => {
+    if (ignore.includes(fullName)) return false
+    return true
+  })
+  imports = imports.filter(({ fullName }) => {
+    if (ignore.includes(fullName)) return false
+    return true
+  })
+  return { types, imports, namespace }
+}

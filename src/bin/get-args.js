@@ -24,6 +24,10 @@ export const argsConfig = {
     description: 'Comma-separated location of files to read types from.',
     short: 't',
   },
+  'template': {
+    description: 'Scans the input file for `@type` comment in functions\' JSDoc, and inserts the annotations from types\' files.',
+    short: 'T',
+  },
   'migrate': {
     description: 'Extracts types from JavaScript source code and saves them\ninto the types.xml file specified in the output option.',
     boolean: true,
@@ -68,6 +72,11 @@ export const _externs = /** @type {boolean} */ (args['externs'])
  * Comma-separated location of files to read types from.
  */
 export const _types = /** @type {string} */ (args['types'])
+
+/**
+ * Scans the input file for `@type` comment in functions' JSDoc, and inserts the annotations from types' files.
+ */
+export const _template = /** @type {string} */ (args['template'])
 
 /**
  * Extracts types from JavaScript source code and saves them
