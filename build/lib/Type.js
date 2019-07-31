@@ -1,6 +1,7 @@
 const extractTags = require('rexml');
 const parse = require('@typedefs/parser');
 const Property = require('./Property');
+const Arg = require('./Arg');
 const { addSuppress, makeBlock, getExternDeclaration, makeOptional } = require('./');
 const { getLink, trimD } = require('./');
 
@@ -104,11 +105,37 @@ _ns.Type.prototype.constructor
       const fn = [...functions, ...fns]
 
       const fnProps = fn.map(({ content: c, props: p }) => {
-        const { 'async': async, 'args': args = '', 'return': ret = 'void', ...rest } = p
-        let r = async ? `!Promise<${ret}>` : ret
+        let ai = c.lastIndexOf('</arg>')
+        let argsArgs = []
+        if (ai != -1) {
+          ai = ai + '</arg>'.length
+          const pre = c.slice(0, ai)
+          c = c.slice(ai)
+          argsArgs = extractTags('arg', pre)
+          argsArgs = argsArgs.map(({ content: ac, props: ap }) => {
+            const ar = new Arg()
+            ar.fromXML(ac, ap)
+            return ar
+          })
+        }
+
+        const { 'async': async, 'return': ret = 'void', ...rest } = p
+        let { 'args': args = '' } = p
+        if (!args && argsArgs.length) {
+          args = argsArgs.map(({ type: at, optional }) => {
+            // optional can also just be set in type, e.g., type="string=",
+            // so check for null and not truthy
+            if (optional !== null) return `${at}=`
+            return at
+          }).join(',')
+        }
+
+        let r = ret.replace(/\n\s*/g, ' ')
+        r = async ? `!Promise<${r}>` : r
         const fnType = `function(${args}): ${r}`
         rest['type'] = fnType
-        const pr = new Property()
+        const pr = new Property(argsArgs)
+
         pr.fromXML(c, rest)
         return pr
       })
@@ -220,6 +247,7 @@ _ns.Type.prototype.constructor
     //   constr = 'function() {}'
     // }
     s = s + getExternDeclaration(this.namespace, this.name, constr)
+    /** @type {!Array<!Property>} */
     const properties = this.properties.reduce((acc, p) => {
       acc.push(p)
       const a = p.aliases.map(al => p.makeAlias(al))
@@ -231,6 +259,16 @@ _ns.Type.prototype.constructor
       r = makeBlock(r)
       r = r + getExternDeclaration(`${this.fullName}.prototype`,
         /** @type {string} */ (p.name))
+      if (p.parsed && p.parsed.name == 'function') {
+        const { function: { args } } = p.parsed
+        const a = args.map((_, i) => {
+          const { name = `arg${i}` } = p.args[i] || {}
+          return name
+        })
+        r += ` = function(${a.join(', ')}) {}`
+      } else if (p.type.startsWith('function(')) {
+        r += ' = function() {}'
+      }
       return r
     })
     const j = [s, ...t].join('\n')
@@ -267,14 +305,18 @@ _ns.Type.prototype.constructor
   }
 
   /**
+   * Converts a type to a markdown string.
    * @param {!Array<!Type>} [allTypes]
    * @param {!Object} [opts]
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
    * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
    * @param {function()} [opts.link] A function to call for extra processing of links.
+   * @param {!Array<string>} [details] An array of types that should be displayed as details.
+   * @todo open-details
    */
   toMarkdown(allTypes = [], opts = {}) {
-    const { narrow, flatten, preprocessDesc, link } = opts
+    const { narrow, flatten, preprocessDesc, link, details = [] } = opts
+    const displayInDetails = details.includes(this.name)
     const t = this.type ? `\`${this.type}\`` : ''
     let typeWithLink = t, useCode = false
     if (this.link) {
@@ -336,9 +378,9 @@ _ns.Type.prototype.constructor
       preprocessDesc,
       link,
     })
-    if (narrow) return { LINE, table }
-    const r = `${LINE}${table}`
-    return r
+    return { LINE, table, displayInDetails } // delegate rendering to typal
+    // const r = `${LINE}${table}`
+    // return r
   }
 }
 
@@ -388,7 +430,7 @@ const getSpread = (properties = [], closure = false) => {
 const getLinks = (allTypes, type, opts = {}) => {
   let parsed
   try {
-    parsed = parse(type)
+    parsed = parse(type) // should parse type when added
     if (!parsed) {
       console.log('Could not parse %s', type)
     }
@@ -592,4 +634,5 @@ const getLinkToType = (allTypes, type) => {
 
 module.exports = Type
 module.exports.getLinks = getLinks
+module.exports.parsedToString = parsedToString
 module.exports.makePropsTable = makePropsTable

@@ -9,7 +9,8 @@ export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
 
     const all = [...Imports, ...types]
     return all.map((t) => {
-      return t.toMarkdown(all, this.preamble)
+      const { table, LINE } =  t.toMarkdown(all, this.preamble)
+      return `${LINE}${table}`
     }).join('\n')
   },
   jsProps: ['preamble'],
@@ -22,13 +23,11 @@ export const narrow = makeTestSuite('test/result/Type/narrow', {
 
     const all = [...Imports, ...types]
     const res = all.map((t) => {
-      const m = t.toMarkdown(all, { narrow: true })
-      if (m.table) {
-        m.table.props.forEach(a => {
-          a.prop = { ...a.prop }
-        })
-      }
-      return m
+      const { table, LINE } = t.toMarkdown(all, { narrow: true })
+      if (table) table.props.forEach(a => {
+        a.prop = { ...a.prop }
+      })
+      return { LINE, table }
     })
     return res
     // return JSON.stringify(res, null, 2)

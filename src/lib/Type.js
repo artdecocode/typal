@@ -305,14 +305,18 @@ _ns.Type.prototype.constructor
   }
 
   /**
+   * Converts a type to a markdown string.
    * @param {!Array<!Type>} [allTypes]
    * @param {!Object} [opts]
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
    * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
    * @param {function()} [opts.link] A function to call for extra processing of links.
+   * @param {!Array<string>} [opts.details] An array of types that should be displayed as details.
+   * @todo open-details
    */
   toMarkdown(allTypes = [], opts = {}) {
-    const { narrow, flatten, preprocessDesc, link } = opts
+    const { narrow, flatten, preprocessDesc, link, details = [] } = opts
+    const displayInDetails = details.includes(this.name)
     const t = this.type ? `\`${this.type}\`` : ''
     let typeWithLink = t, useCode = false
     if (this.link) {
@@ -374,9 +378,9 @@ _ns.Type.prototype.constructor
       preprocessDesc,
       link,
     })
-    if (narrow) return { LINE, table }
-    const r = `${LINE}${table}`
-    return r
+    return { LINE, table, displayInDetails } // delegate rendering to typal
+    // const r = `${LINE}${table}`
+    // return r
   }
 }
 

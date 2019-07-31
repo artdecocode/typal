@@ -2,6 +2,7 @@ const extractTags = require('rexml');
 const Type = require('./Type');
 const Import = require('./Import');
 const { trimD } = require('./');
+let read = require('@wrote/read'); if (read && read.__esModule) read = read.default;
 
 /**
  * Parse the types.xml file.
@@ -64,3 +65,22 @@ const parseFile = (xml, rootNamespace) => {
 }
 
 module.exports=parseFile
+
+/**
+ * @param {string} path
+ */
+const readTypesFile = async (path, ignore = []) => {
+  const xml = await read(path)
+  let { namespace = null, types, imports } = parseFile(xml)
+  types = types.filter(({ fullName }) => {
+    if (ignore.includes(fullName)) return false
+    return true
+  })
+  imports = imports.filter(({ fullName }) => {
+    if (ignore.includes(fullName)) return false
+    return true
+  })
+  return { types, imports, namespace }
+}
+
+module.exports.readTypesFile = readTypesFile

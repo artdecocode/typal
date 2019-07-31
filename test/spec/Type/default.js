@@ -119,17 +119,20 @@ const TypeToMarkdown = {
   context,
   'writes a markdown without props'({ t, name, desc }) {
     t.fromXML('', { name, desc })
-    const res = t.toMarkdown()
+    const { LINE, table } = t.toMarkdown()
+    const res = `${LINE}${table}`
     equal(res, '__[`Type`](t-type)__: A test type.')
   },
   'writes a markdown with a type'({ t, name, desc, type }) {
     t.fromXML('', { name, desc, type })
-    const res = t.toMarkdown()
+    const { LINE, table } = t.toMarkdown()
+    const res = `${LINE}${table}`
     equal(res, '`Object` __[`Type`](t-type)__: A test type.')
   },
   'writes a markdown with props'({ t, name, desc, content }) {
     t.fromXML(content, { name, desc })
-    const res = t.toMarkdown()
+    const { LINE, table } = t.toMarkdown()
+    const res = `${LINE}${table}`
     return res
   },
 }

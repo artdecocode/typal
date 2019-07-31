@@ -30,7 +30,8 @@
               "nullable": false,
               "name": "stream.Readable"
             },
-            "noParams": false
+            "noParams": false,
+            "args": []
           },
           "typeName": "[!stream.Readable](#type-streamreadable)",
           "name": "p*",

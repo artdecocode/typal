@@ -1382,7 +1382,7 @@ class Yb extends O {
   if (b.isFile()) {
     var c = [a];
   } else {
-    b.isDirectory() && (c = await L(a), c = M(c.content, a), c = c.map(d => d.endsWith(".xml")));
+    b.isDirectory() && (c = await L(a), c = M(c.content, a), c = c.filter(d => d.endsWith(".xml")));
   }
   return c;
 }, $b = async a => (await Promise.all(a.map(async b => {
