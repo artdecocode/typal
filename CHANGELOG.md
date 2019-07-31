@@ -1,3 +1,21 @@
+## 31 July 2019
+
+### [1.18.0](https://github.com/artdecocode/typal/compare/v1.17.0...v1.18.0)
+
+- [feature] Generate source code from template
+- [feature] Update XML schema to specify properties which are functions and their args with `<args>`.
+- [feature] Create externs in form of
+    ```js
+    /**
+     * Fn desc.
+     * @param {string} param1 Arg1 Desc
+     * @param {boolean} param2 Arg2 Desc
+     */
+    _ns.Type.prototype.fn = function(param1, param2)
+    ```
+- [doc] Move some documentation to wiki.
+- [API] `Type.toMarkdown` now always returns _{ LINE, table }_.
+
 ## 29 July 2019
 
 ### [1.17.0](https://github.com/artdecocode/typal/compare/v1.16.0...v1.17.0)

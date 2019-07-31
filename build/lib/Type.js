@@ -311,7 +311,7 @@ _ns.Type.prototype.constructor
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
    * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
    * @param {function()} [opts.link] A function to call for extra processing of links.
-   * @param {!Array<string>} [details] An array of types that should be displayed as details.
+   * @param {!Array<string>} [opts.details] An array of types that should be displayed as details.
    * @todo open-details
    */
   toMarkdown(allTypes = [], opts = {}) {
