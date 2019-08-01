@@ -9,5 +9,6 @@
   "aliases": [],
   "parsed": null,
   "noParams": false,
-  "args": []
+  "args": [],
+  "staticMethod": false
 }

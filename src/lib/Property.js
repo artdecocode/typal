@@ -64,6 +64,11 @@ export default class Property {
     this.parsed = null
 
     this.args = args
+
+    /**
+     * Whether this property is a static method.
+     */
+    this.staticMethod = false
   }
   static fromXML(...args) {
     const prop = new Property()

@@ -3,6 +3,20 @@ const Type = require('./Type');
 const Import = require('./Import');
 const { trimD } = require('./');
 let read = require('@wrote/read'); if (read && read.__esModule) read = read.default;
+const { extractArgs } = require('./Arg');
+
+/**
+ * @param {string} namespace
+ * @param {Type} type
+ */
+const removeNamespace = (namespace, type) => {
+  const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
+  type.properties.forEach((p) => {
+    p.type = p.type.replace(s, '$1')
+  })
+  if (type.type) type.type = type.type.replace(s, '$1')
+  if (type.extends) type.extends = type.extends.replace(s, '$1')
+}
 
 /**
  * Parse the types.xml file.
@@ -25,16 +39,39 @@ const parseFile = (xml, rootNamespace) => {
   const types = typeTags.map(({ content, props }) => {
     const type = new Type()
     type.fromXML(content, props, ns)
-    if (rootNamespace) {
-      const s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')
-      type.properties.forEach((p) => {
-        p.type = p.type.replace(s, '$1')
-      })
-      if (type.type) type.type = type.type.replace(s, '$1')
-      if (type.extends) type.extends = type.extends.replace(s, '$1')
-    }
     return type
   })
+
+  const interfaceTags = extractTags('interface', Root)
+  const interfaces = interfaceTags.map(({ content, props }) => {
+    const type = new Type()
+    const i = content.search(/<(prop|function|fn|static) /)
+    let prebody = '', body = content
+    if (i != 1) {
+      prebody = content.slice(0, i)
+      body = content.slice(i)
+    }
+    const { argsArgs } = extractArgs(prebody)
+
+    // let { 'args': args = '', ...rest } = props
+    // if (!args && argsArgs.length) {
+    //   args = argsArgs.map(({ type: at, optional }) => {
+    //     if (optional !== null) return `${at}=`
+    //     return at
+    //   }).join(',')
+    // }
+    // const assignment = `function(${args})`
+
+    type.fromXML(body, props, ns)
+    type.setAssignment(argsArgs)
+    type.isInterface = true
+
+    return type
+  })
+  let allTypes = [...types, ...interfaces]
+  if (rootNamespace) allTypes.forEach(t => removeNamespace(
+    /** @type {string} */ (rootNamespace), t
+  ))
 
   const imports = extractTags('import', Root)
     .map(({ props, content }) => {
@@ -61,7 +98,7 @@ const parseFile = (xml, rootNamespace) => {
       return type
     })
 
-  return { namespace, types, imports, Imports }
+  return { namespace, types: allTypes, imports, Imports }
 }
 
 module.exports=parseFile

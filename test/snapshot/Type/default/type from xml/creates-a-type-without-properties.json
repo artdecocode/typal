@@ -13,5 +13,6 @@
   "isConstructor": false,
   "isInterface": false,
   "isRecord": false,
-  "extends": null
+  "extends": null,
+  "_args": null
 }

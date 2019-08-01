@@ -11,5 +11,6 @@
     "name": "string"
   },
   "noParams": false,
-  "args": []
+  "args": [],
+  "staticMethod": false
 }

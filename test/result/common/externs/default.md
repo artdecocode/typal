@@ -121,3 +121,54 @@ var Test
 Test.prototype.syncVoid = function(arg0) {}
 
 /*@*/
+
+## writes static methods and interfaces
+<types>
+  <interface name="Test" desc="testing">
+    <arg boolean name="test">What to test.</arg>
+    <static args="string=" name="syncVoid">
+      A static method.
+    </static>
+  </interface>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * testing
+ * @param {boolean} test What to test.
+ * @interface
+ */
+var Test = function(test) {}
+/**
+ * A static method.
+ * @param {string=} [arg0]
+ */
+Test.syncVoid = function(arg0) {}
+
+/*@*/
+
+## writes interfaces with functions with args
+<types>
+  <interface name="Test" desc="testing">
+    <arg boolean name="test">What to test.</arg>
+    <function args="string=" name="syncVoid">
+      <arg string name="test">Example</arg>
+    </function>
+  </interface>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * testing
+ * @param {boolean} test What to test.
+ * @interface
+ */
+var Test = function(test) {}
+/**
+ * @param {string=} [test] Example
+ */
+Test.prototype.syncVoid = function(test) {}
+
+/*@*/

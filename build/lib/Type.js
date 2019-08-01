@@ -1,9 +1,9 @@
 const extractTags = require('rexml');
 const parse = require('@typedefs/parser');
 const Property = require('./Property');
-const Arg = require('./Arg');
 const { addSuppress, makeBlock, getExternDeclaration, makeOptional } = require('./');
 const { getLink, trimD } = require('./');
+const Arg = require('./Arg'); const { extractArgs } = Arg;
 
 /**
  * A representation of a type.
@@ -69,6 +69,16 @@ _ns.Type.prototype.constructor
      * @type {?string}
      */
     this.extends = null
+
+    // /**
+    //  * The assignment arguments for constructors, interfaces, e.g., "string, number="
+    //  * @type {?string}
+    //  */
+    // this._assignmentString = null
+    /**
+     * @type {Array<!Arg>}
+     */
+    this._args = null
   }
   /**
    * Create type from the xml content and properties parsed with `rexml`.
@@ -102,25 +112,18 @@ _ns.Type.prototype.constructor
       })
       const functions = extractTags('function', content)
       const fns = extractTags('fn', content)
-      const fn = [...functions, ...fns]
+      const staticMethods = extractTags('static', content).map(a => {
+        a['isStatic'] = true
+        return a
+      })
+      const fn = [...functions, ...fns, ...staticMethods]
 
-      const fnProps = fn.map(({ content: c, props: p }) => {
-        let ai = c.lastIndexOf('</arg>')
-        let argsArgs = []
-        if (ai != -1) {
-          ai = ai + '</arg>'.length
-          const pre = c.slice(0, ai)
-          c = c.slice(ai)
-          argsArgs = extractTags('arg', pre)
-          argsArgs = argsArgs.map(({ content: ac, props: ap }) => {
-            const ar = new Arg()
-            ar.fromXML(ac, ap)
-            return ar
-          })
-        }
+      const fnProps = fn.map(({ content: c, props: p, 'isStatic': isStatic }) => {
+        const { newContent, argsArgs } = extractArgs(c)
 
         const { 'async': async, 'return': ret = 'void', ...rest } = p
         let { 'args': args = '' } = p
+
         if (!args && argsArgs.length) {
           args = argsArgs.map(({ type: at, optional }) => {
             // optional can also just be set in type, e.g., type="string=",
@@ -133,10 +136,11 @@ _ns.Type.prototype.constructor
         let r = ret.replace(/\n\s*/g, ' ')
         r = async ? `!Promise<${r}>` : r
         const fnType = `function(${args}): ${r}`
-        rest['type'] = fnType
+        rest['type'] = fnType // e.g., a prop will have type `function()`
         const pr = new Property(argsArgs)
 
-        pr.fromXML(c, rest)
+        pr.fromXML(newContent, rest)
+        if (isStatic) pr.staticMethod = true
         return pr
       })
       this.properties = [...props, ...fnProps]
@@ -145,6 +149,18 @@ _ns.Type.prototype.constructor
   }
   get shouldPrototype() {
     return this.isConstructor || this.isInterface || this.isRecord
+  }
+  /**
+   * When printing to externs, this is the right-hand part.
+   * Used in constructors, interfaces.
+   * @example
+   * _ns.Type = function(paramA, paramB)
+   * @param {!Array<!Arg>} array The parsed arguments
+   */
+  // * @param {string} string The inner arguments part as string
+  setAssignment(array) {
+    // this._assignmentString = string
+    this._args = array
   }
   toExtern() {
     let s
@@ -240,12 +256,16 @@ _ns.Type.prototype.constructor
     const pp = []
     if (this.description) pp.push(` * ${this.description}`)
     if (this.extends) pp.push(` * @extends {${this.extends}}`)
+    if (this._args) this._args.forEach((s) => {
+      const { name, description, optional, type } = s
+      const arg = optional ? `[${name}]` : name
+      const d = description ? ` ${description}` : ''
+
+      pp.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
+    })
+    const constr = this._args ? `function(${this._args.map(({ name }) => name)}) {}` : null
     pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
-    let constr
-    // if (this.isConstructor || this.isInterface) {
-    //   constr = 'function() {}'
-    // }
     s = s + getExternDeclaration(this.namespace, this.name, constr)
     /** @type {!Array<!Property>} */
     const properties = this.properties.reduce((acc, p) => {
@@ -257,7 +277,8 @@ _ns.Type.prototype.constructor
     const t = properties.map((p) => {
       let r = p.toExtern()
       r = makeBlock(r)
-      r = r + getExternDeclaration(`${this.fullName}.prototype`,
+      const prototype = p.staticMethod ? '' : '.prototype'
+      r = r + getExternDeclaration(`${this.fullName}${prototype}`,
         /** @type {string} */ (p.name))
       if (p.parsed && p.parsed.name == 'function') {
         const { function: { args } } = p.parsed

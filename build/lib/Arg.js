@@ -1,3 +1,4 @@
+const extractTags = require('rexml');
 const { trimD, getPropType } = require('./');
 
 class Arg {
@@ -23,5 +24,27 @@ class Arg {
   }
 }
 
+/**
+ * @param {string} content
+ */
+const extractArgs = (content) => {
+  let ai = content.lastIndexOf('</arg>')
+  let newContent = content
+  /** @type {!Array<!Arg>} */
+  let argsArgs = []
+  if (ai != -1) {
+    ai = ai + '</arg>'.length
+    const pre = content.slice(0, ai)
+    newContent = content.slice(ai)
+    argsArgs = extractTags('arg', pre)
+    argsArgs = argsArgs.map(({ content: ac, props: ap }) => {
+      const ar = new Arg()
+      ar.fromXML(ac, ap)
+      return ar
+    })
+  }
+  return { newContent, argsArgs }
+}
 
 module.exports = Arg
+module.exports.extractArgs = extractArgs

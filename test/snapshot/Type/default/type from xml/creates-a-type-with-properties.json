@@ -22,7 +22,8 @@
         "name": "string"
       },
       "noParams": false,
-      "args": []
+      "args": [],
+      "staticMethod": false
     },
     {
       "name": "maxage",
@@ -35,12 +36,14 @@
       "aliases": [],
       "parsed": null,
       "noParams": false,
-      "args": []
+      "args": [],
+      "staticMethod": false
     }
   ],
   "namespace": null,
   "isConstructor": false,
   "isInterface": false,
   "isRecord": false,
-  "extends": null
+  "extends": null,
+  "_args": null
 }
