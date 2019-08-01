@@ -25,10 +25,14 @@ export default class Template extends Replaceable {
             throw new Error('The @fnType should consist of _namespace.Type.propName or Type.propName')
           }
           const type = types.find(({ fullName }) => fullName == n)
-          // also print location
+          // also print line:col location
           if (!type) {
             console.error('Type %s in %s not found', n, file)
             return match
+          }
+          if (pr == 'constructor') {
+            const lines = type.toHeading(ws)
+            return lines.join('\n')
           }
           const fn = type.properties.find(({ name }) => {
             return name == pr
@@ -39,10 +43,6 @@ export default class Template extends Replaceable {
           }
           if (!fn.parsed) {
             console.error('Property %s of type %s in %s wasn\'t parsed, possibly parser bug.', pr, n, file)
-            return match
-          }
-          if (!fn.parsed.function) {
-            console.error('Property %s of type %s in %s is not a function.', pr, n, file)
             return match
           }
           const lines = fn.toExtern(ws)

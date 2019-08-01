@@ -249,20 +249,29 @@ _ns.Type.prototype.constructor
     if (this.isRecord) return 'record'
     return ''
   }
+
   /**
-   * Only used in externs.
+   * To heading above declaration bodies.
    */
-  toPrototype() {
-    const pp = []
-    if (this.description) pp.push(` * ${this.description}`)
-    if (this.extends) pp.push(` * @extends {${this.extends}}`)
+  toHeading(ws = '') {
+    let lines = []
+    if (this.description) lines.push(` * ${this.description}`)
+    if (this.extends) lines.push(` * @extends {${this.extends}}`)
     if (this._args) this._args.forEach((s) => {
       const { name, description, optional, type } = s
       const arg = optional ? `[${name}]` : name
       const d = description ? ` ${description}` : ''
 
-      pp.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
+      lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
+    if (ws) lines = lines.map(p => `${ws}${p}`)
+    return lines
+  }
+  /**
+   * Only used in externs.
+   */
+  toPrototype() {
+    const pp = this.toHeading()
     const constr = this._args ? `function(${this._args.map(({ name }) => name)}) {}` : null
     pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))

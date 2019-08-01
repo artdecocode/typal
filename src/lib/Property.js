@@ -136,7 +136,7 @@ export default class Property {
     return pp
   }
   toExtern(ws = '') {
-    const pp = []
+    let pp = []
     if (this.description) {
       let d = indentWithAster(this.description)
       if (this.default) d += ` Default \`${this.default}\`.`
@@ -149,7 +149,8 @@ export default class Property {
       const t = this.optional ? makeOptional(this.closureType) : this.closureType
       pp.push(` * @type {${t}}`)
     }
-    return pp.map(p => `${ws}${p}`).join('\n')
+    if (ws) pp = pp.map(p => `${ws}${p}`)
+    return pp.join('\n')
   }
   toParam(parentParam, ws = '', closure = false) {
     const s = this.toJSDoc(parentParam, closure)
