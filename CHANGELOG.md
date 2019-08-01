@@ -1,3 +1,9 @@
+## 1 August 2019
+
+### [1.19.0](https://github.com/artdecocode/typal/compare/v1.18.0...v1.19.0)
+
+- [feature] Static methods and interfaces in schema.
+
 ## 31 July 2019
 
 ### [1.18.0](https://github.com/artdecocode/typal/compare/v1.17.0...v1.18.0)
