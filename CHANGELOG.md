@@ -1,3 +1,9 @@
+## 3 August 2019
+
+### [1.19.2](https://github.com/artdecocode/typal/compare/v1.19.1...v1.19.2)
+
+- [deps] Install missing `@wrote/read`.
+
 ## 1 August 2019
 
 ### [1.19.1](https://github.com/artdecocode/typal/compare/v1.19.0...v1.19.1)
