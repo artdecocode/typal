@@ -20,6 +20,7 @@ async function replacement(match, docOrTypal, location) {
   const argsExterns = args.includes('externs')
   const noSuppress = args.includes('noSuppress')
   const skipNsDecl = args.includes('skipNsDecl')
+  const useNamespace = args.includes('namespace')
 
   let ignore = args.find((a) => {
     return a.startsWith('ignore:')
@@ -43,6 +44,9 @@ async function replacement(match, docOrTypal, location) {
     } else if (externs) {
       block = externsJoinTypes(types, namespace, this.namespaces, skipNsDecl) + '\n'
       if (namespace) this.emit('namespace', namespace)
+    } else if (useNamespace) {
+      if (namespace) this.emit('namespace', namespace)
+      block = joinTypes(imports, types, true)
     } else {
       block = joinTypes(imports, types)
     }
@@ -64,13 +68,14 @@ const typedefRule = {
 
 /**
  * Creates a single typedef block from all imports and types.
- * @param {Array<Import>} imports
- * @param {Array<Type>} types
+ * @param {!Array<!Import>} imports
+ * @param {!Array<!Type>} types
+ * @param {boolean} [useNamespace]
  */
-const joinTypes = (imports, types) => {
-  const ts = types.map(tt => tt.toTypedef())
+const joinTypes = (imports, types, useNamespace = false) => {
+  const ts = types.map(tt => tt.toTypedef(false, false, useNamespace))
 
-  const is = imports.map((i) => i.toTypedef(false))
+  const is = imports.map((i) => i.toTypedef(useNamespace))
 
   const iss = is.map(makeBlock).join('')
   const tss = ts.join('')

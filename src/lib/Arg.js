@@ -1,3 +1,4 @@
+// import parse from '@typedefs/parser'
 import extractTags from 'rexml'
 import { trimD, getPropType } from './'
 
@@ -21,8 +22,44 @@ export default class Arg {
     const t = getPropType({ number, string, boolean, type })
     this.type = t
     if (opt) this.optional = true
+    // /**
+    //  * @type {_typedefsParser.Type}
+    //  */
+    // this.parsed = null
+    // try {
+    //   this.parsed = parse(this.closureType)
+    // } catch (err) { /* ok */
+    // }
   }
+  // get isParsedFunction() {
+  //   return this.parsed && this.parsed.name == 'function'
+  // }
+  // toTypescriptType() {
+  //   if (this.isParsedFunction) {
+  //     const { function: { args, return: ret } } = this.parsed 
+  //     return `(${
+  //       args.map(({ name, type, optional }) => {
+  //         return `${name}${optional ? '?' : ''}: ${type}`
+  //         // return type + (optional ? '=' : '')
+  //       }).join(', ')
+  //     }) => ${ret}`
+  //   }
+  //   return this.type
+  // }
 }
+
+// /**
+//  * @param {_typedefsParser.Type} type
+//  */
+// const typeToTypescript = (type) => {
+//   const { function,   } = type
+//   return `(${
+//     args.map(({ name, type, optional }) => {
+//       return `${name}${optional ? '?' : ''}: ${type}`
+//       // return type + (optional ? '=' : '')
+//     }).join(', ')
+//   }) => ${ret}`
+// }
 
 /**
  * @param {string} content
@@ -45,3 +82,8 @@ export const extractArgs = (content) => {
   }
   return { newContent, argsArgs }
 }
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type
+ */

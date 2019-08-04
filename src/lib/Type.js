@@ -75,7 +75,7 @@ _ns.Type.prototype.constructor
      * @type {boolean}
      * If the type is a method.
      */
-    this.isMethod = false
+    this._isMethod = false
 
     // /**
     //  * The assignment arguments for constructors, interfaces, e.g., "string, number="
@@ -162,8 +162,13 @@ _ns.Type.prototype.constructor
     if (namespace) this.namespace = namespace
     if (methodReturn) this.methodReturn = methodReturn
   }
+  /** @param {boolean} value */
+  set isMethod(value) { // set by parse.js
+    if (!this._args) throw new Error('Args expected.')
+    this._isMethod = value
+  }
   get shouldPrototype() {
-    return this.isConstructor || this.isInterface || this.isRecord || this.isMethod
+    return this.isConstructor || this.isInterface || this.isRecord || this._isMethod
   }
   /**
    * When printing to externs, this is the right-hand part.
@@ -194,15 +199,41 @@ _ns.Type.prototype.constructor
     // constructor
     return this.toPrototype()
   }
-  getFullNameForExtends(closure) {
+  /**
+   * @param {boolean} [useNamespace=false]
+   */
+  getFullNameForExtends(useNamespace = false) {
     const name = `${this.extends ? '$' : ''}${this.name}`
-    const n = closure ? `${this.ns}${name}` : name
+    const n = useNamespace ? `${this.ns}${name}` : name
     return n
   }
-  /** This covers both when extending and when not. */
-  toNaturalTypedef(closure, noSuppress) {
-    const t = (closure ? this.closureType : this.type) || 'Object'
-    const dd = ` ${this.getFullNameForExtends(closure)}${this.descriptionWithTag}`
+  /**
+   * Used to generate types of **methods** when args were set using `setAssignment`.
+   * If closure type or type were specified, they will override it.
+   * For non-methods, simply returns Object.
+   * @todo decouple closure and usage of namespaces.
+   */
+  getTypedefType() {
+    if (!this._isMethod) return 'Object'
+
+    const ret = this.methodReturn || 'void'
+    return `(${
+      this._args.map(({ name, type, optional }) => {
+        return `${name}${optional ? '?' : ''}: ${type}`
+        // return type + (optional ? '=' : '')
+      }).join(', ')
+    }) => ${ret}`
+  }
+  /** 
+   * Used to generate typedefs, but not externs.
+   * This covers both when extending and when not.
+   * @param {boolean} [closure=false]
+   * @param {boolean} [noSuppress=false]
+   * @param {boolean} [useNamespace=false]
+   */
+  toNaturalTypedef(closure = false, noSuppress = false, useNamespace = closure) {
+    const t = (closure ? this.closureType : this.type) || this.getTypedefType()
+    const dd = ` ${this.getFullNameForExtends(useNamespace)}${this.descriptionWithTag}`
     const s = ` * @typedef {${t}}${dd}`
     const properties = this.properties ? this.properties.reduce((acc, p) => {
       acc.push(p)
@@ -211,7 +242,7 @@ _ns.Type.prototype.constructor
       return acc
     }, []) : []
     const p = properties.map((pr) => {
-      const sp = pr.toProp(closure)
+      const sp = pr.toProp(closure, useNamespace)
       return sp
     })
     let typedef = [s, ...p].join('\n')
@@ -224,9 +255,15 @@ _ns.Type.prototype.constructor
     const t = this.tag ? ` \`＠${this.tag}\`` : ''
     return `${t}${d}`
   }
-  toTypedef(closure = false, noSuppress = false) {
+  /** 
+   * Generate `@typedef` block comment for the type.
+   * @param {boolean} [closure=false]
+   * @param {boolean} [noSuppress=false]
+   * @param {boolean} [useNamespace=false]
+   */
+  toTypedef(closure = false, noSuppress = false, useNamespace = closure) {
     const hasExtends = !!this.extends
-    const natural = this.toNaturalTypedef(closure, noSuppress)
+    const natural = this.toNaturalTypedef(closure, noSuppress, useNamespace)
 
     const parts = []
     // need this to be able to import types from other programs,
@@ -239,6 +276,10 @@ _ns.Type.prototype.constructor
     if (this.namespace && closure) {
       let td = ` * @typedef {${this.fullName}} ${this.name}${this.descriptionWithTag}`
       if (closure && !noSuppress) td = addSuppress(td)
+      td = makeBlock(td)
+      parts.push(td)
+    } else if (this.namespace && useNamespace) {
+      let td = ` * @typedef {${this.fullName}} ${this.name}${this.descriptionWithTag}`
       td = makeBlock(td)
       parts.push(td)
     }
@@ -288,16 +329,21 @@ _ns.Type.prototype.constructor
     return lines
   }
   /**
+   * Used to place interfaces/constructor declarations in externs.
+   */
+  get constr() {
+    return this._args ? `function(${
+      this._args.map(({ name }) => name).join(', ')
+    }) {}` : null
+  }
+  /**
    * Only used in externs.
    */
   toPrototype() {
     const pp = this.toHeading()
-    const constr = this._args ? `function(${
-      this._args.map(({ name }) => name).join(', ')
-    }) {}` : null
-    if (!this.isMethod) pp.push(` * @${this.prototypeAnnotation}`)
+    if (!this._isMethod) pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
-    s = s + getExternDeclaration(this.namespace, this.name, constr)
+    s = s + getExternDeclaration(this.namespace, this.name, this.constr)
     /** @type {!Array<!Property>} */
     const properties = this.properties.reduce((acc, p) => {
       acc.push(p)
@@ -311,16 +357,7 @@ _ns.Type.prototype.constructor
       const prototype = p.staticMethod ? '' : '.prototype'
       r = r + getExternDeclaration(`${this.fullName}${prototype}`,
         /** @type {string} */ (p.name))
-      if (p.parsed && p.parsed.name == 'function') {
-        const { function: { args } } = p.parsed
-        const a = args.map((_, i) => {
-          const { name = `arg${i}` } = p.args[i] || {}
-          return name
-        })
-        r += ` = function(${a.join(', ')}) {}`
-      } else if (p.type.startsWith('function(')) {
-        r += ' = function() {}'
-      }
+      r += p.toExternsAssignment()
       return r
     })
     const j = [s, ...t].join('\n')
@@ -683,3 +720,11 @@ const getLinkToType = (allTypes, type) => {
  * @suppress {nonStandardJsDocs}
  * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type
  */
+
+// /**
+//  * The function
+//  * @param {(a: string, b?:string) => void} ab
+//  */
+// const a = (ab) => {
+
+// }

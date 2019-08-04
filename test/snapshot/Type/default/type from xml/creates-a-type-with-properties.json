@@ -45,6 +45,7 @@
   "isInterface": false,
   "isRecord": false,
   "extends": null,
-  "isMethod": false,
-  "_args": null
+  "_isMethod": false,
+  "_args": null,
+  "methodReturn": null
 }

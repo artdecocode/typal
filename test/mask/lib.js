@@ -65,6 +65,27 @@ export const Closure = makeTestSuite('test/result/common/closure', {
   propEndRe: /\/\*@\*\//,
 })
 
+export const namespaces = makeTestSuite('test/result/common/namespace', {
+  context: TempContext,
+  /**
+   * Returns the JSTypal which embeds JSDoc.
+   * @param {TempContext} t
+   */
+  async getReadable({ write }) {
+    await write('types.xml', this.input)
+    let conf
+    if (this.preamble) conf = this.preamble
+    if (this.conf) conf = { ...conf, ...this.conf }
+    const js = makeJSTypal(conf)
+    js.LOG = () => {}
+    js.end('/* typal test/temp/types.xml namespace */\n')
+    return js
+  },
+  jsProps: ['preamble', 'conf'],
+  propStartRe: /\/\*@/,
+  propEndRe: /\/\*@\*\//,
+})
+
 export const checks = makeTestSuite('test/result/common/check', {
   context: TempContext,
   /**
