@@ -42,3 +42,21 @@
  */
 
 /*@*/
+
+## constructors
+<types>
+  <constructor name="Component" desc="https://git.io/fjHoZ">
+    <prop type="!Object" name="defaultProps">
+      Ideally this should be written as {function(new:Component) & {defaultProps: !Object}} but it's such loose use-case that it's OK.
+    </prop>
+  </constructor>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {Object} Component `＠constructor` https://git.io/fjHoZ
+ * @prop {!Object} defaultProps Ideally this should be written as {function(new:Component) & {defaultProps: !Object}} but it's such loose use-case that it's OK.
+ */
+
+/*@*/

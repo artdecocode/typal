@@ -3,7 +3,7 @@ import parse from '@typedefs/parser'
 import Property from './Property'
 import { addSuppress, makeBlock, getExternDeclaration, makeOptional } from './'
 import { getLink, trimD } from './'
-import Arg, { extractArgs } from './Arg'
+import Arg, { extractArgs } from './Arg' // eslint-disable-line
 
 /**
  * A representation of a type.
@@ -154,7 +154,7 @@ _ns.Type.prototype.constructor
         const pr = new Property(argsArgs)
 
         pr.fromXML(newContent, rest)
-        if (isStatic) pr.staticMethod = true
+        if (isStatic) pr._static = true
         return pr
       })
       this.properties = [...props, ...fnProps]
@@ -184,7 +184,7 @@ _ns.Type.prototype.constructor
   }
   toExtern() {
     let s
-    if (this.closureType) {
+    if (this.closureType) { //  && !(this.isConstructor || this.isInterface)
       s = ` * @typedef {${this.closureType}}`
     } else if (!this.shouldPrototype) {
       const nn = getSpread(this.properties, true)
@@ -336,11 +336,12 @@ _ns.Type.prototype.constructor
       this._args.map(({ name }) => name).join(', ')
     }) {}` : null
   }
-  /**
+  /** 
    * Only used in externs.
    */
   toPrototype() {
     const pp = this.toHeading()
+    // if (this.closureType) pp.push(` * @type {${this.closureType}}`)  // todo <arg>new</arg>
     if (!this._isMethod) pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
     s = s + getExternDeclaration(this.namespace, this.name, this.constr)
@@ -354,7 +355,7 @@ _ns.Type.prototype.constructor
     const t = properties.map((p) => {
       let r = p.toExtern()
       r = makeBlock(r)
-      const prototype = p.staticMethod ? '' : '.prototype'
+      const prototype = p.static ? '' : '.prototype'
       r = r + getExternDeclaration(`${this.fullName}${prototype}`,
         /** @type {string} */ (p.name))
       r += p.toExternsAssignment()

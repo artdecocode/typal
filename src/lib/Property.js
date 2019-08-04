@@ -68,8 +68,16 @@ export default class Property {
 
     /**
      * Whether this property is a static method.
+     * @type {boolean}
      */
-    this.staticMethod = false
+    this._static = false
+  }
+  /**
+   * When writing externs, this will prevent adding `.prototype`, e.g.,
+   * `Type.static` instead of `Type.prototype.static`.
+   */
+  get static() {
+    return this._static
   }
   static fromXML(...args) {
     const prop = new Property()
@@ -77,7 +85,10 @@ export default class Property {
     return prop
   }
   fromXML(content,
-    { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases, 'noParams': noParams },
+    { 
+      'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 
+      'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases, 
+      'noParams': noParams, 'static': Static },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
@@ -93,6 +104,8 @@ export default class Property {
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
     if (noParams) this.noParams = noParams
+
+    if (Static) this._static = true
 
     // if optional, we want to keep "| undefined" on records
     // todo: lazy parse on demand as not always required...

@@ -12,5 +12,5 @@
   },
   "noParams": false,
   "args": [],
-  "staticMethod": false
+  "_static": false
 }

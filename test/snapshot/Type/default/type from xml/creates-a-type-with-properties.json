@@ -23,7 +23,7 @@
       },
       "noParams": false,
       "args": [],
-      "staticMethod": false
+      "_static": false
     },
     {
       "name": "maxage",
@@ -39,7 +39,7 @@
       },
       "noParams": false,
       "args": [],
-      "staticMethod": false
+      "_static": false
     }
   ],
   "namespace": null,
