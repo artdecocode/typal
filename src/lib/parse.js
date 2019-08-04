@@ -44,31 +44,17 @@ const parseFile = (xml, rootNamespace) => {
 
   const interfaceTags = extractTags('interface', Root)
   const interfaces = interfaceTags.map(({ content, props }) => {
-    const type = new Type()
-    const i = content.search(/<(prop|function|fn|static) /)
-    let prebody = '', body = content
-    if (i != 1) {
-      prebody = content.slice(0, i)
-      body = content.slice(i)
-    }
-    const { argsArgs } = extractArgs(prebody)
-
-    // let { 'args': args = '', ...rest } = props
-    // if (!args && argsArgs.length) {
-    //   args = argsArgs.map(({ type: at, optional }) => {
-    //     if (optional !== null) return `${at}=`
-    //     return at
-    //   }).join(',')
-    // }
-    // const assignment = `function(${args})`
-
-    type.fromXML(body, props, ns)
-    type.setAssignment(argsArgs)
+    const type = parseType(content, props, ns)
     type.isInterface = true
-
     return type
   })
-  let allTypes = [...types, ...interfaces]
+  const methodTags = extractTags('method', Root)
+  const methods = methodTags.map(({ content, props }) => {
+    const type = parseType(content, props, ns)
+    type.isMethod = true
+    return type
+  })
+  let allTypes = [...types, ...interfaces, ...methods]
   if (rootNamespace) allTypes.forEach(t => removeNamespace(
     /** @type {string} */ (rootNamespace), t
   ))
@@ -99,6 +85,32 @@ const parseFile = (xml, rootNamespace) => {
     })
 
   return { namespace, types: allTypes, imports, Imports }
+}
+
+const parseType = (content, props, ns) => {
+  const type = new Type()
+  const i = content.search(/<(prop|function|fn|static) /)
+  let prebody = '', body = content
+  if (i != 1) {
+    prebody = content.slice(0, i)
+    body = content.slice(i)
+  }
+  const { argsArgs } = extractArgs(prebody)
+
+  /** Specify args in props... disable ATM */
+  // let { 'args': args = '', ...rest } = props
+  // if (!args && argsArgs.length) {
+  //   args = argsArgs.map(({ type: at, optional }) => {
+  //     if (optional !== null) return `${at}=`
+  //     return at
+  //   }).join(',')
+  // }
+  // const assignment = `function(${args})`
+
+  type.fromXML(body, props, ns)
+  type.setAssignment(argsArgs)
+
+  return type
 }
 
 export default parseFile

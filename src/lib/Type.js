@@ -58,6 +58,7 @@ _ns.Type.prototype.constructor
      * Same as `constructor`, but with `@interface` annotation.
      */
     this.isInterface = false
+    
     /**
      * @type {boolean}
      * Same as `constructor`, but with `@record` annotation.
@@ -69,6 +70,12 @@ _ns.Type.prototype.constructor
      * @type {?string}
      */
     this.extends = null
+
+    /**
+     * @type {boolean}
+     * If the type is a method.
+     */
+    this.isMethod = false
 
     // /**
     //  * The assignment arguments for constructors, interfaces, e.g., "string, number="
@@ -148,7 +155,7 @@ _ns.Type.prototype.constructor
     if (namespace) this.namespace = namespace
   }
   get shouldPrototype() {
-    return this.isConstructor || this.isInterface || this.isRecord
+    return this.isConstructor || this.isInterface || this.isRecord || this.isMethod
   }
   /**
    * When printing to externs, this is the right-hand part.
@@ -251,15 +258,19 @@ _ns.Type.prototype.constructor
   }
 
   /**
-   * To heading above declaration bodies.
+   * To heading above declaration bodies. Can be used in externs.
    */
   toHeading(ws = '') {
     let lines = []
     if (this.description) lines.push(` * ${this.description}`)
     if (this.extends) lines.push(` * @extends {${this.extends}}`)
     if (this._args) this._args.forEach((s) => {
-      const { name, description, optional, type } = s
-      const arg = optional ? `[${name}]` : name
+      let { name, description, optional, type } = s
+      if (name.startsWith('...')) {
+        name = name.slice(3)
+        type = `...${type}` 
+      }
+      const arg = optional ? `[${name}]` : name 
       const d = description ? ` ${description}` : ''
 
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
@@ -272,8 +283,10 @@ _ns.Type.prototype.constructor
    */
   toPrototype() {
     const pp = this.toHeading()
-    const constr = this._args ? `function(${this._args.map(({ name }) => name)}) {}` : null
-    pp.push(` * @${this.prototypeAnnotation}`)
+    const constr = this._args ? `function(${
+      this._args.map(({ name }) => name).join(', ')
+    }) {}` : null
+    if (!this.isMethod) pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
     s = s + getExternDeclaration(this.namespace, this.name, constr)
     /** @type {!Array<!Property>} */
