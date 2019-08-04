@@ -86,12 +86,19 @@ _ns.Type.prototype.constructor
      * @type {Array<!Arg>}
      */
     this._args = null
+
+    /** @type {?string} */
+    this.methodReturn = null
   }
   /**
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
-    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread, 'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 'record': isRecord,
+    'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread,
+    'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 
+    'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 
+    'record': isRecord, 
+    'return': methodReturn, // for <method> elements
   }, namespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -153,6 +160,7 @@ _ns.Type.prototype.constructor
       this.properties = [...props, ...fnProps]
     }
     if (namespace) this.namespace = namespace
+    if (methodReturn) this.methodReturn = methodReturn
   }
   get shouldPrototype() {
     return this.isConstructor || this.isInterface || this.isRecord || this.isMethod
@@ -275,6 +283,7 @@ _ns.Type.prototype.constructor
 
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
+    if (this.methodReturn) lines.push(` * @return {${this.methodReturn}}`)
     if (ws) lines = lines.map(p => `${ws}${p}`)
     return lines
   }

@@ -145,7 +145,7 @@ Test.prototype.syncVoid = function(test) {}
 
 ## writes variable length args and methods
 <types>
-  <method name="Test" desc="testing">
+  <method alias="world" name="hello" desc="testing." return="string">
     <arg boolean name="test" opt>What to test.</arg>
     <arg string name="...args">Other arguments.</arg>
   </method>
@@ -154,10 +154,18 @@ Test.prototype.syncVoid = function(test) {}
 /*@ expected */
 /* typal test/temp/types.xml externs */
 /**
- * testing
+ * testing.
  * @param {boolean=} [test] What to test.
  * @param {...string} args Other arguments.
+ * @return {string}
  */
-var Test = function(test, ...args) {}
+var hello = function(test, ...args) {}
+/**
+ * testing. Alias of `hello`.
+ * @param {boolean=} [test] What to test.
+ * @param {...string} args Other arguments.
+ * @return {string}
+ */
+var world = function(test, ...args) {}
 
 /*@*/
