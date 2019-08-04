@@ -7,7 +7,9 @@
   "default": null,
   "optional": true,
   "aliases": [],
-  "parsed": null,
+  "parsed": {
+    "name": "Type"
+  },
   "noParams": false,
   "args": [],
   "staticMethod": false

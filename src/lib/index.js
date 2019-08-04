@@ -65,6 +65,9 @@ export const makeOptional = (type) => {
 }
 
 export const makeBlock = (s) => {
+  if (!s) return `/**
+ */
+`
   return `/**
 ${s}
  */

@@ -169,3 +169,23 @@ var hello = function(test, ...args) {}
 var world = function(test, ...args) {}
 
 /*@*/
+
+## empty descriptions
+<types>
+  <constructor name="Component" desc="Preact component.">
+    <fn name="componentWillMount" />
+  </constructor>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * Preact component.
+ * @constructor
+ */
+var Component = function() {}
+/**
+ */
+Component.prototype.componentWillMount = function() {}
+
+/*@*/

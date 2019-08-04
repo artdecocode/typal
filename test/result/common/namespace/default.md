@@ -21,3 +21,24 @@
  */
 
 /*@*/
+
+## works with functions
+<types namespace="typal">
+  <type record name="options" desc="Options for Preact.">
+    <fn name="debounceRendering" opt>
+      <arg type="function(): void" name="callback">The callback.</arg>
+    </fn>
+    <prop boolean name="syncComponentUpdates" opt/>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {typal.options} options `＠record` Options for Preact.
+ * @typedef {Object} typal.options `＠record` Options for Preact.
+ * @prop {boolean} [syncComponentUpdates]
+ * @prop {(callback: function(): void) => void} [debounceRendering]
+ */
+
+/*@*/

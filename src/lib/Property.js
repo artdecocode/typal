@@ -95,7 +95,8 @@ export default class Property {
     if (noParams) this.noParams = noParams
 
     // if optional, we want to keep "| undefined" on records
-    if (!this.optional && !this.noParams) {
+    // todo: lazy parse on demand as not always required...
+    if (!this.noParams) {
       try {
         this.parsed = parse(this.closureType)
       } catch (err) { /* ok */
@@ -103,6 +104,7 @@ export default class Property {
     }
   }
   /**
+   * Returns the first line of JSDoc, e.g., `{type} Description`.
    */
   toJSDoc(parentParam = null, closure = false, useNamespace = closure) {
     if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
@@ -164,15 +166,12 @@ export default class Property {
     return this.parsed && this.parsed.name == 'function'
   }
   /**
-   * Used to generate types of **functions** when the property is a function.
-   * If closure flag was set, it will override it.
-   * For non-methods, simply returns Object.
-   * @todo decouple closure and usage of namespaces.
+   * Used to generate types of **functions**, e.g., when the property is `function` or `fn`.
+   * If closure FLAG was set, it will override it.
    * @param {boolean} [closure]
    * @param {boolean} [useNamespace]
    */
   getTypedefType(closure = false, useNamespace = closure) {
-    // if (!this._isMethod) return 'Object'
     if (closure) return this.closureType
     if (!this.isParsedFunction) return this.type
 
@@ -197,7 +196,7 @@ export default class Property {
       if (this.default) d += ` Default \`${this.default}\`.`
       pp.push(d)
     }
-    if (this.isParsedFunction) {
+    if (!this.optional && this.isParsedFunction) {
       const lines = this.toHeading()
       pp.push(...lines)
     } else {

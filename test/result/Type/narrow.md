@@ -31,7 +31,8 @@
               "name": "stream.Readable"
             },
             "noParams": false,
-            "args": []
+            "args": [],
+            "staticMethod": false
           },
           "typeName": "[!stream.Readable](#type-streamreadable)",
           "name": "p*",
