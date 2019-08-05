@@ -1,3 +1,9 @@
+## 6 August 2019
+
+### [1.20.1](https://github.com/artdecocode/typal/compare/v1.20.0...v1.20.1)
+
+- [fix] Don't specify _void_ return in externs.
+
 ## 5 August 2019
 
 ### [1.20.0](https://github.com/artdecocode/typal/compare/v1.19.2...v1.20.0)
