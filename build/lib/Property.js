@@ -1,6 +1,7 @@
 const parse = require('@typedefs/parser');
 const { getPropType, getNameWithDefault, makeOptional, trimD } = require('./');
 const Arg = require('./Arg'); // eslint-disable-line
+const serialise = require('./serialise');
 
 /**
  * Representation of a property of a type.
@@ -67,8 +68,16 @@ class Property {
 
     /**
      * Whether this property is a static method.
+     * @type {boolean}
      */
-    this.staticMethod = false
+    this._static = false
+  }
+  /**
+   * When writing externs, this will prevent adding `.prototype`, e.g.,
+   * `Type.static` instead of `Type.prototype.static`.
+   */
+  get static() {
+    return this._static
   }
   static fromXML(...args) {
     const prop = new Property()
@@ -76,7 +85,10 @@ class Property {
     return prop
   }
   fromXML(content,
-    { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases, 'noParams': noParams },
+    { 
+      'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 
+      'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases, 
+      'noParams': noParams, 'static': Static },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
@@ -93,34 +105,44 @@ class Property {
 
     if (noParams) this.noParams = noParams
 
+    if (Static) this._static = true
+
     // if optional, we want to keep "| undefined" on records
-    if (!this.optional && !this.noParams) {
+    // todo: lazy parse on demand as not always required...
+    if (!this.noParams) {
       try {
         this.parsed = parse(this.closureType)
       } catch (err) { /* ok */
       }
     }
   }
-  toJSDoc(parentParam = null, closure = false) {
+  /**
+   * Returns the first line of JSDoc, e.g., `{type} Description`.
+   */
+  toJSDoc(parentParam = null, closure = false, useNamespace = closure) {
     if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
     const nameWithDefault = getNameWithDefault(this.name, this.default, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
     const dd = this.description ? ` ${this.description}` : ''
     const d = this.hasDefault ? ` Default \`${this.default}\`.` : ''
     const t = `${dd}${d}`
-    const s = `{${closure ? this.closureType : this.type}} ${name}${t}`
+    const type = this.getTypedefType(closure, useNamespace)
+    const s = `{${type}} ${name}${t}`
     return s
   }
-  toProp(closure = false) {
-    const jsdoc = this.toJSDoc(null, closure)
+  toProp(closure = false, useNamespace = closure) {
+    const jsdoc = this.toJSDoc(null, closure, useNamespace)
     const t = indentWithAster(jsdoc, true)
     const p = ` * @prop ${t}`
     return p
   }
-  toFunctionJsDoc() {
+  /**
+   * If the property is function, returns the heading above it for jsdoc.
+   */
+  toHeading() {
     const pp = []
     const { function: { args, return: ret } } = this.parsed
-    const a = args.map(parsedToString)
+    const a = args.map(serialise)
     a.forEach((s, i) => {
       const { optional } = args[i]
       const { name = `arg${i}`, description } = this.args[i] || {}
@@ -130,10 +152,55 @@ class Property {
       pp.push(` * @param {${s}${optional ? '=' : ''}} ${arg}${d}`)
     })
     if (ret.name != 'void') {
-      const r = parsedToString(ret)
+      const r = serialise(ret)
       pp.push(` * @return {${r}}`)
     }
     return pp
+  }
+  /**
+   * Generates string to append to methods when assigning to variables in externs.
+   * Only works for functions.
+   * E.g., `= function(arg1, arg2) {}`.
+   */
+  toExternsAssignment() {
+    if (this.isParsedFunction) {
+      const { function: { args } } = this.parsed
+      const a = args.map((_, i) => {
+        const { name = `arg${i}` } = this.args[i] || {}
+        return name
+      })
+      return ` = function(${a.join(', ')}) {}`
+    } else if (this.type.startsWith('function(')) { // if couldn't parse
+      return ' = function() {}'
+    }
+    return ''
+  }
+  get isParsedFunction() {
+    return this.parsed && this.parsed.name == 'function'
+  }
+  /**
+   * Used to generate types of **functions**, e.g., when the property is `function` or `fn`.
+   * If closure FLAG was set, it will override it.
+   * @param {boolean} [closure]
+   * @param {boolean} [useNamespace]
+   */
+  getTypedefType(closure = false, useNamespace = closure) {
+    if (closure) return this.closureType
+    if (!this.isParsedFunction) return this.type
+
+    // const ret = this.parsed.function.return.name
+    const { function: { args, return: ret } } = this.parsed
+    const a = args
+      .map(serialise)
+      .map((type, i) => {
+        const { optional } = args[i]
+        const { name: argName = `arg${i}` } = this.args[i] || {}
+        return `${argName}${optional ? '?' : ''}: ${type}`
+      })
+    const s = a.join(', ')
+    const r = serialise(ret)
+
+    return `(${s}) => ${r}`
   }
   toExtern(ws = '') {
     let pp = []
@@ -142,8 +209,8 @@ class Property {
       if (this.default) d += ` Default \`${this.default}\`.`
       pp.push(d)
     }
-    if (this.parsed && this.parsed.name == 'function') {
-      const lines = this.toFunctionJsDoc()
+    if (!this.optional && this.isParsedFunction) {
+      const lines = this.toHeading()
       pp.push(...lines)
     } else {
       const t = this.optional ? makeOptional(this.closureType) : this.closureType
@@ -174,80 +241,6 @@ const indentWithAster = (description, skipFirst = false) => {
     return s
   }).join('\n')
   return d
-}
-
-/**
- * @param {!_typedefsParser.Type} type
- */
-const parsedToString = (type) => {
-  let s = ''
-  let nullable = ''
-  if (type.nullable) nullable = '?'
-  else if (type.nullable === false) nullable = '!'
-
-  s += nullable
-
-  if (type.function) {
-    s += type.name + '(' // Function or function
-    const args = []
-    if (type.function.this) {
-      let t = 'this: '
-      t += parsedToString(type.function.this)
-      args.push(t)
-    }
-    if (type.function.new) {
-      let t = 'new: '
-      t += parsedToString(type.function.new)
-      args.push(t)
-    }
-    type.function.args.forEach((a) => {
-      let t = parsedToString(a)
-      if (a.optional) t += '='
-      args.push(t)
-    })
-    if (type.function.variableArgs) {
-      let t = '...'
-      t += parsedToString(type.function.variableArgs)
-      args.push(t)
-    }
-    const argsJoined = args.join(', ')
-    s += argsJoined + ')'
-    if (type.function.return) {
-      s += ': ' + parsedToString(type.function.return)
-    }
-  } else if (type.record) {
-    s += '{ '
-    const rs = Object.keys(type.record).map((key) => {
-      const val = type.record[key]
-      if (!val) return key
-      const v = parsedToString(val)
-      return `${key}: ${v}`
-    })
-    s += rs.join(', ')
-    s += ' }'
-  } else if (type.application) {
-    if (type.name == 'Promise') {
-      const otherThanVoid = type.application.some(t => t.name != 'void')
-      if (!otherThanVoid) return s + 'Promise'
-    }
-    s += type.name + '<'
-    const apps = type.application.map((a) => {
-      return parsedToString(a)
-    })
-    s += apps.join(', ')
-    s += '>'
-  } else if (type.union) {
-    s += '('
-    const union = type.union.map((u) => {
-      return parsedToString(u)
-    })
-    s += union.join('|')
-    s += ')'
-  } else {
-    const name = type.name == 'any' ? '*' : type.name
-    s += name
-  }
-  return s
 }
 
 module.exports = Property

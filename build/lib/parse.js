@@ -36,39 +36,56 @@ const parseFile = (xml, rootNamespace) => {
   const ns = rootNamespace == namespace ? undefined : namespace
 
   const typeTags = extractTags('type', Root)
-  const types = typeTags.map(({ content, props }) => {
+  const types = typeTags.reduce((acc, { content, props }) => {
+    const { 'alias': alias, 'aliases': aliases, ...restProps } = props
     const type = new Type()
     type.fromXML(content, props, ns)
-    return type
-  })
+    acc.push(type)
+
+    if (alias) {
+      const type2 = parseType(content, { ...restProps, name: alias }, ns)
+      acc.push(type2)
+    } else if (aliases) {
+      const a = aliases.split(/, */)
+      a.forEach((name) => {
+        const type2 = parseType(content, { ...restProps, name }, ns)
+        acc.push(type2)
+      })
+    }
+    return acc
+  }, [])
 
   const interfaceTags = extractTags('interface', Root)
-  const interfaces = interfaceTags.map(({ content, props }) => {
-    const type = new Type()
-    const i = content.search(/<(prop|function|fn|static) /)
-    let prebody = '', body = content
-    if (i != 1) {
-      prebody = content.slice(0, i)
-      body = content.slice(i)
-    }
-    const { argsArgs } = extractArgs(prebody)
+  const interfaces = interfaceTags.reduce((acc, { content, props }) => {
+    const t = parseTypes(content, props, ns)
+    t.forEach(tt => {
+      tt.isInterface = true
+    })
+    acc.push(...t)
+    return acc
+  }, [])
 
-    // let { 'args': args = '', ...rest } = props
-    // if (!args && argsArgs.length) {
-    //   args = argsArgs.map(({ type: at, optional }) => {
-    //     if (optional !== null) return `${at}=`
-    //     return at
-    //   }).join(',')
-    // }
-    // const assignment = `function(${args})`
+  const constructorTags = extractTags('constructor', Root)
+  const constructors = constructorTags.reduce((acc, { content, props }) => {
+    const t = parseTypes(content, props, ns)
+    t.forEach(tt => {
+      tt.isConstructor = true
+    })
+    acc.push(...t)
+    return acc
+  }, [])
 
-    type.fromXML(body, props, ns)
-    type.setAssignment(argsArgs)
-    type.isInterface = true
+  const methodTags = extractTags('method', Root)
+  const methods = methodTags.reduce((acc, { content, props }) => {
+    const t = parseTypes(content, props, ns)
+    t.forEach(tt => {
+      tt.isMethod = true
+    })
+    acc.push(...t)
+    return acc
+  }, [])
 
-    return type
-  })
-  let allTypes = [...types, ...interfaces]
+  let allTypes = [...types, ...interfaces, ...constructors, ...methods]
   if (rootNamespace) allTypes.forEach(t => removeNamespace(
     /** @type {string} */ (rootNamespace), t
   ))
@@ -99,6 +116,63 @@ const parseFile = (xml, rootNamespace) => {
     })
 
   return { namespace, types: allTypes, imports, Imports }
+}
+
+/**
+ * @param {string} content
+ * @param {Object} props
+ * @param {string} [ns]
+ */
+const parseType = (content, props, ns) => {
+  const type = new Type()
+  const i = content.search(/<(prop|function|fn|static) /)
+  let prebody = '', body = content
+  if (i != 1) {
+    prebody = content.slice(0, i)
+    body = content.slice(i)
+  }
+  const { argsArgs } = extractArgs(prebody)
+
+  /** Specify args in props... disable ATM */
+  // let { 'args': args = '', ...rest } = props
+  // if (!args && argsArgs.length) {
+  //   args = argsArgs.map(({ type: at, optional }) => {
+  //     if (optional !== null) return `${at}=`
+  //     return at
+  //   }).join(',')
+  // }
+  // const assignment = `function(${args})`
+
+  type.fromXML(body, props, ns)
+  type.setAssignment(argsArgs)
+
+  return type
+}
+
+/**
+ * This is applicable to @interfaces/constructors/methods which
+ * will be written with `= function () {}` in externs.
+ */
+const parseTypes = (content, props, ns) => {
+  const acc = []
+  const { 'alias': alias, 'aliases': aliases, ...restProps } = props
+  const type = parseType(content, props, ns)
+  acc.push(type)
+
+  if (alias) {
+    const type2 = parseType(content, { ...restProps, name: alias }, ns)
+    type2.description = `${type2.description}${type2.description ? ' ' : ''}Alias of \`${restProps.name}\`.`
+    acc.push(type2)
+  } else if (aliases) {
+    const a = aliases.split(/, */)
+    a.forEach((name) => {
+      const type2 = parseType(content, { ...restProps, name }, ns)
+      type2.description = `${type2.description}${type2.description ? ' ' : ''}Alias of \`${restProps.name}\`.`
+      acc.push(type2)
+    })
+  }
+
+  return acc
 }
 
 module.exports=parseFile
