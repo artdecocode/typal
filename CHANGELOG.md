@@ -1,3 +1,16 @@
+## 5 August 2019
+
+### [1.20.0](https://github.com/artdecocode/typal/compare/v1.19.2...v1.20.0)
+
+- [fix] Respect root namespace in arguments.
+- [fix] Allow static properties that are not methods.
+- [fix] Correct `/** */` when no description is given for properties.
+- [feature] Add the `namespace` flag to decouple closure from namespaces and allow writing types for _VSCode_.
+- [feature] Write `<methods>` as types, with return and async properties.
+- [feature] Type aliases will create a cloned type with a different name.
+- [feature] `<interface>` and `<constructor>` shortcuts for types.
+- [api] Export `getLinks` method.
+
 ## 3 August 2019
 
 ### [1.19.2](https://github.com/artdecocode/typal/compare/v1.19.1...v1.19.2)
