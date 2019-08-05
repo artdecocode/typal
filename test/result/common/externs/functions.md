@@ -189,27 +189,3 @@ var Component = function() {}
 Component.prototype.componentWillMount = function() {}
 
 /*@*/
-
-## constructors
-<types>
-  <constructor name="Component" desc="https://git.io/fjHoZ">
-    <prop type="!Object" name="defaultProps">
-      The properties that will be assigned on the component by _Preact_ when constructing it.
-    </prop>
-  </constructor>
-</types>
-
-/*@ expected */
-/* typal test/temp/types.xml externs */
-/**
- * https://git.io/fjHoZ
- * @constructor
- */
-var Component = function() {}
-/**
- * The properties that will be assigned on the component by _Preact_ when constructing it.
- * @type {!Object}
- */
-Component.prototype.defaultProps
-
-/*@*/

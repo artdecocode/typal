@@ -1005,8 +1005,15 @@ function zb(a, b, c, d) {
   c = void 0 === c ? !1 : c;
   d = void 0 === d ? b : d;
   const e = !!a.extends, f = yb(a, b, c, d), g = [];
-  a.j && b ? (d = ` * @typedef {${a.h}} ${a.name}${a.i}`, b && !c && (d = Q(d)), d = O(d), g.push(d)) : a.j && d && (d = ` * @typedef {${a.h}} ${a.name}${a.i}`, d = O(d), g.push(d));
-  e && (a = ` * @typedef {${a.extends} & ${wb(a, b)}} ${b ? a.h : a.name}${a.i}`, b && !c && (a = Q(a)), a = O(a), g.push(a));
+  if (a.j && b) {
+    var h = ` * @typedef {${a.h}} ${a.name}${a.i}`;
+    b && !c && (h = Q(h));
+    h = O(h);
+    g.push(h);
+  } else {
+    a.j && d && (h = ` * @typedef {${a.h}} ${a.name}${a.i}`, h = O(h), g.push(h));
+  }
+  e && (a = ` * @typedef {${a.extends} & ${wb(a, d)}} ${d ? a.h : a.name}${a.i}`, b && !c && (a = Q(a)), a = O(a), g.push(a));
   g.push(f);
   return g.join("");
 }

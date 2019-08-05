@@ -43,20 +43,22 @@
 
 /*@*/
 
-## constructors
-<types>
-  <constructor name="Component" desc="https://git.io/fjHoZ">
-    <prop type="!Object" name="defaultProps">
-      Ideally this should be written as {function(new:Component) & {defaultProps: !Object}} but it's such loose use-case that it's OK.
-    </prop>
+## constructor with type that extends
+<types namespace="typal">
+  <constructor desc="https://git.io/fjHoZ" 
+    name="Component" extends="{defaultProps: !Object|undefined}">
+    <!-- prop type="!Object" name="defaultProps">
+      Could implement writing in props by too much effort for too little gain. HAVE to do extends because even with static property, typescript only accepts props on @typedef {Object}
+    </prop> -->
   </constructor>
 </types>
 
 /*@ expected */
 /* typal test/temp/types.xml namespace */
 /**
- * @typedef {Object} Component `＠constructor` https://git.io/fjHoZ
- * @prop {!Object} defaultProps Ideally this should be written as {function(new:Component) & {defaultProps: !Object}} but it's such loose use-case that it's OK.
+ * @typedef {typal.Component} Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {{defaultProps: !Object|undefined} & typal.$Component} typal.Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {Object} typal.$Component `＠constructor` https://git.io/fjHoZ
  */
 
 /*@*/

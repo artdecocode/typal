@@ -284,7 +284,7 @@ _ns.Type.prototype.constructor
       parts.push(td)
     }
     if (hasExtends) {
-      let extended = ` * @typedef {${this.extends} & ${this.getFullNameForExtends(closure)}} ${closure ? this.fullName : this.name}${this.descriptionWithTag}`
+      let extended = ` * @typedef {${this.extends} & ${this.getFullNameForExtends(useNamespace)}} ${useNamespace ? this.fullName : this.name}${this.descriptionWithTag}`
       if (closure && !noSuppress) extended = addSuppress(extended)
       extended = makeBlock(extended)
       parts.push(extended)
