@@ -184,10 +184,10 @@ class Ka extends ya {
     var b = a || {}, c = Object.assign({}, b);
     const d = void 0 === b.binary ? !1 : b.binary, e = void 0 === b.rs ? null : b.rs;
     b = (delete c.binary, delete c.rs, c);
-    const {T:f = C(!0), proxyError:g} = a || {}, h = (k, l) => f(l);
+    const {U:f = C(!0), proxyError:g} = a || {}, h = (k, l) => f(l);
     super(b);
     this.b = [];
-    this.R = new Promise((k, l) => {
+    this.S = new Promise((k, l) => {
       this.on("finish", () => {
         let m;
         d ? m = Buffer.concat(this.b) : m = this.b.join("");
@@ -212,12 +212,12 @@ class Ka extends ya {
     c();
   }
   get f() {
-    return this.R;
+    return this.S;
   }
 }
 const E = async a => {
   var b = void 0 === b ? {} : b;
-  ({f:a} = new Ka(Object.assign({}, {rs:a}, b, {T:C(!0)})));
+  ({f:a} = new Ka(Object.assign({}, {rs:a}, b, {U:C(!0)})));
   return await a;
 };
 async function F(a) {
@@ -354,7 +354,7 @@ function Qa(a, b) {
   return c.call(c);
 }
 ;const Ra = a => new RegExp(`%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_(\\d+)_%%`, "g"), Sa = (a, b) => `%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_${b}_%%`, Ta = () => {
-  var a = {U:/^\/\*\*? (documentary|typal) (.+?) externs (.*?)\*\/\n(?:([^\n][\s\S]+?\n))?$/mg};
+  var a = {V:/^\/\*\*? (documentary|typal) (.+?) externs (.*?)\*\/\n(?:([^\n][\s\S]+?\n))?$/mg};
   return Object.keys(a).reduce((b, c) => {
     {
       var d = a[c];
@@ -474,7 +474,7 @@ async function Xa(a, b) {
   }
   b = Number.isInteger(b) || !0 === b || !1 === b || ["number", "boolean"].includes(c) ? b : `"${b}"`;
   return `${a}=${b}`;
-}, $a = ({number:a, P:b, boolean:c, type:d}) => b ? "string" : a ? "number" : c ? "boolean" : d ? d : "*", ab = a => `${/[^\w\d._]/.test(a) ? `(${a})` : a}|undefined`, O = a => a ? `/**
+}, $a = ({number:a, R:b, boolean:c, type:d}) => b ? "string" : a ? "number" : c ? "boolean" : d ? d : "*", ab = a => `${/[^\w\d._]/.test(a) ? `(${a})` : a}|undefined`, O = a => a ? `/**
 ${a}
  */
 ` : "/**\n */\n", Q = a => ` * @suppress {nonStandardJsDocs}
@@ -701,13 +701,15 @@ function fb(a) {
   a = eb(a);
   return fb(a);
 }
-;function hb(a, b, {name:c, string:d, "boolean":e, opt:f, number:g, type:h}) {
+;function hb(a, b, {name:c, string:d, "boolean":e, opt:f, number:g, type:h}, k) {
   if (!c) {
     throw Error("Argument does not have a name.");
   }
   a.name = c;
   b && (a.description = S(b));
-  a.type = $a({number:g, P:d, boolean:e, type:h});
+  b = $a({number:g, R:d, boolean:e, type:h});
+  k && (b = b.replace(new RegExp(`([!?])?${k}\\.`, "g"), "$1"));
+  a.type = b;
   f && (a.optional = !0);
 }
 class ib {
@@ -718,15 +720,15 @@ class ib {
     this.description = "";
   }
 }
-const jb = a => {
-  let b = a.lastIndexOf("</arg>"), c = a;
-  var d = [];
-  -1 != b && (b += 6, d = a.slice(0, b), c = a.slice(b), d = U("arg", d), d = d.map(({content:e, props:f}) => {
-    const g = new ib;
-    hb(g, e, f);
-    return g;
+const jb = (a, b) => {
+  let c = a.lastIndexOf("</arg>"), d = a;
+  var e = [];
+  -1 != c && (c += 6, e = a.slice(0, c), d = a.slice(c), e = U("arg", e), e = e.map(({content:f, props:g}) => {
+    const h = new ib;
+    hb(h, f, g, b);
+    return h;
   }));
-  return {W:c, L:d};
+  return {W:d, M:e};
 };
 function V(a) {
   var b = "";
@@ -780,7 +782,7 @@ function V(a) {
   }
   a.name = c;
   b && (a.description = S(b));
-  a.type = $a({number:g, P:d, boolean:e, type:h});
+  a.type = $a({number:g, R:d, boolean:e, type:h});
   l ? a.g = l : a.g = a.type;
   void 0 !== k && (a.f = !0);
   a.f && (a.default = k);
@@ -789,9 +791,9 @@ function V(a) {
   }
   m && (a.A = [m]);
   n && (a.A = n.split(/\s*,\s*/));
-  p && (a.v = p);
-  q && (a.i = !0);
-  if (!a.v) {
+  p && (a.B = p);
+  q && (a.l = !0);
+  if (!a.B) {
     try {
       a.b = gb(a.g);
     } catch (r) {
@@ -875,18 +877,18 @@ class tb {
     this.default = null;
     this.optional = !1;
     this.A = [];
-    this.v = !1;
+    this.B = !1;
     this.b = null;
     this.args = a;
-    this.i = !1;
+    this.l = !1;
   }
-  get B() {
-    return this.i;
+  get H() {
+    return this.l;
   }
   get m() {
     return this.b && "function" == this.b.name;
   }
-  K(a, b = "", c = !1) {
+  L(a, b = "", c = !1) {
     a = mb(this, a, c);
     return `${b} * @param ${a}`;
   }
@@ -908,14 +910,14 @@ function W(a, b, c, d) {
   f && (a.type = f);
   p ? a.g = p : a.g = a.type;
   g && (a.description = S(g));
-  a.O = !!h;
-  a.N = !!k;
-  a.M = !!l;
+  a.P = !!h;
+  a.O = !!k;
+  a.N = !!l;
   a.import = !!m;
   n && (a.link = n);
   !0 === q && (a.isConstructor = q);
   !0 === t && (a.G = t);
-  !0 === x && (a.B = x);
+  !0 === x && (a.m = x);
   r && (a.extends = r);
   if (b) {
     c = U("prop", b).map(u => {
@@ -931,7 +933,7 @@ function W(a, b, c, d) {
     });
     b = [...Hb, ...Ib, ...b].map(u => {
       var {content:aa, props:B, isStatic:Jb} = u;
-      const {W:Kb, L:ba} = jb(aa);
+      const {W:Kb, M:ba} = jb(aa);
       var D = Object.assign({}, B);
       u = B.async;
       var P = void 0 === B["return"] ? "void" : B["return"];
@@ -945,20 +947,20 @@ function W(a, b, c, d) {
       D.type = `function(${ca}): ${u ? `!Promise<${P}>` : P}`;
       u = new tb(ba);
       kb(u, Kb, D);
-      Jb && (u.i = !0);
+      Jb && (u.l = !0);
       return u;
     });
-    a.l = [...c, ...b];
+    a.j = [...c, ...b];
   }
-  d && (a.j = d);
-  Aa && (a.m = Aa);
+  d && (a.i = d);
+  Aa && (a.H = Aa);
 }
 function ub(a) {
   var b = vb(a);
-  a.f || b.push(` * @${a.Y}`);
+  a.v || b.push(` * @${a.Y}`);
   b = O(b.join("\n"));
-  b += R(a.j, a.name, a.X);
-  const c = a.l.reduce((d, e) => {
+  b += R(a.i, a.name, a.X);
+  const c = a.j.reduce((d, e) => {
     d.push(e);
     const f = e.A.map(g => sb(e, g));
     d.push(...f);
@@ -966,7 +968,7 @@ function ub(a) {
   }, []).map(d => {
     let e = rb(d);
     e = O(e);
-    e += R(`${a.h}${d.B ? "" : ".prototype"}`, d.name);
+    e += R(`${a.h}${d.H ? "" : ".prototype"}`, d.name);
     return e += qb(d);
   });
   return [b, ...c].join("\n");
@@ -976,21 +978,17 @@ function wb(a, b) {
   return (void 0 === b ? 0 : b) ? `${a.w}${c}` : c;
 }
 function xb(a) {
-  if (!a.f) {
-    return "Object";
-  }
-  const b = a.m || "void";
-  return `(${a.b.map(c => {
-    var {name:d, type:e, optional:f} = c;
-    return `${d}${f ? "?" : ""}: ${e}`;
-  }).join(", ")}) => ${b}`;
+  return a.v ? `(${a.b.map(b => {
+    var {name:c, type:d, optional:e} = b;
+    return `${c}${e ? "?" : ""}: ${d}`;
+  }).join(", ")}) => ${a.return}` : "Object";
 }
 function yb(a, b, c, d) {
   b = void 0 === b ? !1 : b;
   c = void 0 === c ? !1 : c;
   d = void 0 === d ? b : d;
-  d = ` * @typedef {${(b ? a.g : a.type) || xb(a)}}${` ${wb(a, d)}${a.i}`}`;
-  a = (a.l ? a.l.reduce((e, f) => {
+  d = ` * @typedef {${(b ? a.g : a.type) || xb(a)}}${` ${wb(a, d)}${a.f}`}`;
+  a = (a.j ? a.j.reduce((e, f) => {
     e.push(f);
     const g = f.A.map(h => sb(f, h));
     e.push(...g);
@@ -1005,15 +1003,15 @@ function zb(a, b, c, d) {
   c = void 0 === c ? !1 : c;
   d = void 0 === d ? b : d;
   const e = !!a.extends, f = yb(a, b, c, d), g = [];
-  if (a.j && b) {
-    var h = ` * @typedef {${a.h}} ${a.name}${a.i}`;
+  if (a.i && b) {
+    var h = ` * @typedef {${a.h}} ${a.name}${a.f}`;
     b && !c && (h = Q(h));
     h = O(h);
     g.push(h);
   } else {
-    a.j && d && (h = ` * @typedef {${a.h}} ${a.name}${a.i}`, h = O(h), g.push(h));
+    a.i && d && (h = ` * @typedef {${a.h}} ${a.name}${a.f}`, h = O(h), g.push(h));
   }
-  e && (a = ` * @typedef {${a.extends} & ${wb(a, d)}} ${d ? a.h : a.name}${a.i}`, b && !c && (a = Q(a)), a = O(a), g.push(a));
+  e && (a = ` * @typedef {${a.extends} & ${wb(a, d)}} ${d ? a.h : a.name}${a.f}`, b && !c && (a = Q(a)), a = O(a), g.push(a));
   g.push(f);
   return g.join("");
 }
@@ -1027,42 +1025,48 @@ function vb(a, b) {
     e.startsWith("...") && (e = e.slice(3), h = `...${h}`);
     c.push(` * @param {${h}${g ? "=" : ""}} ${g ? `[${e}]` : e}${f ? ` ${f}` : ""}`);
   });
-  a.m && c.push(` * @return {${a.m}}`);
+  a.return && c.push(` * @return {${a.return}}`);
   b && (c = c.map(d => `${b}${d}`));
   return c;
 }
 class X {
   constructor() {
     this.name = "";
-    this.link = this.M = this.import = this.N = this.O = this.description = this.g = this.type = null;
-    this.l = [];
-    this.j = null;
-    this.B = this.G = this.isConstructor = !1;
+    this.link = this.N = this.import = this.O = this.P = this.description = this.g = this.type = null;
+    this.j = [];
+    this.i = null;
+    this.m = this.G = this.isConstructor = !1;
     this.extends = null;
-    this.f = !1;
-    this.m = this.b = null;
+    this.B = !1;
+    this.H = this.b = null;
   }
-  set V(a) {
+  set v(a) {
     if (!this.b) {
       throw Error("Args expected.");
     }
-    this.f = a;
+    this.B = a;
+  }
+  get v() {
+    return this.B;
   }
   get Z() {
-    return this.isConstructor || this.G || this.B || this.f;
+    return this.isConstructor || this.G || this.m || this.v;
   }
-  get i() {
-    return `${this.v ? ` \`\uff20${this.v}\`` : ""}${this.description ? ` ${this.description}` : ""}`;
+  get return() {
+    return this.v ? this.H || "void" : null;
+  }
+  get f() {
+    return `${this.l ? ` \`\uff20${this.l}\`` : ""}${this.description ? ` ${this.description}` : ""}`;
   }
   get Y() {
-    const a = this.v;
+    const a = this.l;
     if (!a) {
       throw Error("Unknown prototype type (not constructor or interface).");
     }
     return a;
   }
-  get v() {
-    return this.isConstructor ? "constructor" : this.G ? "interface" : this.B ? "record" : "";
+  get l() {
+    return this.isConstructor ? "constructor" : this.G ? "interface" : this.m ? "record" : "";
   }
   get X() {
     return this.b ? `function(${this.b.map(a => {
@@ -1071,19 +1075,19 @@ class X {
     }).join(", ")}) {}` : null;
   }
   get w() {
-    return this.j ? `${this.j}.` : "";
+    return this.i ? `${this.i}.` : "";
   }
   get h() {
     return `${this.w}${this.name}`;
   }
-  K(a, b, c, d, e) {
+  L(a, b, c, d, e) {
     e = void 0 === e ? !1 : e;
     var f = "";
     !0 === d ? f = "?" : !1 === d && (f = "!");
     d = this.description ? ` ${this.description}` : "";
-    const g = this.N ? Ab(this.l) : e ? this.h : this.name;
+    const g = this.O ? Ab(this.j) : e ? this.h : this.name;
     b = `${c || ""} * @param {${f}${g}} ${b ? `[${a}]` : a}${d}`;
-    f = this.l && !this.M ? this.l.map(h => h.K(a, c, e)) : [];
+    f = this.j && !this.N ? this.j.map(h => h.L(a, c, e)) : [];
     return [b, ...f].join("\n");
   }
 }
@@ -1106,7 +1110,7 @@ const Ab = (a, b) => {
 function Bb(a, {name:b, from:c, desc:d, link:e, ns:f}) {
   a.name = b;
   a.from = c;
-  a.I = d;
+  a.J = d;
   a.link = e;
   a.w = f || a.from;
 }
@@ -1116,7 +1120,7 @@ function Cb(a, b = !0) {
 class Db {
   constructor() {
     this.from = this.name = this.w = "";
-    this.link = this.I = null;
+    this.link = this.J = null;
   }
   get h() {
     return `${this.w}.${this.name}`;
@@ -1124,20 +1128,20 @@ class Db {
 }
 ;function Eb(a, b) {
   b = b.reduce((c, d) => Object.assign({}, c, {[d.h]:d}), {});
-  a.H = Object.assign({}, a.H, b);
+  a.I = Object.assign({}, a.I, b);
 }
 class Fb extends M {
   constructor(a, b) {
     b = void 0 === b ? {} : b;
     super(a);
-    this.H = {};
+    this.I = {};
     this.on("types", c => {
       Eb(this, c);
     });
     this.on("namespace", c => {
       this.b.includes(c) || this.b.push(c);
     });
-    this.i = b;
+    this.l = b;
     this.b = [];
     this.o = console.log;
     this.file = null;
@@ -1150,7 +1154,7 @@ class Fb extends M {
     return Db;
   }
   get types() {
-    return this.H;
+    return this.I;
   }
 }
 ;const Nb = a => {
@@ -1191,9 +1195,9 @@ class Fb extends M {
   }, []);
   const h = U("method", b).reduce((k, l) => {
     var {content:m, props:n} = l;
-    l = Gb(m, n, e);
+    l = Gb(m, n, e, void 0);
     l.forEach(p => {
-      p.V = !0;
+      p.v = !0;
     });
     k.push(...l);
     return k;
@@ -1207,36 +1211,36 @@ class Fb extends M {
     return k;
   });
   g = f.map(k => {
-    var {name:l, from:m, I:n, link:p, w:q} = k;
+    var {name:l, from:m, J:n, link:p, w:q} = k;
     k = new X;
-    W(k, "", {name:l, type:`import('${m}').${l}`, O:!0, import:!0, I:n, link:p}, void 0 == q ? void 0 : q);
+    W(k, "", {name:l, type:`import('${m}').${l}`, P:!0, import:!0, J:n, link:p}, void 0 == q ? void 0 : q);
     return k;
   });
-  return {j:d, types:a, imports:f, $:g};
-}, Y = (a, b, c) => {
-  const d = new X, e = a.search(/<(prop|function|fn|static) /);
-  let f = "", g = a;
-  1 != e && (f = a.slice(0, e), g = a.slice(e));
-  ({L:a} = jb(f));
-  W(d, g, b, c);
-  d.b = a;
-  return d;
-}, Gb = (a, b, c) => {
-  const d = [];
-  var e = Object.assign({}, b), f = b.alias;
-  const g = b.aliases, h = (delete e.alias, delete e.aliases, e);
-  b = Y(a, b, c);
-  d.push(b);
-  f ? (f = Y(a, Object.assign({}, h, {name:f}), c), f.description = `${f.description}${f.description ? " " : ""}Alias of \`${h.name}\`.`, d.push(f)) : g && g.split(/, */).forEach(k => {
-    k = Y(a, Object.assign({}, h, {name:k}), c);
-    k.description = `${k.description}${k.description ? " " : ""}Alias of \`${h.name}\`.`;
-    d.push(k);
+  return {i:d, types:a, imports:f, $:g};
+}, Y = (a, b, c, d) => {
+  const e = new X, f = a.search(/<(prop|function|fn|static) /);
+  let g = "", h = a;
+  1 != f && (g = a.slice(0, f), h = a.slice(f));
+  ({M:a} = jb(g, d));
+  W(e, h, b, c);
+  e.b = a;
+  return e;
+}, Gb = (a, b, c, d) => {
+  const e = [];
+  var f = Object.assign({}, b), g = b.alias;
+  const h = b.aliases, k = (delete f.alias, delete f.aliases, f);
+  b = Y(a, b, c, d);
+  e.push(b);
+  g ? (g = Y(a, Object.assign({}, k, {name:g}), c, d), g.description = `${g.description}${g.description ? " " : ""}Alias of \`${k.name}\`.`, e.push(g)) : h && h.split(/, */).forEach(l => {
+    l = Y(a, Object.assign({}, k, {name:l}), c, d);
+    l.description = `${l.description}${l.description ? " " : ""}Alias of \`${k.name}\`.`;
+    e.push(l);
   });
-  return d;
+  return e;
 }, Ob = async(a, b) => {
   b = void 0 === b ? [] : b;
   a = await F(a);
-  let {j:c = null, types:d, imports:e} = Nb(a);
+  let {i:c = null, types:d, imports:e} = Nb(a);
   d = d.filter(f => {
     ({h:f} = f);
     return b.includes(f) ? !1 : !0;
@@ -1245,7 +1249,7 @@ class Fb extends M {
     ({h:f} = f);
     return b.includes(f) ? !1 : !0;
   });
-  return {types:d, imports:e, j:c};
+  return {types:d, imports:e, i:c};
 };
 const Pb = (a, b, c) => {
   b = b.map(d => zb(d, !0, c));
@@ -1258,8 +1262,8 @@ const Pb = (a, b, c) => {
   a = [...a.map(e => {
     {
       let f;
-      e.g ? f = ` * @typedef {${e.g}}` : e.Z || (f = ` * @typedef {${Ab(e.l, !0)}}`);
-      f ? (e.description && (f = ` * ${e.description}\n${f}`), f = O(f), e = f += R(e.j, e.name)) : e = ub(e);
+      e.g ? f = ` * @typedef {${e.g}}` : e.Z || (f = ` * @typedef {${Ab(e.j, !0)}}`);
+      f ? (e.description && (f = ` * ${e.description}\n${f}`), f = O(f), e = f += R(e.i, e.name)) : e = ub(e);
     }
     return e;
   })].join("\n");
@@ -1271,12 +1275,12 @@ const Sb = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
   const [d, ...e] = c.split(/\s+/), f = e.includes("closure"), g = e.includes("externs"), h = e.includes("noSuppress"), k = e.includes("skipNsDecl"), l = e.includes("namespace");
   let m = e.find(q => q.startsWith("ignore:"));
   m = m ? m.replace("ignore:", "").split(",") : [];
-  let {F:n, J:p} = this.i;
+  let {F:n, K:p} = this.l;
   f && (n = !0);
   g && (p = !0);
   try {
     this.o("Detected type marker: %s", c);
-    const {types:q, imports:r, j:t} = await Ob(d, m);
+    const {types:q, imports:r, i:t} = await Ob(d, m);
     this.emit("types", q);
     this.emit("types", r);
     let x;
@@ -1293,7 +1297,7 @@ const Sb = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
 }, Tb = / \*\/\n\/\*\*\n \* @typedef/g;
 const Vb = {re:/( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm, replacement:Ub};
 function Ub(a, b, c, d, e, f, g) {
-  const {F:h} = this.i;
+  const {F:h} = this.l;
   let k;
   f = () => {
     if (this.lines && this.file) {
@@ -1303,9 +1307,9 @@ function Ub(a, b, c, d, e, f, g) {
         for (; q < g;) {
           q += this.lines[m].length, m++;
         }
-        m = {line:m, S:b.length + 11};
+        m = {line:m, T:b.length + 11};
       }
-      const {line:n, S:p} = m;
+      const {line:n, T:p} = m;
       this.o("%s:%s:%s", this.file, n, p);
     }
   };
@@ -1322,7 +1326,7 @@ function Ub(a, b, c, d, e, f, g) {
     return a;
   }
   c = Object.values(this.types).find(({name:m, h:n}) => h ? n == k.name : m == k.name);
-  return !c || c instanceof Fb.b ? a : c.K(e, d, b, k.nullable, h);
+  return !c || c instanceof Fb.b ? a : c.L(e, d, b, k.nullable, h);
 }
 const Z = (a, b, c, d, e) => {
   if (a) {
@@ -1351,13 +1355,13 @@ const Z = (a, b, c, d, e) => {
   }
 }, Wb = "String Boolean Object Date Number Symbol Buffer Function".split(" ");
 var Xb = (a, b = !1) => {
-  var {U:c} = Ta();
+  var {V:c} = Ta();
   const d = Va(c);
   c = Ua(c);
   return new Fb(b ? [Sb] : [Sb, d, Vb, c], a);
 };
 var Zb = async() => {
-  const {F:a = !1, J:b = !1, C:c, types:d} = {F:ma, J:na, C:la, types:oa};
+  const {F:a = !1, K:b = !1, C:c, types:d} = {F:ma, K:na, C:la, types:oa};
   await Promise.all(w.map(async e => {
     var f = await H(y, e);
     let g;
@@ -1374,7 +1378,7 @@ const Yb = async(a, b = !1, c = !1, d = null, e = null) => {
   }));
   await Promise.all(a.map(async g => {
     var h = await F(g);
-    const k = Xb({F:b, J:c}, c);
+    const k = Xb({F:b, K:c}, c);
     f.forEach(l => k.emit("types", l));
     k.file = g;
     k.o = console.error;
@@ -1399,7 +1403,7 @@ class dc extends z {
     super({writableObjectMode:!0});
   }
   _transform(a, b, c) {
-    var {type:d, name:e, description:f, l:g} = a;
+    var {type:d, name:e, description:f, j:g} = a;
     a = d && d.startsWith("import") ? ec(d, e) : cc(d, e, f, g);
     this.push(a);
     g.forEach(h => {
@@ -1445,7 +1449,7 @@ class fc extends z {
       }
       return n;
     });
-    this.push({type:d, name:e, description:f, l:a});
+    this.push({type:d, name:e, description:f, j:a});
     c();
   }
 }
@@ -1499,7 +1503,7 @@ class jc extends M {
       if ("constructor" == g) {
         return vb(e, d).join("\n");
       }
-      e = e.l.find(({name:h}) => h == g);
+      e = e.j.find(({name:h}) => h == g);
       return e ? e.b ? rb(e, d) : (console.error("Property %s of type %s in %s wasn't parsed, possibly parser bug.", g, f, b), c) : (console.error("Property %s of type %s in %s not found", g, f, b), c);
     }}]);
   }

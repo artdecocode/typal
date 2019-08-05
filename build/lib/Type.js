@@ -170,8 +170,11 @@ _ns.Type.prototype.constructor
     if (!this._args) throw new Error('Args expected.')
     this._isMethod = value
   }
+  get isMethod() {
+    return this._isMethod
+  }
   get shouldPrototype() {
-    return this.isConstructor || this.isInterface || this.isRecord || this._isMethod
+    return this.isConstructor || this.isInterface || this.isRecord || this.isMethod
   }
   /**
    * When printing to externs, this is the right-hand part.
@@ -217,7 +220,7 @@ _ns.Type.prototype.constructor
    * @todo decouple closure and usage of namespaces.
    */
   getTypedefType() {
-    if (!this._isMethod) return 'Object'
+    if (!this.isMethod) return 'Object'
 
     return `(${
       this._args.map(({ name, type, optional }) => {
@@ -230,7 +233,7 @@ _ns.Type.prototype.constructor
    * If the `return` was set on type, this will return it.
    */
   get return() {
-    if (!this._isMethod) return null
+    if (!this.isMethod) return null
     return this._methodReturn || 'void'
   }
   /**
@@ -360,7 +363,7 @@ _ns.Type.prototype.constructor
   toPrototype() {
     const pp = this.toHeading()
     // if (this.closureType) pp.push(` * @type {${this.closureType}}`)  // todo <arg>new</arg>
-    if (!this._isMethod) pp.push(` * @${this.prototypeAnnotation}`)
+    if (!this.isMethod) pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
     s = s + getExternDeclaration(this.namespace, this.name, this.constr)
     /** @type {!Array<!Property>} */

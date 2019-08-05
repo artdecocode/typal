@@ -154,6 +154,10 @@ const parseType = (content, props, ns, rootNamespace) => {
 /**
  * This is applicable to @interfaces/constructors/methods which
  * will be written with `= function () {}` in externs.
+ * @param {string} content
+ * @param {!Object} props
+ * @param {string} [ns]
+ * @param {string} [rootNamespace]
  */
 const parseTypes = (content, props, ns, rootNamespace) => {
   const acc = []
