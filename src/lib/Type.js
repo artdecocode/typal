@@ -345,7 +345,7 @@ _ns.Type.prototype.constructor
 
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
-    if (this.return) lines.push(` * @return {${this.return}}`)
+    if (this._methodReturn) lines.push(` * @return {${this.return}}`)
     if (ws) lines = lines.map(p => `${ws}${p}`)
     return lines
   }

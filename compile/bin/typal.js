@@ -789,11 +789,11 @@ function V(a) {
   if (f || a.f) {
     a.optional = !0;
   }
-  m && (a.A = [m]);
-  n && (a.A = n.split(/\s*,\s*/));
-  p && (a.B = p);
+  m && (a.B = [m]);
+  n && (a.B = n.split(/\s*,\s*/));
+  p && (a.v = p);
   q && (a.l = !0);
-  if (!a.B) {
+  if (!a.v) {
     try {
       a.b = gb(a.g);
     } catch (r) {
@@ -876,8 +876,8 @@ class tb {
     this.f = !1;
     this.default = null;
     this.optional = !1;
-    this.A = [];
-    this.B = !1;
+    this.B = [];
+    this.v = !1;
     this.b = null;
     this.args = a;
     this.l = !1;
@@ -917,7 +917,7 @@ function W(a, b, c, d) {
   n && (a.link = n);
   !0 === q && (a.isConstructor = q);
   !0 === t && (a.G = t);
-  !0 === x && (a.m = x);
+  !0 === x && (a.v = x);
   r && (a.extends = r);
   if (b) {
     c = U("prop", b).map(u => {
@@ -953,16 +953,16 @@ function W(a, b, c, d) {
     a.j = [...c, ...b];
   }
   d && (a.i = d);
-  Aa && (a.H = Aa);
+  Aa && (a.m = Aa);
 }
 function ub(a) {
   var b = vb(a);
-  a.v || b.push(` * @${a.Y}`);
+  a.w || b.push(` * @${a.Y}`);
   b = O(b.join("\n"));
   b += R(a.i, a.name, a.X);
   const c = a.j.reduce((d, e) => {
     d.push(e);
-    const f = e.A.map(g => sb(e, g));
+    const f = e.B.map(g => sb(e, g));
     d.push(...f);
     return d;
   }, []).map(d => {
@@ -975,10 +975,10 @@ function ub(a) {
 }
 function wb(a, b) {
   const c = `${a.extends ? "$" : ""}${a.name}`;
-  return (void 0 === b ? 0 : b) ? `${a.w}${c}` : c;
+  return (void 0 === b ? 0 : b) ? `${a.A}${c}` : c;
 }
 function xb(a) {
-  return a.v ? `(${a.b.map(b => {
+  return a.w ? `(${a.b.map(b => {
     var {name:c, type:d, optional:e} = b;
     return `${c}${e ? "?" : ""}: ${d}`;
   }).join(", ")}) => ${a.return}` : "Object";
@@ -990,7 +990,7 @@ function yb(a, b, c, d) {
   d = ` * @typedef {${(b ? a.g : a.type) || xb(a)}}${` ${wb(a, d)}${a.f}`}`;
   a = (a.j ? a.j.reduce((e, f) => {
     e.push(f);
-    const g = f.A.map(h => sb(f, h));
+    const g = f.B.map(h => sb(f, h));
     e.push(...g);
     return e;
   }, []) : []).map(e => nb(e, b));
@@ -1025,7 +1025,7 @@ function vb(a, b) {
     e.startsWith("...") && (e = e.slice(3), h = `...${h}`);
     c.push(` * @param {${h}${g ? "=" : ""}} ${g ? `[${e}]` : e}${f ? ` ${f}` : ""}`);
   });
-  a.return && c.push(` * @return {${a.return}}`);
+  a.m && c.push(` * @return {${a.return}}`);
   b && (c = c.map(d => `${b}${d}`));
   return c;
 }
@@ -1035,25 +1035,25 @@ class X {
     this.link = this.N = this.import = this.O = this.P = this.description = this.g = this.type = null;
     this.j = [];
     this.i = null;
-    this.m = this.G = this.isConstructor = !1;
+    this.v = this.G = this.isConstructor = !1;
     this.extends = null;
-    this.B = !1;
-    this.H = this.b = null;
+    this.H = !1;
+    this.m = this.b = null;
   }
-  set v(a) {
+  set w(a) {
     if (!this.b) {
       throw Error("Args expected.");
     }
-    this.B = a;
+    this.H = a;
   }
-  get v() {
-    return this.B;
+  get w() {
+    return this.H;
   }
   get Z() {
-    return this.isConstructor || this.G || this.m || this.v;
+    return this.isConstructor || this.G || this.v || this.w;
   }
   get return() {
-    return this.v ? this.H || "void" : null;
+    return this.w ? this.m || "void" : null;
   }
   get f() {
     return `${this.l ? ` \`\uff20${this.l}\`` : ""}${this.description ? ` ${this.description}` : ""}`;
@@ -1066,7 +1066,7 @@ class X {
     return a;
   }
   get l() {
-    return this.isConstructor ? "constructor" : this.G ? "interface" : this.m ? "record" : "";
+    return this.isConstructor ? "constructor" : this.G ? "interface" : this.v ? "record" : "";
   }
   get X() {
     return this.b ? `function(${this.b.map(a => {
@@ -1074,11 +1074,11 @@ class X {
       return a;
     }).join(", ")}) {}` : null;
   }
-  get w() {
+  get A() {
     return this.i ? `${this.i}.` : "";
   }
   get h() {
-    return `${this.w}${this.name}`;
+    return `${this.A}${this.name}`;
   }
   L(a, b, c, d, e) {
     e = void 0 === e ? !1 : e;
@@ -1096,7 +1096,7 @@ const Ab = (a, b) => {
   b = void 0 === b ? !1 : b;
   a = a.reduce((c, d) => {
     c.push(d);
-    const e = d.A.map(f => Object.assign({}, d, {name:f}));
+    const e = d.B.map(f => Object.assign({}, d, {name:f}));
     c.push(...e);
     return c;
   }, []);
@@ -1112,18 +1112,18 @@ function Bb(a, {name:b, from:c, desc:d, link:e, ns:f}) {
   a.from = c;
   a.J = d;
   a.link = e;
-  a.w = f || a.from;
+  a.A = f || a.from;
 }
 function Cb(a, b = !0) {
   return ` * @typedef {import('${a.from}').${a.name}} ${b ? a.h : a.name}`;
 }
 class Db {
   constructor() {
-    this.from = this.name = this.w = "";
+    this.from = this.name = this.A = "";
     this.link = this.J = null;
   }
   get h() {
-    return `${this.w}.${this.name}`;
+    return `${this.A}.${this.name}`;
   }
 }
 ;function Eb(a, b) {
@@ -1197,7 +1197,7 @@ class Fb extends M {
     var {content:m, props:n} = l;
     l = Gb(m, n, e, void 0);
     l.forEach(p => {
-      p.v = !0;
+      p.w = !0;
     });
     k.push(...l);
     return k;
@@ -1211,7 +1211,7 @@ class Fb extends M {
     return k;
   });
   g = f.map(k => {
-    var {name:l, from:m, J:n, link:p, w:q} = k;
+    var {name:l, from:m, J:n, link:p, A:q} = k;
     k = new X;
     W(k, "", {name:l, type:`import('${m}').${l}`, P:!0, import:!0, J:n, link:p}, void 0 == q ? void 0 : q);
     return k;
