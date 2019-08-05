@@ -88,7 +88,9 @@ _ns.Type.prototype.constructor
     this._args = null
 
     /** @type {?string} */
-    this.methodReturn = null
+    this._methodReturn = null
+    /** @type {?boolean} */
+    this._async = null
   }
   /**
    * Create type from the xml content and properties parsed with `rexml`.
@@ -97,8 +99,8 @@ _ns.Type.prototype.constructor
     'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread,
     'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 
     'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 
-    'record': isRecord, 
-    'return': methodReturn, // for <method> elements
+    'record': isRecord,
+    'async': methodAsync, 'return': methodReturn, // for <method async return="{}"> elements
   }, namespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -160,7 +162,8 @@ _ns.Type.prototype.constructor
       this.properties = [...props, ...fnProps]
     }
     if (namespace) this.namespace = namespace
-    if (methodReturn) this.methodReturn = methodReturn
+    if (methodReturn) this._methodReturn = methodReturn
+    if (methodAsync) this._async = true
   }
   /** @param {boolean} value */
   set isMethod(value) { // set by parse.js
@@ -216,13 +219,28 @@ _ns.Type.prototype.constructor
   getTypedefType() {
     if (!this._isMethod) return 'Object'
 
-    const ret = this.methodReturn || 'void'
     return `(${
       this._args.map(({ name, type, optional }) => {
         return `${name}${optional ? '?' : ''}: ${type}`
         // return type + (optional ? '=' : '')
       }).join(', ')
-    }) => ${ret}`
+    }) => ${this.return}`
+  }
+  /**
+   * If the `return` was set on type, this will return it.
+   */
+  get return() {
+    if (!this._isMethod) return null
+    return this._methodReturn || 'void'
+  }
+  /**
+   * Removes the namespace from the type.
+   */
+  clearNamespace(namespace) {
+    const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
+    if (this.type) this.type = this.type.replace(s, '$1')
+    if (this.extends) this.extends = this.extends.replace(s, '$1')
+    if (this._methodReturn) this._methodReturn = this._methodReturn.replace(s, '$1')
   }
   /** 
    * Used to generate typedefs, but not externs.
@@ -324,7 +342,7 @@ _ns.Type.prototype.constructor
 
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
-    if (this.methodReturn) lines.push(` * @return {${this.methodReturn}}`)
+    if (this.return) lines.push(` * @return {${this.return}}`)
     if (ws) lines = lines.map(p => `${ws}${p}`)
     return lines
   }

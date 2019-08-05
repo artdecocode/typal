@@ -6,6 +6,8 @@ import read from '@wrote/read'
 import { extractArgs } from './Arg'
 
 /**
+ * When Documentary compiles types with `-n` (root namespace) flag,
+ * the namespace needs to be cleared.
  * @param {string} namespace
  * @param {Type} type
  */
@@ -14,8 +16,7 @@ const removeNamespace = (namespace, type) => {
   type.properties.forEach((p) => {
     p.type = p.type.replace(s, '$1')
   })
-  if (type.type) type.type = type.type.replace(s, '$1')
-  if (type.extends) type.extends = type.extends.replace(s, '$1')
+  type.clearNamespace(namespace)
 }
 
 /**
@@ -77,7 +78,7 @@ const parseFile = (xml, rootNamespace) => {
 
   const methodTags = extractTags('method', Root)
   const methods = methodTags.reduce((acc, { content, props }) => {
-    const t = parseTypes(content, props, ns)
+    const t = parseTypes(content, props, ns, rootNamespace)
     t.forEach(tt => {
       tt.isMethod = true
     })
@@ -122,8 +123,9 @@ const parseFile = (xml, rootNamespace) => {
  * @param {string} content
  * @param {Object} props
  * @param {string} [ns]
+ * @param {string} [rootNamespace]
  */
-const parseType = (content, props, ns) => {
+const parseType = (content, props, ns, rootNamespace) => {
   const type = new Type()
   const i = content.search(/<(prop|function|fn|static) /)
   let prebody = '', body = content
@@ -131,7 +133,7 @@ const parseType = (content, props, ns) => {
     prebody = content.slice(0, i)
     body = content.slice(i)
   }
-  const { argsArgs } = extractArgs(prebody)
+  const { argsArgs } = extractArgs(prebody, rootNamespace)
 
   /** Specify args in props... disable ATM */
   // let { 'args': args = '', ...rest } = props
@@ -153,20 +155,20 @@ const parseType = (content, props, ns) => {
  * This is applicable to @interfaces/constructors/methods which
  * will be written with `= function () {}` in externs.
  */
-const parseTypes = (content, props, ns) => {
+const parseTypes = (content, props, ns, rootNamespace) => {
   const acc = []
   const { 'alias': alias, 'aliases': aliases, ...restProps } = props
-  const type = parseType(content, props, ns)
+  const type = parseType(content, props, ns, rootNamespace)
   acc.push(type)
 
   if (alias) {
-    const type2 = parseType(content, { ...restProps, name: alias }, ns)
+    const type2 = parseType(content, { ...restProps, name: alias }, ns, rootNamespace)
     type2.description = `${type2.description}${type2.description ? ' ' : ''}Alias of \`${restProps.name}\`.`
     acc.push(type2)
   } else if (aliases) {
     const a = aliases.split(/, */)
     a.forEach((name) => {
-      const type2 = parseType(content, { ...restProps, name }, ns)
+      const type2 = parseType(content, { ...restProps, name }, ns, rootNamespace)
       type2.description = `${type2.description}${type2.description ? ' ' : ''}Alias of \`${restProps.name}\`.`
       acc.push(type2)
     })

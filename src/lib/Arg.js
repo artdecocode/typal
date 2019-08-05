@@ -15,13 +15,18 @@ export default class Arg {
   }
   fromXML(content,
     { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type },
-  ) {
+    namespace) {
     if (!name) throw new Error('Argument does not have a name.')
     this.name = name
     if (content) this.description = trimD(content)
-    const t = getPropType({ number, string, boolean, type })
+    let t = getPropType({ number, string, boolean, type })
+    if (namespace) {
+      const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
+      t = t.replace(s, '$1')
+    }
     this.type = t
     if (opt) this.optional = true
+    // if (name.startsWith('...')) this.optional = true
     // /**
     //  * @type {_typedefsParser.Type}
     //  */
@@ -63,8 +68,9 @@ export default class Arg {
 
 /**
  * @param {string} content
+ * @param {string} [ns] The namespace to omit.
  */
-export const extractArgs = (content) => {
+export const extractArgs = (content, ns) => {
   let ai = content.lastIndexOf('</arg>')
   let newContent = content
   /** @type {!Array<!Arg>} */
@@ -76,7 +82,7 @@ export const extractArgs = (content) => {
     argsArgs = extractTags('arg', pre)
     argsArgs = argsArgs.map(({ content: ac, props: ap }) => {
       const ar = new Arg()
-      ar.fromXML(ac, ap)
+      ar.fromXML(ac, ap, ns)
       return ar
     })
   }

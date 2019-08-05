@@ -16,5 +16,6 @@
   "extends": null,
   "_isMethod": false,
   "_args": null,
-  "methodReturn": null
+  "_methodReturn": null,
+  "_async": null
 }
