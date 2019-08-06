@@ -1,5 +1,9 @@
 ## 6 August 2019
 
+### [1.20.2](https://github.com/artdecocode/typal/compare/v1.20.1...v1.20.2)
+
+- [fix] Don't print static methods and properties in typedef.
+
 ### [1.20.1](https://github.com/artdecocode/typal/compare/v1.20.0...v1.20.1)
 
 - [fix] Don't specify _void_ return in externs.

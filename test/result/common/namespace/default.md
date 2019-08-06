@@ -62,3 +62,26 @@
  */
 
 /*@*/
+
+## does not write static properties
+<types>
+  <type name="Test">
+    <prop name="shouldKeep"/>
+    <prop static type="!Object" name="defaultProps" opt>
+      Properties that will be assigned upon construction of the component.
+    </prop>
+    <static name="getDerivedStateFromProps" opt return="!Object">
+      <arg name="props" type="!Object">Component properties.</arg>
+      <arg name="state" type="!Object">Component plain state.</arg>
+    </static>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {Object} Test
+ * @prop {*} shouldKeep
+ */
+
+/*@*/

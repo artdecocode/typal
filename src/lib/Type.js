@@ -257,6 +257,7 @@ _ns.Type.prototype.constructor
     const dd = ` ${this.getFullNameForExtends(useNamespace)}${this.descriptionWithTag}`
     const s = ` * @typedef {${t}}${dd}`
     const properties = this.properties ? this.properties.reduce((acc, p) => {
+      if (p._static) return acc 
       acc.push(p)
       const a = p.aliases.map(al => p.makeAlias(al))
       acc.push(...a)
