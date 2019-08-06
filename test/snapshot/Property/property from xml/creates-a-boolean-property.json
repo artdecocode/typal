@@ -1,15 +1,16 @@
 {
   "name": "test",
   "description": "Test description.",
-  "type": "boolean",
+  "_type": "boolean",
   "closureType": "boolean",
+  "parsed": {
+    "name": "boolean"
+  },
+  "_closure": null,
   "hasDefault": true,
   "default": false,
   "optional": true,
   "aliases": [],
-  "parsed": {
-    "name": "boolean"
-  },
   "noParams": false,
   "args": [],
   "_static": false

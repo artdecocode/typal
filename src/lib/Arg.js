@@ -15,13 +15,13 @@ export default class Arg {
   }
   fromXML(content,
     { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type },
-    namespace) {
+    rootNamespace) {
     if (!name) throw new Error('Argument does not have a name.')
     this.name = name
     if (content) this.description = trimD(content)
     let t = getPropType({ number, string, boolean, type })
-    if (namespace) {
-      const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
+    if (rootNamespace) {
+      const s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')
       t = t.replace(s, '$1')
     }
     this.type = t
@@ -68,9 +68,9 @@ export default class Arg {
 
 /**
  * @param {string} content
- * @param {string} [ns] The namespace to omit.
+ * @param {string} [rootNamespace] The namespace to omit.
  */
-export const extractArgs = (content, ns) => {
+export const extractArgs = (content, rootNamespace) => {
   let ai = content.lastIndexOf('</arg>')
   let newContent = content
   /** @type {!Array<!Arg>} */
@@ -82,7 +82,7 @@ export const extractArgs = (content, ns) => {
     argsArgs = extractTags('arg', pre)
     argsArgs = argsArgs.map(({ content: ac, props: ap }) => {
       const ar = new Arg()
-      ar.fromXML(ac, ap, ns)
+      ar.fromXML(ac, ap, rootNamespace)
       return ar
     })
   }

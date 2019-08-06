@@ -101,7 +101,7 @@ _ns.Type.prototype.constructor
     'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 
     'record': isRecord,
     'async': methodAsync, 'return': methodReturn, // for <method async return="{}"> elements
-  }, namespace) {
+  }, namespace, rootNamespace) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
 
@@ -135,7 +135,7 @@ _ns.Type.prototype.constructor
       const fn = [...functions, ...fns, ...staticMethods]
 
       const fnProps = fn.map(({ content: c, props: p, 'isStatic': isStatic }) => {
-        const { newContent, argsArgs } = extractArgs(c)
+        const { newContent, argsArgs } = extractArgs(c, rootNamespace)
 
         const { 'async': async, 'return': ret = 'void', ...rest } = p
         let { 'args': args = '' } = p
@@ -159,7 +159,13 @@ _ns.Type.prototype.constructor
         if (isStatic) pr._static = true
         return pr
       })
-      this.properties = [...props, ...fnProps]
+      const all = [...props, ...fnProps]
+      const { s, n } = all.reduce((acc, p) => {
+        if (p.static) acc.s.push(p)
+        else acc.n.push(p)
+        return acc
+      }, { s: [], n: [] })
+      this.properties = [...s, ...n]
     }
     if (namespace) this.namespace = namespace
     if (methodReturn) this._methodReturn = methodReturn
@@ -256,6 +262,9 @@ _ns.Type.prototype.constructor
     const t = (closure ? this.closureType : this.type) || this.getTypedefType()
     const dd = ` ${this.getFullNameForExtends(useNamespace)}${this.descriptionWithTag}`
     const s = ` * @typedef {${t}}${dd}`
+    /**
+     * @type {!Array<!Property>}
+     */
     const properties = this.properties ? this.properties.reduce((acc, p) => {
       if (p._static) return acc 
       acc.push(p)
@@ -450,17 +459,14 @@ _ns.Type.prototype.constructor
     let LINE = twl // `${twl}<strong>${nn}`
     let useTag = /_/.test(nn)
     if (this.extends) {
-      useTag = useTag || /_/.test(this.extends)
       let e = `\`${this.extends}\``
       const foundExt = allTypes.find(({ fullName }) => {
         return fullName == this.extends
       })
       if (foundExt && foundExt.link) {
-        useTag = useTag || /_/.test(foundExt.link)
         e = '<a '
         if (foundExt.description) {
           e += `title="${foundExt.description}" `
-          useTag = useTag || /_/.test(foundExt.description)
         }
         e += `href="${foundExt.link}">\`${this.extends}\`</a>`
       } else {
@@ -469,9 +475,9 @@ _ns.Type.prototype.constructor
             return `\`${td}\``
           }, link })
         if (this.extends != le) e = le
-        useTag = useTag || /_/.test(e)
       }
       const extendS = ` extends ${e}`
+      useTag = useTag || /_/.test(e)
       if (useTag) LINE += '<strong>'
       else LINE += '__'
       LINE += nn + extendS
@@ -490,9 +496,8 @@ _ns.Type.prototype.constructor
       preprocessDesc,
       link,
     })
-    return { LINE, table, displayInDetails } // delegate rendering to typal
-    // const r = `${LINE}${table}`
-    // return r
+    // delegate rendering to documentary
+    return { LINE, table, displayInDetails } 
   }
 }
 
@@ -532,7 +537,7 @@ const getSpread = (properties = [], closure = false) => {
 /**
  * Iterates through the types to find the referenced one, and returns a string which contains a link to it.
  * @param {!Array<!Type>} allTypes
- * @param {string} type
+ * @param {string|!_typedefsParser.Type} type
  * @param {Object} [opts]
  * @param {boolean} [opts.flatten]
  * @param {boolean} [opts.escapePipe]
@@ -541,7 +546,8 @@ const getSpread = (properties = [], closure = false) => {
  */
 export const getLinks = (allTypes, type, opts = {}) => {
   let parsed
-  try {
+  if (typeof type == 'object') parsed = type
+  else try {
     parsed = parse(type) // should parse type when added
     if (!parsed) {
       console.log('Could not parse %s', type)
@@ -671,13 +677,17 @@ export const makePropsTable = (props = [], allTypes = [], opts = {}) => {
   const h = ['Name',
     ...(narrow ? ['Type & Description'] : ['Type', 'Description']),
     ...(anyHaveDefault ? ['Default'] : [])]
+  const linkOptions = {
+    flatten,
+    escapePipe: !narrow,
+    link,
+  }
   const ps = props.map((prop) => {
-    const typeName =
-      getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.type, {
-        flatten,
-        escapePipe: !narrow,
-        link,
-      })
+    let typeName
+    if (prop.args && prop.isParsedFunction) {
+      typeName = prop.toTypeScriptType((s) => getLinks(allTypes, s, linkOptions))
+    } else 
+      typeName = getLinks(allTypes, prop.parsed || prop.type, linkOptions)
     const name = prop.optional ? prop.name : `${prop.name}*`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
     const de = preprocessDesc ? preprocessDesc(prop.description) : prop.description

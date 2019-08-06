@@ -85,3 +85,21 @@
  */
 
 /*@*/
+
+## functional properties
+<types>
+  <type name="Test">
+    <fn args="string, string" name="fn">
+      <arg name="test" type="string"></arg>
+    </fn> 
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {Object} Test
+ * @prop {(test: string, arg1: string) => void} fn
+ */
+
+/*@*/

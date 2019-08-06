@@ -40,16 +40,18 @@ const parseFile = (xml, rootNamespace) => {
   const types = typeTags.reduce((acc, { content, props }) => {
     const { 'alias': alias, 'aliases': aliases, ...restProps } = props
     const type = new Type()
-    type.fromXML(content, props, ns)
+    type.fromXML(content, props, ns, rootNamespace)
     acc.push(type)
 
     if (alias) {
-      const type2 = parseType(content, { ...restProps, name: alias }, ns)
+      const type2 = new Type()
+      type2.fromXML(content, { ...restProps, name: alias }, ns, rootNamespace)
       acc.push(type2)
     } else if (aliases) {
       const a = aliases.split(/, */)
       a.forEach((name) => {
-        const type2 = parseType(content, { ...restProps, name }, ns)
+        const type2 = new Type()
+        type2.fromXML(content, { ...restProps, name }, ns, rootNamespace)
         acc.push(type2)
       })
     }
@@ -120,6 +122,7 @@ const parseFile = (xml, rootNamespace) => {
 }
 
 /**
+ * This should be applicable only to <interface> / <constructor> / <method>
  * @param {string} content
  * @param {Object} props
  * @param {string} [ns]

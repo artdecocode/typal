@@ -33,6 +33,11 @@ export default class Property {
      */
     this.closureType = ''
     /**
+     * The actual `closure` attribute.
+     * @type {?string}
+     */
+    this._closure = null
+    /**
      * Whether the property has the default value.
      * @type {boolean}
      */
@@ -54,14 +59,13 @@ export default class Property {
     this.aliases = []
 
     /**
-     * The parsed type.
-     */
-    this.parsed = undefined
-
-    /**
      * Whether to skip function params serialisation (e.g., in case it's working incorrectly).
      */
     this.noParams = false
+    /**
+     * The parsed type.
+     * @type {_typedefsParser.Type}
+     */
     this.parsed = null
 
     this.args = args
@@ -71,6 +75,24 @@ export default class Property {
      * @type {boolean}
      */
     this._static = false
+  }
+  /**
+   * Serialises functions to TypeScript, e.g.,
+   * (param: string) => void
+   */
+  toTypeScriptType(getLinks) {
+    if (!this.parsed) throw new Error('The property was not parsed.')
+    const { function: { args, return: { name: ret } } } = this.parsed
+    const a = args.map((_, i) => {
+      let { name = `arg${i}`, type: t, optional } = this.args[i] || {}
+      name = `${name}${optional ? '?' : ''}`
+      if (t) t = getLinks(t)
+      return `${name}${t ? `: ${t}` : ''}`
+    })
+    const j = a.join(', ')
+    const r = getLinks(ret || '*')
+    const typeName = `(${j}) => ${r}`
+    return typeName.replace(/\*/g, '\\*')
   }
   /**
    * When writing externs, this will prevent adding `.prototype`, e.g.,
@@ -94,25 +116,36 @@ export default class Property {
     this.name = name
     if (content) this.description = trimD(content)
     const t = getPropType({ number, string, boolean, type })
+
+    if (noParams) this.noParams = noParams
+
+    if (closure) this._closure = closure
+    
     this.type = t
-    if (closure) this.closureType = closure
-    else this.closureType = this.type
+
     if (def !== undefined) this.hasDefault = true
     if (this.hasDefault) this.default = def
     if (opt || this.hasDefault) this.optional = true
     if (alias) this.aliases = [alias]
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
-    if (noParams) this.noParams = noParams
-
     if (Static) this._static = true
-
-    // if optional, we want to keep "| undefined" on records
-    // todo: lazy parse on demand as not always required...
+  }
+  get type() {
+    return this._type
+  }
+  /**
+   * Type can be overridden when removing namespace from properties.
+   */
+  set type(value) {
+    this._type = value
+    this.closureType = this._closure || value
+    // can also check if closure changed or just type
     if (!this.noParams) {
       try {
         this.parsed = parse(this.closureType)
       } catch (err) { /* ok */
+        this.parsed = null
       }
     }
   }
@@ -242,3 +275,8 @@ const indentWithAster = (description, skipFirst = false) => {
   }).join('\n')
   return d
 }
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type
+ */

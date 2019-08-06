@@ -1,15 +1,16 @@
 {
   "name": "test",
   "description": "Test description.",
-  "type": "Type",
+  "_type": "Type",
   "closureType": "Type",
+  "parsed": {
+    "name": "Type"
+  },
+  "_closure": null,
   "hasDefault": false,
   "default": null,
   "optional": true,
   "aliases": [],
-  "parsed": {
-    "name": "Type"
-  },
   "noParams": false,
   "args": [],
   "_static": false
