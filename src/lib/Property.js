@@ -26,7 +26,7 @@ export default class Property {
      * The type of the property.
      * @type {string}
      */
-    this.type = '*'
+    this._type = '*'
     /**
      * The override on the type in externs.
      * @type {string}
@@ -64,7 +64,7 @@ export default class Property {
     this.noParams = false
     /**
      * The parsed type.
-     * @type {_typedefsParser.Type}
+     * @type {?_typedefsParser.Type}
      */
     this.parsed = null
 
@@ -175,7 +175,7 @@ export default class Property {
   toHeading() {
     const pp = []
     const { function: { args, return: ret } } = this.parsed
-    const a = args.map(serialise)
+    const a = args.map(ar => serialise(ar))
     a.forEach((s, i) => {
       const { optional } = args[i]
       const { name = `arg${i}`, description } = this.args[i] || {}
@@ -224,14 +224,14 @@ export default class Property {
     // const ret = this.parsed.function.return.name
     const { function: { args, return: ret } } = this.parsed
     const a = args
-      .map(serialise)
+      .map((ar) => serialise(ar))
       .map((type, i) => {
         const { optional } = args[i]
         const { name: argName = `arg${i}` } = this.args[i] || {}
         return `${argName}${optional ? '?' : ''}: ${type}`
       })
     const s = a.join(', ')
-    const r = serialise(ret)
+    const r = serialise(/** @type {!_typedefsParser.Type} */ (ret))
 
     return `(${s}) => ${r}`
   }

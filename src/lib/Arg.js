@@ -68,7 +68,7 @@ export default class Arg {
 
 /**
  * @param {string} content
- * @param {string} [rootNamespace] The namespace to omit.
+ * @param {?string} [rootNamespace] The namespace to omit.
  */
 export const extractArgs = (content, rootNamespace) => {
   let ai = content.lastIndexOf('</arg>')

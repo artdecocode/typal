@@ -101,7 +101,7 @@ _ns.Type.prototype.constructor
     'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 
     'record': isRecord,
     'async': methodAsync, 'return': methodReturn, // for <method async return="{}"> elements
-  }, namespace, rootNamespace) {
+  }, namespace, rootNamespace = null) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
 
@@ -685,9 +685,9 @@ export const makePropsTable = (props = [], allTypes = [], opts = {}) => {
   const ps = props.map((prop) => {
     let typeName
     if (prop.args && prop.isParsedFunction) {
-      typeName = prop.toTypeScriptType((s) => getLinks(allTypes, s, linkOptions))
+      typeName = prop.toTypeScriptType((s) => getLinks(/** @type {!Array<!Type>} */ (allTypes), s, linkOptions))
     } else 
-      typeName = getLinks(allTypes, prop.parsed || prop.type, linkOptions)
+      typeName = getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.parsed || prop.type, linkOptions)
     const name = prop.optional ? prop.name : `${prop.name}*`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
     const de = preprocessDesc ? preprocessDesc(prop.description) : prop.description
