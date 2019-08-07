@@ -1,5 +1,6 @@
 ## Help
-* [[3-Use-Cases]]
+* [[3 Use Cases]]
+* [[Default And Initial]]
 
 ## API
 * [[Type]]

@@ -1,0 +1,11 @@
+<types>
+  <type record name="ConfigRecord">
+    <prop type="?string" name="test" default="null" />
+  </type>
+  <type name="Config">
+    <prop type="?string" name="test" default="null" />
+  </type>
+  <type interface name="SomeType">
+    <prop type="?string" name="test" initial="null" />
+  </type>
+</types>
