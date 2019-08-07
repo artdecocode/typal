@@ -5,8 +5,8 @@
   "description": null,
   "noToc": false,
   "spread": false,
-  "import": false,
   "noExpand": false,
+  "import": false,
   "link": null,
   "properties": [],
   "namespace": null,
@@ -14,8 +14,5 @@
   "isInterface": false,
   "isRecord": false,
   "extends": null,
-  "_isMethod": false,
-  "_args": null,
-  "_methodReturn": null,
-  "_async": null
+  "_args": null
 }

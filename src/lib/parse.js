@@ -1,5 +1,6 @@
 import extractTags from 'rexml'
 import Type from './Type'
+import Method from './Method'
 import Import from './Import'
 import { trimD } from './'
 import read from '@wrote/read'
@@ -9,7 +10,7 @@ import { extractArgs } from './Arg'
  * When Documentary compiles types with `-n` (root namespace) flag,
  * the namespace needs to be cleared.
  * @param {string} namespace
- * @param {Type} type
+ * @param {!Type} type
  */
 const removeNamespace = (namespace, type) => {
   const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
@@ -43,18 +44,13 @@ const parseFile = (xml, rootNamespace) => {
     type.fromXML(content, props, ns, rootNamespace)
     acc.push(type)
 
-    if (alias) {
+    const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
+
+    als.forEach((name) => {
       const type2 = new Type()
-      type2.fromXML(content, { ...restProps, name: alias }, ns, rootNamespace)
+      type2.fromXML(content, { ...restProps, name }, ns, rootNamespace)
       acc.push(type2)
-    } else if (aliases) {
-      const a = aliases.split(/, */)
-      a.forEach((name) => {
-        const type2 = new Type()
-        type2.fromXML(content, { ...restProps, name }, ns, rootNamespace)
-        acc.push(type2)
-      })
-    }
+    })
     return acc
   }, [])
 
@@ -80,10 +76,7 @@ const parseFile = (xml, rootNamespace) => {
 
   const methodTags = extractTags('method', Root)
   const methods = methodTags.reduce((acc, { content, props }) => {
-    const t = parseTypes(content, props, ns, rootNamespace)
-    t.forEach(tt => {
-      tt.isMethod = true
-    })
+    const t = parseTypes(content, props, ns, rootNamespace, true)
     acc.push(...t)
     return acc
   }, [])
@@ -127,9 +120,10 @@ const parseFile = (xml, rootNamespace) => {
  * @param {Object} props
  * @param {string} [ns]
  * @param {string} [rootNamespace]
+ * @param {boolean} [isMethod]
  */
-const parseType = (content, props, ns, rootNamespace) => {
-  const type = new Type()
+const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
+  const type = isMethod ? new Method() : new Type()
   const i = content.search(/<(prop|function|fn|static) /)
   let prebody = '', body = content
   if (i != 1) {
@@ -161,25 +155,21 @@ const parseType = (content, props, ns, rootNamespace) => {
  * @param {!Object} props
  * @param {string} [ns]
  * @param {string} [rootNamespace]
+ * @param {boolean} [isMethod]
  */
-const parseTypes = (content, props, ns, rootNamespace) => {
+const parseTypes = (content, props, ns, rootNamespace, isMethod = false) => {
   const acc = []
   const { 'alias': alias, 'aliases': aliases, ...restProps } = props
-  const type = parseType(content, props, ns, rootNamespace)
+  const type = parseType(content, props, ns, rootNamespace, isMethod)
   acc.push(type)
 
-  if (alias) {
-    const type2 = parseType(content, { ...restProps, name: alias }, ns, rootNamespace)
+  const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
+
+  als.forEach((name) => {
+    const type2 = parseType(content, { ...restProps, name }, ns, rootNamespace, isMethod)
     type2.description = `${type2.description}${type2.description ? ' ' : ''}Alias of \`${restProps.name}\`.`
     acc.push(type2)
-  } else if (aliases) {
-    const a = aliases.split(/, */)
-    a.forEach((name) => {
-      const type2 = parseType(content, { ...restProps, name }, ns, rootNamespace)
-      type2.description = `${type2.description}${type2.description ? ' ' : ''}Alias of \`${restProps.name}\`.`
-      acc.push(type2)
-    })
-  }
+  })
 
   return acc
 }
