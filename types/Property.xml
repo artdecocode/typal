@@ -12,7 +12,7 @@
     <prop boolean name="hasDefault" default="false">
       Whether the property has the default value.
     </prop>
-    <prop type="?(string|boolean|number)" name="default">
+    <prop type="?(string|boolean|number)" name="default" default="null">
       The default value of the property.
     </prop>
     <prop boolean name="optional" default="false">

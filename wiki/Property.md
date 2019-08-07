@@ -1,0 +1,1 @@
+<typedef narrow flatten>types/Property.xml</typedef>

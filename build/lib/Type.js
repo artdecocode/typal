@@ -7,6 +7,7 @@ const Arg = require('./Arg'); const { extractArgs } = Arg; // eslint-disable-lin
 
 /**
  * A representation of a type.
+ * @implements {_typal.Type}
  */
 class Type {
   constructor() {
@@ -21,18 +22,19 @@ class Type {
      * An overriding type for closure to generate externs, e.g.,
      * `function(string): boolean` instead of `(s:string) => boolean`.
      * @type {?string}
+     * @deprecated
      */
     this.closureType = null
     /** @type {?string} */
     this.description = null
-    /** @type {?boolean} */
-    this.noToc = null
-    /** @type {?boolean} */
-    this.spread = null
-    /** @type {?boolean} */
-    this.import = null
-    /** @type {?boolean} */
-    this.noExpand = null
+    /** @type {boolean} */
+    this.noToc = false
+    /** @type {boolean} */
+    this.spread = false
+    /** @type {boolean} */
+    this.noExpand = false
+    /** @type {boolean} */
+    this.import = false
     /** @type {?string} */
     this.link = null
     /** @type {!Array<!Property>} */
@@ -49,7 +51,7 @@ class Type {
 /＊＊ @constructor ＊/
 _ns.Type
 /＊＊ @boolean ＊/
-_ns.Type.prototype.constructor
+_ns.Type.prototype.isConstructor
 ```
      */
     this.isConstructor = false
@@ -58,7 +60,7 @@ _ns.Type.prototype.constructor
      * Same as `constructor`, but with `@interface` annotation.
      */
     this.isInterface = false
-    
+
     /**
      * @type {boolean}
      * Same as `constructor`, but with `@record` annotation.
@@ -72,35 +74,18 @@ _ns.Type.prototype.constructor
     this.extends = null
 
     /**
-     * @type {boolean}
-     * If the type is a method.
-     */
-    this._isMethod = false
-
-    // /**
-    //  * The assignment arguments for constructors, interfaces, e.g., "string, number="
-    //  * @type {?string}
-    //  */
-    // this._assignmentString = null
-    /**
      * @type {Array<!Arg>}
      */
     this._args = null
-
-    /** @type {?string} */
-    this._methodReturn = null
-    /** @type {?boolean} */
-    this._async = null
   }
   /**
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
     'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread,
-    'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure, 
-    'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 
+    'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure,
+    'constructor': isConstructor, 'extends': ext, 'interface': isInterface,
     'record': isRecord,
-    'async': methodAsync, 'return': methodReturn, // for <method async return="{}"> elements
   }, namespace, rootNamespace = null) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -168,19 +153,9 @@ _ns.Type.prototype.constructor
       this.properties = [...s, ...n]
     }
     if (namespace) this.namespace = namespace
-    if (methodReturn) this._methodReturn = methodReturn
-    if (methodAsync) this._async = true
-  }
-  /** @param {boolean} value */
-  set isMethod(value) { // set by parse.js
-    if (!this._args) throw new Error('Args expected.')
-    this._isMethod = value
-  }
-  get isMethod() {
-    return this._isMethod
   }
   get shouldPrototype() {
-    return this.isConstructor || this.isInterface || this.isRecord || this.isMethod
+    return this.isConstructor || this.isInterface || this.isRecord
   }
   /**
    * When printing to externs, this is the right-hand part.
@@ -219,39 +194,20 @@ _ns.Type.prototype.constructor
     const n = useNamespace ? `${this.ns}${name}` : name
     return n
   }
-  /**
-   * Used to generate types of **methods** when args were set using `setAssignment`.
-   * If closure type or type were specified, they will override it.
-   * For non-methods, simply returns Object.
-   * @todo decouple closure and usage of namespaces.
-   */
   getTypedefType() {
-    if (!this.isMethod) return 'Object'
-
-    return `(${
-      this._args.map(({ name, type, optional }) => {
-        return `${name}${optional ? '?' : ''}: ${type}`
-        // return type + (optional ? '=' : '')
-      }).join(', ')
-    }) => ${this.return}`
+    return 'Object'
   }
   /**
-   * If the `return` was set on type, this will return it.
-   */
-  get return() {
-    if (!this.isMethod) return null
-    return this._methodReturn || 'void'
-  }
-  /**
+   * @param {string} rootNamespace
    * Removes the namespace from the type.
    */
-  clearNamespace(namespace) {
-    const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
+  clearNamespace(rootNamespace) {
+    const s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')
     if (this.type) this.type = this.type.replace(s, '$1')
     if (this.extends) this.extends = this.extends.replace(s, '$1')
-    if (this._methodReturn) this._methodReturn = this._methodReturn.replace(s, '$1')
+    return s
   }
-  /** 
+  /**
    * Used to generate typedefs, but not externs.
    * This covers both when extending and when not.
    * @param {boolean} [closure=false]
@@ -266,7 +222,7 @@ _ns.Type.prototype.constructor
      * @type {!Array<!Property>}
      */
     const properties = this.properties ? this.properties.reduce((acc, p) => {
-      if (p._static) return acc 
+      if (p._static) return acc
       acc.push(p)
       const a = p.aliases.map(al => p.makeAlias(al))
       acc.push(...a)
@@ -286,7 +242,7 @@ _ns.Type.prototype.constructor
     const t = this.tag ? ` \`＠${this.tag}\`` : ''
     return `${t}${d}`
   }
-  /** 
+  /**
    * Generate `@typedef` block comment for the type.
    * @param {boolean} [closure=false]
    * @param {boolean} [noSuppress=false]
@@ -340,7 +296,7 @@ _ns.Type.prototype.constructor
   /**
    * To heading above declaration bodies. Can be used in externs.
    */
-  toHeading(ws = '') {
+  toHeading(ws = '', includePrototypeTag = true) {
     let lines = []
     if (this.description) lines.push(` * ${this.description}`)
     if (this.extends) lines.push(` * @extends {${this.extends}}`)
@@ -348,14 +304,14 @@ _ns.Type.prototype.constructor
       let { name, description, optional, type } = s
       if (name.startsWith('...')) {
         name = name.slice(3)
-        type = `...${type}` 
+        type = `...${type}`
       }
-      const arg = optional ? `[${name}]` : name 
+      const arg = optional ? `[${name}]` : name
       const d = description ? ` ${description}` : ''
 
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
-    if (this._methodReturn) lines.push(` * @return {${this.return}}`)
+    if (includePrototypeTag) lines.push(` * @${this.prototypeAnnotation}`)
     if (ws) lines = lines.map(p => `${ws}${p}`)
     return lines
   }
@@ -367,13 +323,12 @@ _ns.Type.prototype.constructor
       this._args.map(({ name }) => name).join(', ')
     }) {}` : null
   }
-  /** 
+  /**
    * Only used in externs.
    */
   toPrototype() {
     const pp = this.toHeading()
     // if (this.closureType) pp.push(` * @type {${this.closureType}}`)  // todo <arg>new</arg>
-    if (!this.isMethod) pp.push(` * @${this.prototypeAnnotation}`)
     let s = makeBlock(pp.join('\n'))
     s = s + getExternDeclaration(this.namespace, this.name, this.constr)
     /** @type {!Array<!Property>} */
@@ -497,7 +452,7 @@ _ns.Type.prototype.constructor
       link,
     })
     // delegate rendering to documentary
-    return { LINE, table, displayInDetails } 
+    return { LINE, table, displayInDetails }
   }
 }
 
@@ -686,7 +641,7 @@ const makePropsTable = (props = [], allTypes = [], opts = {}) => {
     let typeName
     if (prop.args && prop.isParsedFunction) {
       typeName = prop.toTypeScriptType((s) => getLinks(/** @type {!Array<!Type>} */ (allTypes), s, linkOptions))
-    } else 
+    } else
       typeName = getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.parsed || prop.type, linkOptions)
     const name = prop.optional ? prop.name : `${prop.name}*`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``

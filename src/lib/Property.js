@@ -25,9 +25,9 @@ export default class Property {
     this.description = null
     /**
      * The type of the property.
-     * @type {string|undefined}
+     * @type {?string}
      */
-    this._type = '*'
+    this._type = null
     /**
      * The override on the type in externs.
      * @type {string}
@@ -126,21 +126,21 @@ export default class Property {
 
     if (def !== undefined) this.hasDefault = true
     if (this.hasDefault) this.default = def
-    if (opt || this.hasDefault) this.optional = true
+    if (opt || (this.hasDefault && this.default != 'null')) this.optional = true
     if (alias) this.aliases = [alias]
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
     if (Static) this._static = true
   }
   get type() {
-    return this._type
+    return this._type || '*'
   }
   /**
    * Type can be overridden when removing namespace from properties.
    */
   set type(value) {
-    this._type = value
-    this.closureType = this._closure || value
+    this._type = value || null
+    this.closureType = this._closure || this._type
     // can also check if closure changed or just type
     if (!this.noParams) {
       try {

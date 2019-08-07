@@ -388,10 +388,10 @@ class N extends z {
     super(b);
     this.f = (Array.isArray(a) ? a : [a]).filter(Ma);
     this.l = !1;
-    this.j = b;
+    this.i = b;
   }
   async replace(a, b) {
-    const c = new N(this.f, this.j);
+    const c = new N(this.f, this.i);
     b && Object.assign(c, b);
     a = await Ta(c, a);
     c.l && (this.l = !0);
@@ -784,11 +784,11 @@ function W(a) {
   b && (a.description = T(b));
   b = Xa({number:g, L:d, boolean:e, type:h});
   p && (a.v = p);
-  l && (a.j = l);
+  l && (a.o = l);
   a.type = b;
   void 0 !== k && (a.hasDefault = !0);
   a.hasDefault && (a.default = k);
-  if (f || a.hasDefault) {
+  if (f || a.hasDefault && "null" != a.default) {
     a.optional = !0;
   }
   m && (a.u = [m]);
@@ -799,7 +799,7 @@ function ib(a, b = !1) {
   if (b) {
     return a.closureType;
   }
-  if (!a.h) {
+  if (!a.i) {
     return a.type;
   }
   const {function:{args:c, return:d}} = a.b;
@@ -837,7 +837,7 @@ function mb(a) {
   return b;
 }
 function nb(a) {
-  if (a.h) {
+  if (a.i) {
     const {function:{args:b}} = a.b;
     return ` = function(${b.map((c, d) => {
       ({name:c = `arg${d}`} = a.args[d] || {});
@@ -853,7 +853,7 @@ function ob(a, b = "") {
     a.default && (d += ` Default \`${a.default}\`.`);
     c.push(d);
   }
-  !a.optional && a.h ? (a = mb(a), c.push(...a)) : c.push(` * @type {${a.optional ? Ya(a.closureType) : a.closureType}}`);
+  !a.optional && a.i ? (a = mb(a), c.push(...a)) : c.push(` * @type {${a.optional ? Ya(a.closureType) : a.closureType}}`);
   b && (c = c.map(d => `${b}${d}`));
   return c.join("\n");
 }
@@ -865,10 +865,9 @@ function pb(a, b) {
 }
 class qb {
   constructor(a = []) {
-    this.description = this.name = null;
-    this.o = "*";
+    this.h = this.description = this.name = null;
     this.closureType = "";
-    this.j = null;
+    this.o = null;
     this.hasDefault = !1;
     this.default = null;
     this.optional = !1;
@@ -882,11 +881,11 @@ class qb {
     return this.f;
   }
   get type() {
-    return this.o;
+    return this.h || "*";
   }
   set type(a) {
-    this.o = a;
-    this.closureType = this.j || a;
+    this.h = a || null;
+    this.closureType = this.o || this.h;
     if (!this.v) {
       try {
         this.b = db(this.closureType);
@@ -895,7 +894,7 @@ class qb {
       }
     }
   }
-  get h() {
+  get i() {
     return this.b && "function" == this.b.name;
   }
   G(a, b = "", c = !1) {
@@ -1044,16 +1043,16 @@ class X {
     return "Object";
   }
   get h() {
-    return `${this.j ? ` \`\uff20${this.j}\`` : ""}${this.description ? ` ${this.description}` : ""}`;
+    return `${this.i ? ` \`\uff20${this.i}\`` : ""}${this.description ? ` ${this.description}` : ""}`;
   }
   get T() {
-    const a = this.j;
+    const a = this.i;
     if (!a) {
       throw Error("Unknown prototype type (not constructor or interface).");
     }
     return a;
   }
-  get j() {
+  get i() {
     return this.isConstructor ? "constructor" : this.isInterface ? "interface" : this.isRecord ? "record" : "";
   }
   f(a, b) {
@@ -1146,7 +1145,7 @@ class Ab extends N {
     });
     this.h = b;
     this.b = [];
-    this.i = console.log;
+    this.j = console.log;
     this.file = null;
     this.lines = [];
   }
@@ -1313,7 +1312,7 @@ const Rb = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
   f && (n = !0);
   g && (p = !0);
   try {
-    this.i("Detected type marker: %s", c);
+    this.j("Detected type marker: %s", c);
     const {types:q, imports:t, namespace:u} = await Fb(d, m);
     this.emit("types", q);
     this.emit("types", t);
@@ -1321,7 +1320,7 @@ const Rb = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
     n ? v = Ob(t, q, h) : p ? (v = Pb(q, u, this.b, k) + "\n", u && this.emit("namespace", u)) : l ? (u && this.emit("namespace", u), v = Qb(t, q, !0)) : v = Qb(t, q);
     return `/* ${b} ${c} */\n${v}`;
   } catch (q) {
-    return this.i("(%s) Could not process typedef-js: %s", c, q.message), process.env.b && console.error(q.stack), a;
+    return this.j("(%s) Could not process typedef-js: %s", c, q.message), process.env.b && console.error(q.stack), a;
   }
 }}, Qb = (a, b, c = !1) => {
   b = b.map(d => ub(d, !1, !1, c));
@@ -1344,19 +1343,19 @@ function Tb(a, b, c, d, e, f, g) {
         m = {line:m, N:b.length + 11};
       }
       const {line:n, N:p} = m;
-      this.i("%s:%s:%s", this.file, n, p);
+      this.j("%s:%s:%s", this.file, n, p);
     }
   };
   try {
     k = db(c);
   } catch (m) {
-    return this.i("Error while parsing the type %s", c), this.i(process.env.DEBUG ? m.stack : m.message), f(), a;
+    return this.j("Error while parsing the type %s", c), this.j(process.env.DEBUG ? m.stack : m.message), f(), a;
   }
   if (!k) {
-    return this.i("Could not parse the type %s", c), f(), a;
+    return this.j("Could not parse the type %s", c), f(), a;
   }
   const l = Object.values(this.types).map(({name:m, g:n}) => h ? n : m);
-  if (!Y(k, l, this.i, c, f)) {
+  if (!Y(k, l, this.j, c, f)) {
     return a;
   }
   c = Object.values(this.types).find(({name:m, g:n}) => h ? n == k.name : m == k.name);
@@ -1415,7 +1414,7 @@ const Xb = async(a, b = !1, c = !1, d = null, e = null) => {
     const k = Wb({B:b, F:c}, c);
     f.forEach(l => k.emit("types", l));
     k.file = g;
-    k.i = console.error;
+    k.j = console.error;
     k.lines = h.split("\n");
     k.end(h);
     h = await E(k);

@@ -155,7 +155,7 @@ _typal.Property.prototype.type
  */
 _typal.Property.prototype.hasDefault
 /**
- * The default value of the property.
+ * The default value of the property. Default `null`.
  * @type {?(string|boolean|number)}
  */
 _typal.Property.prototype.default

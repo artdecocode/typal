@@ -5,6 +5,7 @@ const serialise = require('./serialise');
 
 /**
  * Representation of a property of a type.
+ * @implements {_typal.Property}
  */
 class Property {
   /**
@@ -24,9 +25,9 @@ class Property {
     this.description = null
     /**
      * The type of the property.
-     * @type {string}
+     * @type {?string}
      */
-    this._type = '*'
+    this._type = null
     /**
      * The override on the type in externs.
      * @type {string}
@@ -107,9 +108,9 @@ class Property {
     return prop
   }
   fromXML(content,
-    { 
-      'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 
-      'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases, 
+    {
+      'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
+      'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases,
       'noParams': noParams, 'static': Static },
   ) {
     if (!name) throw new Error('Property does not have a name.')
@@ -120,26 +121,26 @@ class Property {
     if (noParams) this.noParams = noParams
 
     if (closure) this._closure = closure
-    
+
     this.type = t
 
     if (def !== undefined) this.hasDefault = true
     if (this.hasDefault) this.default = def
-    if (opt || this.hasDefault) this.optional = true
+    if (opt || (this.hasDefault && this.default != 'null')) this.optional = true
     if (alias) this.aliases = [alias]
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
     if (Static) this._static = true
   }
   get type() {
-    return this._type
+    return this._type || '*'
   }
   /**
    * Type can be overridden when removing namespace from properties.
    */
   set type(value) {
-    this._type = value
-    this.closureType = this._closure || value
+    this._type = value || null
+    this.closureType = this._closure || this._type
     // can also check if closure changed or just type
     if (!this.noParams) {
       try {
@@ -231,7 +232,7 @@ class Property {
         return `${argName}${optional ? '?' : ''}: ${type}`
       })
     const s = a.join(', ')
-    const r = serialise(/** @type {!_typedefsParser.Type} */ (ret))
+    const r = ret ? serialise(ret) : 'void'
 
     return `(${s}) => ${r}`
   }

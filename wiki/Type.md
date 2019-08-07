@@ -1,1 +1,1 @@
-<typedef narrow flatten name="Type">types/type.xml</typedef>
+<typedef narrow flatten>types/Type.xml</typedef>
