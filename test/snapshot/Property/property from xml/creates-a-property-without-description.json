@@ -3,15 +3,14 @@
   "description": null,
   "_type": "*",
   "closureType": "*",
-  "parsed": {
-    "name": "any"
-  },
   "_closure": null,
-  "hasDefault": false,
   "default": null,
   "optional": false,
   "aliases": [],
   "noParams": false,
+  "parsed": {
+    "name": "any"
+  },
   "args": [],
   "_static": false
 }

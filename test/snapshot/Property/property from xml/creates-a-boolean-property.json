@@ -3,15 +3,14 @@
   "description": "Test description.",
   "_type": "boolean",
   "closureType": "boolean",
-  "parsed": {
-    "name": "boolean"
-  },
   "_closure": null,
-  "hasDefault": true,
   "default": false,
   "optional": true,
   "aliases": [],
   "noParams": false,
+  "parsed": {
+    "name": "boolean"
+  },
   "args": [],
   "_static": false
 }

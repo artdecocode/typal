@@ -39,12 +39,7 @@ export default class Property {
      */
     this._closure = null
     /**
-     * Whether the property has the default value.
-     * @type {boolean}
-     */
-    this.hasDefault = false
-    /**
-     * The default value of the property.
+     * The default value of the property. If the default is given as null, it will be record not as `null` but as `"null"` here.
      * @type {?(string|boolean|number)}
      */
     this.default = null
@@ -107,11 +102,18 @@ export default class Property {
     prop.fromXML(...args)
     return prop
   }
+  /**
+   * Whether the property has the default value.
+   * @type {boolean}
+   */
+  get hasDefault() {
+    return this.default !== null
+  }
   fromXML(content,
     {
       'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
       'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases,
-      'noParams': noParams, 'static': Static },
+      'noParams': noParams, 'static': Static, 'initial': initial },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
@@ -124,9 +126,10 @@ export default class Property {
 
     this.type = t
 
-    if (def !== undefined) this.hasDefault = true
-    if (this.hasDefault) this.default = def
-    if (opt || (this.hasDefault && this.default != 'null')) this.optional = true
+    if (def !== undefined) this.default = def
+    else if (initial !== undefined) this.default = initial
+
+    if (opt || def !== undefined /* but not initial */) this.optional = true
     if (alias) this.aliases = [alias]
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
@@ -240,7 +243,7 @@ export default class Property {
     let pp = []
     if (this.description) {
       let d = indentWithAster(this.description)
-      if (this.default) d += ` Default \`${this.default}\`.`
+      if (this.hasDefault) d += ` Default \`${this.default}\`.`
       pp.push(d)
     }
     if (!this.optional && this.isParsedFunction) {

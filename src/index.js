@@ -1,4 +1,5 @@
 export { default as Type, getLinks } from './lib/Type'
 export { default as Property } from './lib/Property'
+export { default as Method } from './lib/Method'
 export { getNameWithDefault } from './lib'
 export { default as parseFile } from './lib/parse'

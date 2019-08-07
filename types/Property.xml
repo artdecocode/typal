@@ -3,19 +3,19 @@
     <prop string name="name">
       The name of the property.
     </prop>
-    <prop string name="description" opt>
+    <prop type="?string" name="description" initial="null">
       The description of the property.
     </prop>
-    <prop string name="type" default="*">
+    <prop string name="type" initial="*">
       The type of the property.
     </prop>
-    <prop boolean name="hasDefault" default="false">
+    <prop boolean name="hasDefault" initial="false">
       Whether the property has the default value.
     </prop>
-    <prop type="?(string|boolean|number)" name="default" default="null">
+    <prop type="?(string|boolean|number)" name="default" initial="null">
       The default value of the property.
     </prop>
-    <prop boolean name="optional" default="false">
+    <prop boolean name="optional" initial="false">
       If the property is optional.
     </prop>
   </type>

@@ -6,7 +6,7 @@ export default class Method extends Type {
     /** @type {?string} */
     this._methodReturn = null
     /** @type {boolean} */
-    this._async = false
+    this.async = false
   }
   get shouldPrototype() {
     return true
@@ -16,7 +16,7 @@ export default class Method extends Type {
   }, ...args) {
     super.fromXML(content, props, ...args)
     if (methodReturn) this._methodReturn = methodReturn
-    if (methodAsync) this._async = true
+    if (methodAsync) this.async = true
   }
   /**
    * If the `return` was set on type, this will return it.

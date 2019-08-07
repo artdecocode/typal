@@ -3,15 +3,14 @@
   "description": "Test description.",
   "_type": "number",
   "closureType": "number",
-  "parsed": {
-    "name": "number"
-  },
   "_closure": null,
-  "hasDefault": true,
   "default": 0,
   "optional": true,
   "aliases": [],
   "noParams": false,
+  "parsed": {
+    "name": "number"
+  },
   "args": [],
   "_static": false
 }

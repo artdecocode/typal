@@ -28,3 +28,48 @@ var Test
 Test.prototype.test
 
 /*@*/
+
+## adds undefined with default but not initial
+<types>
+  <type record name="Record">
+    <prop type="?string" name="test" default="null" />
+  </type>
+  <type name="Test">
+    <prop type="?string" name="test" default="null" />
+  </type>
+  <type record name="RecordInitial">
+    <prop type="?string" name="test" initial="null" />
+  </type>
+  <type name="TestInitial">
+    <prop type="?string" name="test" initial="null" />
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * @record
+ */
+var Record
+/**
+ * @type {(?string)|undefined}
+ */
+Record.prototype.test
+/**
+ * @typedef {{ test: ((?string)|undefined) }}
+ */
+var Test
+/**
+ * @record
+ */
+var RecordInitial
+/**
+ * @type {?string}
+ */
+RecordInitial.prototype.test
+/**
+ * @typedef {{ test: ?string }}
+ */
+var TestInitial
+
+/*@*/
