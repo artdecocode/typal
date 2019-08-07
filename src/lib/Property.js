@@ -79,8 +79,8 @@ export default class Property {
   toTypeScriptType(getLinks) {
     if (!this.parsed) throw new Error('The property was not parsed.')
     const { function: { args, return: { name: ret } } } = this.parsed
-    const a = args.map((_, i) => {
-      let { name = `arg${i}`, type: t, optional } = this.args[i] || {}
+    const a = args.map(({ name: typeName }, i) => {
+      let { name = `arg${i}`, type: t = typeName, optional } = this.args[i] || {}
       name = `${name}${optional ? '?' : ''}`
       if (t) t = getLinks(t)
       return `${name}${t ? `: ${t}` : ''}`
