@@ -808,7 +808,7 @@ function lb(a, b = !1) {
     ({name:g = `arg${g}`} = a.args[g] || {});
     return `${g}${h ? "?" : ""}: ${f}`;
   }).join(", ");
-  const e = W(d);
+  const e = d ? W(d) : "void";
   return `(${b}) => ${e}`;
 }
 function mb(a, b = null, c = !1) {

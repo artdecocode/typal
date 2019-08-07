@@ -43,9 +43,9 @@
       "program": "${workspaceFolder}/src/bin/index.js",
       "console": "integratedTerminal",
       "args": [
-        "types.js",
+        "compile/index.js",
       ],
-      "cwd": "${workspaceFolder}/../../contexttesting/mask",
+      "cwd": "${workspaceFolder}/../../adc/competent",
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]

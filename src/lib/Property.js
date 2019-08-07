@@ -231,7 +231,7 @@ export default class Property {
         return `${argName}${optional ? '?' : ''}: ${type}`
       })
     const s = a.join(', ')
-    const r = serialise(/** @type {!_typedefsParser.Type} */ (ret))
+    const r = ret ? serialise(ret) : 'void'
 
     return `(${s}) => ${r}`
   }

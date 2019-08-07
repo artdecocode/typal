@@ -1,5 +1,9 @@
 ## 7 August 2019
 
+### [1.21.1](https://github.com/artdecocode/typal/compare/v1.21.0...v1.21.1)
+
+- [fix] Fix parsing the _null_ return of functions.
+
 ### [1.21.0](https://github.com/artdecocode/typal/compare/v1.20.2...v1.21.0)
 
 - [feature] Display VSCode-style types in _README_ documentation.
