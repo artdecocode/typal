@@ -101,7 +101,7 @@ _ns.Type.prototype.constructor
     'constructor': isConstructor, 'extends': ext, 'interface': isInterface, 
     'record': isRecord,
     'async': methodAsync, 'return': methodReturn, // for <method async return="{}"> elements
-  }, namespace) {
+  }, namespace, rootNamespace = null) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
 
@@ -135,7 +135,7 @@ _ns.Type.prototype.constructor
       const fn = [...functions, ...fns, ...staticMethods]
 
       const fnProps = fn.map(({ content: c, props: p, 'isStatic': isStatic }) => {
-        const { newContent, argsArgs } = extractArgs(c)
+        const { newContent, argsArgs } = extractArgs(c, rootNamespace)
 
         const { 'async': async, 'return': ret = 'void', ...rest } = p
         let { 'args': args = '' } = p
@@ -159,7 +159,13 @@ _ns.Type.prototype.constructor
         if (isStatic) pr._static = true
         return pr
       })
-      this.properties = [...props, ...fnProps]
+      const all = [...props, ...fnProps]
+      const { s, n } = all.reduce((acc, p) => {
+        if (p.static) acc.s.push(p)
+        else acc.n.push(p)
+        return acc
+      }, { s: [], n: [] })
+      this.properties = [...s, ...n]
     }
     if (namespace) this.namespace = namespace
     if (methodReturn) this._methodReturn = methodReturn
@@ -679,9 +685,9 @@ const makePropsTable = (props = [], allTypes = [], opts = {}) => {
   const ps = props.map((prop) => {
     let typeName
     if (prop.args && prop.isParsedFunction) {
-      typeName = prop.toTypeScriptType((s) => getLinks(allTypes, s, linkOptions))
+      typeName = prop.toTypeScriptType((s) => getLinks(/** @type {!Array<!Type>} */ (allTypes), s, linkOptions))
     } else 
-      typeName = getLinks(allTypes, prop.parsed || prop.type, linkOptions)
+      typeName = getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.parsed || prop.type, linkOptions)
     const name = prop.optional ? prop.name : `${prop.name}*`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
     const de = preprocessDesc ? preprocessDesc(prop.description) : prop.description
