@@ -17,18 +17,19 @@
     "doc": "NODE_DEBUG=doc doc -o README.md",
     "wiki": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc wiki -W ../typal.wiki -n _typal",
     "b": "alamode src -o build -s",
-    "compile": "depack-dev src/bin/typal -c -o compile/bin -a -p -s",
+    "compile": "depack-dev src/bin/typal -c -o compile/bin -a -p -s --externs types/externs.js",
     "depack1": "depack-dev depack/t.js -c -o t/tt.js -a -p",
     "depack2": "depack-dev depack/prop/index.js -c -a -p",
     "depack-compat": "depack-dev example/restream/compat -c -a -p",
     "compat": "yarn dev example/restream/compat.js -c",
-    "d": "NODE_DEBUG=doc doc src/index.js -g",
+    "d": "yarn-s externs",
     "build": "yarn-s d b doc",
     "e": "alanode",
     "example/": "yarn e example/example.js",
     "splendid": "splendid-dev",
     "web": "splendid-dev -s",
     "typal": "depack/bin/typal.js",
+    "externs": "yarn dev types/externs.js",
     "args": "argufy types/arguments.xml -o src/bin/get-args.js"
   },
   "bin": {
@@ -38,8 +39,10 @@
   "files": [
     "build",
     "src",
-    "compile"
+    "compile",
+    "types/externs.js"
   ],
+  "externs": "types/externs.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/artdecocode/typal.git"

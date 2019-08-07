@@ -5,6 +5,7 @@ import serialise from './serialise'
 
 /**
  * Representation of a property of a type.
+ * @implements {_typal.Property}
  */
 export default class Property {
   /**
@@ -24,7 +25,7 @@ export default class Property {
     this.description = null
     /**
      * The type of the property.
-     * @type {string}
+     * @type {string|undefined}
      */
     this._type = '*'
     /**
@@ -107,9 +108,9 @@ export default class Property {
     return prop
   }
   fromXML(content,
-    { 
-      'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 
-      'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases, 
+    {
+      'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
+      'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases,
       'noParams': noParams, 'static': Static },
   ) {
     if (!name) throw new Error('Property does not have a name.')
@@ -120,7 +121,7 @@ export default class Property {
     if (noParams) this.noParams = noParams
 
     if (closure) this._closure = closure
-    
+
     this.type = t
 
     if (def !== undefined) this.hasDefault = true

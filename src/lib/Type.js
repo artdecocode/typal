@@ -7,6 +7,7 @@ import Arg, { extractArgs } from './Arg' // eslint-disable-line
 
 /**
  * A representation of a type.
+ * @implements {_typal.Type}
  */
 export default class Type {
   constructor() {
