@@ -1,0 +1,1 @@
+<typedef narrow flatten name="Type">types/type.xml</typedef>

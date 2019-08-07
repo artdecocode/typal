@@ -1,12 +1,15 @@
-<types namespace="typal">
-  <type name="Type" desc="The type interace.">
-    <prop type="?string" name="name">
+<types namespace="_typal">
+  <interface name="Type" desc="A representation of a type.">
+    <prop string name="name">
       The name of the type.
     </prop>
-    <prop string name="type">
+    <prop type="?string" name="type">
       The type of the type.
     </prop>
-    <prop string name="description" opt>
+    <prop type="?string" name="closureType">
+      An overriding type for closure to generate externs, e.g., `function(string): boolean` instead of `(s:string) => boolean`.
+    </prop>
+    <prop type="?string" name="description">
       The description of the type.
     </prop>
     <prop boolean name="noToc" default="false">
@@ -19,33 +22,49 @@
       Don't print each property description.
     </prop>
     <prop boolean name="import" default="false">
-      Whether the type is an import.
+      Whether the type as an import.
     </prop>
-    <prop string name="link" opt>
+    <prop type="?string" name="link">
       If the type is an import, the link to the documentation page.
     </prop>
-    <prop type="!Array<!typal.Property>" name="properties">
+    <prop type="!Array<!_typal.Property>" name="properties">
       The properties of the type.
     </prop>
-  </type>
-  <type name="Property" desc="A property of a type.">
-    <prop string name="name">
-      The name of the property.
+    <prop type="?string" name="namespace">
+      The type's namespace, e.g., `_typal`.
     </prop>
-    <prop string name="description" opt>
-      The description of the property.
+    <prop type="boolean" name="isConstructor" default="false">
+      Whether the externs should have the form of
+      ```js
+      /＊＊ ＠constructor ＊/
+      _ns.Type
+      /＊＊ ＠boolean ＊/
+      _ns.Type.prototype.isConstructor
+      ```
     </prop>
-    <prop string name="type" default="*">
-      The type of the property.
+    <prop type="boolean" name="isInterface" default="false">
+      Same as `constructor`, but with `＠interface` annotation.
+      ```js
+      /＊＊ ＠interface ＊/
+      _ns.Type
+      /＊＊ ＠boolean ＊/
+      _ns.Type.prototype.isInterface
+      ```
     </prop>
-    <prop boolean name="hasDefault" default="false">
-      Whether the property has the default value.
+    <prop type="boolean" name="isRecord" default="false">
+      Same as `constructor`, but with `＠record` annotation.
+      ```js
+      /＊＊ ＠record ＊/
+      _ns.Type
+      /＊＊ ＠boolean ＊/
+      _ns.Type.prototype.isRecord
+      ```
     </prop>
-    <prop string opt name="default">
-      The default value of the property.
+    <prop type="?string" name="extends">
+      Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type).
     </prop>
-    <prop boolean name="optional" default="false">
-      If the property is optional.
+    <prop type="Array<!_typal.Arg>" name="_args">
+      Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property.
     </prop>
-  </type>
+  </interface>
 </types>

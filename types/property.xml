@@ -1,0 +1,22 @@
+<types>
+  <type name="Property" desc="A property of a type.">
+    <prop string name="name">
+      The name of the property.
+    </prop>
+    <prop string name="description" opt>
+      The description of the property.
+    </prop>
+    <prop string name="type" default="*">
+      The type of the property.
+    </prop>
+    <prop boolean name="hasDefault" default="false">
+      Whether the property has the default value.
+    </prop>
+    <prop string opt name="default">
+      The default value of the property.
+    </prop>
+    <prop boolean name="optional" default="false">
+      If the property is optional.
+    </prop>
+  </type>
+</types>
