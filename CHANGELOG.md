@@ -1,3 +1,11 @@
+## 7 August 2019
+
+### [1.21.0](https://github.com/artdecocode/typal/compare/v1.20.2...v1.21.0)
+
+- [feature] Display VSCode-style types in _README_ documentation.
+- [feature] Show static types at the top of typedef markdown table.
+- [fix] Remove root namespace from fn args.
+
 ## 6 August 2019
 
 ### [1.20.2](https://github.com/artdecocode/typal/compare/v1.20.1...v1.20.2)
