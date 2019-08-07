@@ -143,7 +143,7 @@ export default class Property {
    */
   set type(value) {
     this._type = value || null
-    this.closureType = this._closure || this._type
+    this.closureType = this._closure || this._type || ''
     // can also check if closure changed or just type
     if (!this.noParams) {
       try {
@@ -160,12 +160,17 @@ export default class Property {
     if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
     const nameWithDefault = getNameWithDefault(this.name, this.default, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
-    const dd = this.description ? ` ${this.description}` : ''
-    const d = this.hasDefault ? ` Default \`${this.default}\`.` : ''
-    const t = `${dd}${d}`
+    const { descriptionWithDefault } = this
+    const t = descriptionWithDefault ? ` ${descriptionWithDefault}` : ''
+
     const type = this.getTypedefType(closure, useNamespace)
     const s = `{${type}} ${name}${t}`
     return s
+  }
+  get descriptionWithDefault() {
+    let s = this.description || ''
+    const d = this.hasDefault ? `${/``` */.test(this.description) ? '\n' : ' '}Default \`${this.default}\`.` : ''
+    return `${s}${d}`
   }
   toProp(closure = false, useNamespace = closure) {
     const jsdoc = this.toJSDoc(null, closure, useNamespace)
@@ -241,9 +246,9 @@ export default class Property {
   }
   toExtern(ws = '') {
     let pp = []
-    if (this.description) {
-      let d = indentWithAster(this.description)
-      if (this.hasDefault) d += ` Default \`${this.default}\`.`
+    const { descriptionWithDefault } = this
+    if (descriptionWithDefault) {
+      const d = indentWithAster(descriptionWithDefault)
       pp.push(d)
     }
     if (!this.optional && this.isParsedFunction) {

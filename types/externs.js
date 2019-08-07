@@ -32,23 +32,23 @@ _typal.Type.prototype.closureType
  */
 _typal.Type.prototype.description
 /**
- * Whether the type should not be included in the table of contents (for _Documentary_).
- * @type {boolean|undefined}
+ * Whether the type should not be included in the table of contents (for _Documentary_). Default `false`.
+ * @type {boolean}
  */
 _typal.Type.prototype.noToc
 /**
- * When generating JSDoc, print all properties of the type, but loose individual property description.
- * @type {boolean|undefined}
+ * When generating JSDoc, print all properties of the type, but loose individual property description. Default `false`.
+ * @type {boolean}
  */
 _typal.Type.prototype.spread
 /**
- * Don't print each property description.
- * @type {boolean|undefined}
+ * Don't print each property description. Default `false`.
+ * @type {boolean}
  */
 _typal.Type.prototype.noExpand
 /**
- * Whether the type as an import.
- * @type {boolean|undefined}
+ * Whether the type as an import. Default `false`.
+ * @type {boolean}
  */
 _typal.Type.prototype.import
 /**
@@ -74,7 +74,8 @@ _typal.Type.prototype.namespace
  * /＊＊ ＠boolean ＊/
  * _ns.Type.prototype.isConstructor
  * ```
- * @type {boolean|undefined}
+ * Default `false`.
+ * @type {boolean}
  */
 _typal.Type.prototype.isConstructor
 /**
@@ -85,7 +86,8 @@ _typal.Type.prototype.isConstructor
  * /＊＊ ＠boolean ＊/
  * _ns.Type.prototype.isInterface
  * ```
- * @type {boolean|undefined}
+ * Default `false`.
+ * @type {boolean}
  */
 _typal.Type.prototype.isInterface
 /**
@@ -96,7 +98,8 @@ _typal.Type.prototype.isInterface
  * /＊＊ ＠boolean ＊/
  * _ns.Type.prototype.isRecord
  * ```
- * @type {boolean|undefined}
+ * Default `false`.
+ * @type {boolean}
  */
 _typal.Type.prototype.isRecord
 /**
@@ -118,13 +121,13 @@ _typal.Type.prototype._args
  */
 _typal.Method = function() {}
 /**
- * The return type of the method. Returns void if no return was specified.
+ * The return type of the method. Returns void if no return was specified. Default `null`.
  * @type {?string}
  */
 _typal.Method.prototype.return
 /**
- * If the method is async.
- * @type {?boolean}
+ * If the method is async. Default `false`.
+ * @type {boolean}
  */
 _typal.Method.prototype.async
 
@@ -140,18 +143,18 @@ _typal.Property
  */
 _typal.Property.prototype.name
 /**
- * The description of the property.
- * @type {string|undefined}
+ * The description of the property. Default `null`.
+ * @type {?string}
  */
 _typal.Property.prototype.description
 /**
  * The type of the property. Default `*`.
- * @type {string|undefined}
+ * @type {string}
  */
 _typal.Property.prototype.type
 /**
- * Whether the property has the default value.
- * @type {boolean|undefined}
+ * Whether the property has the default value. Default `false`.
+ * @type {boolean}
  */
 _typal.Property.prototype.hasDefault
 /**
@@ -160,7 +163,7 @@ _typal.Property.prototype.hasDefault
  */
 _typal.Property.prototype.default
 /**
- * If the property is optional.
- * @type {boolean|undefined}
+ * If the property is optional. Default `false`.
+ * @type {boolean}
  */
 _typal.Property.prototype.optional

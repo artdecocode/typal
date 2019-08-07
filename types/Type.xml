@@ -12,16 +12,16 @@
     <prop type="?string" name="description">
       The description of the type.
     </prop>
-    <prop boolean name="noToc" default="false">
+    <prop boolean name="noToc" initial="false">
       Whether the type should not be included in the table of contents (for _Documentary_).
     </prop>
-    <prop boolean name="spread" default="false">
+    <prop boolean name="spread" initial="false">
       When generating JSDoc, print all properties of the type, but loose individual property description.
     </prop>
-    <prop boolean name="noExpand" default="false">
+    <prop boolean name="noExpand" initial="false">
       Don't print each property description.
     </prop>
-    <prop boolean name="import" default="false">
+    <prop boolean name="import" initial="false">
       Whether the type as an import.
     </prop>
     <prop type="?string" name="link">
@@ -33,7 +33,7 @@
     <prop type="?string" name="namespace">
       The type's namespace, e.g., `_typal`.
     </prop>
-    <prop type="boolean" name="isConstructor" default="false">
+    <prop type="boolean" name="isConstructor" initial="false">
       Whether the externs should have the form of
       ```js
       /＊＊ ＠constructor ＊/
@@ -42,7 +42,7 @@
       _ns.Type.prototype.isConstructor
       ```
     </prop>
-    <prop type="boolean" name="isInterface" default="false">
+    <prop type="boolean" name="isInterface" initial="false">
       Same as `constructor`, but with `＠interface` annotation.
       ```js
       /＊＊ ＠interface ＊/
@@ -51,7 +51,7 @@
       _ns.Type.prototype.isInterface
       ```
     </prop>
-    <prop type="boolean" name="isRecord" default="false">
+    <prop type="boolean" name="isRecord" initial="false">
       Same as `constructor`, but with `＠record` annotation.
       ```js
       /＊＊ ＠record ＊/
