@@ -86,7 +86,7 @@ export default class Property {
       return `${name}${t ? `: ${t}` : ''}`
     })
     const j = a.join(', ')
-    const r = getLinks(ret ? ret.name : '*')
+    const r = getLinks(ret ? ret.name || '*' : '*')
     const typeName = `(${j}) => ${r}`
     return typeName.replace(/\*/g, '\\*')
   }

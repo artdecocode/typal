@@ -1,3 +1,9 @@
+## 8 August 2019
+
+### [1.22.0](https://github.com/artdecocode/typal/compare/v1.21.1...v1.22.0)
+
+- [feature] Create a separate class for _Method_.
+
 ## 7 August 2019
 
 ### [1.21.1](https://github.com/artdecocode/typal/compare/v1.21.0...v1.21.1)
