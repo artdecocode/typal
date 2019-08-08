@@ -56,7 +56,7 @@ const parseFile = (xml, rootNamespace) => {
 
   const interfaceTags = extractTags('interface', Root)
   const interfaces = interfaceTags.reduce((acc, { content, props }) => {
-    const t = parseTypes(content, props, ns)
+    const t = parseTypes(content, props, ns, rootNamespace)
     t.forEach(tt => {
       tt.isInterface = true
     })
@@ -66,7 +66,7 @@ const parseFile = (xml, rootNamespace) => {
 
   const constructorTags = extractTags('constructor', Root)
   const constructors = constructorTags.reduce((acc, { content, props }) => {
-    const t = parseTypes(content, props, ns)
+    const t = parseTypes(content, props, ns, rootNamespace)
     t.forEach(tt => {
       tt.isConstructor = true
     })
@@ -142,7 +142,7 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
   // }
   // const assignment = `function(${args})`
 
-  type.fromXML(body, props, ns)
+  type.fromXML(body, props, ns, rootNamespace)
   type.setAssignment(argsArgs)
 
   return type

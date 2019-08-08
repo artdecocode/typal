@@ -11,6 +11,9 @@ export default class Method extends Type {
   get shouldPrototype() {
     return true
   }
+  get isMethod() {
+    return true
+  }
   fromXML(content, { 'async': methodAsync, 'return': methodReturn,
     ...props
   }, ...args) {
@@ -38,7 +41,7 @@ export default class Method extends Type {
    */
   getTypedefType() {
     return `(${
-      this._args.map(({ name, type, optional }) => {
+      this.args.map(({ name, type, optional }) => {
         return `${name}${optional ? '?' : ''}: ${type}`
         // return type + (optional ? '=' : '')
       }).join(', ')

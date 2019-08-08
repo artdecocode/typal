@@ -3,13 +3,13 @@
     <prop string name="name">
       The name of the type.
     </prop>
-    <prop type="?string" name="type">
+    <prop type="?string" name="type" initial="null">
       The type of the type.
     </prop>
-    <prop type="?string" name="closureType">
+    <prop type="?string" name="closureType" initial="null">
       An overriding type for closure to generate externs, e.g., `function(string): boolean` instead of `(s:string) => boolean`.
     </prop>
-    <prop type="?string" name="description">
+    <prop type="?string" name="description" initial="null">
       The description of the type.
     </prop>
     <prop boolean name="noToc" initial="false">
@@ -24,14 +24,20 @@
     <prop boolean name="import" initial="false">
       Whether the type as an import.
     </prop>
-    <prop type="?string" name="link">
+    <prop type="?string" name="link" initial="null">
       If the type is an import, the link to the documentation page.
     </prop>
-    <prop type="!Array<!_typal.Property>" name="properties">
+    <prop type="!Array<!_typal.Property>" name="properties" initial="[]">
       The properties of the type.
     </prop>
-    <prop type="?string" name="namespace">
+    <prop type="?string" name="namespace" initial="null">
       The type's namespace, e.g., `_typal`.
+    </prop>
+    <prop string name="ns">
+      The namespace or an empty string.
+    </prop>
+    <prop string name="fullName">
+      The type name with the namespace is it has with one.
     </prop>
     <prop type="boolean" name="isConstructor" initial="false">
       Whether the externs should have the form of
@@ -60,11 +66,38 @@
       _ns.Type.prototype.isRecord
       ```
     </prop>
-    <prop type="?string" name="extends">
+    <prop type="?string" name="extends" initial="null">
       Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type).
     </prop>
-    <prop type="Array<!_typal.Arg>" name="_args">
+    <prop type="Array<!_typal.Arg>" name="args" initial="null">
       Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property.
     </prop>
+    <fn name="toMarkdown" desc="This function is closely integrated from _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.">
+      <arg name="allTypes" type="!Array<!_typal.Type>">
+        The array with all types for linking.
+      </arg>
+      <arg name="opts" type="!_typal.ToMarkdownOptions">
+        Options passed by _Documentary_.
+      </arg>
+      Converts a type to a markdown string.
+    </fn>
   </interface>
+
+  <type record name="ToMarkdownOptions" desc="These options are there for _Documentary_ integration as these 2 packages work together.">
+    <prop boolean name="narrow" default="false">
+      If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API.
+    </prop>
+    <prop type="boolean|function(string)" name="flatten" default="false">
+      Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type.
+    </prop>
+    <prop type="function(string): string" name="link" opt>
+      The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
+    </prop>
+    <prop type="!Array<string>" name="details" opt>
+      The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
+    </prop>
+    <prop type="function(string): string" name="preprocessDesc" opt>
+      How to process description. _Documentary_ will strip the tripple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
+    </prop>
+  </type>
 </types>

@@ -7,6 +7,36 @@
 /** @const */
 var _typal = {}
 /**
+ * These options are there for _Documentary_ integration as these 2 packages work together.
+ * @record
+ */
+_typal.ToMarkdownOptions
+/**
+ * If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
+ * @type {boolean|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.narrow
+/**
+ * Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type. Default `false`.
+ * @type {(boolean|function(string))|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.flatten
+/**
+ * The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
+ * @type {(function(string): string)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.link = function(arg0) {}
+/**
+ * The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
+ * @type {(!Array<string>)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.details
+/**
+ * How to process description. _Documentary_ will strip the tripple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
+ * @type {(function(string): string)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
+/**
  * A representation of a type.
  * @interface
  */
@@ -17,17 +47,17 @@ _typal.Type = function() {}
  */
 _typal.Type.prototype.name
 /**
- * The type of the type.
+ * The type of the type. Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.type
 /**
- * An overriding type for closure to generate externs, e.g., `function(string): boolean` instead of `(s:string) => boolean`.
+ * An overriding type for closure to generate externs, e.g., `function(string): boolean` instead of `(s:string) => boolean`. Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.closureType
 /**
- * The description of the type.
+ * The description of the type. Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.description
@@ -52,20 +82,30 @@ _typal.Type.prototype.noExpand
  */
 _typal.Type.prototype.import
 /**
- * If the type is an import, the link to the documentation page.
+ * If the type is an import, the link to the documentation page. Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.link
 /**
- * The properties of the type.
+ * The properties of the type. Default `[]`.
  * @type {!Array<!_typal.Property>}
  */
 _typal.Type.prototype.properties
 /**
- * The type's namespace, e.g., `_typal`.
+ * The type's namespace, e.g., `_typal`. Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.namespace
+/**
+ * The namespace or an empty string.
+ * @type {string}
+ */
+_typal.Type.prototype.ns
+/**
+ * The type name with the namespace is it has with one.
+ * @type {string}
+ */
+_typal.Type.prototype.fullName
 /**
  * Whether the externs should have the form of
  * ```js
@@ -103,15 +143,21 @@ _typal.Type.prototype.isInterface
  */
 _typal.Type.prototype.isRecord
 /**
- * Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type).
+ * Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.extends
 /**
- * Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property.
+ * Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property. Default `null`.
  * @type {Array<!_typal.Arg>}
  */
-_typal.Type.prototype._args
+_typal.Type.prototype.args
+/**
+ * Converts a type to a markdown string.
+ * @param {!Array<!_typal.Type>} allTypes The array with all types for linking.
+ * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_.
+ */
+_typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
 
 /* typal types/Method.xml externs */
 /**

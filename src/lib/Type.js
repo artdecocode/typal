@@ -76,7 +76,7 @@ _ns.Type.prototype.isConstructor
     /**
      * @type {Array<!Arg>}
      */
-    this._args = null
+    this.args = null
   }
   /**
    * Create type from the xml content and properties parsed with `rexml`.
@@ -167,7 +167,7 @@ _ns.Type.prototype.isConstructor
   // * @param {string} string The inner arguments part as string
   setAssignment(array) {
     // this._assignmentString = string
-    this._args = array
+    this.args = array
   }
   toExtern() {
     let s
@@ -300,7 +300,7 @@ _ns.Type.prototype.isConstructor
     let lines = []
     if (this.description) lines.push(` * ${this.description}`)
     if (this.extends) lines.push(` * @extends {${this.extends}}`)
-    if (this._args) this._args.forEach((s) => {
+    if (this.args) this.args.forEach((s) => {
       let { name, description, optional, type } = s
       if (name.startsWith('...')) {
         name = name.slice(3)
@@ -319,8 +319,8 @@ _ns.Type.prototype.isConstructor
    * Used to place interfaces/constructor declarations in externs.
    */
   get constr() {
-    return this._args ? `function(${
-      this._args.map(({ name }) => name).join(', ')
+    return this.args ? `function(${
+      this.args.map(({ name }) => name).join(', ')
     }) {}` : null
   }
   /**
@@ -350,6 +350,9 @@ _ns.Type.prototype.isConstructor
     const j = [s, ...t].join('\n')
     return j
   }
+  /**
+   * The namespace.
+   */
   get ns() {
     if (this.namespace) return `${this.namespace}.`
     return ''
@@ -445,7 +448,7 @@ _ns.Type.prototype.isConstructor
     if (useTag) LINE += '</strong>'
     else LINE += '__'
     LINE += d
-    const table = makePropsTable(this.properties, allTypes, {
+    const table = makePropsTable(this, this.properties, allTypes, {
       narrow,
       flatten,
       preprocessDesc,
@@ -461,7 +464,7 @@ const wrapCode = (s, useCode = false) => {
 }
 
 /**
- * @param {Array<Property>} properties
+ * @param {!Array<!Property>} [properties]
  * @param {boolean} [closure = false] Whether generate for Closure's externs.
  */
 const getSpread = (properties = [], closure = false) => {
@@ -618,20 +621,19 @@ const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
 }
 
 /**
+ * @param {!Type} [type] The type for which to make the table
  * @param {!Array<!Property>} [props]
  * @param {!Array<!Type>} [allTypes]
  * @param {!Object} [opts]
  * @param {boolean} [opts.narrow=false] Merge Type and Description columns
  * @param {boolean|function(string)} [opts.flatten=false] Whether to follow the link to external types. If function is passed, will be called with the named of the flattened package.
  */
-export const makePropsTable = (props = [], allTypes = [], opts = {}) => {
+export const makePropsTable = (type, props = [], allTypes = [], opts = {}) => {
   const { narrow = false, flatten = false, preprocessDesc, link } = opts
   if (!props.length) return ''
+  const constr = type.isConstructor || type.isInterface
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
-  const h = ['Name',
-    ...(narrow ? ['Type & Description'] : ['Type', 'Description']),
-    ...(anyHaveDefault ? ['Default'] : [])]
   const linkOptions = {
     flatten,
     escapePipe: !narrow,
@@ -643,7 +645,9 @@ export const makePropsTable = (props = [], allTypes = [], opts = {}) => {
       typeName = prop.toTypeScriptType((s) => getLinks(/** @type {!Array<!Type>} */ (allTypes), s, linkOptions))
     } else
       typeName = getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.parsed || prop.type, linkOptions)
-    const name = prop.optional ? prop.name : `${prop.name}*`
+    // constructors and interfaces will always have to initialise properties
+    // their `this` properties in the constructor.
+    const name = (constr || prop.optional) ? prop.name : `${prop.name}*`
     const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
     const de = preprocessDesc ? preprocessDesc(prop.description) : prop.description
     return {
@@ -655,22 +659,25 @@ export const makePropsTable = (props = [], allTypes = [], opts = {}) => {
     }
   })
   if (narrow) { // narrow is the newer API for Documentary
-    return { props: ps, anyHaveDefault }
-  } else {
-    const ar = ps.map(({
-      name, typeName, de, d, prop,
-    }) => {
-      const n = prop.optional ? name : `__${name}__`
-      return [n, `<em>${typeName}</em>`, de, ...(anyHaveDefault ? [d] : [])]
-    })
+    return { props: ps, anyHaveDefault, constr }
+  }
+  const ar = ps.map(({
+    name, typeName, de, d, prop,
+  }) => {
+    const n = prop.optional ? name : `__${name}__`
+    return [n, `<em>${typeName}</em>`, de, ...(anyHaveDefault ? [d] : [])]
+  })
 
-    const j = JSON.stringify([h, ...ar], null, 2)
-    return `
+  const h = ['Name',
+    ...(narrow ? ['Type & Description'] : ['Type', 'Description']),
+    ...(anyHaveDefault ? [constr ? 'Initial' : 'Default'] : [])]
+
+  const j = JSON.stringify([h, ...ar], null, 2)
+  return `
 
 \`\`\`table
 ${j}
 \`\`\``
-  }
 }
 
 // const li = (p) => {
