@@ -6,9 +6,12 @@ class Method extends Type {
     /** @type {?string} */
     this._methodReturn = null
     /** @type {boolean} */
-    this._async = false
+    this.async = false
   }
   get shouldPrototype() {
+    return true
+  }
+  get isMethod() {
     return true
   }
   fromXML(content, { 'async': methodAsync, 'return': methodReturn,
@@ -16,7 +19,7 @@ class Method extends Type {
   }, ...args) {
     super.fromXML(content, props, ...args)
     if (methodReturn) this._methodReturn = methodReturn
-    if (methodAsync) this._async = true
+    if (methodAsync) this.async = true
   }
   /**
    * If the `return` was set on type, this will return it.
@@ -38,7 +41,7 @@ class Method extends Type {
    */
   getTypedefType() {
     return `(${
-      this._args.map(({ name, type, optional }) => {
+      this.args.map(({ name, type, optional }) => {
         return `${name}${optional ? '?' : ''}: ${type}`
         // return type + (optional ? '=' : '')
       }).join(', ')

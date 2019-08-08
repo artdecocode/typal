@@ -10,7 +10,9 @@ The package's main use is as the CLI tool to generate typedefs, but it also has 
 yarn add -D typal
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/0.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/0.svg?sanitize=true">
+</a></p>
 
 ## Table Of Contents
 
@@ -38,7 +40,9 @@ yarn add -D typal
 - [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/1.svg?sanitize=true">
+</a></p>
 
 ## Purpose
 
@@ -56,7 +60,9 @@ To tune in, start with the _Wiki Page_:
 
 <kbd>🥇🥈🥉[Naïve, JSDoc And Closure Use Cases For Typedefs](../../wiki/3-use-cases)</kbd>
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/2.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/2.svg?sanitize=true">
+</a></p>
 
 ## CLI
 
@@ -136,7 +142,9 @@ _Typal_ is the command-line utility that is used to manage _JSDoc_ types in Java
     </tr></td></table>
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/3.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/3.svg?sanitize=true" width="25">
+</a></p>
 
 ### _Typal_ Arguments
 
@@ -182,6 +190,11 @@ The following arguments are supported by this software.
    <td>Comma-separated location of files to read types from.</td>
   </tr>
   <tr>
+   <td>--template</td>
+   <td>-T</td>
+   <td>Scans the input file for <code>@type</code> comment in functions' JSDoc, and inserts the annotations from types' files.</td>
+  </tr>
+  <tr>
    <td>--migrate</td>
    <td>-m</td>
    <td>Extracts types from JavaScript source code and saves them
@@ -214,7 +227,9 @@ _ // remember new line!
 - <kbd>ignore:_nsType,Type</kbd>: the types to ignore when placing JSDoc into JS files. This can be useful, for example, when the package is built with _Depack_ and has no dependencies, but depends on imported types from other packages. Therefore, these imported types need to be vendored using a separate file, and then imported from there, rather than from their original source file. See [`@zoroaster/mask/types/vendor.js`](https://github.com/contexttesting/mask/blob/master/types/vendor.js) and [`@zoroaster/mask/types/index.js`](https://github.com/contexttesting/mask/blob/master/types/index.js) for a practical application.
 - <kbd>skipNsDecl</kbd>: Disables the declaration of the namespace. The types will still be prefixed with a namespace, but it won't be declared at the top as `/** @const */ var ns = {}`. This is useful when the externs are split by multiple files, and the namespace will only need to appear in one of them, otherwise the `Variable _ns declared more than once.` error will be thrown.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/4.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true" width="25">
+</a></p>
 
 ### Missing Types Warnings
 
@@ -267,7 +282,9 @@ Type MissingType in MissingType & Type2 was not found.
 example/warnings.js:11:11
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true" width="25">
+</a></p>
 
 ### Keeping Types In Separate File
 
@@ -344,7 +361,9 @@ Any external types referenced in properties must be manually imported, because o
 
 In future, we plan to introduce full-scale management of types so that all import statements will be added automatically by _Typal_.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true" width="25">
+</a></p>
 
 ### Migration
 
@@ -413,7 +432,9 @@ For example, the types above can be extracted into the types file using the <cod
 </td></tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/7.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true">
+</a></p>
 
 ## Schema
 
@@ -434,7 +455,9 @@ The XML schema supports types, imports, properties and functions (which are alia
 </types>
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
+</a></p>
 
 ## Markdown Documentation
 
@@ -444,17 +467,19 @@ __<a name="type-type">`Type`</a>__: A type which can be linked.
 
 __<a name="type-example">`Example`</a>__: An example type which can link to other types.
 
-|      Name       |                                                                                                                   Type                                                                                                                    |                                    Description                                    |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| type            | <em><a href="#type-type" title="A type which can be linked.">?Type</a></em>                                                                                                                                                               | The type itself, possibly nullable.                                               |
-| union           | <em>!(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                                                                                                   | The union of types.                                                               |
-| record          | <em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em>                                                                                                                                                      | The record with a type.                                                           |
-| application     | <em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em>                                                                                                                                          | The application with a type.                                                      |
-| function        | <em>function(this: <a href="#type-type" title="A type which can be linked.">Type</a>, string, <a href="#type-type" title="A type which can be linked.">!Type</a>): <a href="#type-type" title="A type which can be linked.">Type</a></em> | The function with arguments and return type.                                      |
-| variable-args   | <em>function(...<a href="#type-type" title="A type which can be linked.">Type</a>)</em>                                                                                                                                                   | Functions with `...` for variable argument types.                                 |
-| vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                                                                                                  | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
+|      Name       |                                                                                 Type                                                                                  |                                    Description                                    |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| type            | <em><a href="#type-type" title="A type which can be linked.">?Type</a></em>                                                                                           | The type itself, possibly nullable.                                               |
+| union           | <em>!(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                               | The union of types.                                                               |
+| record          | <em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em>                                                                                  | The record with a type.                                                           |
+| application     | <em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em>                                                                      | The application with a type.                                                      |
+| function        | <em>(arg0: string, arg1: <a href="#type-type" title="A type which can be linked.">Type</a>) => <a href="#type-type" title="A type which can be linked.">Type</a></em> | The function with arguments and return type.                                      |
+| variable-args   | <em>() => \*</em>                                                                                                                                                     | Functions with `...` for variable argument types.                                 |
+| vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                              | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/9.svg?sanitize=true">
+</a></p>
 
 ## API
 
@@ -466,21 +491,27 @@ import { Type, Property, getNameWithDefault, parseFile } from 'typal'
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/10.svg?sanitize=true" width="25">
+</a></p>
 
 ### class `Type`
 
 This class represents the type.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/11.svg?sanitize=true" width="25">
+</a></p>
 
 ### class `Property`
 
 This class represents the properties of the type.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/12.svg?sanitize=true" width="25">
+</a></p>
 
-### `getNameWithDefault(`<br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/>`): string`
+### <code><ins>getNameWithDefault</ins>(</code><sub><br/>&nbsp;&nbsp;`name: string,`<br/>&nbsp;&nbsp;`defaultValue: ?(string|boolean|number),`<br/>&nbsp;&nbsp;`type: string=,`<br/>&nbsp;&nbsp;`parentParam: string=,`<br/></sub><code>): <i>string</i></code>
 
 Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "". The default values are only used for _VSCode_ because _GCC_ does not use this information.
 
@@ -511,9 +542,11 @@ arg.hello=true
 arg.world=27
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/13.svg?sanitize=true" width="25">
+</a></p>
 
-### `parseFile(`<br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/>`): { types, imports, namespace }`
+### <code><ins>parseFile</ins>(</code><sub><br/>&nbsp;&nbsp;`xml: string,`<br/>&nbsp;&nbsp;`rootNamespace: string=,`<br/></sub><code>): <i>{ types, imports, namespace }</i></code>
 
 Returns the string parsed into _Types_ and _Properties_.
 
@@ -565,15 +598,16 @@ _The result will contain Types and Imports:_
        description: 'Function to set custom headers on response.',
        noToc: false,
        spread: false,
-       import: false,
        noExpand: false,
+       import: false,
        link: null,
        properties: [],
        namespace: null,
        isConstructor: false,
        isInterface: false,
        isRecord: false,
-       extends: null },
+       extends: null,
+       args: null },
      Type {
        name: 'StaticConfig',
        type: null,
@@ -581,48 +615,55 @@ _The result will contain Types and Imports:_
        description: 'Options to setup `koa-static`.',
        noToc: false,
        spread: false,
-       import: false,
        noExpand: false,
+       import: false,
        link: null,
        properties: 
         [ Property {
             name: 'root',
             description: 'Root directory string.',
-            type: 'string',
+            _type: 'string',
             closureType: 'string',
-            hasDefault: false,
+            _closure: null,
             default: null,
             optional: false,
             aliases: [],
+            noParams: false,
             parsed: { name: 'string' },
-            noParams: false },
+            args: [],
+            _static: false },
           Property {
             name: 'maxage',
             description: 'Browser cache max-age in milliseconds.',
-            type: 'number',
+            _type: 'number',
             closureType: 'number',
-            hasDefault: true,
+            _closure: null,
             default: 0,
             optional: true,
             aliases: [],
-            parsed: null,
-            noParams: false },
+            noParams: false,
+            parsed: { name: 'number' },
+            args: [],
+            _static: false },
           Property {
             name: 'hidden',
             description: 'Allow transfer of hidden files.',
-            type: 'boolean',
+            _type: 'boolean',
             closureType: 'boolean',
-            hasDefault: true,
+            _closure: null,
             default: false,
             optional: true,
             aliases: [],
-            parsed: null,
-            noParams: false } ],
+            noParams: false,
+            parsed: { name: 'boolean' },
+            args: [],
+            _static: false } ],
        namespace: null,
        isConstructor: false,
        isInterface: false,
        isRecord: false,
-       extends: null } ],
+       extends: null,
+       args: null } ],
   imports: 
    [ Import {
        ns: 'http',
@@ -638,15 +679,16 @@ _The result will contain Types and Imports:_
        description: null,
        noToc: true,
        spread: false,
-       import: true,
        noExpand: false,
+       import: true,
        link: null,
        properties: [],
        namespace: 'http',
        isConstructor: false,
        isInterface: false,
        isRecord: false,
-       extends: null } ] }
+       extends: null,
+       args: null } ] }
 ```
 
 #### Root Namespace
@@ -692,15 +734,16 @@ const getFile = async () => {
        description: 'The example type.',
        noToc: false,
        spread: false,
-       import: false,
        noExpand: false,
+       import: false,
        link: null,
        properties: [],
        namespace: null,
        isConstructor: false,
        isInterface: false,
        isRecord: false,
-       extends: null },
+       extends: null,
+       args: null },
      Type {
        name: 'GoodMorning',
        type: 'HelloWorld',
@@ -708,15 +751,16 @@ const getFile = async () => {
        description: 'Life is seeing sunlight every day.',
        noToc: false,
        spread: false,
-       import: false,
        noExpand: false,
+       import: false,
        link: null,
        properties: [],
        namespace: null,
        isConstructor: false,
        isInterface: false,
        isRecord: false,
-       extends: null },
+       extends: null,
+       args: null },
      Type {
        name: 'Conf',
        type: null,
@@ -724,31 +768,36 @@ const getFile = async () => {
        description: 'The configuration object',
        noToc: false,
        spread: false,
-       import: false,
        noExpand: false,
+       import: false,
        link: null,
        properties: 
         [ Property {
             name: 'propName',
             description: 'The property description.',
-            type: 'HelloWorld',
-            closureType: 'ns.HelloWorld',
-            hasDefault: false,
+            _type: 'HelloWorld',
+            closureType: 'HelloWorld',
+            _closure: null,
             default: null,
             optional: false,
             aliases: [],
-            parsed: { name: 'ns.HelloWorld' },
-            noParams: false } ],
+            noParams: false,
+            parsed: { name: 'HelloWorld' },
+            args: [],
+            _static: false } ],
        namespace: null,
        isConstructor: false,
        isInterface: false,
        isRecord: false,
-       extends: null } ],
+       extends: null,
+       args: null } ],
   imports: [],
   Imports: [] }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/14.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/14.svg?sanitize=true">
+</a></p>
 
 Optional And Default
 ---

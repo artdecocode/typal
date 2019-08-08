@@ -39,12 +39,7 @@ class Property {
      */
     this._closure = null
     /**
-     * Whether the property has the default value.
-     * @type {boolean}
-     */
-    this.hasDefault = false
-    /**
-     * The default value of the property.
+     * The default value of the property. If the default is given as null, it will be record not as `null` but as `"null"` here.
      * @type {?(string|boolean|number)}
      */
     this.default = null
@@ -83,15 +78,15 @@ class Property {
    */
   toTypeScriptType(getLinks) {
     if (!this.parsed) throw new Error('The property was not parsed.')
-    const { function: { args, return: { name: ret } } } = this.parsed
-    const a = args.map((_, i) => {
-      let { name = `arg${i}`, type: t, optional } = this.args[i] || {}
+    const { function: { args, return: ret } } = this.parsed
+    const a = args.map(({ name: typeName }, i) => {
+      let { name = `arg${i}`, type: t = typeName, optional } = this.args[i] || {}
       name = `${name}${optional ? '?' : ''}`
       if (t) t = getLinks(t)
       return `${name}${t ? `: ${t}` : ''}`
     })
     const j = a.join(', ')
-    const r = getLinks(ret || '*')
+    const r = getLinks(ret ? ret.name : '*')
     const typeName = `(${j}) => ${r}`
     return typeName.replace(/\*/g, '\\*')
   }
@@ -107,11 +102,18 @@ class Property {
     prop.fromXML(...args)
     return prop
   }
+  /**
+   * Whether the property has the default value.
+   * @type {boolean}
+   */
+  get hasDefault() {
+    return this.default !== null
+  }
   fromXML(content,
     {
       'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
       'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases,
-      'noParams': noParams, 'static': Static },
+      'noParams': noParams, 'static': Static, 'initial': initial },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
@@ -124,9 +126,10 @@ class Property {
 
     this.type = t
 
-    if (def !== undefined) this.hasDefault = true
-    if (this.hasDefault) this.default = def
-    if (opt || (this.hasDefault && this.default != 'null')) this.optional = true
+    if (def !== undefined) this.default = def
+    else if (initial !== undefined) this.default = initial
+
+    if (opt || def !== undefined /* but not initial */) this.optional = true
     if (alias) this.aliases = [alias]
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
@@ -140,7 +143,7 @@ class Property {
    */
   set type(value) {
     this._type = value || null
-    this.closureType = this._closure || this._type
+    this.closureType = this._closure || this._type || ''
     // can also check if closure changed or just type
     if (!this.noParams) {
       try {
@@ -157,12 +160,18 @@ class Property {
     if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
     const nameWithDefault = getNameWithDefault(this.name, this.default, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
-    const dd = this.description ? ` ${this.description}` : ''
-    const d = this.hasDefault ? ` Default \`${this.default}\`.` : ''
-    const t = `${dd}${d}`
+    const { descriptionWithDefault } = this
+    const t = descriptionWithDefault ? ` ${descriptionWithDefault}` : ''
+
     const type = this.getTypedefType(closure, useNamespace)
     const s = `{${type}} ${name}${t}`
     return s
+  }
+  get descriptionWithDefault() {
+    let s = this.description || ''
+    const d = this.hasDefault ? `${/``` */.test(this.description) ? '\n' :
+      (s ? ' ' : '')}Default \`${this.default}\`.` : ''
+    return `${s}${d}`
   }
   toProp(closure = false, useNamespace = closure) {
     const jsdoc = this.toJSDoc(null, closure, useNamespace)
@@ -238,9 +247,9 @@ class Property {
   }
   toExtern(ws = '') {
     let pp = []
-    if (this.description) {
-      let d = indentWithAster(this.description)
-      if (this.default) d += ` Default \`${this.default}\`.`
+    const { descriptionWithDefault } = this
+    if (descriptionWithDefault) {
+      const d = indentWithAster(descriptionWithDefault)
       pp.push(d)
     }
     if (!this.optional && this.isParsedFunction) {

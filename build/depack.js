@@ -1,6 +1,8 @@
-const $_ = require('./');
+const { Type, Property, Method, getNameWithDefault, parseFile } = require('./');
 
-module.exports.Type = $_.Type
-module.exports.Property = $_.Property
-module.exports.getNameWithDefault = $_.getNameWithDefault
-module.exports.parseFile = $_.parseFile
+module.exports = {
+  '_Type': Type,
+  '_Property': Property,
+  '_Method': Method,
+  '_parseFile': parseFile,
+}
