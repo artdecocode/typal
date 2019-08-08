@@ -52,7 +52,7 @@ Test.prototype.test
  */
 var Record
 /**
- *  Default `null`.
+ * Default `null`.
  * @type {(?string)|undefined}
  */
 Record.prototype.test
@@ -65,7 +65,7 @@ var Test
  */
 var RecordInitial
 /**
- *  Default `null`.
+ * Default `null`.
  * @type {?string}
  */
 RecordInitial.prototype.test

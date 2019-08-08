@@ -169,7 +169,8 @@ export default class Property {
   }
   get descriptionWithDefault() {
     let s = this.description || ''
-    const d = this.hasDefault ? `${/``` */.test(this.description) ? '\n' : ' '}Default \`${this.default}\`.` : ''
+    const d = this.hasDefault ? `${/``` */.test(this.description) ? '\n' :
+      (s ? ' ' : '')}Default \`${this.default}\`.` : ''
     return `${s}${d}`
   }
   toProp(closure = false, useNamespace = closure) {
