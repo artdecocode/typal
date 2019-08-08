@@ -37,68 +37,62 @@ const parseFile = (xml, rootNamespace) => {
 
   const ns = rootNamespace == namespace ? undefined : namespace
 
-  const typeTags = extractTags('type', Root)
-  const types = typeTags.reduce((acc, { content, props }) => {
-    const { 'alias': alias, 'aliases': aliases, ...restProps } = props
-    const type = new Type()
-    type.fromXML(content, props, ns, rootNamespace)
-    acc.push(type)
+  const extracted = extractTags([
+    'type', 'interface', 'constructor', 'method', 'import',
+  ], Root)
 
+  const imports = []
+  const Imports = []
+
+  const types = extracted.reduce((acc, { content, props, tag }) => {
+    const { 'alias': alias, 'aliases': aliases, ...restProps } = props
     const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
 
-    als.forEach((name) => {
-      const type2 = new Type()
-      type2.fromXML(content, { ...restProps, name }, ns, rootNamespace)
-      acc.push(type2)
-    })
-    return acc
-  }, [])
+    switch (tag) {
+    case 'type': {
+      const type = new Type()
+      type.fromXML(content, props, ns, rootNamespace)
+      acc.push(type)
 
-  const interfaceTags = extractTags('interface', Root)
-  const interfaces = interfaceTags.reduce((acc, { content, props }) => {
-    const t = parseTypes(content, props, ns, rootNamespace)
-    t.forEach(tt => {
-      tt.isInterface = true
-    })
-    acc.push(...t)
-    return acc
-  }, [])
-
-  const constructorTags = extractTags('constructor', Root)
-  const constructors = constructorTags.reduce((acc, { content, props }) => {
-    const t = parseTypes(content, props, ns, rootNamespace)
-    t.forEach(tt => {
-      tt.isConstructor = true
-    })
-    acc.push(...t)
-    return acc
-  }, [])
-
-  const methodTags = extractTags('method', Root)
-  const methods = methodTags.reduce((acc, { content, props }) => {
-    const t = parseTypes(content, props, ns, rootNamespace, true)
-    acc.push(...t)
-    return acc
-  }, [])
-
-  let allTypes = [...types, ...interfaces, ...constructors, ...methods]
-  if (rootNamespace) allTypes.forEach(t => removeNamespace(
-    /** @type {string} */ (rootNamespace), t
-  ))
-
-  const imports = extractTags('import', Root)
-    .map(({ props, content }) => {
+      als.forEach((name) => {
+        const type2 = new Type()
+        type2.fromXML(content, { ...restProps, name }, ns, rootNamespace)
+        acc.push(type2)
+      })
+      break
+    }
+    case 'interface': {
+      const t = parseTypes(content, props, ns, rootNamespace)
+      t.forEach(tt => {
+        tt.isInterface = true
+      })
+      acc.push(...t)
+      break
+    }
+    case 'constructor': {
+      const t = parseTypes(content, props, ns, rootNamespace)
+      t.forEach(tt => {
+        tt.isConstructor = true
+      })
+      acc.push(...t)
+      break
+    }
+    case 'method': {
+      const t = parseTypes(content, props, ns, rootNamespace, true)
+      acc.push(...t)
+      break
+    }
+    /**
+     * Imports parsed into types.
+     */
+    case 'import': {
       const im = new Import()
       if (content) props['desc'] = trimD(content)
       im.fromXML(props)
-      return im
-    })
+      imports.push(im)
 
-  /**
-   * Imports parsed into types.
-   */
-  const Imports = imports
-    .map(({ name, from, desc, link, ns: importNs }) => {
+      const { name, from, desc, link, ns: importNs } = im
+
       const type = new Type()
       type.fromXML('', {
         name,
@@ -108,10 +102,19 @@ const parseFile = (xml, rootNamespace) => {
         desc,
         link,
       }, importNs == rootNamespace ? undefined : importNs)
-      return type
-    })
 
-  return { namespace, types: allTypes, imports, Imports }
+      Imports.push(type)
+      break
+    }
+    }
+    return acc
+  }, [])
+
+  if (rootNamespace) types.forEach(t => removeNamespace(
+    /** @type {string} */ (rootNamespace), t
+  ))
+
+  return { namespace, types, imports, Imports }
 }
 
 /**
