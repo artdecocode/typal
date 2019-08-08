@@ -1,4 +1,4 @@
-```### getNameWithDefault => string
+```## getNameWithDefault => string
 [
   ["name", "string"],
   ["defaultValue", "?(string|boolean|number)"],
@@ -26,4 +26,4 @@ Returns the name of a property with its default value, and surrounded by square 
 %EXAMPLE: example/get-name, ../src => typal%
 %FORK-js example/get-name%
 
-%~ width="25"%
+%~%

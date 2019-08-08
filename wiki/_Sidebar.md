@@ -7,3 +7,4 @@
 * [[Method]]
 * [[Property]]
 * [[Arg]]
+* [[Other Methods|API]]
