@@ -32,7 +32,11 @@ export default class Method extends Type {
    */
   toHeading(ws = '') {
     const lines = super.toHeading(ws, false)
-    if (this._methodReturn) lines.push(`${ws} * @return {${this.return}}`)
+    let r
+    if (this._methodReturn) r = this.return
+    if (this.async && r) r = `Promise<${r}>`
+    else if (this.async) r = 'Promise'
+    if (r) lines.push(`${ws} * @return {${r}}`)
 
     return lines
   }

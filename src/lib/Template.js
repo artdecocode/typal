@@ -1,7 +1,7 @@
 import { Replaceable } from 'restream'
 import Type from './Type' // eslint-disable-line
 
-const re = /( *) \* @fnType {(.+?)}/gm
+const re = /( *) \* @(fnType|methodType) {(.+?)}/gm
 
 export default class Template extends Replaceable {
   /**
@@ -11,13 +11,13 @@ export default class Template extends Replaceable {
     super([
       {
         re,
-        async replacement(match, ws, propName) {
+        async replacement(match, ws, tag, propName) {
           const p = propName.split('.')
           let n, pr
-          if (p.length == 2) {
+          if (tag == 'methodType') {
+            n = propName
+          } else if (p.length == 2) {
             ([n, pr] = p)
-            // n = p[0]
-            // pr = p[1]
           } else if (p.length == 3) {
             n = `${p[0]}.${p[1]}`
             pr = p[2]
@@ -30,7 +30,7 @@ export default class Template extends Replaceable {
             console.error('Type %s in %s not found', n, file)
             return match
           }
-          if (pr == 'constructor') {
+          if (pr == 'constructor' || tag == 'methodType') {
             const lines = type.toHeading(ws)
             return lines.join('\n')
           }
