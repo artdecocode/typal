@@ -1,5 +1,5 @@
 import Property from '../../../src/lib/Property'
-import { makePropsTable } from '../../../src/lib/Type'
+import makePropsTable from '../../../src/lib/make-props-table'
 
 const ts = {
   'adds default when a prop has it'() {

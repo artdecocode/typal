@@ -1,5 +1,5 @@
 import { equal } from '@zoroaster/assert'
-import { getLinks } from '../../src/lib/Type'
+import { getLinks } from '../../src/lib/get-links'
 
 /** */
 const ts = {

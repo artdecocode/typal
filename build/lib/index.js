@@ -24,8 +24,7 @@ const getNameWithDefault = (name, defaultValue, type, parentParam) => {
   if (!hasDefault) return n
 
   const isPrimitive = Number.isInteger(/** @type {number} */ (defaultValue))
-    || defaultValue === true
-    || defaultValue === false
+    || [true, false, 'null'].includes(defaultValue)
     || ['number', 'boolean'].includes(type)
   const d = isPrimitive ? defaultValue : `"${defaultValue}"`
   const nn = `${n}=${d}`

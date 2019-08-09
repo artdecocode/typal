@@ -11,6 +11,7 @@
   "parsed": {
     "name": "any"
   },
-  "args": [],
-  "_static": false
+  "args": null,
+  "_static": false,
+  "isConstructor": false
 }

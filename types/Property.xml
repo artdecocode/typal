@@ -1,4 +1,6 @@
 <types namespace="_typal">
+  <import name="Type" ns="_typedefsParser" from="@typedefs/parser" link="https://github.com/artdecocode/parser#type-type" desc="A parsed Closure Compiler type." />
+
   <type interface name="Property" desc="A property of a type.">
     <prop string name="name">
       The name of the property.
@@ -18,5 +20,24 @@
     <prop boolean name="optional" initial="false">
       If the property is optional.
     </prop>
+    <prop type="Array<!_typal.Arg>" name="args" initial="null">
+      Function properties can have arguments specified inside of their tags.
+    </prop>
+    <prop type="boolean" name="isConstructor" initial="false">
+      If this property of a type is its constructor.
+    </prop>
+    <prop type="boolean" name="isParsedFunction" initial="false">
+      Whether the property is a function which was parsed.
+    </prop>
+    <prop type="?_typedefsParser.Type" name="parsed" initial="null">
+      Whether the property is a function which was parsed.
+    </prop>
+
+    <fn name="toTypeScriptType" return="string">
+      <arg type="function(string): string" name="getLinks">
+        Returns the string with links to other types.
+      </arg>
+      If the function was a parsed function, returns _TypeScript_ type.
+    </fn>
   </type>
 </types>

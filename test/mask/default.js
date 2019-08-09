@@ -1,5 +1,5 @@
 import makeTestSuite from '@zoroaster/mask'
-import { makePropsTable } from '../../src/lib/Type'
+import makePropsTable from '../../src/lib/make-props-table'
 import Property from '../../src/lib/Property'
 
 export default makeTestSuite('test/result/ts', {

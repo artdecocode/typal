@@ -97,7 +97,7 @@
       The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
     </prop>
     <prop type="function(string): string" name="preprocessDesc" opt>
-      How to process description. _Documentary_ will strip the tripple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
+      How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
     </prop>
   </type>
 </types>

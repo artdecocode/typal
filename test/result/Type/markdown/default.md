@@ -177,7 +177,7 @@ __[`Test`](t-type)__
   ],
   [
     "__inspect*__",
-    "<em>() => \\*</em>",
+    "<em>() => ?</em>",
     "util.inspect() implementation, which just returns the JSON output."
   ]
 ]

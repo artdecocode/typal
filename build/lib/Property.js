@@ -9,10 +9,10 @@ const serialise = require('./serialise');
  */
 class Property {
   /**
-   * @param {!Array<!Arg>} [args] If a property was written as a function with inner
+   * @param {Array<!Arg>} [args] If a property was written as a function with inner
    * <arg> elements, this array will contain parsed entries.
    */
-  constructor(args = []) {
+  constructor(args = null) {
     /**
      * The name of the property.
      * @type {?string}
@@ -71,24 +71,39 @@ class Property {
      * @type {boolean}
      */
     this._static = false
+
+    /**
+     * If this property of a type is its constructor.
+     */
+    this.isConstructor = false
   }
   /**
+   * For README documentation.
    * Serialises functions to TypeScript, e.g.,
    * (param: string) => void
    */
-  toTypeScriptType(getLinks) {
+  toTypeScriptType(serialiseType) {
     if (!this.parsed) throw new Error('The property was not parsed.')
     const { function: { args, return: ret } } = this.parsed
-    const a = args.map(({ name: typeName }, i) => {
-      let { name = `arg${i}`, type: t = typeName, optional } = this.args[i] || {}
-      name = `${name}${optional ? '?' : ''}`
-      if (t) t = getLinks(t)
-      return `${name}${t ? `: ${t}` : ''}`
-    })
+    const a = args
+      .map((ar) => serialiseType(ar))
+      .map((type, i) => {
+        const { name: argType, optional: argOptional } = args[i]
+        let {
+          name = `arg${i}`, type: t = argType, optional = argOptional,
+        } = this.args[i] || {}
+        name = `${name}${optional ? '?' : ''}`
+        return `${name}${t ? `: ${type}` : ''}`
+      })
     const j = a.join(', ')
-    const r = getLinks(ret ? ret.name || '*' : '*')
+    const r = ret ? serialiseType(ret) : 'void'
     const typeName = `(${j}) => ${r}`
     return typeName.replace(/\*/g, '\\*')
+  }
+  clearNamespace(namespace, s = new RegExp(`([!?])?${namespace}\\.`, 'g')) {
+    if (!namespace) return
+    this.type = this.type.replace(s, '$1')
+    return s
   }
   /**
    * When writing externs, this will prevent adding `.prototype`, e.g.,
@@ -148,6 +163,7 @@ class Property {
     if (!this.noParams) {
       try {
         this.parsed = parse(this.closureType)
+        if (this.isParsedFunction && !this.args) this.args = []
       } catch (err) { /* ok */
         this.parsed = null
       }
@@ -158,7 +174,7 @@ class Property {
    */
   toJSDoc(parentParam = null, closure = false, useNamespace = closure) {
     if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
-    const nameWithDefault = getNameWithDefault(this.name, this.default, this.type, parentParam)
+    const nameWithDefault = getNameWithDefault(this.name, this.optional ? this.default : null, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
     const { descriptionWithDefault } = this
     const t = descriptionWithDefault ? ` ${descriptionWithDefault}` : ''
@@ -222,6 +238,7 @@ class Property {
     return this.parsed && this.parsed.name == 'function'
   }
   /**
+   * Create type for VSCode.
    * Used to generate types of **functions**, e.g., when the property is `function` or `fn`.
    * If closure FLAG was set, it will override it.
    * @param {boolean} [closure]
@@ -231,19 +248,7 @@ class Property {
     if (closure) return this.closureType
     if (!this.isParsedFunction) return this.type
 
-    // const ret = this.parsed.function.return.name
-    const { function: { args, return: ret } } = this.parsed
-    const a = args
-      .map((ar) => serialise(ar))
-      .map((type, i) => {
-        const { optional } = args[i]
-        const { name: argName = `arg${i}` } = this.args[i] || {}
-        return `${argName}${optional ? '?' : ''}: ${type}`
-      })
-    const s = a.join(', ')
-    const r = ret ? serialise(ret) : 'void'
-
-    return `(${s}) => ${r}`
+    return this.toTypeScriptType(serialise)
   }
   toExtern(ws = '') {
     let pp = []

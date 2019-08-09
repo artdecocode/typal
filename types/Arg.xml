@@ -1,7 +1,7 @@
 <types namespace="_typal">
   <type interface name="Arg" desc="An argument of a constructor or method.">
     <prop type="?string" name="name" initial="null">
-      The name of the type.
+      The name of the argument.
     </prop>
     <prop string name="type" initial="">
       The type of the argument.

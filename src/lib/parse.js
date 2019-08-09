@@ -27,10 +27,7 @@ const removeNamespace = (namespace, type) => {
  */
 const addConstructorProperty = (type, rootNamespace) => {
   if (!type.args || !type.args.length) return
-  const args = type.args.map(({ type: at, optional }) => {
-    if (optional !== null) return `${at}=`
-    return at
-  }).join(', ')
+  const args = type.args.map(({ fullType }) => fullType).join(', ')
   const t = `function(${args}): ${type.fullName}`
   const prop = new Property(type.args)
   prop.isConstructor = true

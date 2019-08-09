@@ -1,9 +1,10 @@
 import extractTags from 'rexml'
-import parse from '@typedefs/parser'
 import Property from './Property'
 import { addSuppress, makeBlock, getExternDeclaration, makeOptional } from './'
-import { getLink, trimD } from './'
+import { trimD } from './'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
+import { getLinks } from './get-links'
+import makePropsTable from './make-props-table'
 
 /**
  * A representation of a type.
@@ -111,31 +112,23 @@ _ns.Type.prototype.isConstructor
         pr.fromXML(c, p)
         return pr
       })
-      const functions = extractTags('function', content)
-      const fns = extractTags('fn', content)
-      const staticMethods = extractTags('static', content).map(a => {
-        a['isStatic'] = true
-        return a
-      })
-      const fn = [...functions, ...fns, ...staticMethods]
+      const functions = extractTags(['function', 'fn', 'static'], content)
 
-      const fnProps = fn.map(({ content: c, props: p, 'isStatic': isStatic }) => {
+      const fnProps = functions.map(({ content: c, props: p, tag }) => {
+        const isStatic = tag == 'static'
         const { newContent, argsArgs } = extractArgs(c, rootNamespace)
 
         const { 'async': async, 'return': ret = 'void', ...rest } = p
         let { 'args': args = '' } = p
 
-        if (!args && argsArgs.length) {
-          args = argsArgs.map(({ type: at, optional }) => {
-            // optional can also just be set in type, e.g., type="string=",
-            // so check for null and not truthy
-            if (optional !== null) return `${at}=`
-            return at
-          }).join(',')
+        if (!args) {
+          args = argsArgs.map(({ fullType }) => fullType).join(',')
         }
 
         let r = ret.replace(/\n\s*/g, ' ')
         r = async ? `!Promise<${r}>` : r
+        // generate function string which will be parsed
+        // a hack to convert args into _typedefParser.Type
         const fnType = `function(${args}): ${r}`
         rest['type'] = fnType // e.g., a prop will have type `function()`
         const pr = new Property(argsArgs)
@@ -338,7 +331,7 @@ _ns.Type.prototype.isConstructor
       acc.push(...a)
       return acc
     }, [])
-    const t = properties.map((p) => {
+    const t = properties.filter(({ isConstructor }) => !isConstructor).map((p) => {
       let r = p.toExtern()
       r = makeBlock(r)
       const prototype = p.static ? '' : '.prototype'
@@ -492,225 +485,6 @@ const getSpread = (properties = [], closure = false) => {
   return st
 }
 
-/**
- * Iterates through the types to find the referenced one, and returns a string which contains a link to it.
- * @param {!Array<!Type>} allTypes
- * @param {string|!_typedefsParser.Type} type
- * @param {Object} [opts]
- * @param {boolean} [opts.flatten]
- * @param {boolean} [opts.escapePipe]
- * @param {boolean} [opts.nameProcess]
- * @param {!Function} [opts.link]
- */
-export const getLinks = (allTypes, type, opts = {}) => {
-  let parsed
-  if (typeof type == 'object') parsed = type
-  else try {
-    parsed = parse(type) // should parse type when added
-    if (!parsed) {
-      console.log('Could not parse %s', type)
-    }
-  } catch (err) {
-    console.log('Could not parse %s', type)
-    console.error(err.message)
-  }
-  if (!parsed) return type
-  const s = parsedToString(parsed, allTypes, opts)
-  return s
-}
-
-/**
- * @param {!_typedefsParser.Type} type
- * @param {!Array<!Type>} allTypes
- * @param {Object} [opts] Options
- * @param {boolean} [opts.flatten] If the type has link, follow it.
- */
-export const parsedToString = (type, allTypes, opts = {}) => {
-  const { escapePipe = true } = opts
-  let s = ''
-  let nullable = ''
-  if (type.nullable) nullable = '?'
-  else if (type.nullable === false) nullable = '!'
-  const p2s = (arg) => parsedToString(arg, allTypes, opts)
-
-  if (type.function) {
-    s += nullable
-    s += type.name + '(' // Function or function
-    const args = []
-    if (type.function.this) {
-      let t = 'this: '
-      t += p2s(type.function.this)
-      args.push(t)
-    }
-    if (type.function.new) {
-      let t = 'new: '
-      t += p2s(type.function.new)
-      args.push(t)
-    }
-    type.function.args.forEach((a) => {
-      let t = p2s(a)
-      if (a.optional) t += '='
-      args.push(t)
-    })
-    if (type.function.variableArgs) {
-      let t = '...'
-      t += p2s(type.function.variableArgs)
-      args.push(t)
-    }
-    const argsJoined = args.join(', ')
-    s += argsJoined + ')'
-    if (type.function.return) {
-      s += ': ' + p2s(type.function.return)
-    }
-  } else if (type.record) {
-    s += '{ '
-    const rs = Object.keys(type.record).map((key) => {
-      const val = type.record[key]
-      if (!val) return key
-      const v = p2s(val)
-      return `${key}: ${v}`
-    })
-    s += rs.join(', ')
-    s += ' }'
-  } else if (type.application) {
-    s += getTypeWithLink(type.name, allTypes, nullable, opts) + '&lt;'
-    const apps = type.application.map((a) => {
-      return p2s(a)
-    })
-    s += apps.join(', ')
-    s += '&gt;'
-  } else if (type.union) {
-    s += nullable
-    s += '('
-    const union = type.union.map((u) => {
-      return p2s(u)
-    })
-    s += union.join(escapePipe ? ' \\| ' : ' | ')
-    s += ')'
-  } else {
-    const name = type.name == 'any' ? '*' : type.name
-    s += getTypeWithLink(name, allTypes, nullable, opts)
-  }
-  return s
-}
-
-/**
- * The function which generates a link for the type.
- */
-const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
-  const { flatten = false, nameProcess,
-    link: linkFn = ({ link: l }) => { return `#${l}` } } = opts
-  const l = getLinkToType(allTypes, type)
-  const n = `${nullable}${type}`
-  if (!l) return n
-  let { link, type: { description } } = l
-  link = linkFn(l)
-  if (flatten) {
-    const found = allTypes.find(({ fullName }) => fullName == type)
-    if (found && found.link) {
-      link = found.link
-    }
-    if (!description && found.desc) description = found.desc
-    if (typeof flatten == 'function') flatten(type)
-  }
-  const nn = nameProcess ? nameProcess(n) : n
-  if (!description) return `[${nn}](${link})`
-  return `<a href="${link}" title="${description.replace(/"/g, '&quot;')}">${nn}</a>`
-  // const typeWithLink = `[${n}](#${link})`
-  // return typeWithLink
-}
-
-/**
- * @param {!Type} [type] The type for which to make the table
- * @param {!Array<!Property>} [props]
- * @param {!Array<!Type>} [allTypes]
- * @param {!Object} [opts]
- * @param {boolean} [opts.narrow=false] Merge Type and Description columns
- * @param {boolean|function(string)} [opts.flatten=false] Whether to follow the link to external types. If function is passed, will be called with the named of the flattened package.
- */
-export const makePropsTable = (type, props = [], allTypes = [], opts = {}) => {
-  const { narrow = false, flatten = false, preprocessDesc, link } = opts
-  if (!props.length) return ''
-  const constr = type.isConstructor || type.isInterface
-  const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
-
-  const linkOptions = {
-    flatten,
-    escapePipe: !narrow,
-    link,
-  }
-  const ps = props.map((prop) => {
-    let typeName
-    if (prop.args && prop.isParsedFunction) {
-      typeName = prop.toTypeScriptType((s) => getLinks(/** @type {!Array<!Type>} */ (allTypes), s, linkOptions))
-      if (prop.isConstructor) typeName = `new ${typeName}`
-    } else
-      typeName = getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.parsed || prop.type, linkOptions)
-    // constructors and interfaces will always have to initialise properties
-    // their `this` properties in the constructor.
-    const name = (constr || prop.optional) ? prop.name : `${prop.name}*`
-    const d = !prop.hasDefault ? '-' : `\`${prop.default}\``
-    const de = preprocessDesc ? preprocessDesc(prop.description) : prop.description
-    return {
-      prop,
-      typeName,
-      name,
-      de: esc(de, !narrow),
-      d,
-    }
-  })
-  if (narrow) { // narrow is the newer API for Documentary
-    return { props: ps, anyHaveDefault, constr }
-  }
-  const ar = ps.map(({
-    name, typeName, de, d, prop,
-  }) => {
-    const n = prop.optional ? name : `__${name}__`
-    return [n, `<em>${typeName}</em>`, de, ...(anyHaveDefault ? [d] : [])]
-  })
-
-  const h = ['Name',
-    ...(narrow ? ['Type & Description'] : ['Type', 'Description']),
-    ...(anyHaveDefault ? [constr ? 'Initial' : 'Default'] : [])]
-
-  const j = JSON.stringify([h, ...ar], null, 2)
-  return `
-
-\`\`\`table
-${j}
-\`\`\``
-}
-
-// const li = (p) => {
-//   return p.replace(/(^\s*)- (.+)$/mg, `$1<li>$2</li>`)
-// }
-
-const esc = (s = '', escapePipe = true) => {
-  if (s === null) s = ''
-  if (escapePipe) {
-    s = s.replace(/\|/g, '\\|')
-  }
-  return s
-    .replace(/</g, '&lt;')
-    .replace(/>/, '&gt;')
-}
-
-/**
- * @param {!Array<!Type>} allTypes
- */
-const getLinkToType = (allTypes, type) => {
-  const linkedTypes = allTypes.filter(({ fullName }) => fullName == type)
-  if (!linkedTypes.length) return
-
-  // in case we're importing local types and imports have same names
-  const importType = linkedTypes.find(({ import: i }) => i || false)
-  const actualType = linkedTypes.find(({ import: i }) => !i)
-
-  let linkedType = actualType || importType
-
-  const link = getLink(linkedType.fullName, 'type')
-  return { link, type: linkedType }
-}
 
 /**
  * @suppress {nonStandardJsDocs}

@@ -22,8 +22,9 @@
       "parsed": {
         "name": "string"
       },
-      "args": [],
-      "_static": false
+      "args": null,
+      "_static": false,
+      "isConstructor": false
     },
     {
       "name": "maxage",
@@ -38,8 +39,9 @@
       "parsed": {
         "name": "number"
       },
-      "args": [],
-      "_static": false
+      "args": null,
+      "_static": false,
+      "isConstructor": false
     }
   ],
   "namespace": null,

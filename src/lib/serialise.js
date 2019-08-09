@@ -1,8 +1,10 @@
 /**
+ * Serialise for VSCode.
  * @param {!_typedefsParser.Type} type
  * @param {boolean} [typescript=false] Serialise to TypeScript. Only affects functions.
  */
 export default function serialise(type, typescript = false) {
+  if (type.name == '' && type.nullable) return '?'
   let s = ''
   let nullable = ''
   if (type.nullable) nullable = '?'

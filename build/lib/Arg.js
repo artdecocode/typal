@@ -8,10 +8,16 @@ class Arg {
     this.name = null
     /** @type {string} */
     this.type = ''
-    /** @type {?boolean} */
-    this.optional = null
+    /** @type {boolean} */
+    this.optional = false
     /** @type {string} */
     this.description = ''
+
+    // /**
+    //  * Shows if this argument indicates the constructor type, e.g.,
+    //  * function(new: Example)
+    //  */
+    // this.isNew = false
   }
   fromXML(content,
     { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type },
@@ -23,6 +29,10 @@ class Arg {
     if (rootNamespace) {
       const s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')
       t = t.replace(s, '$1')
+    }
+    if (t.endsWith('=')) {
+      t = t.replace(/=$/, '')
+      opt = true
     }
     this.type = t
     if (opt) this.optional = true
@@ -36,12 +46,16 @@ class Arg {
     // } catch (err) { /* ok */
     // }
   }
+  get fullType() {
+    if (this.optional) return `${this.type}=`
+    return this.type
+  }
   // get isParsedFunction() {
   //   return this.parsed && this.parsed.name == 'function'
   // }
   // toTypescriptType() {
   //   if (this.isParsedFunction) {
-  //     const { function: { args, return: ret } } = this.parsed 
+  //     const { function: { args, return: ret } } = this.parsed
   //     return `(${
   //       args.map(({ name, type, optional }) => {
   //         return `${name}${optional ? '?' : ''}: ${type}`

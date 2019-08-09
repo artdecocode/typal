@@ -12,11 +12,6 @@ var _typal = {}
  */
 _typal.Type = function() {}
 /**
- * Constructor method.
- * @return {_typal.Type}
- */
-_typal.Type.prototype.constructor = function() {}
-/**
  * The name of the type.
  * @type {string}
  */
@@ -129,8 +124,8 @@ _typal.Type.prototype.extends
 _typal.Type.prototype.args
 /**
  * Converts a type to a markdown string.
- * @param {!Array<!_typal.Type>=} [allTypes] The array with all types for linking.
- * @param {!_typal.ToMarkdownOptions=} [opts] Options passed by _Documentary_.
+ * @param {!Array<!_typal.Type>} allTypes The array with all types for linking.
+ * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_.
  */
 _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
 /**
@@ -159,7 +154,7 @@ _typal.ToMarkdownOptions.prototype.link = function(arg0) {}
  */
 _typal.ToMarkdownOptions.prototype.details
 /**
- * How to process description. _Documentary_ will strip the tripple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
+ * How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
  * @type {(function(string): string)|undefined}
  */
 _typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
@@ -171,11 +166,6 @@ _typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
  * @interface
  */
 _typal.Method = function() {}
-/**
- * Constructor method.
- * @return {_typal.Method}
- */
-_typal.Method.prototype.constructor = function() {}
 /**
  * The return type of the method. Returns void if no return was specified. Default `void`.
  * @type {string}
@@ -223,6 +213,32 @@ _typal.Property.prototype.default
  * @type {boolean}
  */
 _typal.Property.prototype.optional
+/**
+ * Function properties can have arguments specified inside of their tags. Default `null`.
+ * @type {Array<!_typal.Arg>}
+ */
+_typal.Property.prototype.args
+/**
+ * If this property of a type is its constructor. Default `false`.
+ * @type {boolean}
+ */
+_typal.Property.prototype.isConstructor
+/**
+ * Whether the property is a function which was parsed. Default `false`.
+ * @type {boolean}
+ */
+_typal.Property.prototype.isParsedFunction
+/**
+ * Whether the property is a function which was parsed. Default `null`.
+ * @type {?_typedefsParser.Type}
+ */
+_typal.Property.prototype.parsed
+/**
+ * If the function was a parsed function, returns _TypeScript_ type.
+ * @param {function(string): string} getLinks Returns the string with links to other types.
+ * @return {string}
+ */
+_typal.Property.prototype.toTypeScriptType = function(getLinks) {}
 
 /* typal types/Arg.xml externs */
 /**
@@ -231,7 +247,7 @@ _typal.Property.prototype.optional
  */
 _typal.Arg
 /**
- * The name of the type. Default `null`.
+ * The name of the argument. Default `null`.
  * @type {?string}
  */
 _typal.Arg.prototype.name

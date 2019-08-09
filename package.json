@@ -24,6 +24,7 @@
     "depack-compat": "depack-dev example/restream/compat -c -a -p",
     "compat": "yarn dev example/restream/compat.js -c",
     "d": "yarn-s externs",
+    "d1": "yarn dev types/index.js",
     "build": "yarn-s d b doc",
     "e": "alanode",
     "example/": "yarn e example/example.js",

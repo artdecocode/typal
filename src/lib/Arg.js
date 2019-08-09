@@ -30,6 +30,10 @@ export default class Arg {
       const s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')
       t = t.replace(s, '$1')
     }
+    if (t.endsWith('=')) {
+      t = t.replace(/=$/, '')
+      opt = true
+    }
     this.type = t
     if (opt) this.optional = true
     // if (name.startsWith('...')) this.optional = true
@@ -41,6 +45,10 @@ export default class Arg {
     //   this.parsed = parse(this.closureType)
     // } catch (err) { /* ok */
     // }
+  }
+  get fullType() {
+    if (this.optional) return `${this.type}=`
+    return this.type
   }
   // get isParsedFunction() {
   //   return this.parsed && this.parsed.name == 'function'

@@ -45,7 +45,7 @@
 
 ## constructor with type that extends
 <types namespace="typal">
-  <constructor desc="https://git.io/fjHoZ" 
+  <constructor desc="https://git.io/fjHoZ"
     name="Component" extends="{defaultProps: !Object|undefined}">
     <!-- prop type="!Object" name="defaultProps">
       Could implement writing in props by too much effort for too little gain. HAVE to do extends because even with static property, typescript only accepts props on @typedef {Object}
@@ -91,7 +91,7 @@
   <type name="Test">
     <fn args="string, string" name="fn">
       <arg name="test" type="string"></arg>
-    </fn> 
+    </fn>
   </type>
 </types>
 
