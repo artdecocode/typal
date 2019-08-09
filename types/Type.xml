@@ -72,15 +72,24 @@
     <prop type="Array<!_typal.Arg>" name="args" initial="null">
       Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property.
     </prop>
-    <fn name="toMarkdown" desc="This function is closely integrated from _Documentary_ package, however can also be used to get a standard markdown string with properties in a table."
-      return="string">
+    <fn name="toMarkdown" return="{ LINE: string, table: string | {
+          props: !Array<{
+            prop: !_typal.Property,
+            typeName: string | !_typedefsParser.Type,
+            name: string,
+            de: string,
+            d: string
+          }>,
+          anyHaveDefault: boolean,
+          constr: boolean
+      }, displayInDetails: string }">
       <arg name="allTypes" type="!Array<!_typal.Type>">
         The array with all types for linking.
       </arg>
       <arg name="opts" type="!_typal.ToMarkdownOptions">
-        Options passed by _Documentary_.
+        Options passed by _Documentary_. If `narrow` is specified, the table returned as an object for manual printing, otherwise a string is returned. WIP.
       </arg>
-      Converts a type to a markdown string.
+      Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
     </fn>
   </interface>
 

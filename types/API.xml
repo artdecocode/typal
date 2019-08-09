@@ -1,0 +1,6 @@
+<types>
+  <method name="parseFile" desc="Parses the types.xml file. Looks for `<type>`, `<constructor>`, `<interface>` and `<method>` elements and extracts their properties, functions and arguments.">
+    <arg name="xml">The content of the `xml` file.</arg>
+    <arg string name="namespace" opt>Namespace to ignore in types and properties.</arg>
+  </method>
+</types>

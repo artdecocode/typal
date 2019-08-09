@@ -123,10 +123,10 @@ _typal.Type.prototype.extends
  */
 _typal.Type.prototype.args
 /**
- * Converts a type to a markdown string.
+ * Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
  * @param {!Array<!_typal.Type>} allTypes The array with all types for linking.
- * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_.
- * @return {string}
+ * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_. If `narrow` is specified, the table returned as an object for manual printing, otherwise a string is returned. WIP.
+ * @return {{ LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: string }}
  */
 _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
 /**

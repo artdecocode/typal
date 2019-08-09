@@ -43,7 +43,7 @@ export {}
  * Default `false`.
  * @prop {?string} extends Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
  * @prop {Array<!_typal.Arg>} args Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property. Default `null`.
- * @prop {(allTypes: !Array<!_typal.Type>, opts: !_typal.ToMarkdownOptions) => string} toMarkdown Converts a type to a markdown string.
+ * @prop {(allTypes: !Array<!_typal.Type>, opts: !_typal.ToMarkdownOptions) => { LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: string }} toMarkdown Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
  * @typedef {_typal.ToMarkdownOptions} ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
  * @typedef {Object} _typal.ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
  * @prop {boolean} [narrow=false] If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.

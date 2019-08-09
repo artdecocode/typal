@@ -379,7 +379,7 @@ _ns.Type.prototype.isConstructor
   /**
    * Converts a type to a markdown string.
    * @param {!Array<!Type>} [allTypes]
-   * @param {!Object} [opts]
+   * @param {Object} [opts]
    * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
    * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
    * @param {function()} [opts.link] A function to call for extra processing of links.
