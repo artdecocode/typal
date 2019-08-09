@@ -2,7 +2,6 @@ import extractTags from 'rexml'
 import Type from './Type'
 import Method from './Method'
 import Import from './Import'
-import { trimD } from './'
 import read from '@wrote/read'
 import Arg, { extractArgs } from './Arg'
 import Property from './Property'
@@ -57,10 +56,10 @@ const parseFile = (xml, rootNamespace) => {
     'type', 'interface', 'constructor', 'method', 'import',
   ], Root)
 
+  /** @type {!Array<!_typal.Import>} */
   const imports = []
-  const Imports = []
 
-  const types = extracted.reduce((acc, { content, props, tag }) => {
+  const types = /** @type {!Array<!_typal.Type>} */ (extracted.reduce((acc, { content, props, tag }) => {
     const { 'alias': alias, 'aliases': aliases, ...restProps } = props
     const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
 
@@ -105,34 +104,20 @@ const parseFile = (xml, rootNamespace) => {
      */
     case 'import': {
       const im = new Import()
-      if (content) props['desc'] = trimD(content)
-      im.fromXML(props)
+      im.fromXML(content, props, props['ns'] || props['from'], rootNamespace)
       imports.push(im)
 
-      const { name, from, desc, link, ns: importNs } = im
-
-      const type = new Type()
-      type.fromXML('', {
-        name,
-        type: `import('${from}').${name}`,
-        noToc: true,
-        import: true,
-        desc,
-        link,
-      }, importNs == rootNamespace ? undefined : importNs)
-
-      Imports.push(type)
       break
     }
     }
     return acc
-  }, [])
+  }, []))
 
   if (rootNamespace) types.forEach(t => removeNamespace(
     /** @type {string} */ (rootNamespace), t
   ))
 
-  return { namespace, types, imports, Imports }
+  return { namespace, types, imports }
 }
 
 /**
@@ -205,7 +190,13 @@ export default parseFile
  */
 export const readTypesFile = async (path, ignore = []) => {
   const xml = await read(path)
-  let { namespace = null, types, imports } = parseFile(xml)
+  let namespace, types, imports
+  try {
+    ({ namespace = null, types, imports } = parseFile(xml))
+  } catch (err) {
+    err.message = `Error while reading ${path}\n${err.message}`
+    throw err
+  }
   types = types.filter(({ fullName }) => {
     if (ignore.includes(fullName)) return false
     return true
@@ -216,3 +207,12 @@ export const readTypesFile = async (path, ignore = []) => {
   })
   return { types, imports, namespace }
 }
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').Type} _typal.Type
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').Import} _typal.Import
+ */

@@ -12,7 +12,7 @@ export {}
  * @prop {boolean} spread When generating JSDoc, print all properties of the type, but loose individual property description. Default `false`.
  * @prop {boolean} noExpand Don't print each property description. Default `false`.
  * @prop {boolean} import Whether the type as an import. Default `false`.
- * @prop {?string} link If the type is an import, the link to the documentation page. Default `null`.
+ * @prop {?string} link The link to the documentation page. Default `null`.
  * @prop {!Array<!_typal.Property>} properties The properties of the type. Default `[]`.
  * @prop {?string} namespace The type's namespace, e.g., `_typal`. Default `null`.
  * @prop {string} ns The namespace or an empty string.
@@ -41,9 +41,9 @@ export {}
  * _ns.Type.prototype.isRecord
  * ```
  * Default `false`.
- * @prop {?string} extends Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
+ * @prop {?string} extends Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `＠extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
  * @prop {Array<!_typal.Arg>} args Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property. Default `null`.
- * @prop {(allTypes: !Array<!_typal.Type>, opts: !_typal.ToMarkdownOptions) => { LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: string }} toMarkdown Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
+ * @prop {(allTypes: !Array<!_typal.Type>, opts: !_typal.ToMarkdownOptions) => { LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: boolean }} toMarkdown Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
  * @typedef {_typal.ToMarkdownOptions} ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
  * @typedef {Object} _typal.ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
  * @prop {boolean} [narrow=false] If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
@@ -79,4 +79,13 @@ export {}
  * @prop {string} type The type of the argument. Default ``.
  * @prop {boolean} optional Whether the argument is optional. Default `false`.
  * @prop {string} description Description of the argument. Default ``.
+ */
+
+/* typal types/Import.xml namespace */
+/**
+ * @typedef {_typal.Import} Import `＠interface` A representation of an import.
+ * @typedef {Object} _typal.Import `＠interface` A representation of an import.
+ * @prop {boolean} import Can be used to disambiguate import from other types. Default `true`.
+ * @prop {string} from Which package (or internal module) to import the type from.
+ * @prop {string} ns The namespace, which can be set different to "from", e.g., `from` can be set to `@typedefs/parser` and `ns` to `_typedefs`.
  */

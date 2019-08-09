@@ -1,0 +1,13 @@
+<types namespace="_typal">
+  <interface name="Import" desc="A representation of an import.">
+    <prop name="import" boolean initial="true">
+      Can be used to disambiguate import from other types.
+    </prop>
+    <prop string name="from">
+      Which package (or internal module) to import the type from.
+    </prop>
+    <prop string name="ns">
+      The namespace, which can be set different to "from", e.g., `from` can be set to `@typedefs/parser` and `ns` to `_typedefs`.
+    </prop>
+  </interface>
+</types>

@@ -1,6 +1,16 @@
 <types>
-  <method name="parseFile" desc="Parses the types.xml file. Looks for `<type>`, `<constructor>`, `<interface>` and `<method>` elements and extracts their properties, functions and arguments.">
-    <arg name="xml">The content of the `xml` file.</arg>
+  <method name="parseFile" return="{
+    namespace: string,
+    types: !Array<!_typal.Type>,
+    imports: !Array<!_typal.Import>
+  }">
+    <arg string name="xml">The content of the `xml` file.</arg>
+    <arg string name="namespace" opt>Namespace to ignore in types and properties.</arg>
+    Parses the types.xml file. Looks for `<type>`, `<constructor>`, `<interface>` and `<method>` elements and extracts their properties, functions and arguments.
+  </method>
+
+  <method name="getLinks" desc="Gets links for markdown. Iterates through the types to find referenced ones, and returns a string which contains a link to it.">
+    <arg name="allTypes">The content of the `xml` file.</arg>
     <arg string name="namespace" opt>Namespace to ignore in types and properties.</arg>
   </method>
 </types>

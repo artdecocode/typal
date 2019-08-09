@@ -1,10 +1,9 @@
 import { getLinks } from './get-links'
-import Import from './Import'
 
 /**
  * @param {!_typal.Type} [type] The type for which to make the table
  * @param {!Array<!_typal.Property>} [props]
- * @param {!Array<!(_typal.Type|Import)>} [allTypes]
+ * @param {!Array<!_typal.Type>} [allTypes]
  * @param {!Object} [opts]
  * @param {boolean} [opts.narrow=false] Merge Type and Description columns
  * @param {boolean|function(string)} [opts.flatten=false] Whether to follow the link to external types. If function is passed, will be called with the named of the flattened package.
@@ -20,7 +19,7 @@ export default function makePropsTable (type, props = [], allTypes = [], opts = 
     escapePipe: !narrow,
     link,
   }
-  const links = (s) => getLinks(/** @type {!Array<!(_typal.Type|Import)>} */ (allTypes), s, linkOptions)
+  const links = (s) => getLinks(/** @type {!Array<!_typal.Type>} */ (allTypes), s, linkOptions)
   const ps = props.map((prop) => {
     let typeName
     if (prop.args && prop.isParsedFunction) {

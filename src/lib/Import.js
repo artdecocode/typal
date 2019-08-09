@@ -1,47 +1,33 @@
+import Type from './Type'
+import { trimD } from './'
+
 /**
  * The representation of a parsed import.
+ * @implements {_typal.Import}
  */
-export default class Import {
+export default class Import extends Type {
   constructor() {
-    /**
-     * Store import's namespace which by default is equal to the from property.
-     * @type {string}
-     */
-    this.ns = ''
-    /**
-     * The name of the imported type.
-     * @type {string}
-     */
-    this.name = ''
+    super()
     /**
      * The package name name from where to import.
      * @type {string}
      */
     this.from = ''
-    /**
-     * The description for documentation.
-     * @type {?string}
-     */
-    this.desc = null
-    /**
-     * The link for documentation.
-     * @type {?string}
-     */
-    this.link = null
   }
-  fromXML({
-    'name': name, 'from': from,
-    'desc': desc, 'link': link,
-    'ns': ns,
-  }) {
-    this.name = name
+  get import() {
+    return true
+  }
+  fromXML(content, {
+    'from': from, 'name': name, ...props
+  }, namespace, rootNamespace) {
+    if (!from) throw new Error('From attribute of import is not given.')
     this.from = from
-    this.desc = desc
-    this.link = link
-    this.ns = ns || this.from
-  }
-  get fullName() {
-    return `${this.ns}.${this.name}`
+    this.description = trimD(content)
+
+    super.fromXML('', {
+      ...props, 'noToc': true, name,
+      type: `import('${from}').${name}`,
+    }, namespace != rootNamespace ? namespace : null)
   }
   toTypedef(includeNamespace = true) {
     const n = includeNamespace ? this.fullName : this.name

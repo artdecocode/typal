@@ -1,12 +1,16 @@
 const { _parseFile } = require('./depack')
 
 /**
- * @methodName {parseFile}
+ * @methodType {parseFile}
  */
-function parseFile(...args) {
-  return _parseFile(...args)
+function parseFile(xml, namespace) {
+  return _parseFile(xml, namespace)
 }
 
 module.exports = {
   parseFile,
 }
+
+/**
+ * @typedef {import('../types').Type} _typal.Type
+ */

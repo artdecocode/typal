@@ -25,7 +25,7 @@
       Whether the type as an import.
     </prop>
     <prop type="?string" name="link" initial="null">
-      If the type is an import, the link to the documentation page.
+      The link to the documentation page.
     </prop>
     <prop type="!Array<!_typal.Property>" name="properties" initial="[]">
       The properties of the type.
@@ -67,7 +67,7 @@
       ```
     </prop>
     <prop type="?string" name="extends" initial="null">
-      Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type).
+      Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `＠extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type).
     </prop>
     <prop type="Array<!_typal.Arg>" name="args" initial="null">
       Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property.
@@ -82,7 +82,7 @@
           }>,
           anyHaveDefault: boolean,
           constr: boolean
-      }, displayInDetails: string }">
+      }, displayInDetails: boolean }">
       <arg name="allTypes" type="!Array<!_typal.Type>">
         The array with all types for linking.
       </arg>

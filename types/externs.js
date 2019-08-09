@@ -52,7 +52,7 @@ _typal.Type.prototype.noExpand
  */
 _typal.Type.prototype.import
 /**
- * If the type is an import, the link to the documentation page. Default `null`.
+ * The link to the documentation page. Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.link
@@ -113,7 +113,7 @@ _typal.Type.prototype.isInterface
  */
 _typal.Type.prototype.isRecord
 /**
- * Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
+ * Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `＠extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
  * @type {?string}
  */
 _typal.Type.prototype.extends
@@ -126,7 +126,7 @@ _typal.Type.prototype.args
  * Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
  * @param {!Array<!_typal.Type>} allTypes The array with all types for linking.
  * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_. If `narrow` is specified, the table returned as an object for manual printing, otherwise a string is returned. WIP.
- * @return {{ LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: string }}
+ * @return {{ LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: boolean }}
  */
 _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
 /**
@@ -267,3 +267,25 @@ _typal.Arg.prototype.optional
  * @type {string}
  */
 _typal.Arg.prototype.description
+
+/* typal types/Import.xml externs */
+/**
+ * A representation of an import.
+ * @interface
+ */
+_typal.Import = function() {}
+/**
+ * Can be used to disambiguate import from other types. Default `true`.
+ * @type {boolean}
+ */
+_typal.Import.prototype.import
+/**
+ * Which package (or internal module) to import the type from.
+ * @type {string}
+ */
+_typal.Import.prototype.from
+/**
+ * The namespace, which can be set different to "from", e.g., `from` can be set to `@typedefs/parser` and `ns` to `_typedefs`.
+ * @type {string}
+ */
+_typal.Import.prototype.ns

@@ -1,10 +1,9 @@
 import parse from '@typedefs/parser'
 import { getLink } from './'
-import Import from './Import'
 
 /**
  * Iterates through the types to find the referenced one, and returns a string which contains a link to it.
- * @param {!Array<!(_typal.Type|Import)>} allTypes
+ * @param {!Array<!_typal.Type>} allTypes
  * @param {string|!_typedefsParser.Type} type
  * @param {Object} [opts]
  * @param {boolean} [opts.flatten]
@@ -31,7 +30,7 @@ export const getLinks = (allTypes, type, opts = {}) => {
 
 /**
  * @param {!_typedefsParser.Type} type
- * @param {!Array<!(_typal.Type|Import)>} allTypes
+ * @param {!Array<!_typal.Type>} allTypes
  * @param {Object} [opts] Options
  * @param {boolean} [opts.flatten] If the type has link, follow it.
  */
@@ -108,7 +107,7 @@ export const parsedToString = (type, allTypes, opts = {}) => {
 /**
  * The function which generates a link for the type.
  * @param {string} type
- * @param {!Array<!(_typal.Type|Import)>} allTypes
+ * @param {!Array<!_typal.Type>} allTypes
  */
 const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
   const { flatten = false, nameProcess,
@@ -123,7 +122,7 @@ const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
     if (found && found.link) {
       link = found.link
     }
-    if (!description && found.desc) description = found.desc
+    if (!description && found.description) description = found.description
     if (typeof flatten == 'function') flatten(type)
   }
   const nn = nameProcess ? nameProcess(n) : n

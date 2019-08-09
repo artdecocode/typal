@@ -34,8 +34,6 @@ export default class Type {
     this.spread = false
     /** @type {boolean} */
     this.noExpand = false
-    /** @type {boolean} */
-    this.import = false
     /** @type {?string} */
     this.link = null
     /** @type {!Array<!Property>} */
@@ -79,12 +77,15 @@ _ns.Type.prototype.isConstructor
      */
     this.args = null
   }
+  get import() {
+    return false
+  }
   /**
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
     'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread,
-    'noExpand': noExpand, 'import': i, 'link': link, 'closure': closure,
+    'noExpand': noExpand, 'link': link, 'closure': closure,
     'constructor': isConstructor, 'extends': ext, 'interface': isInterface,
     'record': isRecord,
   }, namespace, rootNamespace = null) {
@@ -98,7 +99,6 @@ _ns.Type.prototype.isConstructor
     this.noToc = !!noToc
     this.spread = !!spread
     this.noExpand = !!noExpand
-    this.import = !!i
     if (link) this.link = link
     if (isConstructor === true) this.isConstructor = isConstructor
     if (isInterface === true) this.isInterface = isInterface

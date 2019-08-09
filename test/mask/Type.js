@@ -5,9 +5,9 @@ import parseFile from '../../src/lib/parse'
 export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
   context: TempContext,
   getResults() {
-    const { types, Imports } = parseFile(this.input)
+    const { types, imports } = parseFile(this.input)
 
-    const all = [...Imports, ...types]
+    const all = [...imports, ...types]
     return all.map((t) => {
       const { table, LINE } =  t.toMarkdown(all, this.preamble)
       return `${LINE}${table}`
@@ -19,9 +19,9 @@ export const toMarkdown = makeTestSuite('test/result/Type/markdown', {
 export const narrow = makeTestSuite('test/result/Type/narrow', {
   context: TempContext,
   getResults() {
-    const { types, Imports } = parseFile(this.input)
+    const { types, imports } = parseFile(this.input)
 
-    const all = [...Imports, ...types]
+    const all = [...imports, ...types]
     const res = all.map((t) => {
       const { table, LINE } = t.toMarkdown(all, { narrow: true })
       if (table) table.props.forEach(a => {
