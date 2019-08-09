@@ -16,7 +16,7 @@ export {}
  * @prop {!Array<!_typal.Property>} properties The properties of the type. Default `[]`.
  * @prop {?string} namespace The type's namespace, e.g., `_typal`. Default `null`.
  * @prop {string} ns The namespace or an empty string.
- * @prop {string} fullName The type name with the namespace is it has with one.
+ * @prop {string} fullName The type name with the namespace if it has with one.
  * @prop {boolean} isConstructor Whether the externs should have the form of
  * ```js
  * /＊＊ ＠constructor ＊/
@@ -43,7 +43,7 @@ export {}
  * Default `false`.
  * @prop {?string} extends Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `@extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
  * @prop {Array<!_typal.Arg>} args Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property. Default `null`.
- * @prop {(allTypes?: !Array<!_typal.Type>, opts?: !_typal.ToMarkdownOptions) => void} toMarkdown Converts a type to a markdown string.
+ * @prop {(allTypes: !Array<!_typal.Type>, opts: !_typal.ToMarkdownOptions) => string} toMarkdown Converts a type to a markdown string.
  * @typedef {_typal.ToMarkdownOptions} ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
  * @typedef {Object} _typal.ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
  * @prop {boolean} [narrow=false] If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
@@ -67,15 +67,15 @@ export {}
  * @prop {Array<!_typal.Arg>} args Function properties can have arguments specified inside of their tags. Default `null`.
  * @prop {boolean} isConstructor If this property of a type is its constructor. Default `false`.
  * @prop {boolean} isParsedFunction Whether the property is a function which was parsed. Default `false`.
- * @prop {?_typedefsParser.Type} parsed Whether the property is a function which was parsed. Default `null`.
- * @prop {(getLinks?: function(string): string) => string} toTypeScriptType If the function was a parsed function, returns _TypeScript_ type.
+ * @prop {_typedefsParser.Type} parsed Whether the property is a function which was parsed. Default `null`.
+ * @prop {(getLinks: function(!_typedefsParser.Type): string) => string} toTypeScriptFunction If the function was a parsed function, returns _TypeScript_ type.
  */
 
 /* typal types/Arg.xml namespace */
 /**
  * @typedef {_typal.Arg} Arg `＠interface` An argument of a constructor or method.
  * @typedef {Object} _typal.Arg `＠interface` An argument of a constructor or method.
- * @prop {?string} name The name of the type. Default `null`.
+ * @prop {?string} name The name of the argument. Default `null`.
  * @prop {string} type The type of the argument. Default ``.
  * @prop {boolean} optional Whether the argument is optional. Default `false`.
  * @prop {string} description Description of the argument. Default ``.

@@ -23,7 +23,7 @@
     "depack2": "depack-dev depack/prop/index.js -c -a -p",
     "depack-compat": "depack-dev example/restream/compat -c -a -p",
     "compat": "yarn dev example/restream/compat.js -c",
-    "d": "yarn-s externs",
+    "d": "yarn-s d1 externs",
     "d1": "yarn dev types/index.js",
     "build": "yarn-s d b doc",
     "e": "alanode",

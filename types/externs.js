@@ -72,7 +72,7 @@ _typal.Type.prototype.namespace
  */
 _typal.Type.prototype.ns
 /**
- * The type name with the namespace is it has with one.
+ * The type name with the namespace if it has with one.
  * @type {string}
  */
 _typal.Type.prototype.fullName
@@ -126,6 +126,7 @@ _typal.Type.prototype.args
  * Converts a type to a markdown string.
  * @param {!Array<!_typal.Type>} allTypes The array with all types for linking.
  * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_.
+ * @return {string}
  */
 _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
 /**

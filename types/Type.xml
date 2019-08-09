@@ -37,7 +37,7 @@
       The namespace or an empty string.
     </prop>
     <prop string name="fullName">
-      The type name with the namespace is it has with one.
+      The type name with the namespace if it has with one.
     </prop>
     <prop type="boolean" name="isConstructor" initial="false">
       Whether the externs should have the form of
@@ -72,7 +72,8 @@
     <prop type="Array<!_typal.Arg>" name="args" initial="null">
       Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property.
     </prop>
-    <fn name="toMarkdown" desc="This function is closely integrated from _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.">
+    <fn name="toMarkdown" desc="This function is closely integrated from _Documentary_ package, however can also be used to get a standard markdown string with properties in a table."
+      return="string">
       <arg name="allTypes" type="!Array<!_typal.Type>">
         The array with all types for linking.
       </arg>

@@ -118,7 +118,7 @@ _ns.Type.prototype.isConstructor
         const isStatic = tag == 'static'
         const { newContent, argsArgs } = extractArgs(c, rootNamespace)
 
-        const { 'async': async, 'return': ret = 'void', ...rest } = p
+        const { 'async': async, 'return': ret = '?', ...rest } = p
         let { 'args': args = '' } = p
 
         if (!args) {
