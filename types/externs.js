@@ -7,40 +7,15 @@
 /** @const */
 var _typal = {}
 /**
- * These options are there for _Documentary_ integration as these 2 packages work together.
- * @record
- */
-_typal.ToMarkdownOptions
-/**
- * If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
- * @type {boolean|undefined}
- */
-_typal.ToMarkdownOptions.prototype.narrow
-/**
- * Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type. Default `false`.
- * @type {(boolean|function(string))|undefined}
- */
-_typal.ToMarkdownOptions.prototype.flatten
-/**
- * The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
- * @type {(function(string): string)|undefined}
- */
-_typal.ToMarkdownOptions.prototype.link = function(arg0) {}
-/**
- * The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
- * @type {(!Array<string>)|undefined}
- */
-_typal.ToMarkdownOptions.prototype.details
-/**
- * How to process description. _Documentary_ will strip the tripple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
- * @type {(function(string): string)|undefined}
- */
-_typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
-/**
  * A representation of a type.
  * @interface
  */
 _typal.Type = function() {}
+/**
+ * Constructor method.
+ * @return {_typal.Type}
+ */
+_typal.Type.prototype.constructor = function() {}
 /**
  * The name of the type.
  * @type {string}
@@ -154,10 +129,40 @@ _typal.Type.prototype.extends
 _typal.Type.prototype.args
 /**
  * Converts a type to a markdown string.
- * @param {!Array<!_typal.Type>} allTypes The array with all types for linking.
- * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_.
+ * @param {!Array<!_typal.Type>=} [allTypes] The array with all types for linking.
+ * @param {!_typal.ToMarkdownOptions=} [opts] Options passed by _Documentary_.
  */
 _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
+/**
+ * These options are there for _Documentary_ integration as these 2 packages work together.
+ * @record
+ */
+_typal.ToMarkdownOptions
+/**
+ * If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
+ * @type {boolean|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.narrow
+/**
+ * Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type. Default `false`.
+ * @type {(boolean|function(string))|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.flatten
+/**
+ * The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
+ * @type {(function(string): string)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.link = function(arg0) {}
+/**
+ * The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
+ * @type {(!Array<string>)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.details
+/**
+ * How to process description. _Documentary_ will strip the tripple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
+ * @type {(function(string): string)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
 
 /* typal types/Method.xml externs */
 /**
@@ -167,8 +172,13 @@ _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
  */
 _typal.Method = function() {}
 /**
- * The return type of the method. Returns void if no return was specified. Default `null`.
- * @type {?string}
+ * Constructor method.
+ * @return {_typal.Method}
+ */
+_typal.Method.prototype.constructor = function() {}
+/**
+ * The return type of the method. Returns void if no return was specified. Default `void`.
+ * @type {string}
  */
 _typal.Method.prototype.return
 /**
@@ -213,3 +223,30 @@ _typal.Property.prototype.default
  * @type {boolean}
  */
 _typal.Property.prototype.optional
+
+/* typal types/Arg.xml externs */
+/**
+ * An argument of a constructor or method.
+ * @interface
+ */
+_typal.Arg
+/**
+ * The name of the type. Default `null`.
+ * @type {?string}
+ */
+_typal.Arg.prototype.name
+/**
+ * The type of the argument. Default ``.
+ * @type {string}
+ */
+_typal.Arg.prototype.type
+/**
+ * Whether the argument is optional. Default `false`.
+ * @type {boolean}
+ */
+_typal.Arg.prototype.optional
+/**
+ * Description of the argument. Default ``.
+ * @type {string}
+ */
+_typal.Arg.prototype.description

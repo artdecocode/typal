@@ -71,6 +71,11 @@ export default class Property {
      * @type {boolean}
      */
     this._static = false
+
+    /**
+     * If this property of a type is its constructor.
+     */
+    this.isConstructor = false
   }
   /**
    * Serialises functions to TypeScript, e.g.,
@@ -79,16 +84,23 @@ export default class Property {
   toTypeScriptType(getLinks) {
     if (!this.parsed) throw new Error('The property was not parsed.')
     const { function: { args, return: ret } } = this.parsed
-    const a = args.map(({ name: typeName }, i) => {
-      let { name = `arg${i}`, type: t = typeName, optional } = this.args[i] || {}
+    const a = args.map(({ name: argType, optional: argOptional }, i) => {
+      let {
+        name = `arg${i}`, type: t = argType, optional = argOptional,
+      } = this.args[i] || {}
       name = `${name}${optional ? '?' : ''}`
       if (t) t = getLinks(t)
       return `${name}${t ? `: ${t}` : ''}`
     })
     const j = a.join(', ')
-    const r = getLinks(ret ? ret.name || '*' : '*')
+    const r = getLinks(ret ? serialise(ret) : '*')
     const typeName = `(${j}) => ${r}`
     return typeName.replace(/\*/g, '\\*')
+  }
+  clearNamespace(namespace, s = new RegExp(`([!?])?${namespace}\\.`, 'g')) {
+    if (!namespace) return
+    this.type = this.type.replace(s, '$1')
+    return s
   }
   /**
    * When writing externs, this will prevent adding `.prototype`, e.g.,

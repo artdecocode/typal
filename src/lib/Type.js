@@ -198,11 +198,11 @@ _ns.Type.prototype.isConstructor
     return 'Object'
   }
   /**
-   * @param {string} rootNamespace
    * Removes the namespace from the type.
+   * @param {string} rootNamespace
+   * @param {!RegExp} [s] Constructed regex.
    */
-  clearNamespace(rootNamespace) {
-    const s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')
+  clearNamespace(rootNamespace, s = new RegExp(`([!?])?${rootNamespace}\\.`, 'g')) {
     if (this.type) this.type = this.type.replace(s, '$1')
     if (this.extends) this.extends = this.extends.replace(s, '$1')
     return s
@@ -643,6 +643,7 @@ export const makePropsTable = (type, props = [], allTypes = [], opts = {}) => {
     let typeName
     if (prop.args && prop.isParsedFunction) {
       typeName = prop.toTypeScriptType((s) => getLinks(/** @type {!Array<!Type>} */ (allTypes), s, linkOptions))
+      if (prop.isConstructor) typeName = `new ${typeName}`
     } else
       typeName = getLinks(/** @type {!Array<!Type>} */ (allTypes), prop.parsed || prop.type, linkOptions)
     // constructors and interfaces will always have to initialise properties

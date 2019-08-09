@@ -4,7 +4,8 @@ import Method from './Method'
 import Import from './Import'
 import { trimD } from './'
 import read from '@wrote/read'
-import { extractArgs } from './Arg'
+import Arg, { extractArgs } from './Arg'
+import Property from './Property'
 
 /**
  * When Documentary compiles types with `-n` (root namespace) flag,
@@ -15,9 +16,27 @@ import { extractArgs } from './Arg'
 const removeNamespace = (namespace, type) => {
   const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
   type.properties.forEach((p) => {
-    p.type = p.type.replace(s, '$1')
+    p.clearNamespace(namespace, s)
   })
   type.clearNamespace(namespace)
+}
+
+/**
+ * @param {Type} type
+ * @param {string} [rootNamespace]
+ */
+const addConstructorProperty = (type, rootNamespace) => {
+  if (!type.args || !type.args.length) return
+  const args = type.args.map(({ type: at, optional }) => {
+    if (optional !== null) return `${at}=`
+    return at
+  }).join(', ')
+  const t = `function(${args}): ${type.fullName}`
+  const prop = new Property(type.args)
+  prop.isConstructor = true
+  prop.fromXML('Constructor method.', { 'type': t, 'name': 'constructor' })
+  prop.clearNamespace(rootNamespace)
+  type.properties.unshift(prop)
 }
 
 /**
@@ -64,6 +83,7 @@ const parseFile = (xml, rootNamespace) => {
     case 'interface': {
       const t = parseTypes(content, props, ns, rootNamespace)
       t.forEach(tt => {
+        addConstructorProperty(tt, rootNamespace)
         tt.isInterface = true
       })
       acc.push(...t)
@@ -72,6 +92,7 @@ const parseFile = (xml, rootNamespace) => {
     case 'constructor': {
       const t = parseTypes(content, props, ns, rootNamespace)
       t.forEach(tt => {
+        addConstructorProperty(tt, rootNamespace)
         tt.isConstructor = true
       })
       acc.push(...t)
@@ -150,6 +171,9 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
 
   return type
 }
+
+/** @type {function(new: Property)} */
+const a = function () {}
 
 /**
  * This is applicable to @interfaces/constructors/methods which

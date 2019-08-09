@@ -1,0 +1,19 @@
+<types>
+  <type name="FnExample" desc="A non-instantiable record type.">
+
+    <!-- The arguments must come before the description of
+         the function. -->
+    <fn async name="getData" return="{ data: string }">
+      <arg string name="source">
+        The source from which to extract.
+      </arg>
+      Requests the data from the server.
+    </fn>
+    <!-- If arguments were simply given as args, their names
+         will be generated, and no description available. -->
+    <function args="Array<string>, number="
+      name="transform" return="string">
+      Transforms given string.
+    </function>
+  </type>
+</types>

@@ -1,0 +1,16 @@
+<types namespace="_typal">
+  <type interface name="Arg" desc="An argument of a constructor or method.">
+    <prop type="?string" name="name" initial="null">
+      The name of the type.
+    </prop>
+    <prop string name="type" initial="">
+      The type of the argument.
+    </prop>
+    <prop boolean name="optional" initial="false">
+      Whether the argument is optional.
+    </prop>
+    <prop string name="description" initial="">
+      Description of the argument.
+    </prop>
+  </type>
+</types>

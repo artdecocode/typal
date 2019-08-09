@@ -8,10 +8,16 @@ export default class Arg {
     this.name = null
     /** @type {string} */
     this.type = ''
-    /** @type {?boolean} */
-    this.optional = null
+    /** @type {boolean} */
+    this.optional = false
     /** @type {string} */
     this.description = ''
+
+    // /**
+    //  * Shows if this argument indicates the constructor type, e.g.,
+    //  * function(new: Example)
+    //  */
+    // this.isNew = false
   }
   fromXML(content,
     { 'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number, 'type': type },
@@ -41,7 +47,7 @@ export default class Arg {
   // }
   // toTypescriptType() {
   //   if (this.isParsedFunction) {
-  //     const { function: { args, return: ret } } = this.parsed 
+  //     const { function: { args, return: ret } } = this.parsed
   //     return `(${
   //       args.map(({ name, type, optional }) => {
   //         return `${name}${optional ? '?' : ''}: ${type}`

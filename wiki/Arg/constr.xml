@@ -1,0 +1,17 @@
+<types>
+  <interface name="Example"
+    desc="Specifying arguments to a constructor of an interface.">
+
+    <!-- arguments to constructors/interfaces will be
+         converted into the `constructor` property. -->
+    <arg boolean name="wiki">Whether compiling a Wiki page.</arg>
+
+    <!-- Functions that the type has can be written as
+         fn/function/static -->
+    <static async name="upload">
+      <arg opt type="string" name="dest">Where to upload.</arg>
+      Uploads data to the server.
+    </static>
+
+  </interface>
+</types>
