@@ -29,12 +29,12 @@
     <prop type="boolean" name="isParsedFunction" initial="false">
       Whether the property is a function which was parsed.
     </prop>
-    <prop type="?_typedefsParser.Type" name="parsed" initial="null">
+    <prop type="_typedefsParser.Type" name="parsed" initial="null">
       Whether the property is a function which was parsed.
     </prop>
 
-    <fn name="toTypeScriptType" return="string">
-      <arg type="function(string): string" name="getLinks">
+    <fn name="toTypeScriptFunction" return="string">
+      <arg type="function(!_typedefsParser.Type): string" name="getLinks">
         Returns the string with links to other types.
       </arg>
       If the function was a parsed function, returns _TypeScript_ type.

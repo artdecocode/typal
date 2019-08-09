@@ -24,7 +24,7 @@ function makePropsTable (type, props = [], allTypes = [], opts = {}) {
   const ps = props.map((prop) => {
     let typeName
     if (prop.args && prop.isParsedFunction) {
-      typeName = prop.toTypeScriptType(links)
+      typeName = prop.toTypeScriptFunction(links)
       if (prop.isConstructor) typeName = `new ${typeName}`
     } else
       typeName = links(prop.parsed || prop.type)

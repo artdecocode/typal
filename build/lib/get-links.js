@@ -84,7 +84,7 @@ const parsedToString = (type, allTypes, opts = {}) => {
     s += rs.join(', ')
     s += ' }'
   } else if (type.application) {
-    s += getTypeWithLink(type.name, allTypes, nullable, opts) + '&lt;'
+    s += getTypeWithLink(/** @type {string} */ (type.name), allTypes, nullable, opts) + '&lt;'
     const apps = type.application.map((a) => {
       return p2s(a)
     })
@@ -100,7 +100,7 @@ const parsedToString = (type, allTypes, opts = {}) => {
     s += ')'
   } else {
     const name = type.name == 'any' ? '*' : type.name
-    s += getTypeWithLink(name, allTypes, nullable, opts)
+    s += getTypeWithLink(/** @type {string} */ (name), allTypes, nullable, opts)
   }
   return s
 }

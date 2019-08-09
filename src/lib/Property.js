@@ -82,7 +82,7 @@ export default class Property {
    * Serialises functions to TypeScript, e.g.,
    * (param: string) => void
    */
-  toTypeScriptType(serialiseType) {
+  toTypeScriptFunction(serialiseType) {
     if (!this.parsed) throw new Error('The property was not parsed.')
     const { function: { args, return: ret } } = this.parsed
     const a = args
@@ -235,7 +235,7 @@ export default class Property {
     return ''
   }
   get isParsedFunction() {
-    return this.parsed && this.parsed.name == 'function'
+    return !!this.parsed && this.parsed.name == 'function'
   }
   /**
    * Create type for VSCode.
@@ -248,7 +248,7 @@ export default class Property {
     if (closure) return this.closureType
     if (!this.isParsedFunction) return this.type
 
-    return this.toTypeScriptType(serialise)
+    return this.toTypeScriptFunction(serialise)
   }
   toExtern(ws = '') {
     let pp = []

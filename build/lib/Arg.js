@@ -2,6 +2,9 @@
 const extractTags = require('rexml');
 const { trimD, getPropType } = require('./');
 
+/**
+ * @implements {_typal.Arg}
+ */
 class Arg {
   constructor() {
     /** @type {?string} */

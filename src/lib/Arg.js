@@ -2,6 +2,9 @@
 import extractTags from 'rexml'
 import { trimD, getPropType } from './'
 
+/**
+ * @implements {_typal.Arg}
+ */
 export default class Arg {
   constructor() {
     /** @type {?string} */

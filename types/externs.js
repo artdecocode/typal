@@ -230,15 +230,15 @@ _typal.Property.prototype.isConstructor
 _typal.Property.prototype.isParsedFunction
 /**
  * Whether the property is a function which was parsed. Default `null`.
- * @type {?_typedefsParser.Type}
+ * @type {_typedefsParser.Type}
  */
 _typal.Property.prototype.parsed
 /**
  * If the function was a parsed function, returns _TypeScript_ type.
- * @param {function(string): string} getLinks Returns the string with links to other types.
+ * @param {function(!_typedefsParser.Type): string} getLinks Returns the string with links to other types.
  * @return {string}
  */
-_typal.Property.prototype.toTypeScriptType = function(getLinks) {}
+_typal.Property.prototype.toTypeScriptFunction = function(getLinks) {}
 
 /* typal types/Arg.xml externs */
 /**
