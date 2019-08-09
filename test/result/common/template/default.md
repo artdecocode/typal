@@ -51,6 +51,7 @@ function getData(location, force) {}
 # output.js
 
 /**
+ * A function that reads files and returns data.
  * @param {string} location The path to the file.
  * @param {boolean=} [force] Whether to always get the data.
  * @param {?function(string)=} [callback] Callback on single file read.

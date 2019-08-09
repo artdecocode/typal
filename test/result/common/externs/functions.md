@@ -4,7 +4,7 @@
     <function async args="string|number" return="!_namecheap.AddressDetail" name="getInfo">
       Gets information for the requested address ID.
     </function>
-    <fn args="string" name="syncVoid">
+    <fn args="string" name="syncUnknownReturn">
       A function without return.
     </fn>
   </type>
@@ -13,7 +13,7 @@
 /*@ expected */
 /* typal test/temp/types.xml externs */
 /**
- * @typedef {{ getInfo: function(string|number): !Promise<!_namecheap.AddressDetail>, syncVoid: function(string): void }}
+ * @typedef {{ getInfo: function(string|number): !Promise<!_namecheap.AddressDetail>, syncUnknownReturn: function(string) }}
  */
 var Test
 
@@ -62,7 +62,7 @@ Test.prototype.app = function(arg0) {}
 Test.prototype.more = function(arg0, arg1) {}
 /**
  * no params
- * @type {function((string|boolean), { config: boolean }): void}
+ * @type {function((string|boolean), { config: boolean })}
  */
 Test.prototype.np = function() {}
 

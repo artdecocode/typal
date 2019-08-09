@@ -1,4 +1,5 @@
 import Type from './Type'
+import { trimD } from './'
 
 export default class Method extends Type {
   constructor() {
@@ -17,7 +18,8 @@ export default class Method extends Type {
   fromXML(content, { 'async': methodAsync, 'return': methodReturn,
     ...props
   }, ...args) {
-    super.fromXML(content, props, ...args)
+    this.description = trimD(content)
+    super.fromXML('', props, ...args)
     if (methodReturn) this._methodReturn = methodReturn
     if (methodAsync) this.async = true
   }

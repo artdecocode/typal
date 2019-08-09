@@ -210,7 +210,7 @@ export default class Property {
 
       pp.push(` * @param {${s}${optional ? '=' : ''}} ${arg}${d}`)
     })
-    if (ret.name != 'void') {
+    if (ret && ret.name != 'void') { // vs code assumes void with no return
       const r = serialise(ret)
       pp.push(` * @return {${r}}`)
     }

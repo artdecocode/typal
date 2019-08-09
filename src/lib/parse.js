@@ -151,7 +151,7 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
     prebody = content.slice(0, i)
     body = content.slice(i)
   }
-  const { argsArgs } = extractArgs(prebody, rootNamespace)
+  const { argsArgs, newContent } = extractArgs(prebody, rootNamespace)
 
   /** Specify args in props... disable ATM */
   // let { 'args': args = '', ...rest } = props
@@ -163,7 +163,7 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
   // }
   // const assignment = `function(${args})`
 
-  type.fromXML(body, props, ns, rootNamespace)
+  type.fromXML(isMethod ? newContent : body, props, ns, rootNamespace)
   type.setAssignment(argsArgs)
 
   return type

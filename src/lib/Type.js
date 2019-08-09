@@ -118,7 +118,7 @@ _ns.Type.prototype.isConstructor
         const isStatic = tag == 'static'
         const { newContent, argsArgs } = extractArgs(c, rootNamespace)
 
-        const { 'async': async, 'return': ret = '?', ...rest } = p
+        const { 'async': async, 'return': ret = '', ...rest } = p
         let { 'args': args = '' } = p
 
         if (!args) {
@@ -126,10 +126,12 @@ _ns.Type.prototype.isConstructor
         }
 
         let r = ret.replace(/\n\s*/g, ' ')
-        r = async ? `!Promise<${r}>` : r
+        if (async && r) r = `!Promise<${r}>`
+        else if (async) r = '!Promise'
         // generate function string which will be parsed
         // a hack to convert args into _typedefParser.Type
-        const fnType = `function(${args}): ${r}`
+        let fnType = `function(${args})`
+        if (r) fnType += `: ${r}`
         rest['type'] = fnType // e.g., a prop will have type `function()`
         const pr = new Property(argsArgs)
 
