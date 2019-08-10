@@ -25,7 +25,7 @@ var world = function(test, ...args) {}
 
 /*@*/
 
-## does not add void return
+## does not add unknown return
 <types>
   <method name="hello" desc="testing." />
 </types>

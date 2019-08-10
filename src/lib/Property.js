@@ -200,7 +200,7 @@ export default class Property {
    */
   toHeading() {
     const pp = []
-    const { function: { args, return: ret } } = this.parsed
+    const { function: { args, return: ret, variableArgs, this: thisType } } = this.parsed
     const a = args.map(ar => serialise(ar))
     a.forEach((s, i) => {
       const { optional } = args[i]
@@ -210,6 +210,9 @@ export default class Property {
 
       pp.push(` * @param {${s}${optional ? '=' : ''}} ${arg}${d}`)
     })
+    if (variableArgs) pp.push(` * @param {...${serialise(variableArgs)}} args`)
+    if (thisType) pp.push(` * @this {${serialise(thisType)}}`)
+
     if (ret && ret.name != 'void') { // vs code assumes void with no return
       const r = serialise(ret)
       pp.push(` * @return {${r}}`)
@@ -223,11 +226,12 @@ export default class Property {
    */
   toExternsAssignment() {
     if (this.isParsedFunction) {
-      const { function: { args } } = this.parsed
+      const { function: { args, variableArgs } } = this.parsed
       const a = args.map((_, i) => {
         const { name = `arg${i}` } = this.args[i] || {}
         return name
       })
+      if (variableArgs) a.push('...args')
       return ` = function(${a.join(', ')}) {}`
     } else if (this.type.startsWith('function(')) { // if couldn't parse
       return ' = function() {}'

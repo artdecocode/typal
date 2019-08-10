@@ -822,24 +822,27 @@ function lb(a, b = !1) {
   return ` * @prop ${mb(a, !0)}`;
 }
 function nb(a) {
-  const b = [], {function:{args:c, return:d}} = a.parsed;
-  c.map(e => V(e)).forEach((e, g) => {
-    const {optional:f} = c[g], {name:h = `arg${g}`, description:k} = a.args[g] || {};
-    b.push(` * @param {${e}${f ? "=" : ""}} ${f ? `[${h}]` : h}${k ? ` ${k}` : ""}`);
+  const b = [], {function:{args:c, return:d, variableArgs:e, this:g}} = a.parsed;
+  c.map(f => V(f)).forEach((f, h) => {
+    const {optional:k} = c[h], {name:l = `arg${h}`, description:m} = a.args[h] || {};
+    b.push(` * @param {${f}${k ? "=" : ""}} ${k ? `[${l}]` : l}${m ? ` ${m}` : ""}`);
   });
+  e && b.push(` * @param {...${V(e)}} args`);
+  g && b.push(` * @this {${V(g)}}`);
   if (d && "void" != d.name) {
-    const e = V(d);
-    b.push(` * @return {${e}}`);
+    const f = V(d);
+    b.push(` * @return {${f}}`);
   }
   return b;
 }
 function ob(a) {
   if (a.isParsedFunction) {
-    const {function:{args:b}} = a.parsed;
-    return ` = function(${b.map((c, d) => {
-      ({name:c = `arg${d}`} = a.args[d] || {});
-      return c;
-    }).join(", ")}) {}`;
+    const {function:{args:b, variableArgs:c}} = a.parsed, d = b.map((e, g) => {
+      ({name:e = `arg${g}`} = a.args[g] || {});
+      return e;
+    });
+    c && d.push("...args");
+    return ` = function(${d.join(", ")}) {}`;
   }
   return a.type.startsWith("function(") ? " = function() {}" : "";
 }

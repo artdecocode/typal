@@ -161,3 +161,54 @@ var Component = function() {}
 Component.prototype.componentWillMount = function() {}
 
 /*@*/
+
+## variable args
+<types>
+  <type record name="Test">
+    <prop static name="prop" type="function(string, ...Type)" />
+    <static args="...Type" name="test" opt />
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * @record
+ */
+var Test
+/**
+ * @param {string} arg0
+ * @param {...Type} args
+ */
+Test.prop = function(arg0, ...args) {}
+/**
+ * @type {(function(...Type))|undefined}
+ */
+Test.test = function(...args) {}
+
+/*@*/
+
+## this arg
+<types>
+  <type record name="Test">
+    <prop static name="prop" type="function(this:Type)" />
+    <static args="this:Type" name="test" opt />
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * @record
+ */
+var Test
+/**
+ * @this {Type}
+ */
+Test.prop = function() {}
+/**
+ * @type {(function(this:Type))|undefined}
+ */
+Test.test = function() {}
+
+/*@*/
