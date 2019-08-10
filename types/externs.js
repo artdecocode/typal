@@ -271,6 +271,7 @@ _typal.Arg.prototype.description
 /* typal types/Import.xml externs */
 /**
  * A representation of an import.
+ * @extends {_typal.Type}
  * @interface
  */
 _typal.Import = function() {}

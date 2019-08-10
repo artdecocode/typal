@@ -96,7 +96,7 @@ export default class Property {
         return `${name}${t ? `: ${type}` : ''}`
       })
     const j = a.join(', ')
-    const r = ret ? serialiseType(ret) : 'void'
+    const r = ret ? serialiseType(ret) : '?'
     const typeName = `(${j}) => ${r}`
     return typeName.replace(/\*/g, '\\*')
   }

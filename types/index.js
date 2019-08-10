@@ -81,10 +81,20 @@ export {}
  * @prop {string} description Description of the argument. Default ``.
  */
 
+/* typal types/Method.xml namespace */
+/**
+ * @typedef {_typal.Method} Method `＠interface` A representation of a type.
+ * @typedef {_typal.Type & _typal.$Method} _typal.Method `＠interface` A representation of a type.
+ * @typedef {Object} _typal.$Method `＠interface` A representation of a type.
+ * @prop {string} return The return type of the method. Returns void if no return was specified. Default `void`.
+ * @prop {boolean} async If the method is async. Default `false`.
+ */
+
 /* typal types/Import.xml namespace */
 /**
  * @typedef {_typal.Import} Import `＠interface` A representation of an import.
- * @typedef {Object} _typal.Import `＠interface` A representation of an import.
+ * @typedef {_typal.Type & _typal.$Import} _typal.Import `＠interface` A representation of an import.
+ * @typedef {Object} _typal.$Import `＠interface` A representation of an import.
  * @prop {boolean} import Can be used to disambiguate import from other types. Default `true`.
  * @prop {string} from Which package (or internal module) to import the type from.
  * @prop {string} ns The namespace, which can be set different to "from", e.g., `from` can be set to `@typedefs/parser` and `ns` to `_typedefs`.

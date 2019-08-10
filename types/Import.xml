@@ -1,5 +1,5 @@
 <types namespace="_typal">
-  <interface name="Import" desc="A representation of an import.">
+  <interface name="Import" desc="A representation of an import." extends="_typal.Type">
     <prop name="import" boolean initial="true">
       Can be used to disambiguate import from other types.
     </prop>

@@ -6,9 +6,9 @@ import parse from '@typedefs/parser'
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
-  'serialises'() {
-    const s = parse('function(string, number=)')
-  },
+  // 'serialises'() {
+  //   const s = parse('function(string, number=)')
+  // },
 }
 
 export default T

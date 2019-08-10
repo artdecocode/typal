@@ -17,7 +17,7 @@
  * @typedef {typal.Component} Component `＠constructor` Preact component.
  * @typedef {Object} typal.Component `＠constructor` Preact component.
  * @prop {!Object} context
- * @prop {(state: !Object, callback?: function(): void) => void} setState
+ * @prop {(state: !Object, callback?: function(): void) => ?} setState
  */
 
 /*@*/
@@ -38,7 +38,7 @@
  * @typedef {typal.options} options `＠record` Options for Preact.
  * @typedef {Object} typal.options `＠record` Options for Preact.
  * @prop {boolean} [syncComponentUpdates]
- * @prop {(callback: function(): void) => void} [debounceRendering]
+ * @prop {(callback: function(): void) => ?} [debounceRendering]
  */
 
 /*@*/
@@ -89,7 +89,7 @@
 ## functional properties
 <types>
   <type name="Test">
-    <fn args="string, string" name="fn">
+    <fn args="string, string" name="fn" void>
       <arg name="test" type="string"></arg>
     </fn>
   </type>

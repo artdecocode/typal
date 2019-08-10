@@ -138,7 +138,7 @@ const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
 
 
 /**
- * @param {!Array<!(_typal.Type|Import)>} allTypes
+ * @param {!Array<!_typal.Type>} allTypes
  * @param {string} type
  */
 const getLinkToType = (allTypes, type) => {

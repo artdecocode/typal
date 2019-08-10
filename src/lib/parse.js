@@ -10,7 +10,7 @@ import Property from './Property'
  * When Documentary compiles types with `-n` (root namespace) flag,
  * the namespace needs to be cleared.
  * @param {string} namespace
- * @param {!Type} type
+ * @param {!_typal.Type} type
  */
 const removeNamespace = (namespace, type) => {
   const s = new RegExp(`([!?])?${namespace}\\.`, 'g')
