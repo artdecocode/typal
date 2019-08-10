@@ -300,12 +300,15 @@ _ns.Type.prototype.isConstructor
     if (this.extends) lines.push(` * @extends {${this.extends}}`)
     if (this.args) this.args.forEach((s) => {
       let { name, description, optional, type } = s
+      const d = description ? ` ${description}` : ''
       if (name.startsWith('...')) {
         name = name.slice(3)
         type = `...${type}`
+      } else if (name == 'this') {
+        lines.push(` * @this {${type}}${d}`)
+        return
       }
       const arg = optional ? `[${name}]` : name
-      const d = description ? ` ${description}` : ''
 
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
@@ -316,9 +319,12 @@ _ns.Type.prototype.isConstructor
   /**
    * Used to place interfaces/constructor declarations in externs.
    */
-  get constr() {
+  toExternsAssignment() {
     return this.args ? `function(${
-      this.args.map(({ name }) => name).join(', ')
+      this.args
+        .filter(({ name }) => name != 'this')
+        .map(({ name }) => name)
+        .join(', ')
     }) {}` : null
   }
   /**
@@ -328,7 +334,7 @@ _ns.Type.prototype.isConstructor
     const pp = this.toHeading()
     // if (this.closureType) pp.push(` * @type {${this.closureType}}`)  // todo <arg>new</arg>
     let s = makeBlock(pp.join('\n'))
-    s = s + getExternDeclaration(this.namespace, this.name, this.constr)
+    s = s + getExternDeclaration(this.namespace, this.name, this.toExternsAssignment())
     /** @type {!Array<!Property>} */
     const properties = this.properties.reduce((acc, p) => {
       acc.push(p)

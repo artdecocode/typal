@@ -84,7 +84,7 @@ export default class Property {
    */
   toTypeScriptFunction(serialiseType) {
     if (!this.parsed) throw new Error('The property was not parsed.')
-    const { function: { args, return: ret } } = this.parsed
+    const { function: { args, return: ret, this: thisType, variableArgs } } = this.parsed
     const a = args
       .map((ar) => serialiseType(ar))
       .map((type, i) => {
@@ -95,6 +95,14 @@ export default class Property {
         name = `${name}${optional ? '?' : ''}`
         return `${name}: ${type}`
       })
+    if (thisType) {
+      const tt = serialiseType(thisType)
+      a.unshift(`this: ${tt}`)
+    }
+    if (variableArgs) {
+      const tt = serialiseType(variableArgs)
+      a.push(`...args: ${tt}[]`)
+    }
     const j = a.join(', ')
     const r = ret ? serialiseType(ret) : '?'
     const typeName = `(${j}) => ${r}`

@@ -119,3 +119,21 @@
  */
 
 /*@*/
+
+## variable args and this
+<types>
+  <type record name="Test">
+    <prop name="prop" type="function(this:Type, ...string)" />
+    <fn args="this:Type, ...string" name="test" opt />
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {Object} Test `＠record`
+ * @prop {(this: Type, ...args: string[]) => ?} prop
+ * @prop {(this: Type, ...args: string[]) => ?} [test]
+ */
+
+/*@*/
