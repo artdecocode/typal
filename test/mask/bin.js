@@ -2,7 +2,7 @@ import Context from '../context'
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
 
-export default makeTestSuite('test/result/bin/default', {
+const TS = makeTestSuite('test/result/bin/default', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -25,7 +25,7 @@ export default makeTestSuite('test/result/bin/default', {
   propEndRe: /\/\*@\*\//,
 })
 
-export const dir = makeTestSuite('test/result/bin/dir', {
+const dir = makeTestSuite('test/result/bin/dir', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -50,7 +50,7 @@ export const dir = makeTestSuite('test/result/bin/dir', {
   propEndRe: /\/\*@\*\//,
 })
 
-export const extract = makeTestSuite('test/result/bin/extract', {
+const extract = makeTestSuite('test/result/bin/extract', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -73,7 +73,7 @@ export const extract = makeTestSuite('test/result/bin/extract', {
   propEndRe: /\/\*@\*\//,
 })
 
-export const externs = makeTestSuite('test/result/js-typal/externs.md', {
+const externs = makeTestSuite('test/result/js-typal/externs.md', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -97,7 +97,7 @@ export const externs = makeTestSuite('test/result/js-typal/externs.md', {
   propEndRe: /\/\*@\*\//,
 })
 
-export const externs2 = makeTestSuite('test/result/common/externs', {
+const externs2 = makeTestSuite('test/result/common/externs', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -122,7 +122,7 @@ export const externs2 = makeTestSuite('test/result/common/externs', {
   propEndRe: /\/\*@\*\//,
 })
 
-export const closure = makeTestSuite('test/result/common/closure', {
+const closure = makeTestSuite('test/result/common/closure', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -147,7 +147,7 @@ export const closure = makeTestSuite('test/result/common/closure', {
   propEndRe: /\/\*@\*\//,
 })
 
-export const paramsCheck = makeTestSuite('test/result/common/check', {
+const paramsCheck = makeTestSuite('test/result/common/check', {
   context: TempContext,
   fork: {
     module: Context.BIN,
@@ -169,4 +169,11 @@ export const paramsCheck = makeTestSuite('test/result/common/check', {
   },
   propStartRe: /\/\*@/,
   propEndRe: /\/\*@\*\//,
+})
+
+export default (process.env.ALAMODE_ENV=='test-compile' ? {
+  ...TS,
+  dir, extract, externs, externs2, closure, paramsCheck, // commonly tested
+} : {
+  ...TS, dir, extract,
 })
