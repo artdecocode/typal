@@ -432,7 +432,7 @@ For example, the types above can be extracted into the types file using the <cod
 
 ## Schema
 
-The XML schema supports types, imports, properties and functions (which are aliases to properties with special attributes used to construct a function type).
+The XML schema supports types, imports, methods, properties and functions (which are aliases to properties with special attributes used to construct a function type).
 
 <kbd>📝 [Typal Schema](../../wiki/Schema)</kbd>
 
@@ -445,6 +445,11 @@ The XML schema supports types, imports, properties and functions (which are alia
   <type name="Example" >
     <prop type="string" name="test">The property.</prop>
     <fn async args="number" return="boolean">A method property.</fn>
+  </type>
+
+  <method name="sponsor" >
+    <arg name="amount">The amount to contribute.</arg>
+    Become a sponsor on GitHub.
   </type>
 </types>
 ```
@@ -461,15 +466,15 @@ __<a name="type-type">`Type`</a>__: A type which can be linked.
 
 __<a name="type-example">`Example`</a>__: An example type which can link to other types.
 
-|      Name       |                                                                                 Type                                                                                  |                                    Description                                    |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| type            | <em><a href="#type-type" title="A type which can be linked.">?Type</a></em>                                                                                           | The type itself, possibly nullable.                                               |
-| union           | <em>!(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                               | The union of types.                                                               |
-| record          | <em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em>                                                                                  | The record with a type.                                                           |
-| application     | <em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em>                                                                      | The application with a type.                                                      |
-| function        | <em>(arg0: string, arg1: <a href="#type-type" title="A type which can be linked.">Type</a>) => <a href="#type-type" title="A type which can be linked.">Type</a></em> | The function with arguments and return type.                                      |
-| variable-args   | <em>() => \*</em>                                                                                                                                                     | Functions with `...` for variable argument types.                                 |
-| vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                              | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
+|      Name       |                                                                                                                      Type                                                                                                                       |                                    Description                                    |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| type            | <em><a href="#type-type" title="A type which can be linked.">?Type</a></em>                                                                                                                                                                     | The type itself, possibly nullable.                                               |
+| union           | <em>!(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                                                                                                         | The union of types.                                                               |
+| record          | <em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em>                                                                                                                                                            | The record with a type.                                                           |
+| application     | <em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em>                                                                                                                                                | The application with a type.                                                      |
+| function        | <em>(this: <a href="#type-type" title="A type which can be linked.">Type</a>, arg0: string, arg1: <a href="#type-type" title="A type which can be linked.">!Type</a>) => <a href="#type-type" title="A type which can be linked.">Type</a></em> | The function with arguments and return type.                                      |
+| variable-args   | <em>(...args: <a href="#type-type" title="A type which can be linked.">Type</a>[]) => ?</em>                                                                                                                                                    | Functions with `...` for variable argument types.                                 |
+| vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                                                                                                        | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/9.svg?sanitize=true">

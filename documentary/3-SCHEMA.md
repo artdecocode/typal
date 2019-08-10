@@ -1,6 +1,6 @@
 ## Schema
 
-The XML schema supports types, imports, properties and functions (which are aliases to properties with special attributes used to construct a function type).
+The XML schema supports types, imports, methods, properties and functions (which are aliases to properties with special attributes used to construct a function type).
 
 <kbd>📝 [Typal Schema](../../wiki/Schema)</kbd>
 
@@ -13,6 +13,11 @@ The XML schema supports types, imports, properties and functions (which are alia
   <type name="Example" >
     <prop type="string" name="test">The property.</prop>
     <fn async args="number" return="boolean">A method property.</fn>
+  </type>
+
+  <method name="sponsor" >
+    <arg name="amount">The amount to contribute.</arg>
+    Become a sponsor on GitHub.
   </type>
 </types>
 ```
