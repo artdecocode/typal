@@ -1,8 +1,16 @@
-## 8 August 2019
+## 10 August 2019
 
 ### [1.22.0](https://github.com/artdecocode/typal/compare/v1.21.1...v1.22.0)
 
-- [feature] Create a separate class for _Method_.
+- [refactor] Create a separate class for _Method_ which together with the _Interface_ now extend the _Type_.
+- [refactor] Extract all possible tags at once, fix root namespace of constructor/interfaces arguments.
+- [package] Compile the library to remove dependencies.
+- [fix] Better _TypeScript_ serialisation, assume unknown return not `*` or `void`.
+- [feature] `initial` attribute for constructors and interfaces in addition to default of records.
+- [feature] Display `constructor` property of constructors/interfaces in the table.
+- [feature] `@methodType` in templates.
+- [types] Write interfaces.
+- [doc] Populate Wiki.
 
 ## 7 August 2019
 

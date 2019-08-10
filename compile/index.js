@@ -34,5 +34,8 @@ module.exports = {
  * @typedef {import('../types').Type} _typal.Type
  */
 /**
+ * @typedef {import('../types').Import} _typal.Import
+ */
+/**
  * @typedef {import('../types').LinkingOptions} _typal.LinkingOptions
  */
