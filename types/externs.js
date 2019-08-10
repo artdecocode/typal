@@ -205,6 +205,16 @@ _typal.Property.prototype.isConstructor
  */
 _typal.Property.prototype.isParsedFunction
 /**
+ * What aliases the property has. Default `[]`.
+ * @type {!Array<string>}
+ */
+_typal.Property.prototype.aliases
+/**
+ * When writing externs, this will prevent adding `.prototype`, e.g., `Type.static` instead of `Type.prototype.static`. Default `false`.
+ * @type {boolean}
+ */
+_typal.Property.prototype.static
+/**
  * Whether the property is a function which was parsed. Default `null`.
  * @type {_typedefsParser.Type}
  */
