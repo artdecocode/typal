@@ -44,13 +44,6 @@ export {}
  * @prop {?string} extends Types `＠constructor`, `＠interface` and `＠record` can inherit properties from other types using `＠extends`. [Closure Wiki](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#extends-type). Default `null`.
  * @prop {Array<!_typal.Arg>} args Constructors and interfaces can have arguments defined in _types.xml_, which will be parsed and stored in this property. Default `null`.
  * @prop {(allTypes: !Array<!_typal.Type>, opts: !_typal.ToMarkdownOptions) => { LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: boolean }} toMarkdown Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
- * @typedef {_typal.ToMarkdownOptions} ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
- * @typedef {Object} _typal.ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
- * @prop {boolean} [narrow=false] If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
- * @prop {boolean|function(string)} [flatten=false] Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type. Default `false`.
- * @prop {(arg0: string) => string} [link] The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
- * @prop {!Array<string>} [details] The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
- * @prop {(arg0: string) => string} [preprocessDesc] How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
  */
 
 /* typal types/Property.xml namespace */
@@ -98,4 +91,20 @@ export {}
  * @prop {boolean} import Can be used to disambiguate import from other types. Default `true`.
  * @prop {string} from Which package (or internal module) to import the type from.
  * @prop {string} ns The namespace, which can be set different to "from", e.g., `from` can be set to `@typedefs/parser` and `ns` to `_typedefs`.
+ */
+
+/* typal types/markdown.xml namespace */
+/**
+ * @typedef {_typal.ToMarkdownOptions} ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
+ * @typedef {_typal.LinkingOptions & _typal.$ToMarkdownOptions} _typal.ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
+ * @typedef {Object} _typal.$ToMarkdownOptions `＠record` These options are there for _Documentary_ integration as these 2 packages work together.
+ * @prop {boolean} [narrow=false] If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
+ * @prop {!Array<string>} [details] The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
+ * @prop {(arg0: string) => string} [preprocessDesc] How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
+ * @typedef {_typal.LinkingOptions} LinkingOptions `＠record` Options for linking.
+ * @typedef {Object} _typal.LinkingOptions `＠record` Options for linking.
+ * @prop {boolean} [escapePipe=true] Escapes the `|` in unions so it becomes `\|`. Default `true`.
+ * @prop {boolean|function(string): void} [flatten=false] Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type. Default `false`.
+ * @prop {(arg0: { link: string, type: !_typal.Type }) => string} [link] The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
+ * @prop {(arg0: string) => string} [nameProcess] Preprocessor for the name of the type.
  */

@@ -5,11 +5,7 @@ import { getLink } from './'
  * Iterates through the types to find the referenced one, and returns a string which contains a link to it.
  * @param {!Array<!_typal.Type>} allTypes
  * @param {string|!_typedefsParser.Type} type
- * @param {Object} [opts]
- * @param {boolean} [opts.flatten]
- * @param {boolean} [opts.escapePipe]
- * @param {boolean} [opts.nameProcess]
- * @param {!Function} [opts.link]
+ * @param {!_typal.LinkingOptions} [opts]
  */
 export const getLinks = (allTypes, type, opts = {}) => {
   let parsed
@@ -31,8 +27,7 @@ export const getLinks = (allTypes, type, opts = {}) => {
 /**
  * @param {!_typedefsParser.Type} type
  * @param {!Array<!_typal.Type>} allTypes
- * @param {Object} [opts] Options
- * @param {boolean} [opts.flatten] If the type has link, follow it.
+ * @param {!_typal.LinkingOptions} opts
  */
 export const parsedToString = (type, allTypes, opts = {}) => {
   if (type.name == '' && type.nullable) return '?' // special case
@@ -108,10 +103,11 @@ export const parsedToString = (type, allTypes, opts = {}) => {
  * The function which generates a link for the type.
  * @param {string} type
  * @param {!Array<!_typal.Type>} allTypes
+ * @param {!_typal.LinkingOptions} [opts]
  */
 const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
   const { flatten = false, nameProcess,
-    link: linkFn = ({ link: l }) => { return `#${l}` } } = opts
+    link: linkFn = ({ link: l }) => `#${l}` } = opts
   const l = getLinkToType(allTypes, type)
   const n = `${nullable}${type}`
   if (!l) return n
@@ -158,6 +154,10 @@ const getLinkToType = (allTypes, type) => {
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('../../types').Type} _typal.Type
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').LinkingOptions} _typal.LinkingOptions
  */
 /**
  * @suppress {nonStandardJsDocs}

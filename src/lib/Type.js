@@ -384,15 +384,11 @@ _ns.Type.prototype.isConstructor
   /**
    * Converts a type to a markdown string.
    * @param {!Array<!Type>} [allTypes]
-   * @param {Object} [opts]
-   * @param {boolean} [opts.narrow] If to combine type and description table for less width tables (e.g., in Wikis).
-   * @param {boolean} [opts.flatten] Whether to follow the links of referenced types. This will exclude them from printing in imports when using documentation.
-   * @param {function()} [opts.link] A function to call for extra processing of links.
-   * @param {!Array<string>} [opts.details] An array of types that should be displayed as details.
+   * @param {!_typal.ToMarkdownOptions} [opts]
    * @todo open-details
    */
   toMarkdown(allTypes = [], opts = {}) {
-    const { narrow, flatten, preprocessDesc, link, details = [] } = opts
+    const { flatten, details = /** @type {!Array<string>} */ ([]) } = opts
     const displayInDetails = details.includes(this.name)
     const t = this.type ? `\`${this.type}\`` : ''
     let typeWithLink = t, useCode = false
@@ -426,10 +422,9 @@ _ns.Type.prototype.isConstructor
         }
         e += `href="${foundExt.link}">\`${this.extends}\`</a>`
       } else {
-        const le = getLinks(allTypes, this.extends, { flatten,
-          nameProcess(td) {
-            return `\`${td}\``
-          }, link })
+        const le = getLinks(allTypes, this.extends, { ...opts,
+          nameProcess: (td) => `\`${td}\``,
+        })
         if (this.extends != le) e = le
       }
       const extendS = ` extends ${e}`
@@ -446,12 +441,7 @@ _ns.Type.prototype.isConstructor
     if (useTag) LINE += '</strong>'
     else LINE += '__'
     LINE += d
-    const table = makePropsTable(this, this.properties, allTypes, {
-      narrow,
-      flatten,
-      preprocessDesc,
-      link,
-    })
+    const table = makePropsTable(this, this.properties, allTypes, opts)
     // delegate rendering to documentary
     return { LINE, table, displayInDetails }
   }
@@ -494,6 +484,10 @@ const getSpread = (properties = [], closure = false) => {
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').ToMarkdownOptions} _typal.ToMarkdownOptions
  */
 
 // /**

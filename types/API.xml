@@ -6,11 +6,21 @@
   }">
     <arg string name="xml">The content of the `xml` file.</arg>
     <arg string name="namespace" opt>Namespace to ignore in types and properties.</arg>
+
     Parses the types.xml file. Looks for `<type>`, `<constructor>`, `<interface>` and `<method>` elements and extracts their properties, functions and arguments.
   </method>
 
-  <method name="getLinks" desc="Gets links for markdown. Iterates through the types to find referenced ones, and returns a string which contains a link to it.">
-    <arg name="allTypes">The content of the `xml` file.</arg>
-    <arg string name="namespace" opt>Namespace to ignore in types and properties.</arg>
+  <method name="getLinks" return="string">
+    <arg type="!Array<_typal.Type>" name="allTypes">
+      All types that can be linked.
+    </arg>
+    <arg type="string|!_typedefsParser.Type" name="type">
+      The type or parsed type that should be serialised.
+    </arg>
+    <arg type="!_typal.LinkingOptions" name="opts" opt>
+      Options for linking.
+    </arg>
+
+    Gets links for markdown. Iterates through the types to find referenced ones, and returns a string which contains a link to it.
   </method>
 </types>

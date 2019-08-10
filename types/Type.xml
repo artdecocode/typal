@@ -92,22 +92,4 @@
       Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
     </fn>
   </interface>
-
-  <type record name="ToMarkdownOptions" desc="These options are there for _Documentary_ integration as these 2 packages work together.">
-    <prop boolean name="narrow" default="false">
-      If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API.
-    </prop>
-    <prop type="boolean|function(string)" name="flatten" default="false">
-      Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type.
-    </prop>
-    <prop type="function(string): string" name="link" opt>
-      The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
-    </prop>
-    <prop type="!Array<string>" name="details" opt>
-      The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
-    </prop>
-    <prop type="function(string): string" name="preprocessDesc" opt>
-      How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
-    </prop>
-  </type>
 </types>

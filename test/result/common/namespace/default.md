@@ -103,3 +103,19 @@
  */
 
 /*@*/
+
+## correctly displays records in function props
+<types>
+  <type name="Test">
+    <prop type="function({ link: string, type: !_typal.Type }): string" name="link" />
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {Object} Test
+ * @prop {(arg0: { link: string, type: !_typal.Type }) => string} link
+ */
+
+/*@*/

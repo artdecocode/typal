@@ -129,36 +129,6 @@ _typal.Type.prototype.args
  * @return {{ LINE: string, table: (string|{ props: !Array<{ prop: !_typal.Property, typeName: (string|!_typedefsParser.Type), name: string, de: string, d: string }>, anyHaveDefault: boolean, constr: boolean }), displayInDetails: boolean }}
  */
 _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
-/**
- * These options are there for _Documentary_ integration as these 2 packages work together.
- * @record
- */
-_typal.ToMarkdownOptions
-/**
- * If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
- * @type {boolean|undefined}
- */
-_typal.ToMarkdownOptions.prototype.narrow
-/**
- * Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type. Default `false`.
- * @type {(boolean|function(string))|undefined}
- */
-_typal.ToMarkdownOptions.prototype.flatten
-/**
- * The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
- * @type {(function(string): string)|undefined}
- */
-_typal.ToMarkdownOptions.prototype.link = function(arg0) {}
-/**
- * The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
- * @type {(!Array<string>)|undefined}
- */
-_typal.ToMarkdownOptions.prototype.details
-/**
- * How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
- * @type {(function(string): string)|undefined}
- */
-_typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
 
 /* typal types/Method.xml externs */
 /**
@@ -290,3 +260,51 @@ _typal.Import.prototype.from
  * @type {string}
  */
 _typal.Import.prototype.ns
+
+/* typal types/markdown.xml externs */
+/**
+ * These options are there for _Documentary_ integration as these 2 packages work together.
+ * @extends {_typal.LinkingOptions}
+ * @record
+ */
+_typal.ToMarkdownOptions
+/**
+ * If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API. Default `false`.
+ * @type {boolean|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.narrow
+/**
+ * The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
+ * @type {(!Array<string>)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.details
+/**
+ * How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
+ * @type {(function(string): string)|undefined}
+ */
+_typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
+/**
+ * Options for linking.
+ * @record
+ */
+_typal.LinkingOptions
+/**
+ * Escapes the `|` in unions so it becomes `\|`. Default `true`.
+ * @type {boolean|undefined}
+ */
+_typal.LinkingOptions.prototype.escapePipe
+/**
+ * Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type. Default `false`.
+ * @type {(boolean|function(string): void)|undefined}
+ */
+_typal.LinkingOptions.prototype.flatten
+/**
+ * The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
+ * @type {(function({ link: string, type: !_typal.Type }): string)|undefined}
+ */
+_typal.LinkingOptions.prototype.link = function(arg0) {}
+/**
+ * Preprocessor for the name of the type.
+ * @type {(function(string): string)|undefined}
+ */
+_typal.LinkingOptions.prototype.nameProcess = function(arg0) {}

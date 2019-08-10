@@ -1,12 +1,10 @@
 import { getLinks } from './get-links'
 
 /**
- * @param {!_typal.Type} [type] The type for which to make the table
+ * @param {!_typal.Type} type The type for which to make the table
  * @param {!Array<!_typal.Property>} [props]
  * @param {!Array<!_typal.Type>} [allTypes]
- * @param {!Object} [opts]
- * @param {boolean} [opts.narrow=false] Merge Type and Description columns
- * @param {boolean|function(string)} [opts.flatten=false] Whether to follow the link to external types. If function is passed, will be called with the named of the flattened package.
+ * @param {!_typal.ToMarkdownOptions} [opts]
  */
 export default function makePropsTable (type, props = [], allTypes = [], opts = {}) {
   const { narrow = false, flatten = false, preprocessDesc, link } = opts
@@ -14,11 +12,11 @@ export default function makePropsTable (type, props = [], allTypes = [], opts = 
   const constr = type.isConstructor || type.isInterface
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
-  const linkOptions = {
+  const linkOptions = /** @type {!_typal.LinkingOptions} */ ({
     flatten,
     escapePipe: !narrow,
     link,
-  }
+  })
   const links = (s) => getLinks(/** @type {!Array<!_typal.Type>} */ (allTypes), s, linkOptions)
   const ps = props.map((prop) => {
     let typeName
@@ -79,4 +77,12 @@ const esc = (s = '', escapePipe = true) => {
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('../../types').Property} _typal.Property
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').ToMarkdownOptions} _typal.ToMarkdownOptions
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').LinkingOptions} _typal.LinkingOptions
  */

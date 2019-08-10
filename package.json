@@ -2,7 +2,7 @@
   "name": "typal",
   "version": "1.21.1",
   "description": "Organises TypeDefs By Placing Them Into Types.Xml File To Be Embedded Into Source Code Compatible With VSCode And Google Closure Compiler, Generates Externs And Allows To Place Documentation In README Markdown.",
-  "main": "build/index.js",
+  "main": "compile/index.js",
   "module": "src/index.js",
   "scripts": {
     "t": "zoroaster -a",
@@ -10,6 +10,7 @@
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
     "test-build": "ALAMODE_ENV=test-build yarn test",
+    "test-compile": "ALAMODE_ENV=test-compile yarn test",
     "test-all": "yarn-s test test-build",
     "test-watch": "yarn test -w",
     "lint": "eslint .",
