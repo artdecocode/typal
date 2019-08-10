@@ -325,8 +325,8 @@ class Q {
       const {name:l, optional:h} = b[g];
       let {name:f = `arg${g}`, type:m = l, optional:p = h} = this.args[g] || {};
       return `${`${f}${p ? "?" : ""}`}${m ? `: ${k}` : ""}`;
-    }).join(", "), e = d ? a(d) : "void";
-    return `(${c}) => ${e}`.replace(/\*/g, "\\*");
+    }).join(", "), e = d ? a(d) : "?";
+    return `(${c}) => ${e}`;
   }
   get B() {
     return this.b;
@@ -482,10 +482,10 @@ class U {
       });
       a = F(["function", "fn", "static"], a).map(({content:q, props:t, tag:z}) => {
         z = "static" == z;
-        const {o:ha, h:N} = K(q, v), {async:O, "return":ia = "", ...P} = t;
+        const {o:ha, h:N} = K(q, v), {async:O, "void":ia, "return":ja = ia ? "void" : "", ...P} = t;
         ({args:t = ""} = t);
-        t || (t = N.map(({j:ja}) => ja).join(","));
-        q = ia.replace(/\n\s*/g, " ");
+        t || (t = N.map(({j:ka}) => ka).join(","));
+        q = ja.replace(/\n\s*/g, " ");
         O && q ? q = `!Promise<${q}>` : O && (q = "!Promise");
         t = `function(${t})`;
         q && (t += `: ${q}`);
@@ -567,7 +567,7 @@ class W extends U {
     this.f && (this.f = this.f.replace(a, "$1"));
   }
 }
-;class ka extends U {
+;class la extends U {
   constructor() {
     super();
     this.from = "";
@@ -584,9 +584,9 @@ class W extends U {
     super.b("", {...c, noToc:!0, name:d, type:`import('${b}').${d}`}, e != k ? e : null);
   }
 }
-;const {homedir:la} = os;
-la();
-const ma = (a, b) => {
+;const {homedir:ma} = os;
+ma();
+const na = (a, b) => {
   const d = new RegExp(`([!?])?${a}\\.`, "g");
   b.properties.forEach(c => {
     L(c, a, d);
@@ -660,11 +660,11 @@ module.exports = {_Type:U, _Property:Q, _Method:W, _parseFile:(a, b) => {
         l.push(...f);
         break;
       case "import":
-        v = new ka, v.b(h, f, f.ns || f.from, b), g.push(v);
+        v = new la, v.b(h, f, f.ns || f.from, b), g.push(v);
     }
     return l;
   }, []);
-  b && a.forEach(l => ma(b, l));
+  b && a.forEach(l => na(b, l));
   return {namespace:e, types:a, imports:g};
 }, _getLinks:S};
 

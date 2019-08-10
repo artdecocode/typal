@@ -877,8 +877,8 @@ class rb {
       const {name:h, optional:k} = b[g];
       let {name:l = `arg${g}`, type:m = h, optional:n = k} = this.args[g] || {};
       return `${`${l}${n ? "?" : ""}`}${m ? `: ${f}` : ""}`;
-    }).join(", "), e = c ? a(c) : "void";
-    return `(${d}) => ${e}`.replace(/\*/g, "\\*");
+    }).join(", "), e = c ? a(c) : "?";
+    return `(${d}) => ${e}`;
   }
   get K() {
     return this.b;
@@ -1087,10 +1087,10 @@ class Y {
       });
       a = T(["function", "fn", "static"], a).map(({content:t, props:v, tag:E}) => {
         E = "static" == E;
-        const {I:Lb, D:ya} = gb(t, r), {async:za, "return":Mb = "", ...Aa} = v;
+        const {I:Lb, D:ya} = gb(t, r), {async:za, "void":Mb, "return":Nb = Mb ? "void" : "", ...Aa} = v;
         ({args:v = ""} = v);
-        v || (v = ya.map(({F:Nb}) => Nb).join(","));
-        t = Mb.replace(/\n\s*/g, " ");
+        v || (v = ya.map(({F:Ob}) => Ob).join(","));
+        t = Nb.replace(/\n\s*/g, " ");
         za && t ? t = `!Promise<${t}>` : za && (t = "!Promise");
         v = `function(${v})`;
         t && (v += `: ${t}`);
@@ -1385,7 +1385,7 @@ const Kb = (a, b, c) => {
     return O(c ? d : P(d));
   });
   return [...b, ...a].join("");
-}, Ob = (a, b, c, d = !1) => {
+}, Pb = (a, b, c, d = !1) => {
   a = [...a.map(e => {
     {
       let f;
@@ -1398,7 +1398,7 @@ const Kb = (a, b, c) => {
 var ${b} = {}
 `}${a}`;
 };
-const Qb = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg, replacement:async function(a, b, c) {
+const Rb = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg, replacement:async function(a, b, c) {
   const [d, ...e] = c.split(/\s+/), f = e.includes("closure"), g = e.includes("externs"), h = e.includes("noSuppress"), k = e.includes("skipNsDecl"), l = e.includes("namespace");
   let m = e.find(q => q.startsWith("ignore:"));
   m = m ? m.replace("ignore:", "").split(",") : [];
@@ -1411,19 +1411,19 @@ const Qb = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
     this.emit("types", q);
     this.emit("types", r);
     let x;
-    n ? x = Kb(r, q, h) : p ? (x = Ob(q, u, this.b, k) + "\n", u && this.emit("namespace", u)) : l ? (u && this.emit("namespace", u), x = Pb(r, q, !0)) : x = Pb(r, q);
+    n ? x = Kb(r, q, h) : p ? (x = Pb(q, u, this.b, k) + "\n", u && this.emit("namespace", u)) : l ? (u && this.emit("namespace", u), x = Qb(r, q, !0)) : x = Qb(r, q);
     return `/* ${b} ${c} */\n${x}`;
   } catch (q) {
     return this.i("(%s) Could not process typedef-js: %s", c, q.message), process.env.b && console.error(q.stack), a;
   }
-}}, Pb = (a, b, c = !1) => {
+}}, Qb = (a, b, c = !1) => {
   b = b.map(d => d.f(!1, !1, c));
   a = a.map(d => d.f(c)).map(O).join("");
   b = b.join("");
-  return `${a}${b}`.replace(Rb, " * @typedef");
-}, Rb = / \*\/\n\/\*\*\n \* @typedef/g;
-const Tb = {re:/( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm, replacement:Sb};
-function Sb(a, b, c, d, e, f, g) {
+  return `${a}${b}`.replace(Sb, " * @typedef");
+}, Sb = / \*\/\n\/\*\*\n \* @typedef/g;
+const Ub = {re:/( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm, replacement:Tb};
+function Tb(a, b, c, d, e, f, g) {
   const {v:h} = this.g;
   let k;
   f = () => {
@@ -1461,7 +1461,7 @@ const Z = (a, b, c, d, e) => {
     if (!f || !"string number boolean null undefined symbol any".split(" ").includes(f)) {
       if (f && !a.application && !a.function) {
         let h = b.includes(f);
-        h || (h = Ub.includes(f));
+        h || (h = Vb.includes(f));
         if (h) {
           return !0;
         }
@@ -1480,23 +1480,23 @@ const Z = (a, b, c, d, e) => {
       }), Z(a.function.variableArgs, ...g), Z(a.function.return, ...g));
     }
   }
-}, Ub = "String Boolean Object Date Number Symbol Buffer Function".split(" ");
-var Vb = (a, b = !1) => {
+}, Vb = "String Boolean Object Date Number Symbol Buffer Function".split(" ");
+var Wb = (a, b = !1) => {
   var {R:c} = Ra();
   const d = Ta(c);
   c = Sa(c);
-  return new Db(b ? [Qb] : [Qb, d, Tb, c], a);
+  return new Db(b ? [Rb] : [Rb, d, Ub, c], a);
 };
-var Xb = async() => {
+var Yb = async() => {
   const {v:a = !1, A:b = !1, s:c, types:d} = {v:ja, A:ka, s:ia, types:la};
   await Promise.all(y.map(async e => {
     var f = await H(z, e);
     let g;
     f.isFile() ? g = [e] : f.isDirectory() && (f = await J(e), g = K(f.content, e));
-    await Wb(g, a, b, c, d);
+    await Xb(g, a, b, c, d);
   }));
 };
-const Wb = async(a, b = !1, c = !1, d = null, e = null) => {
+const Xb = async(a, b = !1, c = !1, d = null, e = null) => {
   const f = [];
   e && await Promise.all(e.split(",").map(async g => {
     g = await F(g);
@@ -1505,7 +1505,7 @@ const Wb = async(a, b = !1, c = !1, d = null, e = null) => {
   }));
   await Promise.all(a.map(async g => {
     var h = await F(g);
-    const k = Vb({v:b, A:c}, c);
+    const k = Wb({v:b, A:c}, c);
     f.forEach(l => k.emit("types", l));
     k.file = g;
     k.i = console.error;
@@ -1515,22 +1515,22 @@ const Wb = async(a, b = !1, c = !1, d = null, e = null) => {
     "-" == d ? console.log(h) : d ? await G(d, h) : await G(g, h);
   }));
 };
-const Yb = a => {
+const Zb = a => {
   let b;
   "true" == a ? b = !0 : "false" == a ? b = !1 : /^\d+$/.test(a) && (b = parseInt(a, 10));
   return void 0 !== b ? b : a;
-}, Zb = /^ \* @prop {(.+?)} (\[)?(.+?)(?:=(["'])?(.+?)\4)?(?:])?(?: (.+?))?(?: Default `(.+?)`.)?$/gm, $b = "type opt name quote defaultValue description Default".split(" "), Xa = new RegExp(`^ \\* @typedef {(.+?)} (.+?)(?: (.+))?\\n((?:${/ \* @prop(?:erty)? .+\n/.source})*)`, "gm"), ac = (a, b, c, d) => {
+}, $b = /^ \* @prop {(.+?)} (\[)?(.+?)(?:=(["'])?(.+?)\4)?(?:])?(?: (.+?))?(?: Default `(.+?)`.)?$/gm, ac = "type opt name quote defaultValue description Default".split(" "), Xa = new RegExp(`^ \\* @typedef {(.+?)} (.+?)(?: (.+))?\\n((?:${/ \* @prop(?:erty)? .+\n/.source})*)`, "gm"), bc = (a, b, c, d) => {
   d = d.length;
   a = a && "Object" != a ? ` type="${a}"` : "";
   c = c ? ` desc="${c}"` : "";
   return `${" ".repeat(2)}<type name="${b}"${a}${c}${d ? "" : " /"}>\n`;
 };
-class bc extends A {
+class cc extends A {
   constructor() {
     super({writableObjectMode:!0});
   }
   _transform({type:a, name:b, description:c, properties:d}, e, f) {
-    a = a && a.startsWith("import") ? cc(a, b) : ac(a, b, c, d);
+    a = a && a.startsWith("import") ? dc(a, b) : bc(a, b, c, d);
     this.push(a);
     d.forEach(({type:g, name:h, default:k, description:l, optional:m}) => {
       {
@@ -1548,7 +1548,7 @@ class bc extends A {
     f();
   }
 }
-const cc = (a, b) => {
+const dc = (a, b) => {
   const c = /import\((['"])(.+?)\1\)/.exec(a);
   if (!c) {
     throw Error(`Could not extract package from "${a}"`);
@@ -1556,14 +1556,14 @@ const cc = (a, b) => {
   [, , a] = c;
   return `${" ".repeat(2)}<import name="${b}" from="${a}" />\n`;
 };
-class dc extends A {
+class ec extends A {
   constructor() {
     super({objectMode:!0});
   }
   _transform([, a, b, c, d], e, f) {
-    d = S(Zb, d, $b).map(g => {
+    d = S($b, d, ac).map(g => {
       const {defaultValue:h, Default:k, opt:l, name:m, type:n, ...p} = g;
-      g = {...p, name:m, type:n, ...h ? {defaultValue:Yb(h)} : {}, ...k ? {u:Yb(k)} : {}, ...l ? {optional:!0} : {}};
+      g = {...p, name:m, type:n, ...h ? {defaultValue:Zb(h)} : {}, ...k ? {u:Zb(k)} : {}, ...l ? {optional:!0} : {}};
       if (h || k) {
         if (h) {
           h !== k && void 0 !== g.u && (q = N(m, k, n), console.error("%s[%s] does not match Default `%s`.", b, q, g.u));
@@ -1581,8 +1581,8 @@ class dc extends A {
     f();
   }
 }
-async function ec(a) {
-  const b = Wa(), c = new dc, d = new bc;
+async function fc(a) {
+  const b = Wa(), c = new ec, d = new cc;
   b.pipe(c).pipe(d);
   b.end(a);
   b.on("error", e => {
@@ -1601,18 +1601,18 @@ async function ec(a) {
   ${(await D(d)).trim()}
 </types>`;
 }
-;var fc = async() => {
+;var gc = async() => {
   const {s:a} = {s:ia};
   await Promise.all(y.map(async b => {
     b = await F(b);
-    b = await ec(b);
+    b = await fc(b);
     a ? await G(a, b) : console.log(b);
   }));
 };
-const gc = /( *) \* @(fnType|methodType) {(.+?)}/gm;
-class hc extends M {
+const hc = /( *) \* @(fnType|methodType) {(.+?)}/gm;
+class ic extends M {
   constructor(a, b) {
-    super([{re:gc, async replacement(c, d, e, f) {
+    super([{re:hc, async replacement(c, d, e, f) {
       const g = f.split(".");
       let h, k;
       if ("methodType" == e) {
@@ -1640,7 +1640,7 @@ class hc extends M {
     }}]);
   }
 }
-;const ic = async a => {
+;const jc = async a => {
   if (!a) {
     return [];
   }
@@ -1651,24 +1651,24 @@ class hc extends M {
     b.isDirectory() && (c = await J(a), c = K(c.content, a), c = c.filter(d => d.endsWith(".xml")));
   }
   return c;
-}, jc = async a => (await Promise.all(a.map(async b => ({...await Jb(b), location:b})))).reduce((b, {imports:c, types:d}) => {
+}, kc = async a => (await Promise.all(a.map(async b => ({...await Jb(b), location:b})))).reduce((b, {imports:c, types:d}) => {
   b.push(...c);
   b.push(...d);
   return b;
 }, []);
-async function kc() {
-  const {s:a, types:b} = {s:ma, types:la}, c = await ic(b), d = await jc(c);
+async function lc() {
+  const {s:a, types:b} = {s:ma, types:la}, c = await jc(b), d = await kc(c);
   await Promise.all(y.map(async e => {
     var f = await H(z, e);
     let g;
     f.isFile() ? g = [e] : f.isDirectory() && (f = await J(e), g = K(f.content, e));
-    await lc(g, d, a);
+    await mc(g, d, a);
   }));
 }
-const lc = async(a, b = [], c = null) => {
+const mc = async(a, b = [], c = null) => {
   await Promise.all(a.map(async d => {
     var e = await F(d);
-    const f = new hc(b, d);
+    const f = new ic(b, d);
     f.end(e);
     e = await D(f);
     "-" == c ? console.log(e) : c ? await G(c, e) : await G(d, e);
@@ -1683,7 +1683,7 @@ if (oa) {
 }
 (async() => {
   try {
-    return na ? await fc() : ma ? await kc() : await Xb();
+    return na ? await gc() : ma ? await lc() : await Yb();
   } catch (a) {
     process.env.DEBUG ? console.log(a.stack) : console.log(a.message);
   }
