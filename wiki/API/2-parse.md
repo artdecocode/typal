@@ -1,11 +1,4 @@
-```## parseFile => { types, imports, namespace }
-[
-  ["xml", "string"],
-  ["rootNamespace", "string="]
-]
-```
-
-Returns the string parsed into _Types_ and _Properties_.
+<typedef name="parseFile" noArgTypesInToc>types/API.XML</typedef>
 
 _Given the following types file:_
 
@@ -34,4 +27,4 @@ _It can be parsed so that the `ns.` prefix is ignored:_
 %EXAMPLE: example/parse-file-root, ../src => typal%
 %FORK-js example/parse-file-root%
 
-<!-- %~% -->
+%~%

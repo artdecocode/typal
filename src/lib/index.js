@@ -1,8 +1,8 @@
 /**
  * Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
- * @param {string} name Name of the property.
+ * @param {string} name Name of the param.
  * @param {?(string|boolean|number)} [defaultValue] Default of the property.
- * @param {string} [type] Type of the property.
+ * @param {string} [type] Type of the param.
  * @param {string} [parentParam] Name of the parent parameter.
  * @example
  *

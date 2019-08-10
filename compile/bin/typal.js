@@ -1277,7 +1277,7 @@ class Db extends M {
   b(a, {async:b, "return":c, ...d}, ...e) {
     this.description = R(a);
     super.b("", d, ...e);
-    c && (this.l = c);
+    c && (this.l = c.replace(/\n\s*/g, " "));
     b && (this.async = !0);
   }
   get return() {

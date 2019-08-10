@@ -10,14 +10,12 @@
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
     "test-compile": "ALAMODE_ENV=test-compile yarn test",
-    "test-all": "yarn-s test test-build",
     "test-watch": "yarn test -w",
     "lint": "eslint .",
     "dev": "alanode src/bin/typal",
     "doc": "NODE_DEBUG=doc doc -o README.md",
     "wiki": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc wiki -W ../typal.wiki -n _typal",
     "wiki-dev": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc-dev wiki -W ../typal.wiki -n _typal",
-    "b": "alamode src -o build -s",
     "compile": "depack-dev src/bin/typal -c -o compile/bin -a -p -s --externs types/externs.js -O 2018",
     "compile-lib": "depack-dev src/depack -c -o compile/depack.js -a -p -s -O 2018 --source_map_include_content",
     "c": "yarn-s compile compile-lib",
@@ -42,7 +40,6 @@
     "typal-dev": "src/bin/index.js"
   },
   "files": [
-    "build",
     "src",
     "compile",
     "types/externs.js",

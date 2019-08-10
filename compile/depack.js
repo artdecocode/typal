@@ -563,7 +563,7 @@ class W extends U {
   b(a, {async:b, "return":d, ...c}, ...e) {
     this.description = J(a);
     super.b("", c, ...e);
-    d && (this.f = d);
+    d && (this.f = d.replace(/\n\s*/g, " "));
     b && (this.async = !0);
   }
   get return() {

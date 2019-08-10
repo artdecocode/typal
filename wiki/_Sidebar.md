@@ -1,10 +1,12 @@
 ## Help
 * [[3 Use Cases]]
 * [[Default And Initial]]
+* [[Type To Markdown|To Markdown]]
 
 ## API
 * [[Type]]
 * [[Method]]
 * [[Property]]
 * [[Arg]]
-* [[Other Methods|API]]
+* [[Import]]
+* [[Typal API|API]]

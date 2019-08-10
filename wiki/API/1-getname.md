@@ -1,13 +1,10 @@
-```## getNameWithDefault => string
-[
-  ["name", "string"],
-  ["defaultValue", "?(string|boolean|number)"],
-  ["type", "string="],
-  ["parentParam", "string="]
-]
-```
+<typedef name="getNameWithDefault" noArgTypesInToc>types/API.XML</typedef>
 
-Returns the name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "". The default values are only used for _VSCode_ because _GCC_ does not use this information.
+The default values are only used for visual feedback as _VSCode_ does not show that information anywhere, and _GCC_ does not use it in compilation.
+
+Constructors and interfaces don't have optional properties since _Closure Compiler_ expects all declared options to be initialised in the constructor method, or specified with getters.
+
+_E.g., the following JSDoc includes the params generated with this method (with the addition of `[]` and annotations' tags):_
 
 ```js
 /**

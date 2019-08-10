@@ -1,7 +1,9 @@
 The package is available by importing its named functions and classes:
 
+<!-- Type, Property,  -->
+
 ```js
-import { Type, Property, getNameWithDefault, parseFile } from 'typal'
+import { getLinks, getNameWithDefault, parseFile } from 'typal'
 ```
 
 Its primary use is in _Documentary_, and the API is therefore semi-private.
