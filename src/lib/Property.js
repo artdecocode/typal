@@ -88,12 +88,12 @@ export default class Property {
     const a = args
       .map((ar) => serialiseType(ar))
       .map((type, i) => {
-        const { name: argType, optional: argOptional } = args[i]
+        const { optional: argOptional } = args[i]
         let {
-          name = `arg${i}`, type: t = argType, optional = argOptional,
+          name = `arg${i}`, optional = argOptional,
         } = this.args[i] || {}
         name = `${name}${optional ? '?' : ''}`
-        return `${name}${t ? `: ${type}` : ''}`
+        return `${name}: ${type}`
       })
     const j = a.join(', ')
     const r = ret ? serialiseType(ret) : '?'
