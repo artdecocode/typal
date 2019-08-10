@@ -98,7 +98,7 @@ export default class Property {
     const j = a.join(', ')
     const r = ret ? serialiseType(ret) : '?'
     const typeName = `(${j}) => ${r}`
-    return typeName.replace(/\*/g, '\\*')
+    return typeName
   }
   clearNamespace(namespace, s = new RegExp(`([!?])?${namespace}\\.`, 'g')) {
     if (!namespace) return
