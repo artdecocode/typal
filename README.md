@@ -31,7 +31,6 @@ yarn add -D typal
 - [Markdown Documentation](#markdown-documentation)
   * [`Type`](#type-type)
   * [`Example`](#type-example)
-- [Optional And Default](#optional-and-default)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents">
@@ -480,13 +479,6 @@ __<a name="type-example">`Example`</a>__: An example type which can link to othe
   <img src="/.documentary/section-breaks/9.svg?sanitize=true">
 </a></p>
 
-Optional And Default
----
-
-- Optional (`opt`) means that the property of a type can be `undefined`.
-- Default (`default`) means that when not given, the property will take the `default` value.
-- In configs, default implies optional. However, in other types, it does not have to be so.
-- Currently, default will trigger optional. Possibly fix that and make specifying optionals implicit.
 ## Copyright
 
 <table>
@@ -507,3 +499,7 @@ Optional And Default
     <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
   </tr>
 </table>
+
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/-1.svg?sanitize=true">
+</a></p>
