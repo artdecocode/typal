@@ -8,7 +8,7 @@ export default class Context {
   static get BIN() {
     const [,, line] = new Error().stack.split('\n', 3)
     const [, from] = /\((.+?)\)$/.exec(line)
-    if (process.env.ALAMODE_ENV == 'test-build') {
+    if (process.env.ALAMODE_ENV == 'test-compile') {
       const b = 'compile/bin/typal.js'
       console.log('Testing %s at %s', c(b, 'yellow'), from)
       return b

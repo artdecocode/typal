@@ -1,13 +1,5 @@
 {
   "env": {
-    "test-build": {
-      "import": {
-        "replacement": {
-          "from": "^((../)+)src",
-          "to": "$1build"
-        }
-      }
-    },
     "test-compile": {
       "import": {
         "replacement": {

@@ -9,7 +9,6 @@
     "test": "yarn t test/spec test/mask",
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
-    "test-build": "ALAMODE_ENV=test-build yarn test",
     "test-compile": "ALAMODE_ENV=test-compile yarn test",
     "test-all": "yarn-s test test-build",
     "test-watch": "yarn test -w",
