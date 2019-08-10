@@ -551,11 +551,16 @@ class W extends U {
   constructor() {
     super();
     this.f = null;
+    this.async = !1;
   }
-  b(a, {"return":b, ...d}, ...c) {
+  get isMethod() {
+    return !0;
+  }
+  b(a, {async:b, "return":d, ...c}, ...e) {
     this.description = J(a);
-    super.b("", d, ...c);
-    b && (this.f = b);
+    super.b("", c, ...e);
+    d && (this.f = d);
+    b && (this.async = !0);
   }
   get return() {
     return this.f || "void";

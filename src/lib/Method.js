@@ -1,6 +1,9 @@
 import Type from './Type'
 import { trimD } from './'
 
+/**
+ * @implements {_typal.Method}
+ */
 export default class Method extends Type {
   constructor() {
     super()

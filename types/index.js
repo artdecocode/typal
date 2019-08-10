@@ -80,6 +80,7 @@ export {}
  * @typedef {_typal.Type & _typal.$Method} _typal.Method `＠interface` A representation of a type.
  * @typedef {Object} _typal.$Method `＠interface` A representation of a type.
  * @prop {string} return The return type of the method. Returns void if no return was specified. Default `void`.
+ * @prop {boolean} isMethod Can be used to disambiguate methods from other types. Default `true`.
  * @prop {boolean} async If the method is async. Default `false`.
  */
 

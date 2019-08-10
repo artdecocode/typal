@@ -1,7 +1,10 @@
 <types namespace="_typal">
   <interface extends="_typal.Type" name="Method" desc="A representation of a type.">
-    <prop type="string" name="return" initial="void">
+    <prop string name="return" initial="void">
       The return type of the method. Returns void if no return was specified.
+    </prop>
+    <prop boolean name="isMethod" initial="true">
+      Can be used to disambiguate methods from other types.
     </prop>
     <prop type="boolean" name="async" initial="false">
       If the method is async.

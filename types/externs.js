@@ -143,6 +143,11 @@ _typal.Method = function() {}
  */
 _typal.Method.prototype.return
 /**
+ * Can be used to disambiguate methods from other types. Default `true`.
+ * @type {boolean}
+ */
+_typal.Method.prototype.isMethod
+/**
  * If the method is async. Default `false`.
  * @type {boolean}
  */
