@@ -1,3 +1,9 @@
+## 18 August 2019
+
+### [1.22.1](https://github.com/artdecocode/typal/compare/v1.22.0...v1.22.1)
+
+- [fix] Pass `useNamespace` via arguments for source (non-closure) _JSDoc_.
+
 ## 10 August 2019
 
 ### [1.22.0](https://github.com/artdecocode/typal/compare/v1.21.1...v1.22.0)
