@@ -1,5 +1,5 @@
 import { _source, _closure, _externs, _output, _help, _version, _migrate, _types,
-  argsConfig, _template } from './get-args'
+  argsConfig, _template, _useNamespace } from './get-args'
 import usually from 'usually'
 import { reduceUsage } from 'argufy'
 import generate from './commands/generate'
@@ -28,7 +28,7 @@ JavaScript source code from an external types.xml file.`,
         output: _output,
       })
     } else if (_template) {
-      return await templ(_source, {
+      return await templ(/** @type {!Array<string>} */ (_source), {
         output: _template,
         types: _types,
       })
@@ -38,6 +38,7 @@ JavaScript source code from an external types.xml file.`,
       externs: _externs,
       output: _output,
       types: _types,
+      useNamespace: _useNamespace,
     })
   } catch (err) {
     if (process.env['DEBUG']) console.log(err.stack)

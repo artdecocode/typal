@@ -10,6 +10,9 @@
   <arg boolean name="closure" short="c">
     Whether to generate types in _Closure_ mode.
   </arg>
+  <arg boolean name="useNamespace" short="u">
+    Generate JSDoc for functions using namespaces.
+  </arg>
   <arg boolean name="externs" short="e">
     Whether to generate externs for _GCC_.
   </arg>

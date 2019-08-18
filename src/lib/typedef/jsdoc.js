@@ -20,7 +20,7 @@ const JSDocRule = {
  * @type {function(this: JSTypal, ...string): string}
  */
 function replacement(match, ws, typeName, optional, paramName, rest, position) {
-  const { closure } = this.conf
+  const { closure, useNamespace } = this.conf
   let parsed
   const logLocation = () => {
     if (this.lines && this.file) {
@@ -43,7 +43,7 @@ function replacement(match, ws, typeName, optional, paramName, rest, position) {
     return match
   }
   const allTypes = Object.values(this.types).map(({ name, fullName }) => {
-    if (closure) return fullName
+    if (closure || useNamespace) return fullName
     return name
   })
 
@@ -52,13 +52,13 @@ function replacement(match, ws, typeName, optional, paramName, rest, position) {
   if (!e) return match
 
   const found = Object.values(this.types).find(({ name, fullName }) => {
-    if (closure) return fullName == parsed.name
+    if (closure || useNamespace) return fullName == parsed.name
     return name == parsed.name
   })
   if (!found) return match
   if (found instanceof JSTypal.Import) return match
 
-  const s = found.toParam(paramName, optional, ws, parsed.nullable, closure)
+  const s = found.toParam(paramName, optional, ws, parsed.nullable, closure, useNamespace)
   return s
 }
 

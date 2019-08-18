@@ -13,7 +13,7 @@ export default class JSTypal extends Replaceable {
     this.on('namespace', namespace => {
       this.addNamespace(namespace)
     })
-    /** @type {{ closure: boolean, externs: boolean }} */
+    /** @type {{ closure: boolean, externs: boolean, useNamespace: boolean }} */
     this.conf = conf
     /** @type {!Array<string>} */
     this.namespaces = []

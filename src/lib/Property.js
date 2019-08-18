@@ -279,8 +279,8 @@ export default class Property {
     if (ws) pp = pp.map(p => `${ws}${p}`)
     return pp.join('\n')
   }
-  toParam(parentParam, ws = '', closure = false) {
-    const s = this.toJSDoc(parentParam, closure)
+  toParam(parentParam, ws = '', closure = false, useNamespace = false) {
+    const s = this.toJSDoc(parentParam, closure, useNamespace)
     const p = `${ws} * @param ${s}`
     return p
   }

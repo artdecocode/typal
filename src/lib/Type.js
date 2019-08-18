@@ -370,17 +370,19 @@ _ns.Type.prototype.isConstructor
    * @param {boolean|undefined} optional Whether the argument is optional (wrapped in [argument])
    * @param {string} ws The whitespace prior to the param.
    * @param {boolean|undefined} nullable Whether the argument had ! or ?.
+   * @param {boolean} [closure]
+   * @param {boolean} [useNamespace]
    */
-  toParam(paramName, optional, ws, nullable, closure = false) {
+  toParam(paramName, optional, ws, nullable, closure = false, useNamespace = false) {
     let n = ''
     if (nullable === true) n = '?'
     else if (nullable === false) n = '!'
     const d = this.description ? ` ${this.description}` : ''
-    const nn = this.spread ? getSpread(this.properties) : (closure ? this.fullName : this.name)
+    const nn = this.spread ? getSpread(this.properties) : (closure || useNamespace ? this.fullName : this.name)
     const pn = optional ? `[${paramName}]` : paramName
     const s = `${ws || ''} * @param {${n}${nn}} ${pn}${d}`
     const p = this.properties && !this.noExpand ? this.properties.map((pr) => {
-      const sp = pr.toParam(paramName, ws, closure)
+      const sp = pr.toParam(paramName, ws, closure, useNamespace)
       return sp
     }) : []
     const st = [s, ...p].join('\n')

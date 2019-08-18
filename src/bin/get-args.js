@@ -15,6 +15,11 @@ export const argsConfig = {
     boolean: true,
     short: 'c',
   },
+  'useNamespace': {
+    description: 'Generate JSDoc for functions using namespaces.',
+    boolean: true,
+    short: 'u',
+  },
   'externs': {
     description: 'Whether to generate externs for _GCC_.',
     boolean: true,
@@ -62,6 +67,11 @@ export const _output = /** @type {string} */ (args['output'])
  * Whether to generate types in _Closure_ mode.
  */
 export const _closure = /** @type {boolean} */ (args['closure'])
+
+/**
+ * Generate JSDoc for functions using namespaces.
+ */
+export const _useNamespace = /** @type {boolean} */ (args['useNamespace'])
 
 /**
  * Whether to generate externs for _GCC_.
