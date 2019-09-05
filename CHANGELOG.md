@@ -1,3 +1,9 @@
+## 5 September 2019
+
+### [1.22.2](https://github.com/artdecocode/typal/compare/v1.22.1...v1.22.2)
+
+- [fix] Pass `this` and `...args` arguments in _`<fn><arg>`_ correctly.
+
 ## 18 August 2019
 
 ### [1.22.1](https://github.com/artdecocode/typal/compare/v1.22.0...v1.22.1)
