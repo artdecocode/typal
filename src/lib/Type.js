@@ -125,7 +125,11 @@ _ns.Type.prototype.isConstructor
         let { 'args': args = '' } = p
 
         if (!args) {
-          args = argsArgs.map(({ fullType }) => fullType).join(',')
+          args = argsArgs.map(({ fullType, name: n }) => {
+            if (n == 'this') return `${n}: ${fullType}`
+            if (n == '...args' || n == '...') return `...${fullType}`
+            return fullType
+          }).join(',')
         }
 
         let r = ret.replace(/\n\s*/g, ' ')

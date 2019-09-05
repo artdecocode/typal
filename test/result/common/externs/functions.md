@@ -212,3 +212,60 @@ Test.prop = function() {}
 Test.test = function() {}
 
 /*@*/
+
+
+## this arg in args
+<types>
+  <type record name="Test" desc="testing.">
+    <fn name="hello" return="string">
+      <arg type="Test" name="this">This argument</arg>
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * testing.
+ * @record
+ */
+var Test
+/**
+ * @this {Test}
+ * @return {string}
+ */
+Test.prototype.hello = function() {}
+
+/*@*/
+
+## this and variable in args
+<types>
+  <type record name="Test" desc="testing.">
+    <fn opt name="getResults" return="*|!Promise">
+      <arg name="this" type="_contextTesting.MaskContext">
+        The context of the mask with inputs.
+      </arg>
+      <arg name="...args" type="_contextTesting.Context">
+        Zoroaster contexts.
+      </arg>
+      desc
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * testing.
+ * @record
+ */
+var Test
+/**
+ * desc
+ * @type {(function(this: _contextTesting.MaskContext,..._contextTesting.Context): *|!Promise)|undefined}
+ */
+Test.prototype.getResults = function(...args) {}
+
+/*@*/
+
+

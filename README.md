@@ -173,6 +173,11 @@ The following arguments are supported by this software.
    <td>Whether to generate types in <em>Closure</em> mode.</td>
   </tr>
   <tr>
+   <td>--useNamespace</td>
+   <td>-u</td>
+   <td>Generate JSDoc for functions using namespaces.</td>
+  </tr>
+  <tr>
    <td>--externs</td>
    <td>-e</td>
    <td>Whether to generate externs for <em>GCC</em>.</td>
