@@ -137,3 +137,24 @@
  */
 
 /*@*/
+
+## variable args and this in fn's args
+<types>
+  <type record name="Test">
+    <fn name="getArgs" return="!(Array<string>|Promise<!Array<string>>)">
+      <arg name="this" type="!Object">The context of a mask.</arg>
+      <arg name="forkArgs" type="!Array<string>">Arguments parsed as array.</arg>
+      <arg name="...contexts" type="_contextTesting.Context">Zoroaster contexts.</arg>
+      desc
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {Object} Test `＠record`
+ * @prop {(this: !Object, forkArgs: !Array<string>, ...contexts: _contextTesting.Context[]) => !(Array<string>|Promise<!Array<string>>)} getArgs desc
+ */
+
+/*@*/

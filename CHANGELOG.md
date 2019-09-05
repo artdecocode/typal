@@ -1,5 +1,9 @@
 ## 5 September 2019
 
+### [1.22.3](https://github.com/artdecocode/typal/compare/v1.22.2...v1.22.3)
+
+- [fix] Correct `this` args count and allow to print `...custom` var args in typescript types.
+
 ### [1.22.2](https://github.com/artdecocode/typal/compare/v1.22.1...v1.22.2)
 
 - [fix] Pass `this` and `...args` arguments in _`<fn><arg>`_ correctly.

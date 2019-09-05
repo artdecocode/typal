@@ -245,7 +245,10 @@ Test.prototype.hello = function() {}
       <arg name="this" type="_contextTesting.MaskContext">
         The context of the mask with inputs.
       </arg>
-      <arg name="...args" type="_contextTesting.Context">
+      <arg name="string" type="string">
+        This input string
+      </arg>
+      <arg name="...contexts" type="_contextTesting.Context">
         Zoroaster contexts.
       </arg>
       desc
@@ -262,9 +265,9 @@ Test.prototype.hello = function() {}
 var Test
 /**
  * desc
- * @type {(function(this: _contextTesting.MaskContext,..._contextTesting.Context): *|!Promise)|undefined}
+ * @type {(function(this: _contextTesting.MaskContext,string,..._contextTesting.Context): *|!Promise)|undefined}
  */
-Test.prototype.getResults = function(...args) {}
+Test.prototype.getResults = function(string, ...args) {}
 
 /*@*/
 

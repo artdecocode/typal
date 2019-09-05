@@ -91,7 +91,7 @@ export default class Property {
         const { optional: argOptional } = args[i]
         let {
           name = `arg${i}`, optional = argOptional,
-        } = this.args[i] || {}
+        } = this.argsWithoutThis[i] || {}
         name = `${name}${optional ? '?' : ''}`
         return `${name}: ${type}`
       })
@@ -101,7 +101,11 @@ export default class Property {
     }
     if (variableArgs) {
       const tt = serialiseType(variableArgs)
-      a.push(`...args: ${tt}[]`)
+      let n = '...args'
+      try {
+        n = `${this.args[this.args.length - 1].name}`
+      } catch (er) { /* */ }
+      a.push(`${n}: ${tt}[]`)
     }
     const j = a.join(', ')
     const r = ret ? serialiseType(ret) : '?'
@@ -228,6 +232,17 @@ export default class Property {
     return pp
   }
   /**
+   * When args are assigned, this returns the array without the first arg.
+   */
+  get argsWithoutThis() {
+    let argsWithoutThis = this.args
+    if (this.args && this.args[0] && this.args[0].name == 'this') {
+      const [, ...args] = this.args
+      return args
+    }
+    return argsWithoutThis
+  }
+  /**
    * Generates string to append to methods when assigning to variables in externs.
    * Only works for functions.
    * E.g., `= function(arg1, arg2) {}`.
@@ -236,7 +251,7 @@ export default class Property {
     if (this.isParsedFunction) {
       const { function: { args, variableArgs } } = this.parsed
       const a = args.map((_, i) => {
-        const { name = `arg${i}` } = this.args[i] || {}
+        const { name = `arg${i}` } = this.argsWithoutThis[0] || {}
         return name
       })
       if (variableArgs) a.push('...args')

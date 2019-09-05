@@ -127,7 +127,7 @@ _ns.Type.prototype.isConstructor
         if (!args) {
           args = argsArgs.map(({ fullType, name: n }) => {
             if (n == 'this') return `${n}: ${fullType}`
-            if (n == '...args' || n == '...') return `...${fullType}`
+            if (n.startsWith('...')) return `...${fullType}`
             return fullType
           }).join(',')
         }
