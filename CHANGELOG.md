@@ -1,5 +1,9 @@
 ## 6 September 2019
 
+### [1.22.6](https://github.com/artdecocode/typal/compare/v1.22.5...v1.22.6)
+
+- [fix] Fix arguments names in function assignment in externs.
+
 ### [1.22.5](https://github.com/artdecocode/typal/compare/v1.22.4...v1.22.5)
 
 - [fix] Fix _JSDoc_ regex to pickup descriptions over multiple lines.
