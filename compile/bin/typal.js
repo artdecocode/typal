@@ -933,7 +933,8 @@ class ub {
   }
   B(a, b = "", c = !1) {
     a = nb(this, a, c);
-    return `${b} * @param ${a}`;
+    const [d, ...e] = a.split("\n");
+    return [`@param ${d}`, ...e].map(g => `${b} * ${g}`).join("\n");
   }
 }
 const pb = (a, b = !1) => a.split("\n").map((c, d) => {

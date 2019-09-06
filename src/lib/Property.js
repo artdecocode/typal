@@ -296,7 +296,9 @@ export default class Property {
   }
   toParam(parentParam, ws = '', closure = false, useNamespace = false) {
     const s = this.toJSDoc(parentParam, closure, useNamespace)
-    const p = `${ws} * @param ${s}`
+    const [firstLine, ...rest] = s.split('\n')
+    const m = [`@param ${firstLine}`, ...rest].map(l => `${ws} * ${l}`)
+    const p = m.join('\n')
     return p
   }
   makeAlias(name) {

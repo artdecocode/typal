@@ -136,3 +136,51 @@ var a = (param) => {}
  */
 
 /*@*/
+
+## prints jsdoc with new lines
+/**
+ * @param {ns.Test} param
+ */
+var a = (param) => {}
+
+/* typal test/temp/types.xml */
+
+
+/*@ types */
+<types namespace="ns">
+  <type name="Test" desc="test">
+    <prop name="prop">
+      The property, e.g.,
+      ```js
+      // hello world
+      ```
+    </prop>
+  </type>
+</types>
+/*@*/
+
+/*@ expected */
+/**
+ * @param {ns.Test} param test
+ * @param {*} param.prop The property, e.g.,
+ * ```js
+ * // hello world
+ * ```
+ */
+var a = (param) => {}
+
+/* typal test/temp/types.xml */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {ns.Test} Test test
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {Object} ns.Test test
+ * @prop {*} prop The property, e.g.,
+ * ```js
+ * // hello world
+ * ```
+ */
+
+/*@*/
