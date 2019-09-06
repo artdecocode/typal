@@ -1456,7 +1456,7 @@ const Ub = {re:/^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$
   b = b.join("");
   return `${a}${b}`.replace(Vb, " * @typedef");
 }, Vb = / \*\/\n\/\*\*\n \* @typedef/g;
-const Xb = {re:/( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?.*)*)/gm, replacement:Wb};
+const Xb = {re:/( *) \* @param {(.+?)} (\[)?([^\s\]]+)\]?(?: .+)?((?:\n(?: +)\* @param {(?:.+?)} \[?\4\]?(?:(?!\n\s*\*(?:\/|\s*@))[\s\S])*)*)/gm, replacement:Wb};
 function Wb(a, b, c, d, e, g, f) {
   const {v:h, C:k} = this.g;
   let l;
