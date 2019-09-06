@@ -1,5 +1,9 @@
 ## 6 September 2019
 
+### [1.22.5](https://github.com/artdecocode/typal/compare/v1.22.4...v1.22.5)
+
+- [fix] Fix _JSDoc_ regex to pickup descriptions over multiple lines.
+
 ### [1.22.4](https://github.com/artdecocode/typal/compare/v1.22.3...v1.22.4)
 
 - [fix] Print `*` in descriptions with new lines in _JSDoc_ rule.
