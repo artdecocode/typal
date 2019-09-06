@@ -251,7 +251,7 @@ export default class Property {
     if (this.isParsedFunction) {
       const { function: { args, variableArgs } } = this.parsed
       const a = args.map((_, i) => {
-        const { name = `arg${i}` } = this.argsWithoutThis[0] || {}
+        const { name = `arg${i}` } = this.argsWithoutThis[i] || {}
         return name
       })
       if (variableArgs) a.push('...args')

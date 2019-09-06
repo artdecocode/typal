@@ -271,4 +271,31 @@ Test.prototype.getResults = function(string, ...args) {}
 
 /*@*/
 
+## arguments
+<types>
+  <type record name="Test" desc="testing.">
+    <fn opt name="getProps" return="Object">
+      <arg name="props" type="!_competent.Props">Properties.</arg>
+      <arg name="meta" type="!_competent.Meta">Meta properties.</arg>
+      <arg string name="componentName">The name of the component.</arg>
+      The function which takes the parsed properties from HTML and competent's meta methods, and returns the properties object to be passed to the component. By default, returns the properties simply merged with _meta_.
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * testing.
+ * @record
+ */
+var Test
+/**
+ * The function which takes the parsed properties from HTML and competent's meta methods, and returns the properties object to be passed to the component. By default, returns the properties simply merged with _meta_.
+ * @type {(function(!_competent.Props,!_competent.Meta,string): Object)|undefined}
+ */
+Test.prototype.getProps = function(props, meta, componentName) {}
+
+/*@*/
+
 

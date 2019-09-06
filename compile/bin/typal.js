@@ -838,7 +838,7 @@ function qb(a) {
 function rb(a) {
   if (a.isParsedFunction) {
     const {function:{args:b, variableArgs:c}} = a.parsed, d = b.map((e, g) => {
-      ({name:e = `arg${g}`} = a.h[0] || {});
+      ({name:e = `arg${g}`} = a.h[g] || {});
       return e;
     });
     c && d.push("...args");
