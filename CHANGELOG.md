@@ -1,3 +1,9 @@
+## 29 November 2019
+
+### [1.22.7](https://github.com/artdecocode/typal/compare/v1.22.6...v1.22.7)
+
+- [feature] Allows to pass a directory via `-t` for source JSDoc generation.
+
 ## 6 September 2019
 
 ### [1.22.6](https://github.com/artdecocode/typal/compare/v1.22.5...v1.22.6)
