@@ -1,6 +1,6 @@
 # Typal
 
-[![npm version](https://badge.fury.io/js/typal.svg)](https://npmjs.org/package/typal)
+[![npm version](https://badge.fury.io/js/typal.svg)](https://www.npmjs.com/package/typal)
 
 `typal` Keeps Types In XML files And Converts Them To (1) JavaScript JSDoc, (2) Closure Externs and (3) Markdown Documentation. It is the alternative to TypeScript definitions and utilises the power of JSDoc for excellent developer experience, documentation readability and compiler annotation. It also makes integration between _Google Closure Compiler_ and _VSCode_ easy, using the JSDoc notations that are understood by both at the same time.
 
@@ -468,17 +468,87 @@ _Typal_ allows to paste types into documentation using the [_Documentary_](http:
 
 __<a name="type-type">`Type`</a>__: A type which can be linked.
 
-__<a name="type-example">`Example`</a>__: An example type which can link to other types.
 
-|      Name       |                                                                                                                      Type                                                                                                                       |                                    Description                                    |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| type            | <em><a href="#type-type" title="A type which can be linked.">?Type</a></em>                                                                                                                                                                     | The type itself, possibly nullable.                                               |
-| union           | <em>!(<a href="#type-type" title="A type which can be linked.">Type</a> \| string)</em>                                                                                                                                                         | The union of types.                                                               |
-| record          | <em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em>                                                                                                                                                            | The record with a type.                                                           |
-| application     | <em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em>                                                                                                                                                | The application with a type.                                                      |
-| function        | <em>(this: <a href="#type-type" title="A type which can be linked.">Type</a>, arg0: string, arg1: <a href="#type-type" title="A type which can be linked.">!Type</a>) => <a href="#type-type" title="A type which can be linked.">Type</a></em> | The function with arguments and return type.                                      |
-| variable-args   | <em>(...args: <a href="#type-type" title="A type which can be linked.">Type</a>[]) => ?</em>                                                                                                                                                    | Functions with `...` for variable argument types.                                 |
-| vscode-function | <em>(type: Type, s: string) => Type</em>                                                                                                                                                                                                        | Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment. |
+__<a name="type-example">`Example`</a>__: An example type which can link to other types.
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center">type</td>
+  <td><em><a href="#type-type" title="A type which can be linked.">?Type</a></em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The type itself, possibly nullable.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">union</td>
+  <td><em>!(<a href="#type-type" title="A type which can be linked.">Type</a> | string)</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The union of types.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">record</td>
+  <td><em>{ t: <a href="#type-type" title="A type which can be linked.">Type</a>, r }</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The record with a type.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">application</td>
+  <td><em>Object&lt;string, <a href="#type-type" title="A type which can be linked.">Type</a>&gt;</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The application with a type.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">function</td>
+  <td><em>(this: <a href="#type-type" title="A type which can be linked.">Type</a>, arg0: string, arg1: <a href="#type-type" title="A type which can be linked.">!Type</a>) => <a href="#type-type" title="A type which can be linked.">Type</a></em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The function with arguments and return type.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">variable-args</td>
+  <td><em>(...args: <a href="#type-type" title="A type which can be linked.">Type</a>[]) => ?</em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Functions with <code>...</code> for variable argument types.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">vscode-function</td>
+  <td><em>(type: <a href="#type-type" title="A type which can be linked.">Type</a>) => <a href="#type-type" title="A type which can be linked.">Type</a></em></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Linking in the <em>VSCode</em> (<em>TypeScript</em>) functions is also supported when properties are written as functions.<br/>
+   <kbd><strong>type*</strong></kbd> <em><code><a href="#type-type" title="A type which can be linked.">Type</a></code></em>: The type.
+  </td>
+ </tr>
+</table>
+
+[Used source types](example/md.xml).
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/9.svg?sanitize=true">

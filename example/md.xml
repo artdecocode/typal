@@ -20,8 +20,9 @@
     <prop opt type="function(...Type)" name="variable-args">
       Functions with `...` for variable argument types.
     </prop>
-    <prop opt type="(type: Type, s: string) => Type" name="vscode-function">
-      Linking in the _VSCode_ (_TypeScript_) functions are not supported at the moment.
-    </prop>
+    <fn name="vscode-function" opt return="Type">
+      <arg type="Type" name="type">The type.</arg>
+      Linking in the _VSCode_ (_TypeScript_) functions is also supported when properties are written as functions.
+    </fn>
   </type>
 </types>
