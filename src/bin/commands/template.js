@@ -9,21 +9,26 @@ import { readTypesFile } from '../../lib/parse'
 
 /**
  * Constructs the list of all types.xml files, whether the path to a single file is passed, or to a directory.
- * @param {string} path The path to read.
+ * @param {string} path The path or comma-separated paths to scan for XML files.
  */
-const getTypes = async (path) => {
+export const getTypes = async (path) => {
   if (!path) return []
-  /** @type {!Array<string>} */
-  let files
-  const ls = await makePromise(lstat, path)
-  if (ls.isFile()) {
-    files = [path]
-  } else if (ls.isDirectory()) {
-    const dir = await readDirStructure(path)
-    files = getFiles(
-      /** @type {!_readDirStructure.Content } */(dir.content), path)
-    files = files.filter(a => a.endsWith('.xml'))
-  }
+  const pp = path.split(',')
+  const manyPaths = await Promise.all(pp.map(async (Path) => {
+    /** @type {!Array<string>} */
+    let files = []
+    const ls = await makePromise(lstat, Path)
+    if (ls.isFile()) {
+      files = [Path]
+    } else if (ls.isDirectory()) {
+      const dir = await readDirStructure(Path)
+      files = getFiles(
+        /** @type {!_readDirStructure.Content } */(dir.content), Path)
+      files = files.filter(a => a.endsWith('.xml'))
+    }
+    return files
+  }))
+  const files = manyPaths.reduce((acc, p) => [...acc, ...p], [])
   return files
 }
 

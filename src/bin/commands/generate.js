@@ -6,6 +6,7 @@ import { lstat } from 'fs'
 import makePromise from 'makepromise'
 import makeJSTypal from '../../lib/make-JSTypal'
 import parseFile from '../../lib/parse'
+import { getTypes } from './template'
 
 export default async (source, opts = {}) => {
   const {
@@ -13,6 +14,7 @@ export default async (source, opts = {}) => {
     useNamespace = false,
     externs = false, output, types,
   } = opts
+  const typesFiles = await getTypes(types)
   await Promise.all(source.map(async (s) => {
     const ls = await makePromise(lstat, s)
     let files
@@ -23,23 +25,25 @@ export default async (source, opts = {}) => {
       files = getFiles(
         /** @type {!_readDirStructure.Content } */(dir.content), s)
     }
-    await processFiles(files, closure, externs, output, types, useNamespace)
+    await processFiles(files, closure, externs, output, typesFiles, useNamespace)
   }))
 }
 
 /**
+ * Processs all source files to include JSDoc documentation in them.
  * @param {Array<string>} files The list of files.
+ * @param {Boolean} closure
+ * @param {Boolean} externs
+ * @param {Boolean} output Where to save the output.
+ * @param {Array<string>} types Paths to types.xml files.
  */
-const processFiles = async (files, closure = false, externs = false, output = null, types = null, useNamespace = false) => {
+const processFiles = async (files, closure = false, externs = false, output = null, types = [], useNamespace = false) => {
   const existingTypes = []
-  if (types) {
-    const t = types.split(',')
-    await Promise.all(t.map(async (typesLocation) => {
-      const content = await read(typesLocation)
-      const { types: tt, imports } = parseFile(content)
-      existingTypes.push(tt, imports)
-    }))
-  }
+  await Promise.all(types.map(async (typesLocation) => {
+    const content = await read(typesLocation)
+    const { types: tt, imports } = parseFile(content)
+    existingTypes.push(tt, imports)
+  }))
   await Promise.all(files.map(async (file) => {
     const content = await read(file)
     const js = makeJSTypal({ closure, externs, useNamespace }, externs)

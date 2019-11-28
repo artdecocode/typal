@@ -1,0 +1,7 @@
+<types>
+  <type name="Conf" desc="config">
+    <prop string name="propName">
+      The prop description.
+    </prop>
+  </type>
+</types>

@@ -79,6 +79,26 @@ const a = (param) => {}
 const a = (param) => {}
 /*@*/
 
+## can read types from a dir
+-t test/fixture/types-dir/conf.xml
+
+/*@ program */
+/**
+ * @param {Conf} param
+ */
+const a = (param) => {}
+/*@*/
+
+/*@ expected */
+# program.js
+
+/**
+ * @param {Conf} param config
+ * @param {string} param.propName The prop description.
+ */
+const a = (param) => {}
+/*@*/
+
 ## uses args from the tag
 --nothing
 

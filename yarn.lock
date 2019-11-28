@@ -7,6 +7,16 @@
   resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.1.1.tgz#0a68b9a061b5076ebaf948c150ea26d09c1e753f"
   integrity sha512-q5lO3vGUo0WgkSqzgzjL0HQdA9t2HzQqZISuVuQWMh9xqLuiLFP/ZTsxFc8vpMl7mNpGk7Mm0OeyFQ+Evrp0Cw==
 
+"@depack/nodejs@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.4.tgz#36195f33fef7a6b9b1f93a043a52a87fac087729"
+  integrity sha512-vtmNtylOPNjFkQHOgC1M8Ru9c211FgtD3sG3KGS9dvlcHDUAiNoJ52gVwOep5Tkp0I4qmwPx3oyTV6OwKchmlg==
+
+"@externs/nodejs@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@externs/nodejs/-/nodejs-1.5.0.tgz#88ff9e7a03c53d19101ee49768e598ff0f39c9ad"
+  integrity sha512-2J+FRDjGfKKldTQ5YqLmhQ04/sA9swTQ6OTtPzo4xhg41u1+eiufciXiqW6u3UXEcmm413a27NakgnLbzfp0wQ==
+
 "@typedefs/parser@^1.3.4":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.3.4.tgz#1e8849e80a3a584873bc47ec6b9bea6bd63c0209"
@@ -87,6 +97,14 @@ catchment@^3.2.3, catchment@^3.3.0:
   dependencies:
     "@artdeco/clean-stack" "^1.1.1"
     erotic "^2.1.0"
+
+depack@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/depack/-/depack-1.0.0.tgz#d373bba9eeb569d9707cd3cfdd45a20fbe518c9a"
+  integrity sha512-1+gK3omxgYF/nCKThpF6xopgpVsJhsx9EcKb7FY90pisx9oF3xBnhy+NHcOUYXdc2C7gotQIRjNDq4C8NwUVug==
+  dependencies:
+    "@depack/nodejs" "^1.1.4"
+    "@externs/nodejs" "^1.5.0"
 
 documentary@^1.34.1:
   version "1.34.1"
