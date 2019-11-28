@@ -23,7 +23,7 @@ export const getTypes = async (path) => {
     } else if (ls.isDirectory()) {
       const dir = await readDirStructure(Path)
       files = getFiles(
-        /** @type {!_readDirStructure.Content } */(dir.content), Path)
+        /** @type {!_wrote.DirectoryStructure} */(dir.content), Path)
       files = files.filter(a => a.endsWith('.xml'))
     }
     return files
@@ -71,7 +71,7 @@ export default async function template(source, opts = {}) {
     } else if (ls.isDirectory()) {
       const dir = await readDirStructure(s)
       files = getFiles(
-        /** @type {!_readDirStructure.Content } */(dir.content), s)
+        /** @type {!_wrote.DirectoryStructure} */(dir.content), s)
     }
     await processFiles(files, t, output)
   }))

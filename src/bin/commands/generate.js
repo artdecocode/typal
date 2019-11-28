@@ -23,7 +23,7 @@ export default async (source, opts = {}) => {
     } else if (ls.isDirectory()) {
       const dir = await readDirStructure(s)
       files = getFiles(
-        /** @type {!_readDirStructure.Content } */(dir.content), s)
+        /** @type {!_wrote.DirectoryStructure} */(dir.content), s)
     }
     await processFiles(files, closure, externs, output, typesFiles, useNamespace)
   }))
@@ -31,13 +31,13 @@ export default async (source, opts = {}) => {
 
 /**
  * Processs all source files to include JSDoc documentation in them.
- * @param {Array<string>} files The list of files.
- * @param {Boolean} closure
- * @param {Boolean} externs
- * @param {Boolean} output Where to save the output.
- * @param {Array<string>} types Paths to types.xml files.
+ * @param {!Array<string>} files The list of files.
+ * @param {boolean} closure
+ * @param {boolean} externs
+ * @param {string} output Where to save the output.
+ * @param {!Array<string>} types Paths to types.xml files.
  */
-const processFiles = async (files, closure = false, externs = false, output = null, types = [], useNamespace = false) => {
+const processFiles = async (files, closure = false, externs = false, output = '', types = [], useNamespace = false) => {
   const existingTypes = []
   await Promise.all(types.map(async (typesLocation) => {
     const content = await read(typesLocation)
