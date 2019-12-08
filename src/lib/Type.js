@@ -461,24 +461,27 @@ const getSpread = (properties = [], closure = false) => {
   return st
 }
 
-const markdownExtendsList = (ext, allTypes, opts) => {
-  let e = `\`${ext}\``
-  const foundExt = allTypes.find(({ fullName }) => {
-    return fullName == ext
-  })
-  if (foundExt && foundExt.link) {
-    e = '<a '
-    if (foundExt.description) {
-      e += `title="${foundExt.description}" `
-    }
-    e += `href="${foundExt.link}">\`${ext}\`</a>`
-  } else {
-    const le = getLinks(allTypes, ext, { ...opts,
-      nameProcess: (td) => `\`${td}\``,
+const markdownExtendsList = (Extends, allTypes, opts) => {
+  const E = Extends.split(/,\s*/).map((ee) => {
+    let e = `\`${ee}\``
+    const foundExt = allTypes.find(({ fullName }) => {
+      return fullName == ee
     })
-    if (ext != le) e = le
-  }
-  return e
+    if (foundExt && foundExt.link) {
+      e = '<a '
+      if (foundExt.description) {
+        e += `title="${foundExt.description}" `
+      }
+      e += `href="${foundExt.link}">\`${ee}\`</a>`
+    } else {
+      const le = getLinks(allTypes, ee, { ...opts,
+        nameProcess: (td) => `\`${td}\``,
+      })
+      if (ee != le) e = le
+    }
+    return e
+  })
+  return E.join(', ')
 }
 /**
  * @suppress {nonStandardJsDocs}
