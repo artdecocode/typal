@@ -1,1 +1,1 @@
-/* typal wiki/Default-And-Initial/types.xml externs */
+/* typal doc-wiki/Default-And-Initial/types.xml externs */
