@@ -1,3 +1,9 @@
+## 8 December 2019
+
+### [1.22.8](https://github.com/artdecocode/typal/compare/v1.22.7...v1.22.8)
+
+- [fix] Print methods in externs as typedefs.c
+
 ## 29 November 2019
 
 ### [1.22.7](https://github.com/artdecocode/typal/compare/v1.22.6...v1.22.7)
