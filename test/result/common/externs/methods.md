@@ -11,20 +11,14 @@
 /* typal test/temp/types.xml externs */
 /**
  * testing.
- * @this {Test} This argument
- * @param {boolean=} [test] What to test.
- * @param {...string} args Other arguments.
- * @return {string}
+ * @typedef {function(this: Test,boolean=,...string): string}
  */
-var hello = function(test, ...args) {}
+var hello
 /**
  * testing. Alias of `hello`.
- * @this {Test} This argument
- * @param {boolean=} [test] What to test.
- * @param {...string} args Other arguments.
- * @return {string}
+ * @typedef {function(this: Test,boolean=,...string): string}
  */
-var world = function(test, ...args) {}
+var world
 
 /*@*/
 
@@ -37,7 +31,8 @@ var world = function(test, ...args) {}
 /* typal test/temp/types.xml externs */
 /**
  * testing.
+ * @typedef {function()}
  */
-var hello = function() {}
+var hello
 
 /*@*/

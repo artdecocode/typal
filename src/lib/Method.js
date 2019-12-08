@@ -12,8 +12,11 @@ export default class Method extends Type {
     /** @type {boolean} */
     this.async = false
   }
+  /**
+   * Make sure to define as `typedef` in externs
+   */
   get shouldPrototype() {
-    return true
+    return false
   }
   get isMethod() {
     return true

@@ -158,3 +158,19 @@
  */
 
 /*@*/
+
+## can write methods
+<types>
+  <method name="Test" return="number">
+    <arg string name="a">Example</arg>
+    <arg boolean opt name="a2">Example</arg>
+  </method>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {(a: string, a2?: boolean) => number} Test
+ */
+
+/*@*/

@@ -66,7 +66,7 @@
 /* typal test/temp/types.xml closure */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {(a: string, a2?: boolean) => number} Test
+ * @typedef {function(string,boolean=): number} Test
  */
 
 /*@*/

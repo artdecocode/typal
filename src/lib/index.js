@@ -124,3 +124,33 @@ export const trimD = d => {
     return dd.map(b => b.replace(re, '')).join('\n')
   } else return d.trim()
 }
+
+/**
+ * Props
+ * Args
+ */
+export const toType = (props, argsArgs) => {
+  const {
+    'async': async, 'void': Void, 'return': ret = Void ? 'void' : '',
+    ...rest
+  } = props
+  let { 'args': args = '' } = props
+
+  if (!args) {
+    args = argsArgs.map(({ fullType, name: n }) => {
+      if (n == 'this') return `${n}: ${fullType}`
+      if (n.startsWith('...')) return `...${fullType}`
+      return fullType
+    }).join(',')
+  }
+
+  let r = ret.replace(/\n\s*/g, ' ')
+  if (async && r) r = `!Promise<${r}>`
+  else if (async) r = '!Promise'
+  // generate function string which will be parsed
+  // a hack to convert args into _typedefParser.Type
+  let fnType = `function(${args})`
+  if (r) fnType += `: ${r}`
+  return { rest, fnType }
+  // rest['type'] = fnType // e.g., a prop will have type `function()`
+}

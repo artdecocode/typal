@@ -1,6 +1,6 @@
 import extractTags from 'rexml'
 import Property from './Property'
-import { addSuppress, makeBlock, getExternDeclaration, makeOptional } from './'
+import { addSuppress, makeBlock, getExternDeclaration, makeOptional, toType } from './'
 import { trimD } from './'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
 import { getLinks } from './get-links'
@@ -118,29 +118,9 @@ _ns.Type.prototype.isConstructor
         const isStatic = tag == 'static'
         const { newContent, argsArgs } = extractArgs(c, rootNamespace)
 
-        const {
-          'async': async, 'void': Void, 'return': ret = Void ? 'void' : '',
-          ...rest
-        } = p
-        let { 'args': args = '' } = p
-
-        if (!args) {
-          args = argsArgs.map(({ fullType, name: n }) => {
-            if (n == 'this') return `${n}: ${fullType}`
-            if (n.startsWith('...')) return `...${fullType}`
-            return fullType
-          }).join(',')
-        }
-
-        let r = ret.replace(/\n\s*/g, ' ')
-        if (async && r) r = `!Promise<${r}>`
-        else if (async) r = '!Promise'
-        // generate function string which will be parsed
-        // a hack to convert args into _typedefParser.Type
-        let fnType = `function(${args})`
-        if (r) fnType += `: ${r}`
-        rest['type'] = fnType // e.g., a prop will have type `function()`
         const pr = new Property(argsArgs)
+        const { rest, fnType } = toType(p, argsArgs)
+        rest['type'] = fnType
 
         pr.fromXML(newContent, rest)
         if (isStatic) pr._static = true

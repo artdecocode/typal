@@ -5,6 +5,7 @@ import Import from './Import'
 import read from '@wrote/read'
 import Arg, { extractArgs } from './Arg'
 import Property from './Property'
+import { toType } from '.'
 
 /**
  * When Documentary compiles types with `-n` (root namespace) flag,
@@ -149,6 +150,10 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
   // const assignment = `function(${args})`
 
   type.fromXML(isMethod ? newContent : body, props, ns, rootNamespace)
+
+  const { fnType } = toType(props, argsArgs)
+  if (isMethod) type.closureType = fnType
+
   type.setAssignment(argsArgs)
 
   return type
