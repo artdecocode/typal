@@ -1,3 +1,9 @@
+## 9 December 2019
+
+### [1.22.9](https://github.com/artdecocode/typal/compare/v1.22.8...v1.22.9)
+
+- [feature] Allow to extend multiple supers.
+
 ## 8 December 2019
 
 ### [1.22.8](https://github.com/artdecocode/typal/compare/v1.22.7...v1.22.8)
