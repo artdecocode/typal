@@ -17,7 +17,7 @@
     "wiki": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc wiki -W ../typal.wiki -n _typal",
     "wiki-dev": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc-dev wiki -W ../typal.wiki -n _typal",
     "compile": "depack src/bin/typal -c -o compile/bin -a -p -s --externs types/externs.js",
-    "compile-lib": "depack src/depack -c -o compile/depack.js -a -p -s --source_map_include_content",
+    "lib": "depack src/depack -c -o compile/typal.js -a -p -s --source_map_include_content",
     "c": "yarn-s compile compile-lib",
     "template": "yarn dev compile/template.js -T compile/index.js -t types/API.xml",
     "depack1": "depack depack/t.js -c -o t/tt.js -a -p",

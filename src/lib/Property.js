@@ -15,6 +15,7 @@ export default class Property {
   constructor(args = null) {
     /**
      * The name of the property.
+     * @suppress {checkTypes}
      * @type {?string}
      */
     this.name = null

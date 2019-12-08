@@ -1,4 +1,4 @@
-const { _parseFile, _getLinks } = require('./depack')
+const { _parseFile, _getLinks } = require('./typal')
 
 /**
  * @methodType {parseFile}

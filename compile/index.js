@@ -1,4 +1,4 @@
-const { _parseFile, _getLinks } = require('./depack')
+const { _parseFile, _getLinks } = require('./typal')
 
 /**
  * Parses the types.xml file. Looks for `<type>`, `<constructor>`, `<interface>` and `<method>` elements and extracts their properties, functions and arguments.

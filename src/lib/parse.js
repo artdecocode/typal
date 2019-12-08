@@ -3,9 +3,9 @@ import Type from './Type'
 import Method from './Method'
 import Import from './Import'
 import read from '@wrote/read'
-import Arg, { extractArgs } from './Arg'
+import Arg, { extractArgs } from './Arg' // eslint-disable-line
 import Property from './Property'
-import { toType } from '.'
+import { toType } from './'
 
 /**
  * When Documentary compiles types with `-n` (root namespace) flag,
