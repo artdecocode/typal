@@ -85,3 +85,22 @@ Test.prototype.f = function() {}
 var Test
 
 /*@*/
+
+## multiple extends
+<types>
+  <type extends="_restream.A,_restream.B" interface
+    name="Test" desc="The test class.">
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * The test class.
+ * @extends {_restream.A}
+ * @extends {_restream.B}
+ * @interface
+ */
+var Test
+
+/*@*/

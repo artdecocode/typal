@@ -174,3 +174,20 @@
  */
 
 /*@*/
+
+## extends multiple
+<types namespace="typal">
+  <constructor desc="https://git.io/fjHoZ"
+    name="Component" extends="_t.A, _t.B">
+  </constructor>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {typal.Component} Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {_t.A & _t.B & typal.$Component} typal.Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {Object} typal.$Component `＠constructor` https://git.io/fjHoZ
+ */
+
+/*@*/

@@ -253,7 +253,7 @@ _ns.Type.prototype.isConstructor
       parts.push(td)
     }
     if (hasExtends) {
-      let extended = ` * @typedef {${this.extends} & ${this.getFullNameForExtends(useNamespace)}} ${useNamespace ? this.fullName : this.name}${this.descriptionWithTag}`
+      let extended = ` * @typedef {${this.extends.split(/,\s*/).join(' & ')} & ${this.getFullNameForExtends(useNamespace)}} ${useNamespace ? this.fullName : this.name}${this.descriptionWithTag}`
       if (closure && !noSuppress) extended = addSuppress(extended)
       extended = makeBlock(extended)
       parts.push(extended)
@@ -281,7 +281,11 @@ _ns.Type.prototype.isConstructor
   toHeading(ws = '', includePrototypeTag = true) {
     let lines = []
     if (this.description) lines.push(` * ${this.description}`)
-    if (this.extends) lines.push(` * @extends {${this.extends}}`)
+    if (this.extends) {
+      this.extends.split(/,\s*/).forEach((e) => {
+        lines.push(` * @extends {${e}}`)
+      })
+    }
     if (this.args) this.args.forEach((s) => {
       let { name, description, optional, type } = s
       const d = description ? ` ${description}` : ''
@@ -403,28 +407,13 @@ _ns.Type.prototype.isConstructor
     let LINE = twl // `${twl}<strong>${nn}`
     let useTag = /_/.test(nn)
     if (this.extends) {
-      let e = `\`${this.extends}\``
-      const foundExt = allTypes.find(({ fullName }) => {
-        return fullName == this.extends
-      })
-      if (foundExt && foundExt.link) {
-        e = '<a '
-        if (foundExt.description) {
-          e += `title="${foundExt.description}" `
-        }
-        e += `href="${foundExt.link}">\`${this.extends}\`</a>`
-      } else {
-        const le = getLinks(allTypes, this.extends, { ...opts,
-          nameProcess: (td) => `\`${td}\``,
-        })
-        if (this.extends != le) e = le
-      }
+      const e = markdownExtendsList(this.extends, allTypes, opts)
       const extendS = ` extends ${e}`
       useTag = useTag || /_/.test(e)
       if (useTag) LINE += '<strong>'
       else LINE += '__'
       LINE += nn + extendS
-      if (typeof flatten == 'function') flatten(this.extends)
+      if (typeof flatten == 'function') flatten(this.extends) // ?
     } else {
       if (useTag) LINE += '<strong>'
       else LINE += '__'
@@ -472,7 +461,25 @@ const getSpread = (properties = [], closure = false) => {
   return st
 }
 
-
+const markdownExtendsList = (ext, allTypes, opts) => {
+  let e = `\`${ext}\``
+  const foundExt = allTypes.find(({ fullName }) => {
+    return fullName == ext
+  })
+  if (foundExt && foundExt.link) {
+    e = '<a '
+    if (foundExt.description) {
+      e += `title="${foundExt.description}" `
+    }
+    e += `href="${foundExt.link}">\`${ext}\`</a>`
+  } else {
+    const le = getLinks(allTypes, ext, { ...opts,
+      nameProcess: (td) => `\`${td}\``,
+    })
+    if (ext != le) e = le
+  }
+  return e
+}
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type
