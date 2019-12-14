@@ -30,6 +30,42 @@ function getData(location, force) {}
 function getData(location, force) {}
 /*@*/
 
+## Updates the @fnType tag with example
+/**
+ * @fnType {_namespace.Type.getData}
+ */
+function getData(location, force) {}
+
+/*@ types */
+<types namespace="_namespace">
+  <type name="Type">
+    <fn async return="boolean" name="getData" example="test/fixture/example.js">
+      <arg type="?function(string)=" name="callback">Callback on single file read.</arg>
+      A function that reads files and returns data.
+    </fn>
+  </type>
+</types>
+/*@*/
+
+/*@ expected */
+# output.js
+
+/**
+ * A function that reads files and returns data.
+ * @param {?function(string)=} [callback] Callback on single file read.
+ * @return {!Promise<boolean>}
+ * @example
+ * ```js
+ * console.log('hello world')
+ * const test = {
+ *   a: 'b',
+ * }
+ * console.log(test)
+ * ```
+ */
+function getData(location, force) {}
+/*@*/
+
 ## Updates the @methodType tag
 /**
  * @methodType {_namespace.getData}

@@ -45,7 +45,7 @@ export default class Template extends Replaceable {
             console.error('Property %s of type %s in %s wasn\'t parsed, possibly parser bug.', pr, n, file)
             return match
           }
-          const lines = fn.toExtern(ws)
+          const lines = fn.toExtern(ws, true)
           return lines
         },
       },

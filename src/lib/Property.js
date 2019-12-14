@@ -2,6 +2,23 @@ import parse from '@typedefs/parser'
 import { getPropType, getNameWithDefault, makeOptional, trimD } from './'
 import Arg from './Arg' // eslint-disable-line
 import serialise from './serialise'
+import { readFileSync } from 'fs'
+
+// from documentary
+const getPartial = (boundExample) => {
+  const s = boundExample
+    .replace(/^\s*\n/gm, '')
+    .replace(/[^\s]/g, '')
+  const minLength = s
+    .split('\n')
+    .reduce((acc, current) => {
+      if (current.length < acc) return current.length
+      return acc
+    }, Infinity)
+  const e = boundExample
+    .replace(new RegExp(`^ {${minLength}}`, 'gm'), '')
+  return e
+}
 
 /**
  * Representation of a property of a type.
@@ -77,6 +94,8 @@ export default class Property {
      * If this property of a type is its constructor.
      */
     this.isConstructor = false
+
+    this.example = ''
   }
   /**
    * For README documentation.
@@ -140,7 +159,8 @@ export default class Property {
   fromXML(content,
     {
       'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
-      'type': type, 'default': def, 'closure': closure, 'alias': alias, 'aliases': aliases,
+      'type': type, 'default': def, 'closure': closure, 'alias': alias,
+      'aliases': aliases, 'example': example,
       'noParams': noParams, 'static': Static, 'initial': initial },
   ) {
     if (!name) throw new Error('Property does not have a name.')
@@ -162,6 +182,17 @@ export default class Property {
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
     if (Static) this._static = true
+    if (example) this.example = Property.readExample(example)
+  }
+  static readExample(example) {
+    const f = readFileSync(example, 'utf8')
+    let ff = f
+    const fre = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\/\* end example \*\//.exec(f)
+    if (fre) {
+      const [, boundExample] = fre
+      ff = getPartial(boundExample)
+    }
+    return ff
   }
   get type() {
     return this._type || '*'
@@ -278,7 +309,10 @@ export default class Property {
 
     return this.toTypeScriptFunction(serialise)
   }
-  toExtern(ws = '') {
+  /**
+   * The heading for externs (and template functions)
+   */
+  toExtern(ws = '', includeExample = false) {
     let pp = []
     const { descriptionWithDefault } = this
     if (descriptionWithDefault) {
@@ -291,6 +325,13 @@ export default class Property {
     } else {
       const t = this.optional ? makeOptional(this.closureType) : this.closureType
       pp.push(` * @type {${t}}`)
+    }
+    if (includeExample && this.example) {
+      const e = indentWithAster(this.example)
+      pp.push(' * @example')
+      pp.push(' * ```js')
+      pp.push(...e.split('\n'))
+      pp.push(' * ```')
     }
     if (ws) pp = pp.map(p => `${ws}${p}`)
     return pp.join('\n')
@@ -310,8 +351,12 @@ export default class Property {
   }
 }
 
-const indentWithAster = (description, skipFirst = false) => {
-  const d = description.split('\n').map((l, i) => {
+/**
+ * Apply * indentation.
+ * @param {string} string The string to indent.
+ */
+const indentWithAster = (string, skipFirst = false) => {
+  const d = string.split('\n').map((l, i) => {
     if (skipFirst && !i) return l
     let s = ' *'
     if (l.length) s += ' '

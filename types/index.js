@@ -62,6 +62,7 @@ export {}
  * @prop {boolean} isParsedFunction Whether the property is a function which was parsed. Default `false`.
  * @prop {!Array<string>} aliases What aliases the property has. Default `[]`.
  * @prop {boolean} static When writing externs, this will prevent adding `.prototype`, e.g., `Type.static` instead of `Type.prototype.static`. Default `false`.
+ * @prop {string} [example] The path to the example file.
  * @prop {_typedefsParser.Type} parsed Whether the property is a function which was parsed. Default `null`.
  * @prop {(getLinks: function(!_typedefsParser.Type): string) => string} toTypeScriptFunction If the function was a parsed function, returns _TypeScript_ type.
  */
