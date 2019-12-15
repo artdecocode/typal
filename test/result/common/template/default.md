@@ -30,6 +30,38 @@ function getData(location, force) {}
 function getData(location, force) {}
 /*@*/
 
+## Multi-line descriptions
+class Test {
+  /**
+   * @fnType {_namespace.Type.getData}
+   */
+  getData(location, force) {}
+}
+
+/*@ types */
+<types namespace="_namespace">
+  <type name="Type">
+    <fn async return="boolean" name="getData">
+      A function that reads files and returns data.
+      Hello World
+    </fn>
+  </type>
+</types>
+/*@*/
+
+/*@ expected */
+# output.js
+
+class Test {
+  /**
+   * A function that reads files and returns data.
+   * Hello World
+   * @return {!Promise<boolean>}
+   */
+  getData(location, force) {}
+}
+/*@*/
+
 ## Updates the @methodType tag
 /**
  * @methodType {_namespace.getData}

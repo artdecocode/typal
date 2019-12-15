@@ -343,7 +343,7 @@ export default class Property {
     const { descriptionWithDefault } = this
     if (descriptionWithDefault) {
       const d = indentWithAster(descriptionWithDefault)
-      pp.push(d)
+      pp.push(...d.split('\n'))
     }
     if (!this.optional && this.isParsedFunction) {
       const lines = this.toHeading()

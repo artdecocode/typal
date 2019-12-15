@@ -925,7 +925,7 @@ function ub(a) {
 function vb(a, b = "", d = !1) {
   let c = [];
   var {l:e} = a;
-  e && (e = lb(e), c.push(e));
+  e && (e = lb(e), c.push(...e.split("\n")));
   !a.optional && a.isParsedFunction ? (e = tb(a), c.push(...e)) : c.push(` * @type {${a.optional ? ab(a.closureType) : a.closureType}}`);
   d && a.examples.length && (a = ob(a.examples), c.push(...a));
   b && (c = c.map(g => `${b}${g}`));

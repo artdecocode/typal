@@ -1,5 +1,5 @@
 import extractTags from 'rexml'
-import Property, { indentWithAster } from './Property'
+import Property from './Property'
 import { addSuppress, makeBlock, getExternDeclaration, makeOptional, toType } from './'
 import { trimD } from './'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
