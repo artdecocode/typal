@@ -4,6 +4,21 @@ import Arg from './Arg' // eslint-disable-line
 import serialise from './serialise'
 import { readFileSync } from 'fs'
 
+/**
+ * Apply * indentation.
+ * @param {string} string The string to indent.
+ */
+export const indentWithAster = (string, skipFirst = false) => {
+  const d = string.split('\n').map((l, i) => {
+    if (skipFirst && !i) return l
+    let s = ' *'
+    if (l.length) s += ' '
+    s += l
+    return s
+  }).join('\n')
+  return d
+}
+
 // from documentary
 const getPartial = (boundExample) => {
   const s = boundExample
@@ -160,7 +175,7 @@ export default class Property {
     {
       'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
       'type': type, 'default': def, 'closure': closure, 'alias': alias,
-      'aliases': aliases, 'example': example,
+      'aliases': aliases, 'example': example, 'example-override': exampleOverride,
       'noParams': noParams, 'static': Static, 'initial': initial },
   ) {
     if (!name) throw new Error('Property does not have a name.')
@@ -182,16 +197,24 @@ export default class Property {
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
     if (Static) this._static = true
-    if (example) this.example = Property.readExample(example)
+    if (example) this.example = Property.readExample(example, exampleOverride)
   }
-  static readExample(example) {
+  static readExample(example, exampleOverride = '') {
+    const overrides = exampleOverride.split(/\s*,\s*/)
     const f = readFileSync(example, 'utf8')
     let ff = f
-    const fre = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\/\* end example \*\//.exec(f)
+    const fre = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\/\* end example \*\//
+      .exec(f)
     if (fre) {
       const [, boundExample] = fre
       ff = getPartial(boundExample)
     }
+    overrides.forEach((o) => {
+      const [from, to] = o.split(/\s*=>\s*/)
+      ff = ff.replace(`'${from}'`, `'${to}'`)
+      ff = ff.replace(`"${from}"`, `"${to}"`)
+    })
+    ff = ff.replace(/@/g, '＠')
     return ff
   }
   get type() {
@@ -349,21 +372,6 @@ export default class Property {
     clone.name = name
     return clone
   }
-}
-
-/**
- * Apply * indentation.
- * @param {string} string The string to indent.
- */
-const indentWithAster = (string, skipFirst = false) => {
-  const d = string.split('\n').map((l, i) => {
-    if (skipFirst && !i) return l
-    let s = ' *'
-    if (l.length) s += ' '
-    s += l
-    return s
-  }).join('\n')
-  return d
 }
 
 /**

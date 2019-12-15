@@ -23,7 +23,8 @@
       },
       "args": null,
       "_static": false,
-      "isConstructor": false
+      "isConstructor": false,
+      "example": ""
     },
     {
       "name": "maxage",
@@ -40,7 +41,8 @@
       },
       "args": null,
       "_static": false,
-      "isConstructor": false
+      "isConstructor": false,
+      "example": ""
     }
   ],
   "namespace": null,
@@ -48,5 +50,6 @@
   "isInterface": false,
   "isRecord": false,
   "extends": null,
-  "args": null
+  "args": null,
+  "example": ""
 }

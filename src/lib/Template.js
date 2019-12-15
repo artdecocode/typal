@@ -31,7 +31,7 @@ export default class Template extends Replaceable {
             return match
           }
           if (pr == 'constructor' || tag == 'methodType') {
-            const lines = type.toHeading(ws)
+            const lines = type.toHeading(ws, false, true)
             return lines.join('\n')
           }
           const fn = type.properties.find(({ name }) => {

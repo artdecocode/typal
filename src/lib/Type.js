@@ -1,5 +1,5 @@
 import extractTags from 'rexml'
-import Property from './Property'
+import Property, { indentWithAster } from './Property'
 import { addSuppress, makeBlock, getExternDeclaration, makeOptional, toType } from './'
 import { trimD } from './'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
@@ -76,6 +76,8 @@ _ns.Type.prototype.isConstructor
      * @type {Array<!Arg>}
      */
     this.args = null
+
+    this.example = ''
   }
   get import() {
     return false
@@ -87,7 +89,7 @@ _ns.Type.prototype.isConstructor
     'name': name, 'type': type, 'desc': desc, 'noToc': noToc, 'spread': spread,
     'noExpand': noExpand, 'link': link, 'closure': closure,
     'constructor': isConstructor, 'extends': ext, 'interface': isInterface,
-    'record': isRecord,
+    'record': isRecord, 'example': example, 'example-override': exampleOverride,
   }, namespace, rootNamespace = null) {
     if (!name) throw new Error('Type does not have a name.')
     this.name = name
@@ -135,6 +137,7 @@ _ns.Type.prototype.isConstructor
       this.properties = [...s, ...n]
     }
     if (namespace) this.namespace = namespace
+    if (example) this.example = Property.readExample(example, exampleOverride)
   }
   get shouldPrototype() {
     return this.isConstructor || this.isInterface || this.isRecord
@@ -278,7 +281,7 @@ _ns.Type.prototype.isConstructor
   /**
    * To heading above declaration bodies. Can be used in externs.
    */
-  toHeading(ws = '', includePrototypeTag = true) {
+  toHeading(ws = '', includePrototypeTag = true, includeExample = false) {
     let lines = []
     if (this.description) lines.push(` * ${this.description}`)
     if (this.extends) {
@@ -301,6 +304,13 @@ _ns.Type.prototype.isConstructor
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
     if (includePrototypeTag) lines.push(` * @${this.prototypeAnnotation}`)
+    if (includeExample && this.example) {
+      const e = indentWithAster(this.example)
+      lines.push(' * @example')
+      lines.push(' * ```js')
+      lines.push(...e.split('\n'))
+      lines.push(' * ```')
+    }
     if (ws) lines = lines.map(p => `${ws}${p}`)
     return lines
   }
