@@ -123,6 +123,11 @@ _typal.Type.prototype.extends
  */
 _typal.Type.prototype.args
 /**
+ * Examples that have been read. Default `[]`.
+ * @type {!Array<string>}
+ */
+_typal.Type.prototype.examples
+/**
  * Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
  * @param {!Array<!_typal.Type>} allTypes The array with all types for linking.
  * @param {!_typal.ToMarkdownOptions} opts Options passed by _Documentary_. If `narrow` is specified, the table returned as an object for manual printing, otherwise a string is returned. WIP.

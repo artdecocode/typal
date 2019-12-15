@@ -91,5 +91,8 @@
       </arg>
       Converts a type to a markdown string. This function is closely integrated with the _Documentary_ package, however can also be used to get a standard markdown string with properties in a table.
     </fn>
+    <prop type="!Array<string>" name="examples" initial="[]">
+      Examples that have been read.
+    </prop>
   </interface>
 </types>

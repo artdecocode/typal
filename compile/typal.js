@@ -512,6 +512,7 @@ class U {
     this.namespace = null;
     this.isRecord = this.isInterface = this.isConstructor = !1;
     this.args = this.extends = null;
+    this.examples = [];
   }
   get import() {
     return !1;
@@ -556,7 +557,7 @@ class U {
       this.properties = [...la, ...ma];
     }
     q && (this.namespace = q);
-    r && M(r, t);
+    r && (this.examples = M(r, t));
   }
   g(a, b = new RegExp(`([!?])?${a}\\.`, "g")) {
     this.type && (this.type = this.type.replace(b, "$1"));

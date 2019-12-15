@@ -107,7 +107,7 @@ help:{description:"Print the help information and exit.", boolean:!0, short:"h"}
     });
   });
   g = g.filter(f => null !== f);
-  Object.assign(a, {T:g});
+  Object.assign(a, {S:g});
   return a;
 }(fa), x = v.source, ia = v.output, ja = v.closure, ka = v.useNamespace, la = v.externs, ma = v.types, na = v.template, oa = v.migrate, pa = v.help, qa = v.version;
 function ra(a = {usage:{}}) {
@@ -189,10 +189,10 @@ function Ha(a, b, d = !1) {
 };
 class Ja extends xa {
   constructor(a) {
-    const {binary:b = !1, rs:d = null, ...c} = a || {}, {O:e = C(!0), proxyError:g} = a || {}, f = (h, k) => e(k);
+    const {binary:b = !1, rs:d = null, ...c} = a || {}, {N:e = C(!0), proxyError:g} = a || {}, f = (h, k) => e(k);
     super(c);
     this.b = [];
-    this.M = new Promise((h, k) => {
+    this.L = new Promise((h, k) => {
       this.on("finish", () => {
         let l;
         b ? l = Buffer.concat(this.b) : l = this.b.join("");
@@ -217,11 +217,11 @@ class Ja extends xa {
     d();
   }
   get f() {
-    return this.M;
+    return this.L;
   }
 }
 const D = async a => {
-  ({f:a} = new Ja({rs:a, O:C(!0)}));
+  ({f:a} = new Ja({rs:a, N:C(!0)}));
   return await a;
 };
 async function F(a) {
@@ -364,7 +364,7 @@ function Qa(a, b) {
   return d.call(d);
 }
 ;const Ra = a => new RegExp(`%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_(\\d+)_%%`, "g"), Sa = (a, b) => `%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_${b}_%%`, Ta = () => {
-  var a = {P:/^\/\*\*? (documentary|typal) (.+?) externs (.*?)\*\/\n(?:([^\n][\s\S]+?\n))?$/mg};
+  var a = {O:/^\/\*\*? (documentary|typal) (.+?) externs (.*?)\*\/\n(?:([^\n][\s\S]+?\n))?$/mg};
   return Object.keys(a).reduce((b, d) => {
     {
       var c = a[d];
@@ -484,7 +484,7 @@ async function Xa(a, b) {
   }
   b = Number.isInteger(b) || [!0, !1, "null"].includes(b) || ["number", "boolean"].includes(d) ? b : `"${b}"`;
   return `${a}=${b}`;
-}, $a = ({number:a, L:b, boolean:d, type:c}) => b ? "string" : a ? "number" : d ? "boolean" : c ? c : "*", ab = a => `${/[^\w\d._]/.test(a) ? `(${a})` : a}|undefined`, P = a => a ? `/**
+}, $a = ({number:a, K:b, boolean:d, type:c}) => b ? "string" : a ? "number" : d ? "boolean" : c ? c : "*", ab = a => `${/[^\w\d._]/.test(a) ? `(${a})` : a}|undefined`, P = a => a ? `/**
 ${a}
  */
 ` : "/**\n */\n", Q = a => ` * @suppress {nonStandardJsDocs}
@@ -738,7 +738,7 @@ function gb(a) {
   }
   a.name = d;
   b && (a.description = S(b));
-  b = $a({number:f, L:c, boolean:e, type:h});
+  b = $a({number:f, K:c, boolean:e, type:h});
   k && (b = b.replace(new RegExp(`([!?])?${k}\\.`, "g"), "$1"));
   b.endsWith("=") && (b = b.replace(/=$/, ""), g = !0);
   a.type = b;
@@ -867,7 +867,7 @@ function pb(a, b, {name:d, string:c, "boolean":e, opt:g, number:f, type:h, "defa
   }
   a.name = d;
   b && (a.description = S(b));
-  b = $a({number:f, L:c, boolean:e, type:h});
+  b = $a({number:f, K:c, boolean:e, type:h});
   r && (a.m = r);
   l && (a.g = l);
   a.type = b;
@@ -1135,7 +1135,7 @@ function Eb(a, b = !1) {
   return b ? `${a.ns}${d}` : d;
 }
 function Fb(a, b = !1, d = !1, c = b) {
-  c = ` * @typedef {${(b ? a.closureType : a.type) || a.H()}}${` ${Eb(a, c)}${a.l}`}`;
+  c = ` * @typedef {${(b ? a.closureType : a.type) || a.m()}}${` ${Eb(a, c)}${a.l}`}`;
   a = (a.properties ? a.properties.reduce((e, g) => {
     if (g.b) {
       return e;
@@ -1162,7 +1162,7 @@ class Y {
     this.namespace = null;
     this.isRecord = this.isInterface = this.isConstructor = !1;
     this.args = this.extends = null;
-    this.m = [];
+    this.examples = [];
   }
   get import() {
     return !1;
@@ -1200,19 +1200,19 @@ class Y {
         return w;
       });
       a = [...b, ...a];
-      const {K:L, n:Vb} = a.reduce((w, B) => {
-        B.static ? w.K.push(B) : w.n.push(B);
+      const {J:L, n:Vb} = a.reduce((w, B) => {
+        B.static ? w.J.push(B) : w.n.push(B);
         return w;
-      }, {K:[], n:[]});
+      }, {J:[], n:[]});
       this.properties = [...L, ...Vb];
     }
     t && (this.namespace = t);
-    q && (this.m = nb(q, r));
+    q && (this.examples = nb(q, r));
   }
-  get J() {
+  get H() {
     return this.isConstructor || this.isInterface || this.isRecord;
   }
-  H() {
+  m() {
     return "Object";
   }
   v(a, b = new RegExp(`([!?])?${a}\\.`, "g")) {
@@ -1237,7 +1237,7 @@ class Y {
     g.push(e);
     return g.join("");
   }
-  get S() {
+  get P() {
     const a = this.tag;
     if (!a) {
       throw Error("Unknown prototype type (not constructor or interface).");
@@ -1266,8 +1266,8 @@ class Y {
       }
       c.push(` * @param {${k}${h ? "=" : ""}} ${h ? `[${g}]` : g}${e}`);
     });
-    b && c.push(` * @${this.S}`);
-    d && this.m.length && (b = ob(this.m), c.push(...b));
+    b && c.push(` * @${this.P}`);
+    d && this.examples.length && (b = ob(this.examples), c.push(...b));
     a && (c = c.map(e => `${a}${e}`));
     return c;
   }
@@ -1383,7 +1383,7 @@ class Lb extends N {
     this.f = null;
     this.async = !1;
   }
-  get J() {
+  get H() {
     return !1;
   }
   get isMethod() {
@@ -1406,7 +1406,7 @@ class Lb extends N {
     d && b.push(`${a} * @return {${d}}`);
     return b;
   }
-  H() {
+  m() {
     return `(${this.args.map(({name:a, type:b, optional:d}) => `${a}${d ? "?" : ""}: ${b}`).join(", ")}) => ${this.return}`;
   }
   v(a) {
@@ -1511,7 +1511,7 @@ const Sb = (a, b, d) => {
   a = [...a.map(e => {
     {
       let g;
-      e.closureType ? g = ` * @typedef {${e.closureType}}` : e.J || (g = ` * @typedef {${Gb(e.properties, !0)}}`);
+      e.closureType ? g = ` * @typedef {${e.closureType}}` : e.H || (g = ` * @typedef {${Gb(e.properties, !0)}}`);
       g ? (e.description && (g = ` * ${e.description}\n${g}`), g = P(g), e = g += R(e.namespace, e.name)) : e = Cb(e);
     }
     return e;
@@ -1556,9 +1556,9 @@ function $b(a, b, d, c, e, g, f) {
         for (; r < f;) {
           r += this.lines[n].length, n++;
         }
-        n = {line:n, N:b.length + 11};
+        n = {line:n, M:b.length + 11};
       }
-      const {line:p, N:q} = n;
+      const {line:p, M:q} = n;
       this.i("%s:%s:%s", this.file, p, q);
     }
   };
@@ -1604,7 +1604,7 @@ const Z = (a, b, d, c, e) => {
   }
 }, bc = "String Boolean Object Date Number Symbol Buffer Function".split(" ");
 var cc = (a, b = !1) => {
-  var {P:d} = Ta();
+  var {O:d} = Ta();
   const c = Va(d);
   d = Ua(d);
   return new Lb(b ? [Yb] : [Yb, c, ac, d], a);
