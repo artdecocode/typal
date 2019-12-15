@@ -110,7 +110,7 @@ export default class Property {
      */
     this.isConstructor = false
 
-    this.example = ''
+    this.examples = []
   }
   /**
    * For README documentation.
@@ -175,7 +175,7 @@ export default class Property {
     {
       'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
       'type': type, 'default': def, 'closure': closure, 'alias': alias,
-      'aliases': aliases, 'example': example, 'example-override': exampleOverride,
+      'aliases': aliases, 'example': example, 'example-override': exampleOverride = '',
       'noParams': noParams, 'static': Static, 'initial': initial },
   ) {
     if (!name) throw new Error('Property does not have a name.')
@@ -197,25 +197,28 @@ export default class Property {
     if (aliases) this.aliases = aliases.split(/\s*,\s*/)
 
     if (Static) this._static = true
-    if (example) this.example = Property.readExample(example, exampleOverride)
+    if (example) this.examples = Property.readExamples(example, exampleOverride)
   }
-  static readExample(example, exampleOverride = '') {
+  static readExamples(Example, exampleOverride = '') {
     const overrides = exampleOverride.split(/\s*,\s*/)
-    const f = readFileSync(example, 'utf8')
-    let ff = f
-    const fre = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\/\* end example \*\//
-      .exec(f)
-    if (fre) {
-      const [, boundExample] = fre
-      ff = getPartial(boundExample)
-    }
-    overrides.forEach((o) => {
-      const [from, to] = o.split(/\s*=>\s*/)
-      ff = ff.replace(`'${from}'`, `'${to}'`)
-      ff = ff.replace(`"${from}"`, `"${to}"`)
+    const examples = Example.split(/\s*,\s*/)
+    return examples.map((example) => {
+      const f = readFileSync(example, 'utf8')
+      let ff = f
+      const fre = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\/\* end example \*\//
+        .exec(f)
+      if (fre) {
+        const [, boundExample] = fre
+        ff = getPartial(boundExample)
+      }
+      overrides.forEach((o) => {
+        const [from, to] = o.split(/\s*=>\s*/)
+        ff = ff.replace(`'${from}'`, `'${to}'`)
+        ff = ff.replace(`"${from}"`, `"${to}"`)
+      })
+      ff = ff.replace(/@/g, '＠')
+      return ff
     })
-    ff = ff.replace(/@/g, '＠')
-    return ff
   }
   get type() {
     return this._type || '*'
@@ -349,15 +352,63 @@ export default class Property {
       const t = this.optional ? makeOptional(this.closureType) : this.closureType
       pp.push(` * @type {${t}}`)
     }
-    if (includeExample && this.example) {
-      const e = indentWithAster(this.example)
-      pp.push(' * @example')
-      pp.push(' * ```js')
-      pp.push(...e.split('\n'))
-      pp.push(' * ```')
+    if (includeExample && this.examples.length) {
+      const el = Property.getExampleLines(this.examples)
+      pp.push(...el)
     }
     if (ws) pp = pp.map(p => `${ws}${p}`)
     return pp.join('\n')
+  }
+  static getExampleLines(examples) {
+    const pp = []
+    pp.push(' * @example')
+    examples.forEach((example) => {
+      // const e = indentWithAster(example)
+      // pp.push(' * ```js')
+      const exampleLines = example.split('\n')
+      let currentComment = [], currentBlock = []
+      let state = '', newState
+      let eg = exampleLines.reduce((acc, current) => {
+        if (current.startsWith('///')) {
+          newState = 'comment'
+          currentComment.push(current)
+        } else {
+          newState = 'block'
+          currentBlock.push(current)
+        }
+        if (!state) state = newState
+        if (newState != state) {
+          if (newState == 'block') {
+            acc.push(currentComment.join('\n'))
+            currentComment = []
+          } else {
+            acc.push(currentBlock.join('\n'))
+            currentBlock = []
+          }
+          state = newState
+        }
+        return acc
+      }, [])
+      if (currentComment.length) {
+        eg.push(currentComment.join('\n'))
+      } else if (currentBlock.length) {
+        eg.push(currentBlock.join('\n'))
+      }
+      eg = eg.reduce((acc, e) => {
+        if (e.startsWith('///')) {
+          e = e.replace(/^\/\/\/\s+/gm, '')
+          acc.push(...e.split('\n'))
+        } else {
+          acc.push('```js')
+          acc.push(...e.split('\n'))
+          acc.push('```')
+        }
+        return acc
+      }, [])
+      const all = eg.map(e => indentWithAster(e))
+      pp.push(...all)
+    })
+    return pp
   }
   toParam(parentParam, ws = '', closure = false, useNamespace = false) {
     const s = this.toJSDoc(parentParam, closure, useNamespace)

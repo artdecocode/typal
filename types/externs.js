@@ -215,10 +215,10 @@ _typal.Property.prototype.aliases
  */
 _typal.Property.prototype.static
 /**
- * The path to the example file.
- * @type {string|undefined}
+ * Examples that have been read. Default `[]`.
+ * @type {!Array<string>}
  */
-_typal.Property.prototype.example
+_typal.Property.prototype.examples
 /**
  * Whether the property is a function which was parsed. Default `null`.
  * @type {_typedefsParser.Type}

@@ -77,7 +77,7 @@ _ns.Type.prototype.isConstructor
      */
     this.args = null
 
-    this.example = ''
+    this.examples = []
   }
   get import() {
     return false
@@ -137,7 +137,7 @@ _ns.Type.prototype.isConstructor
       this.properties = [...s, ...n]
     }
     if (namespace) this.namespace = namespace
-    if (example) this.example = Property.readExample(example, exampleOverride)
+    if (example) this.examples = Property.readExamples(example, exampleOverride)
   }
   get shouldPrototype() {
     return this.isConstructor || this.isInterface || this.isRecord
@@ -304,12 +304,9 @@ _ns.Type.prototype.isConstructor
       lines.push(` * @param {${type}${optional ? '=' : ''}} ${arg}${d}`)
     })
     if (includePrototypeTag) lines.push(` * @${this.prototypeAnnotation}`)
-    if (includeExample && this.example) {
-      const e = indentWithAster(this.example)
-      lines.push(' * @example')
-      lines.push(' * ```js')
-      lines.push(...e.split('\n'))
-      lines.push(' * ```')
+    if (includeExample && this.examples.length) {
+      const el = Property.getExampleLines(this.examples)
+      lines.push(...el)
     }
     if (ws) lines = lines.map(p => `${ws}${p}`)
     return lines

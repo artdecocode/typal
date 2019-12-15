@@ -35,8 +35,8 @@
     <prop boolean name="static" initial="false">
       When writing externs, this will prevent adding `.prototype`, e.g., `Type.static` instead of `Type.prototype.static`.
     </prop>
-    <prop string name="example" opt>
-      The path to the example file.
+    <prop type="!Array<string>" name="examples" initial="[]">
+      Examples that have been read.
     </prop>
     <prop type="_typedefsParser.Type" name="parsed" initial="null">
       Whether the property is a function which was parsed.
