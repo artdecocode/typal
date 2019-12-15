@@ -1,5 +1,9 @@
 ## 15 December 2019
 
+### [1.23.1](https://github.com/artdecocode/typal/compare/v1.23.0...v1.23.1)
+
+- [fix] Indent templates with multiple lines in descriptions.
+
 ### [1.23.0](https://github.com/artdecocode/typal/compare/v1.22.9...v1.23.0)
 
 - [feature] Read and embed examples into templates.
