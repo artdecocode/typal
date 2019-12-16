@@ -12,15 +12,15 @@ var _typal = {}
  */
 _typal.Type = function() {}
 /**
+ * The type's namespace, e.g., `_typal`. Default `null`.
+ * @type {?string}
+ */
+_typal.Type.prototype.namespace
+/**
  * The name of the type.
  * @type {string}
  */
 _typal.Type.prototype.name
-/**
- * The type of the type. Default `null`.
- * @type {?string}
- */
-_typal.Type.prototype.type
 /**
  * An overriding type for closure to generate externs, e.g., `function(string): boolean` instead of `(s:string) => boolean`. Default `null`.
  * @type {?string}
@@ -58,14 +58,14 @@ _typal.Type.prototype.import
 _typal.Type.prototype.link
 /**
  * The properties of the type. Default `[]`.
- * @type {!Array<!_typal.Property>}
+ * @type {!Array<!(_typal.Property|_typal.Fn)>}
  */
 _typal.Type.prototype.properties
 /**
- * The type's namespace, e.g., `_typal`. Default `null`.
+ * The type of the type. Default `null`.
  * @type {?string}
  */
-_typal.Type.prototype.namespace
+_typal.Type.prototype.type
 /**
  * The namespace or an empty string.
  * @type {string}
@@ -163,17 +163,17 @@ _typal.Method.prototype.async
  * A property of a type.
  * @interface
  */
-_typal.Property
+_typal.Property = function() {}
+/**
+ * Function properties can have arguments specified inside of their tags. Default `null`.
+ * @type {Array<!_typal.Arg>}
+ */
+_typal.Property.prototype.args
 /**
  * The name of the property.
  * @type {string}
  */
 _typal.Property.prototype.name
-/**
- * The description of the property. Default `null`.
- * @type {?string}
- */
-_typal.Property.prototype.description
 /**
  * The type of the property. Default `*`.
  * @type {string}
@@ -195,15 +195,10 @@ _typal.Property.prototype.default
  */
 _typal.Property.prototype.optional
 /**
- * Function properties can have arguments specified inside of their tags. Default `null`.
- * @type {Array<!_typal.Arg>}
+ * The description of the property. Default `null`.
+ * @type {?string}
  */
-_typal.Property.prototype.args
-/**
- * If this property of a type is its constructor. Default `false`.
- * @type {boolean}
- */
-_typal.Property.prototype.isConstructor
+_typal.Property.prototype.description
 /**
  * Whether the property is a function which was parsed. Default `false`.
  * @type {boolean}
@@ -235,6 +230,24 @@ _typal.Property.prototype.parsed
  * @return {string}
  */
 _typal.Property.prototype.toTypeScriptFunction = function(getLinks) {}
+
+/* typal types/Fn.xml externs */
+/**
+ * This is a property of a constructor/interface which is a function.
+ * @extends {_typal.Property}
+ * @interface
+ */
+_typal.Fn = function() {}
+/**
+ * If this property of a type is its constructor. Default `false`.
+ * @type {boolean}
+ */
+_typal.Fn.prototype.isConstructor
+/**
+ * Whether this is an async function. Default `false`.
+ * @type {boolean}
+ */
+_typal.Fn.prototype.async
 
 /* typal types/Arg.xml externs */
 /**

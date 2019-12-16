@@ -126,10 +126,10 @@ export const trimD = d => {
 }
 
 /**
- * Props
- * Args
+ * Converts properties into a function type.
+ * @param {!Object} props
  */
-export const toType = (props, argsArgs) => {
+export const toType = (props, argsArgs, fullName = null) => {
   const {
     'async': async, 'void': Void, 'return': ret = Void ? 'void' : '',
     ...rest
@@ -147,10 +147,10 @@ export const toType = (props, argsArgs) => {
   let r = ret.replace(/\n\s*/g, ' ')
   if (async && r) r = `!Promise<${r}>`
   else if (async) r = '!Promise'
+  if (!r && rest.name == 'constructor' && fullName) r = fullName
   // generate function string which will be parsed
   // a hack to convert args into _typedefParser.Type
   let fnType = `function(${args})`
   if (r) fnType += `: ${r}`
-  return { rest, fnType }
-  // rest['type'] = fnType // e.g., a prop will have type `function()`
+  return { rest: { ...rest, async }, fnType }
 }

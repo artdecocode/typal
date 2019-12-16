@@ -4,8 +4,8 @@ import Method from './Method'
 import Import from './Import'
 import read from '@wrote/read'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
-import Property from './Property'
 import { toType } from './'
+import Fn from './Fn'
 
 /**
  * When Documentary compiles types with `-n` (root namespace) flag,
@@ -22,6 +22,8 @@ const removeNamespace = (namespace, type) => {
 }
 
 /**
+ * This is used when constructor method is not specified.
+ * @deprecated
  * @param {Type} type
  * @param {string} [rootNamespace]
  */
@@ -29,7 +31,7 @@ const addConstructorProperty = (type, rootNamespace) => {
   if (!type.args || !type.args.length) return
   const args = type.args.map(({ fullType }) => fullType).join(', ')
   const t = `function(${args}): ${type.fullName}`
-  const prop = new Property(type.args)
+  const prop = new Fn(type.args)
   prop.isConstructor = true
   prop.fromXML('Constructor method.', { 'type': t, 'name': 'constructor' })
   prop.clearNamespace(rootNamespace)
@@ -80,7 +82,10 @@ const parseFile = (xml, rootNamespace) => {
     case 'interface': {
       const t = parseTypes(content, props, ns, rootNamespace)
       t.forEach(tt => {
-        addConstructorProperty(tt, rootNamespace)
+        const hasConsructorProp = tt.properties.some(({ isConstructor }) => {
+          return isConstructor
+        })
+        if (!hasConsructorProp) addConstructorProperty(tt, rootNamespace)
         tt.isInterface = true
       })
       acc.push(...t)
@@ -89,7 +94,10 @@ const parseFile = (xml, rootNamespace) => {
     case 'constructor': {
       const t = parseTypes(content, props, ns, rootNamespace)
       t.forEach(tt => {
-        addConstructorProperty(tt, rootNamespace)
+        const hasConsructorProp = tt.properties.some(({ isConstructor }) => {
+          return isConstructor
+        })
+        if (!hasConsructorProp) addConstructorProperty(tt, rootNamespace)
         tt.isConstructor = true
       })
       acc.push(...t)
@@ -124,7 +132,7 @@ const parseFile = (xml, rootNamespace) => {
 /**
  * This should be applicable only to <interface> / <constructor> / <method>
  * @param {string} content
- * @param {Object} props
+ * @param {!Object} props
  * @param {string} [ns]
  * @param {string} [rootNamespace]
  * @param {boolean} [isMethod]
@@ -158,9 +166,6 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
 
   return type
 }
-
-/** @type {function(new: Property)} */
-const a = function () {}
 
 /**
  * This is applicable to @interfaces/constructors/methods which

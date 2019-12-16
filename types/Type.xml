@@ -27,7 +27,7 @@
     <prop type="?string" name="link" initial="null">
       The link to the documentation page.
     </prop>
-    <prop type="!Array<!_typal.Property>" name="properties" initial="[]">
+    <prop type="!Array<!(_typal.Property|_typal.Fn)>" name="properties" initial="[]">
       The properties of the type.
     </prop>
     <prop type="?string" name="namespace" initial="null">

@@ -5,7 +5,7 @@ import serialise from './serialise'
 import { readFileSync } from 'fs'
 
 /**
- * Apply * indentation.
+ * Apply ` * ` indentation.
  * @param {string} string The string to indent.
  */
 export const indentWithAster = (string, skipFirst = false) => {
@@ -104,11 +104,6 @@ export default class Property {
      * @type {boolean}
      */
     this._static = false
-
-    /**
-     * If this property of a type is its constructor.
-     */
-    this.isConstructor = false
 
     this.examples = []
   }

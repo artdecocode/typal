@@ -1,5 +1,6 @@
 import extractTags from 'rexml'
 import Property from './Property'
+import Fn from './Fn'
 import { addSuppress, makeBlock, getExternDeclaration, makeOptional, toType } from './'
 import { trimD } from './'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
@@ -36,7 +37,7 @@ export default class Type {
     this.noExpand = false
     /** @type {?string} */
     this.link = null
-    /** @type {!Array<!Property>} */
+    /** @type {!Array<!(Property|Fn)>} */
     this.properties = []
     /**
      * The type's namespace, e.g., `typal`.
@@ -106,6 +107,7 @@ _ns.Type.prototype.isConstructor
     if (isInterface === true) this.isInterface = isInterface
     if (isRecord === true) this.isRecord = isRecord
     if (ext) this.extends = ext
+    if (namespace) this.namespace = namespace
 
     if (content) {
       const ps = extractTags('prop', content)
@@ -120,8 +122,8 @@ _ns.Type.prototype.isConstructor
         const isStatic = tag == 'static'
         const { newContent, argsArgs } = extractArgs(c, rootNamespace)
 
-        const pr = new Property(argsArgs)
-        const { rest, fnType } = toType(p, argsArgs)
+        const pr = new Fn(argsArgs)
+        const { rest, fnType } = toType(p, argsArgs, this.fullName)
         rest['type'] = fnType
 
         pr.fromXML(newContent, rest)
@@ -134,9 +136,12 @@ _ns.Type.prototype.isConstructor
         else acc.n.push(p)
         return acc
       }, { s: [], n: [] })
-      this.properties = [...s, ...n]
+      this.properties = [...s, ...n].sort(({ isConstructor: a }, { isConstructor: b }) => {
+        if (a && !b) return -1
+        if (b && !a) return 1
+        return 0
+      })
     }
-    if (namespace) this.namespace = namespace
     if (example) this.examples = Property.readExamples(example, exampleOverride)
   }
   get shouldPrototype() {
@@ -330,14 +335,18 @@ _ns.Type.prototype.isConstructor
     // if (this.closureType) pp.push(` * @type {${this.closureType}}`)  // todo <arg>new</arg>
     let s = makeBlock(pp.join('\n'))
     s = s + getExternDeclaration(this.namespace, this.name, this.toExternsAssignment())
-    /** @type {!Array<!Property>} */
+    /** @type {!Array<!(Property|Fn)>} */
     const properties = this.properties.reduce((acc, p) => {
       acc.push(p)
       const a = p.aliases.map(al => p.makeAlias(al))
       acc.push(...a)
       return acc
     }, [])
-    const t = properties.filter(({ isConstructor }) => !isConstructor).map((p) => {
+
+    const t = properties.filter((prop) => {
+      if (prop instanceof Fn && prop.isConstructor) return false
+      return true
+    }).map((p) => {
       let r = p.toExtern()
       r = makeBlock(r)
       const prototype = p.static ? '' : '.prototype'

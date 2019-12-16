@@ -1,0 +1,11 @@
+<types namespace="_typal">
+  <import1 name="Type" ns="_typedefsParser" from="@typedefs/parser" link="https://github.com/artdecocode/parser#type-type" desc="A parsed Closure Compiler type." />
+  <interface name="Fn" extends="_typal.Property" desc="This is a property of a constructor/interface which is a function.">
+    <prop boolean name="isConstructor" initial="false">
+      If this property of a type is its constructor.
+    </prop>
+    <prop boolean name="async" initial="false">
+      Whether this is an async function.
+    </prop>
+  </interface>
+</types>
