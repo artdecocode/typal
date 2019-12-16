@@ -78,6 +78,9 @@ _ns.Type.prototype.isConstructor
      */
     this.args = null
 
+    /**
+     * @type {!Array<string>}
+     */
     this.examples = []
   }
   get import() {

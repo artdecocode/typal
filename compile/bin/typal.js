@@ -1416,12 +1416,15 @@ class Mb extends N {
   }
 }
 ;const Ob = a => {
-  if (a.args && a.args.length) {
-    var b = `function(${a.args.map(({G:c}) => c).join(", ")}): ${a.fullName}`, d = new V(a.args);
-    d.isConstructor = !0;
-    d.b("Constructor method.", {type:b, name:"constructor"});
-    rb(d, void 0);
-    a.properties.unshift(d);
+  var {args:b = []} = a;
+  if (b.length) {
+    var d = `function(${b.map(({G:c}) => c).join(", ")}): ${a.fullName}`;
+    b = new V(b);
+    b.isConstructor = !0;
+    b.b("Constructor method.", {type:d, name:"constructor"});
+    b.examples = a.examples;
+    rb(b, void 0);
+    a.properties.unshift(b);
   }
 }, Qb = a => {
   a = R("types", a);

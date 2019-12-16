@@ -28,12 +28,16 @@ const removeNamespace = (namespace, type) => {
  * @param {string} [rootNamespace]
  */
 const addConstructorProperty = (type, rootNamespace) => {
-  if (!type.args || !type.args.length) return
-  const args = type.args.map(({ fullType }) => fullType).join(', ')
+  const { args: Args = [] } = type
+  if (!Args.length) return
+  const args = Args.map(({ fullType }) => fullType).join(', ')
   const t = `function(${args}): ${type.fullName}`
-  const prop = new Fn(type.args)
+  const prop = new Fn(Args)
   prop.isConstructor = true
-  prop.fromXML('Constructor method.', { 'type': t, 'name': 'constructor' })
+  prop.fromXML('Constructor method.', {
+    'type': t, 'name': 'constructor',
+  })
+  prop.examples = type.examples
   prop.clearNamespace(rootNamespace)
   type.properties.unshift(prop)
 }

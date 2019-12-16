@@ -105,6 +105,9 @@ export default class Property {
      */
     this._static = false
 
+    /**
+     * @type {!Array<string>}
+     */
     this.examples = []
   }
   /**

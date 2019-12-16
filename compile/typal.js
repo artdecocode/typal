@@ -660,12 +660,15 @@ const ra = (a, b) => {
   });
   b.g(a);
 }, X = (a, b) => {
-  if (a.args && a.args.length) {
-    var d = `function(${a.args.map(({l:e}) => e).join(", ")}): ${a.fullName}`, c = new O(a.args);
-    c.isConstructor = !0;
-    c.b("Constructor method.", {type:d, name:"constructor"});
-    M(c, b);
-    a.properties.unshift(c);
+  var {args:d = []} = a;
+  if (d.length) {
+    var c = `function(${d.map(({l:e}) => e).join(", ")}): ${a.fullName}`;
+    d = new O(d);
+    d.isConstructor = !0;
+    d.b("Constructor method.", {type:c, name:"constructor"});
+    d.examples = a.examples;
+    M(d, b);
+    a.properties.unshift(d);
   }
 }, Y = (a, b, d, c, e = !1) => {
   const g = e ? new W : new U, f = a.search(/<(prop|function|fn|static) /);
