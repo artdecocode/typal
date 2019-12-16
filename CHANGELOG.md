@@ -1,5 +1,9 @@
 ## 16 December 2019
 
+### [1.24.1](https://github.com/artdecocode/typal/compare/v1.24.0...v1.24.1)
+
+- [fix] Pass `examples` to constructor prop.
+
 ### [1.24.0](https://github.com/artdecocode/typal/compare/v1.23.2...v1.24.0)
 
 - [feature] Generate classes in templates.
