@@ -1,5 +1,9 @@
 ## 16 December 2019
 
+### [1.24.0](https://github.com/artdecocode/typal/compare/v1.23.2...v1.24.0)
+
+- [feature] Generate classes in templates.
+
 ### [1.23.2](https://github.com/artdecocode/typal/compare/v1.23.1...v1.23.2)
 
 - [fix] Add `examples` to Type's externs.
