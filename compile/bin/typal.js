@@ -830,7 +830,7 @@ function pb(a, b = "") {
   const d = b.split(/\s*,\s*/);
   return a.split(/\s*,\s*/).map(c => {
     let e = c = ua(c, "utf8");
-    if (c = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\/\* end example \*\//.exec(c)) {
+    if (c = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\s*\/\* end example \*\//.exec(c)) {
       [, c] = c, e = ob(c);
     }
     d.forEach(f => {

@@ -203,7 +203,7 @@ export default class Property {
     return examples.map((example) => {
       const f = readFileSync(example, 'utf8')
       let ff = f
-      const fre = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\/\* end example \*\//
+      const fre = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\s*\/\* end example \*\//
         .exec(f)
       if (fre) {
         const [, boundExample] = fre

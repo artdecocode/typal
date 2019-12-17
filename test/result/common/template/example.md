@@ -119,3 +119,40 @@ class Test {
   constructor(location, force) {}
 }
 /*@*/
+
+## Example with indentations
+class Test {
+  /**
+   * @fnType {_namespace.Type.constructor}
+   */
+  constructor(location, force) {}
+}
+
+/*@ types */
+<types namespace="_namespace">
+  <constructor name="Type"
+    example="test/fixture/examples/indent.js"
+    desc="Hello World">
+  </constructor>
+</types>
+/*@*/
+
+/*@ expected */
+# output.js
+
+class Test {
+  /**
+   * Hello World
+   * @example
+   * ```js
+   * console.log('hello')
+   *
+   * ```
+   * some text
+   * ```js
+   * console.log('world')
+   * ```
+   */
+  constructor(location, force) {}
+}
+/*@*/
