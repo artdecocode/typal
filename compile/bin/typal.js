@@ -884,16 +884,18 @@ function ub(a, b = !1) {
 }
 function vb(a) {
   const b = [], {function:{args:d, return:c, variableArgs:e, this:f}} = a.parsed;
-  d.map(g => S(g)).forEach((g, h) => {
-    const {optional:k} = d[h], {name:l = `arg${h}`, description:m} = a.args[h] || {};
-    b.push(` * @param {${g}${k ? "=" : ""}} ${k ? `[${l}]` : l}${m ? ` ${m}` : ""}`);
+  d.map(h => S(h)).forEach((h, k) => {
+    const {optional:l} = d[k], {name:m = `arg${k}`, description:n} = a.args[k] || {};
+    b.push(` * @param {${h}${l ? "=" : ""}} ${l ? `[${m}]` : m}${n ? ` ${n}` : ""}`);
   });
-  e && b.push(` * @param {...${S(e)}} args`);
-  f && b.push(` * @this {${S(f)}}`);
-  if (c && "void" != c.name) {
-    const g = S(c);
-    b.push(` * @return {${g}}`);
+  if (e) {
+    var g = "args";
+    const {name:h = ""} = a.args[a.args.length - 1] || {};
+    h.startsWith("...") && (g = h.replace("...", ""));
+    b.push(` * @param {...${S(e)}} ${g}`);
   }
+  f && b.push(` * @this {${S(f)}}`);
+  c && "void" != c.name && (g = S(c), b.push(` * @return {${g}}`));
   return b;
 }
 function wb(a) {

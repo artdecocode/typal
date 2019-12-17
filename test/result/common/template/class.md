@@ -19,6 +19,7 @@ class Constructor extends _Constructor {}
     </fn>
     <fn static return="!_namespace.Constructor" name="url">
       <arg string name="location">The path to the file.</arg>
+      <arg type="!Object" name="...params">The middleware.</arg>
       Returns the URL.
     </fn>
   </constructor>
@@ -42,9 +43,10 @@ class Constructor extends _Constructor {
   /**
    * Returns the URL.
    * @param {string} location The path to the file.
+   * @param {...!Object} params
    */
-  static url(location) {
-    return _Constructor.url(location)
+  static url(location, ...params) {
+    return _Constructor.url(location, ...params)
   }
   /**
    * A function that reads files and returns data.

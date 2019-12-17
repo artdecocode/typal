@@ -278,7 +278,12 @@ export default class Property {
 
       pp.push(` * @param {${s}${optional ? '=' : ''}} ${arg}${d}`)
     })
-    if (variableArgs) pp.push(` * @param {...${serialise(variableArgs)}} args`)
+    if (variableArgs) {
+      let varArgsName = 'args'
+      const { name: lastArgName = '' } = this.args[this.args.length - 1] || {}
+      if (lastArgName.startsWith('...')) varArgsName = lastArgName.replace('...', '')
+      pp.push(` * @param {...${serialise(variableArgs)}} ${varArgsName}`)
+    }
     if (thisType) pp.push(` * @this {${serialise(thisType)}}`)
 
     if (ret && ret.name != 'void') { // vs code assumes void with no return
