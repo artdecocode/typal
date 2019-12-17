@@ -1,5 +1,9 @@
 ## 17 December 2019
 
+### [1.24.3](https://github.com/artdecocode/typal/compare/v1.24.2...v1.24.3)
+
+- [fix] Variable args names in template.
+
 ### [1.24.2](https://github.com/artdecocode/typal/compare/v1.24.1...v1.24.2)
 
 - [fix] Fix examples parsing.
