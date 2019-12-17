@@ -1,3 +1,9 @@
+## 17 December 2019
+
+### [1.24.2](https://github.com/artdecocode/typal/compare/v1.24.1...v1.24.2)
+
+- [fix] Fix examples parsing.
+
 ## 16 December 2019
 
 ### [1.24.1](https://github.com/artdecocode/typal/compare/v1.24.0...v1.24.1)
