@@ -1,5 +1,10 @@
 ## 17 December 2019
 
+### [1.24.4](https://github.com/artdecocode/typal/compare/v1.24.3...v1.24.4)
+
+- [fix] Fix variable arg param names in externs.
+- [fix] Print descriptions of var args.
+
 ### [1.24.3](https://github.com/artdecocode/typal/compare/v1.24.2...v1.24.3)
 
 - [fix] Variable args names in template.

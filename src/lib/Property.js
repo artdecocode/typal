@@ -279,10 +279,9 @@ export default class Property {
       pp.push(` * @param {${s}${optional ? '=' : ''}} ${arg}${d}`)
     })
     if (variableArgs) {
-      let varArgsName = 'args'
-      const { name: lastArgName = '' } = this.args[this.args.length - 1] || {}
-      if (lastArgName.startsWith('...')) varArgsName = lastArgName.replace('...', '')
-      pp.push(` * @param {...${serialise(variableArgs)}} ${varArgsName}`)
+      const { varArgsName, varArgsDesc } = getVarArgsName(this.args || [])
+      const l = [varArgsName, varArgsDesc].filter(Boolean).join(' ')
+      pp.push(` * @param {...${serialise(variableArgs)}} ${l}`)
     }
     if (thisType) pp.push(` * @this {${serialise(thisType)}}`)
 
@@ -315,7 +314,10 @@ export default class Property {
         const { name = `arg${i}` } = this.argsWithoutThis[i] || {}
         return name
       })
-      if (variableArgs) a.push('...args')
+      if (variableArgs) {
+        const { varArgsName } = getVarArgsName(this.args || [])
+        a.push(`...${varArgsName}`)
+      }
       return ` = function(${a.join(', ')}) {}`
     } else if (this.type.startsWith('function(')) { // if couldn't parse
       return ' = function() {}'
@@ -426,6 +428,16 @@ export default class Property {
     clone.name = name
     return clone
   }
+}
+
+/**
+ * @param {!Array<!Arg>} args
+ */
+const getVarArgsName = (args) => {
+  let varArgsName = 'args'
+  const { name: lastArgName = '', description } = args[args.length - 1] || {}
+  if (lastArgName.startsWith('...')) varArgsName = lastArgName.replace('...', '')
+  return { varArgsName, varArgsDesc: description }
 }
 
 /**

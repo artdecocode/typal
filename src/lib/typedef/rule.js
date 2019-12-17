@@ -26,6 +26,10 @@ async function replacement(match, docOrTypal, location) {
     return a.startsWith('ignore:')
   })
   ignore = ignore ? ignore.replace('ignore:', '').split(',') : []
+  // let only = args.find((a) => {
+  //   return a.startsWith('only:')
+  // })
+  // only = only ? only.replace('only:', '').split(',') : []
 
   let { closure, externs } = this.conf // for closure, suppress typedef
   if (argsClosure) closure = true

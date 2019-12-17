@@ -43,7 +43,7 @@ class Constructor extends _Constructor {
   /**
    * Returns the URL.
    * @param {string} location The path to the file.
-   * @param {...!Object} params
+   * @param {...!Object} params The middleware.
    */
   static url(location, ...params) {
     return _Constructor.url(location, ...params)

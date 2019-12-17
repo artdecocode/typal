@@ -188,6 +188,30 @@ Test.test = function(...args) {}
 
 /*@*/
 
+## variable args with name
+<types>
+  <type record name="Test">
+    <fn name="test">
+      <arg type="Type" name="...test">
+        The rest.
+      </arg>
+    </fn>
+  </type>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * @record
+ */
+var Test
+/**
+ * @param {...Type} test The rest.
+ */
+Test.prototype.test = function(...test) {}
+
+/*@*/
+
 ## this arg
 <types>
   <type record name="Test">
@@ -267,7 +291,7 @@ var Test
  * desc
  * @type {(function(this: _contextTesting.MaskContext,string,..._contextTesting.Context): *|!Promise)|undefined}
  */
-Test.prototype.getResults = function(string, ...args) {}
+Test.prototype.getResults = function(string, ...contexts) {}
 
 /*@*/
 
