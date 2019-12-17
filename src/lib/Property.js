@@ -238,9 +238,9 @@ export default class Property {
     }
   }
   /**
-   * Returns the first line of JSDoc, e.g., `{type} Description`.
+   * Returns the first line of JSDoc, e.g., `{type} Description`, and examples if present.
    */
-  toJSDoc(parentParam = null, closure = false, useNamespace = closure) {
+  toJSDoc(parentParam = null, closure = false, useNamespace = closure, includeExamples = false) {
     if (!this.name) throw new Error('Property does not have a name. Has it been constructed using fromXML?')
     const nameWithDefault = getNameWithDefault(this.name, this.optional ? this.default : null, this.type, parentParam)
     const name = this.optional ? `[${nameWithDefault}]` : nameWithDefault
@@ -248,7 +248,13 @@ export default class Property {
     const t = descriptionWithDefault ? ` ${descriptionWithDefault}` : ''
 
     const type = this.getTypedefType(closure, useNamespace)
-    const s = `{${type}} ${name}${t}`
+    let s = `{${type}} ${name}${t}`
+    if (includeExamples) {
+      const exampleLines = Property.getExampleLines(this.examples, {
+        addExample: false, indent: false,
+      })
+      if (exampleLines.length) s += `\n${exampleLines.join('\n')}`
+    }
     return s
   }
   get descriptionWithDefault() {
@@ -257,8 +263,11 @@ export default class Property {
       (s ? ' ' : '')}Default \`${this.default}\`.` : ''
     return `${s}${d}`
   }
+  /**
+   * Used in `@typedefs`.
+   */
   toProp(closure = false, useNamespace = closure) {
-    const jsdoc = this.toJSDoc(null, closure, useNamespace)
+    const jsdoc = this.toJSDoc(null, closure, useNamespace, true)
     const t = indentWithAster(jsdoc, true)
     const p = ` * @prop ${t}`
     return p
@@ -364,12 +373,13 @@ export default class Property {
     if (ws) pp = pp.map(p => `${ws}${p}`)
     return pp.join('\n')
   }
-  static getExampleLines(examples) {
+  /**
+   * @param {!Array<string>} examples The examples.
+   */
+  static getExampleLines(examples, { addExample = true, indent = true } = {}) {
     const pp = []
-    pp.push(' * @example')
+    if (addExample) pp.push(' * @example')
     examples.forEach((example) => {
-      // const e = indentWithAster(example)
-      // pp.push(' * ```js')
       const exampleLines = example.split('\n')
       let currentComment = [], currentBlock = []
       let state = '', newState
@@ -410,8 +420,8 @@ export default class Property {
         }
         return acc
       }, [])
-      const all = eg.map(e => indentWithAster(e))
-      pp.push(...all)
+      if (indent) eg = eg.map(e => indentWithAster(e))
+      pp.push(...eg)
     })
     return pp
   }

@@ -1,3 +1,9 @@
+## 18 December 2019
+
+### [1.24.5](https://github.com/artdecocode/typal/compare/v1.24.4...v1.24.5)
+
+- [fix] Add examples to `prop`.
+
 ## 17 December 2019
 
 ### [1.24.4](https://github.com/artdecocode/typal/compare/v1.24.3...v1.24.4)
