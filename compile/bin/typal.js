@@ -823,7 +823,10 @@ function S(a) {
   d.length && (c += " ");
   return c + d;
 }).join("\n"), ob = a => {
-  const b = a.replace(/^\s*\n/gm, "").replace(/[^\s]/g, "").split("\n").reduce((d, c) => c.length < d ? c.length : d, Infinity);
+  const b = a.replace(/^\s*\n/gm, "").split("\n").reduce((d, c) => {
+    [{length:c = 0} = {}] = /^\s*/.exec(c) || [];
+    return c < d ? c : d;
+  }, Infinity);
   return a.replace(new RegExp(`^ {${b}}`, "gm"), "");
 };
 function pb(a, b = "") {
@@ -877,7 +880,7 @@ function tb(a, b = null, d = !1, c = !1) {
   var {m:e} = a;
   e = e ? ` ${e}` : "";
   d = `{${sb(a, d)}} ${b}${e}`;
-  c && (a = qb(a.examples, {M:!1, R:!1}), a.length && (d += `\n${a.join("\n")}`));
+  c && (a = qb(a.examples, {M:!1, R:!1}).join("\n").replace(/\*/g, "\uff0a")) && (d += `\n${a}`);
   return d;
 }
 function ub(a, b = !1) {

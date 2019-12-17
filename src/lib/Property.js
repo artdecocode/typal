@@ -22,12 +22,12 @@ export const indentWithAster = (string, skipFirst = false) => {
 // from documentary
 const getPartial = (boundExample) => {
   const s = boundExample
-    .replace(/^\s*\n/gm, '')
-    .replace(/[^\s]/g, '')
+    .replace(/^\s*\n/gm, '') // remove empty lines
   const minLength = s
     .split('\n')
     .reduce((acc, current) => {
-      if (current.length < acc) return current.length
+      const [{ length = 0 } = {}] = /^\s*/.exec(current) || []
+      if (length < acc) return length
       return acc
     }, Infinity)
   const e = boundExample
@@ -253,7 +253,9 @@ export default class Property {
       const exampleLines = Property.getExampleLines(this.examples, {
         addExample: false, indent: false,
       })
-      if (exampleLines.length) s += `\n${exampleLines.join('\n')}`
+      const e = exampleLines.join('\n')
+        .replace(/\*/g, '＊')
+      if (e) s += `\n${e}`
     }
     return s
   }

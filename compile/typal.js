@@ -300,7 +300,10 @@ const K = (a, b) => {
 };
 const {readFileSync:ea} = fs;
 const fa = a => {
-  const b = a.replace(/^\s*\n/gm, "").replace(/[^\s]/g, "").split("\n").reduce((d, c) => c.length < d ? c.length : d, Infinity);
+  const b = a.replace(/^\s*\n/gm, "").split("\n").reduce((d, c) => {
+    [{length:c = 0} = {}] = /^\s*/.exec(c) || [];
+    return c < d ? c : d;
+  }, Infinity);
   return a.replace(new RegExp(`^ {${b}}`, "gm"), "");
 };
 function L(a, b = "") {

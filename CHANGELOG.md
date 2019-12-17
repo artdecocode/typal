@@ -1,5 +1,9 @@
 ## 18 December 2019
 
+### [1.24.6](https://github.com/artdecocode/typal/compare/v1.24.5...v1.24.6)
+
+- [fix] Fix examples' indentation.
+
 ### [1.24.5](https://github.com/artdecocode/typal/compare/v1.24.4...v1.24.5)
 
 - [fix] Add examples to `prop`.
