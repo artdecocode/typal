@@ -4,8 +4,8 @@ export {}
 /**
  * @typedef {_typal.Type} Type `＠interface` A representation of a type.
  * @typedef {Object} _typal.Type `＠interface` A representation of a type.
- * @prop {?string} namespace The type's namespace, e.g., `_typal`. Default `null`.
  * @prop {string} name The name of the type.
+ * @prop {?string} type The type of the type. Default `null`.
  * @prop {?string} closureType An overriding type for closure to generate externs, e.g., `function(string): boolean` instead of `(s:string) => boolean`. Default `null`.
  * @prop {?string} description The description of the type. Default `null`.
  * @prop {boolean} noToc Whether the type should not be included in the table of contents (for _Documentary_). Default `false`.
@@ -14,7 +14,7 @@ export {}
  * @prop {boolean} import Whether the type as an import. Default `false`.
  * @prop {?string} link The link to the documentation page. Default `null`.
  * @prop {!Array<!(_typal.Property|_typal.Fn)>} properties The properties of the type. Default `[]`.
- * @prop {?string} type The type of the type. Default `null`.
+ * @prop {?string} namespace The type's namespace, e.g., `_typal`. Default `null`.
  * @prop {string} ns The namespace or an empty string.
  * @prop {string} fullName The type name with the namespace if it has with one.
  * @prop {boolean} isConstructor Whether the externs should have the form of
@@ -52,13 +52,13 @@ export {}
  * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type
  * @typedef {_typal.Property} Property `＠interface` A property of a type.
  * @typedef {Object} _typal.Property `＠interface` A property of a type.
- * @prop {Array<!_typal.Arg>} args Function properties can have arguments specified inside of their tags. Default `null`.
  * @prop {string} name The name of the property.
+ * @prop {?string} description The description of the property. Default `null`.
  * @prop {string} type The type of the property. Default `*`.
  * @prop {boolean} hasDefault Whether the property has the default value. Default `false`.
  * @prop {?(string|boolean|number)} default The default value of the property. Default `null`.
  * @prop {boolean} optional If the property is optional. Default `false`.
- * @prop {?string} description The description of the property. Default `null`.
+ * @prop {Array<!_typal.Arg>} args Function properties can have arguments specified inside of their tags. Default `null`.
  * @prop {boolean} isParsedFunction Whether the property is a function which was parsed. Default `false`.
  * @prop {!Array<string>} aliases What aliases the property has. Default `[]`.
  * @prop {boolean} static When writing externs, this will prevent adding `.prototype`, e.g., `Type.static` instead of `Type.prototype.static`. Default `false`.

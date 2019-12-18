@@ -3,8 +3,8 @@ const { _parseFile, _getLinks } = require('./typal')
 /**
  * @methodType {parseFile}
  */
-function parseFile(xml, namespace) {
-  return _parseFile(xml, namespace)
+function parseFile(xml, namespace, location) {
+  return _parseFile(xml, namespace, location)
 }
 
 /**
@@ -21,6 +21,9 @@ module.exports = {
 
 /**
  * @typedef {import('../types').Type} _typal.Type
+ */
+/**
+ * @typedef {import('../types').Import} _typal.Import
  */
 /**
  * @typedef {import('../types').LinkingOptions} _typal.LinkingOptions

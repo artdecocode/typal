@@ -12,15 +12,15 @@ var _typal = {}
  */
 _typal.Type = function() {}
 /**
- * The type's namespace, e.g., `_typal`. Default `null`.
- * @type {?string}
- */
-_typal.Type.prototype.namespace
-/**
  * The name of the type.
  * @type {string}
  */
 _typal.Type.prototype.name
+/**
+ * The type of the type. Default `null`.
+ * @type {?string}
+ */
+_typal.Type.prototype.type
 /**
  * An overriding type for closure to generate externs, e.g., `function(string): boolean` instead of `(s:string) => boolean`. Default `null`.
  * @type {?string}
@@ -62,10 +62,10 @@ _typal.Type.prototype.link
  */
 _typal.Type.prototype.properties
 /**
- * The type of the type. Default `null`.
+ * The type's namespace, e.g., `_typal`. Default `null`.
  * @type {?string}
  */
-_typal.Type.prototype.type
+_typal.Type.prototype.namespace
 /**
  * The namespace or an empty string.
  * @type {string}
@@ -165,15 +165,15 @@ _typal.Method.prototype.async
  */
 _typal.Property = function() {}
 /**
- * Function properties can have arguments specified inside of their tags. Default `null`.
- * @type {Array<!_typal.Arg>}
- */
-_typal.Property.prototype.args
-/**
  * The name of the property.
  * @type {string}
  */
 _typal.Property.prototype.name
+/**
+ * The description of the property. Default `null`.
+ * @type {?string}
+ */
+_typal.Property.prototype.description
 /**
  * The type of the property. Default `*`.
  * @type {string}
@@ -195,10 +195,10 @@ _typal.Property.prototype.default
  */
 _typal.Property.prototype.optional
 /**
- * The description of the property. Default `null`.
- * @type {?string}
+ * Function properties can have arguments specified inside of their tags. Default `null`.
+ * @type {Array<!_typal.Arg>}
  */
-_typal.Property.prototype.description
+_typal.Property.prototype.args
 /**
  * Whether the property is a function which was parsed. Default `false`.
  * @type {boolean}

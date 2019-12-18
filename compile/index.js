@@ -4,14 +4,11 @@ const { _parseFile, _getLinks } = require('./typal')
  * Parses the types.xml file. Looks for `<type>`, `<constructor>`, `<interface>` and `<method>` elements and extracts their properties, functions and arguments.
  * @param {string} xml The content of the `xml` file.
  * @param {string=} [namespace] Namespace to ignore in types and properties.
- * @return {{
-    namespace: string,
-    types: !Array<!_typal.Type>,
-    imports: !Array<!_typal.Import>
-  }}
+ * @param {string=} [location] The path to the file. Used to resolve relative paths for examples.
+ * @return {{ namespace: string, types: !Array<!_typal.Type>, imports: !Array<!_typal.Import> }}
  */
-function parseFile(xml, namespace) {
-  return _parseFile(xml, namespace)
+function parseFile(xml, namespace, location) {
+  return _parseFile(xml, namespace, location)
 }
 
 /**
