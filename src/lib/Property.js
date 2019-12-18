@@ -109,6 +109,8 @@ export default class Property {
      * @type {!Array<string>}
      */
     this.examples = []
+
+    this.templateNoReturn = false
   }
   /**
    * For README documentation.
@@ -174,7 +176,9 @@ export default class Property {
       'name': name, 'string': string, 'boolean': boolean, 'opt': opt, 'number': number,
       'type': type, 'default': def, 'closure': closure, 'alias': alias,
       'aliases': aliases, 'example': example, 'example-override': exampleOverride = '',
-      'noParams': noParams, 'static': Static, 'initial': initial },
+      'noParams': noParams, 'static': Static, 'initial': initial,
+      'template-no-return': templateNoReturn,
+    },
   ) {
     if (!name) throw new Error('Property does not have a name.')
     this.name = name
@@ -196,6 +200,7 @@ export default class Property {
 
     if (Static) this._static = true
     if (example) this.examples = Property.readExamples(example, exampleOverride)
+    if (templateNoReturn) this.templateNoReturn = true
   }
   static readExamples(Example, exampleOverride = '') {
     const overrides = exampleOverride.split(/\s*,\s*/)
@@ -277,7 +282,7 @@ export default class Property {
   /**
    * If the property is function, returns the heading above it for jsdoc.
    */
-  toHeading() {
+  toHeading(fromTemplate) {
     const pp = []
     const { function: { args, return: ret, variableArgs, this: thisType } } = this.parsed
     const a = args.map(ar => serialise(ar))
@@ -297,6 +302,7 @@ export default class Property {
     if (thisType) pp.push(` * @this {${serialise(thisType)}}`)
 
     if (ret && ret.name != 'void') { // vs code assumes void with no return
+      if (fromTemplate && this.templateNoReturn) return pp
       const r = serialise(ret)
       pp.push(` * @return {${r}}`)
     }
@@ -354,7 +360,7 @@ export default class Property {
   /**
    * The heading for externs (and template functions)
    */
-  toExtern(ws = '', includeExample = false) {
+  toExtern(ws = '', fromTemplate = false) {
     let pp = []
     const { descriptionWithDefault } = this
     if (descriptionWithDefault) {
@@ -362,13 +368,13 @@ export default class Property {
       pp.push(...d.split('\n'))
     }
     if (!this.optional && this.isParsedFunction) {
-      const lines = this.toHeading()
+      const lines = this.toHeading(fromTemplate)
       pp.push(...lines)
     } else {
       const t = this.optional ? makeOptional(this.closureType) : this.closureType
       pp.push(` * @type {${t}}`)
     }
-    if (includeExample && this.examples.length) {
+    if (fromTemplate && this.examples.length) {
       const el = Property.getExampleLines(this.examples)
       pp.push(...el)
     }

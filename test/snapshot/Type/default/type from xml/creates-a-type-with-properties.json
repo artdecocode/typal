@@ -23,7 +23,8 @@
       },
       "args": null,
       "_static": false,
-      "examples": []
+      "examples": [],
+      "templateNoReturn": false
     },
     {
       "name": "maxage",
@@ -40,7 +41,8 @@
       },
       "args": null,
       "_static": false,
-      "examples": []
+      "examples": [],
+      "templateNoReturn": false
     }
   ],
   "namespace": null,

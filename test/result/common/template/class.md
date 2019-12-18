@@ -22,6 +22,9 @@ class Constructor extends _Constructor {}
       <arg type="!Object" name="...params">The middleware.</arg>
       Returns the URL.
     </fn>
+    <fn return="string" name="noReturn" template-no-return>
+      Proxy return.
+    </fn>
   </constructor>
 </types>
 /*@*/
@@ -68,6 +71,12 @@ class Constructor extends _Constructor {
    */
   async getDataAlias(location, force, callback) {
     return super.getData(location, force, callback)
+  }
+  /**
+   * Proxy return.
+   */
+  noReturn() {
+    return super.noReturn()
   }
 }
 /*@*/

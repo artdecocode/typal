@@ -13,5 +13,6 @@
   },
   "args": null,
   "_static": false,
-  "examples": []
+  "examples": [],
+  "templateNoReturn": false
 }
