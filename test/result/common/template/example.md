@@ -170,6 +170,9 @@ class Test {
   <constructor name="Type"
     example="../fixture/examples/indent.js"
     desc="Hello World">
+    <prop example="../fixture/examples/indent.js" name="prop">
+      Prop
+    </prop>
   </constructor>
 </types>
 /*@*/

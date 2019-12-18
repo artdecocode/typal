@@ -94,6 +94,16 @@ _ns.Type.prototype.isConstructor
     return false
   }
   /**
+   * When the location is given, resolve relative example paths.
+   * @param {!Object} props
+   * @param {string|null} file
+   */
+  static updateExampleProp(props, file) {
+    const e = props['example']
+    if (e && e.startsWith('.') && file)
+      props['example'] = resolve(dirname(file), e)
+  }
+  /**
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
@@ -123,6 +133,7 @@ _ns.Type.prototype.isConstructor
       const ps = extractTags('prop', content)
       const props = ps.map(({ content: c, props: p }) => {
         const pr = new Property()
+        Type.updateExampleProp(p, this.file)
         pr.fromXML(c, p)
         return pr
       })
@@ -136,6 +147,7 @@ _ns.Type.prototype.isConstructor
         const { rest, fnType } = toType(p, argsArgs, this.fullName)
         rest['type'] = fnType
 
+        Type.updateExampleProp(p, this.file)
         pr.fromXML(newContent, rest)
         if (isStatic) pr._static = true
         return pr

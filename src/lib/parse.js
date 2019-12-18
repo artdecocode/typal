@@ -70,9 +70,7 @@ const parseFile = (xml, rootNamespace, location = null) => {
 
   const types = /** @type {!Array<!_typal.Type>} */ (extracted.reduce((acc, { content, props, tag }) => {
     const { 'alias': alias, 'aliases': aliases, ...restProps } = props
-    const example = restProps['example']
-    if (example && example.startsWith('.') && location)
-      restProps['example']  = resolve(dirname(location), example)
+    if (location) Type.updateExampleProp(restProps, location)
     const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
 
     switch (tag) {
