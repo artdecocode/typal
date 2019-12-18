@@ -1,5 +1,9 @@
 ## 18 December 2019
 
+### [1.24.11](https://github.com/artdecocode/typal/compare/v1.24.10...v1.24.11)
+
+- [fix] Add location to the template.
+
 ### [1.24.10](https://github.com/artdecocode/typal/compare/v1.24.9...v1.24.10)
 
 - [fix] Fix reading examples for `fns`.
