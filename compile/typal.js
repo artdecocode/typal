@@ -238,7 +238,7 @@ const E = ({A:a, C:b, l:c, type:d}) => b ? "string" : a ? "number" : c ? "boolea
   !b && "constructor" == f.name && c && (b = c);
   c = `function(${a})`;
   b && (c += `: ${b}`);
-  return {F:{...f, async:d}, o:c};
+  return {F:{...f, async:d, return:b}, o:c};
 };
 function H(a, b) {
   const c = a.example;
@@ -425,11 +425,13 @@ class P {
   constructor(...a) {
     super(...a);
     this.isConstructor = this.async = !1;
+    this.return = "";
   }
   b(a, b) {
     super.b(a, b);
     "constructor" == b.name && (this.isConstructor = !0);
     this.async = b.async;
+    this.return = b.return;
   }
 }
 ;const S = (a, b, c = {}) => {

@@ -15,6 +15,10 @@ export default class Fn extends Property {
      * If this property of a type is its constructor.
      */
     this.isConstructor = false
+    /**
+     * The return type.
+     */
+    this.return = ''
   }
   fromXML(content, props) {
     super.fromXML(content, props)
@@ -22,5 +26,6 @@ export default class Fn extends Property {
       this.isConstructor = true
     }
     this.async = props.async
+    this.return = props.return
   }
 }

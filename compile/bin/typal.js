@@ -522,7 +522,7 @@ ${a}`, bb = (a, b, c) => {
   !b && "constructor" == g.name && c && (b = c);
   c = `function(${a})`;
   b && (c += `: ${b}`);
-  return {W:{...g, async:d}, H:c};
+  return {W:{...g, async:d, return:b}, H:c};
 };
 function Q(a, b) {
   const c = a.example;
@@ -1048,11 +1048,13 @@ class V extends yb {
   constructor(...a) {
     super(...a);
     this.isConstructor = this.async = !1;
+    this.return = "";
   }
   b(a, b) {
     super.b(a, b);
     "constructor" == b.name && (this.isConstructor = !0);
     this.async = b.async;
+    this.return = b.return;
   }
 }
 ;const X = (a, b, c = {}) => {

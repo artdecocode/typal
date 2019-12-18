@@ -1,3 +1,10 @@
+## 19 December 2019
+
+### [1.24.15](https://github.com/artdecocode/typal/compare/v1.24.14...v1.24.15)
+
+- [feature] Add the `return` property to the _Property_.
+- [doc] Update `schema` to include examples.
+
 ## 18 December 2019
 
 ### [1.24.14](https://github.com/artdecocode/typal/compare/v1.24.13...v1.24.14)

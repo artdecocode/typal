@@ -8,6 +8,7 @@
 var _typal = {}
 /**
  * A representation of a type.
+ * Constructor method.
  * @interface
  */
 _typal.Type = function() {}
@@ -138,6 +139,7 @@ _typal.Type.prototype.toMarkdown = function(allTypes, opts) {}
 /* typal types/Method.xml externs */
 /**
  * A representation of a type.
+ * Constructor method.
  * @extends {_typal.Type}
  * @interface
  */
@@ -161,6 +163,7 @@ _typal.Method.prototype.async
 /* typal types/Property.xml externs */
 /**
  * A property of a type.
+ * Constructor method.
  * @interface
  */
 _typal.Property = function() {}
@@ -234,6 +237,7 @@ _typal.Property.prototype.toTypeScriptFunction = function(getLinks) {}
 /* typal types/Fn.xml externs */
 /**
  * This is a property of a constructor/interface which is a function.
+ * Constructor method.
  * @extends {_typal.Property}
  * @interface
  */
@@ -248,6 +252,11 @@ _typal.Fn.prototype.isConstructor
  * @type {boolean}
  */
 _typal.Fn.prototype.async
+/**
+ * The return of the function. Default `''`.
+ * @type {string}
+ */
+_typal.Fn.prototype.return
 
 /* typal types/Arg.xml externs */
 /**
@@ -279,6 +288,7 @@ _typal.Arg.prototype.description
 /* typal types/Import.xml externs */
 /**
  * A representation of an import.
+ * Constructor method.
  * @extends {_typal.Type}
  * @interface
  */

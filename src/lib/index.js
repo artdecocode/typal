@@ -154,7 +154,7 @@ export const toType = (props, argsArgs, fullName = null) => {
   // a hack to convert args into _typedefParser.Type
   let fnType = `function(${args})`
   if (r) fnType += `: ${r}`
-  return { rest: { ...rest, async }, fnType }
+  return { rest: { ...rest, async, return: r }, fnType }
 }
 
 /**
