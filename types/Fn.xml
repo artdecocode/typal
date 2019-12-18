@@ -7,5 +7,8 @@
     <prop boolean name="async" initial="false">
       Whether this is an async function.
     </prop>
+    <prop string name="return" initial="''">
+      The return of the function.
+    </prop>
   </interface>
 </types>

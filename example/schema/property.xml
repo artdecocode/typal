@@ -5,11 +5,16 @@
     <prop string name="string">The string property.</prop>
     <prop type="Example" name="example">The custom type property.</prop>
     <prop opt type="Example" name="optional">The optional property.</prop>
-    <prop string name="default" default="hello-world">
+    <prop string name="default" default="hello">
       The default property.
     </prop>
     <prop type="Example" closure="_ns.Example" name="closure">
       The Closure override property.
+    </prop>
+    <prop string name="example"
+      example="example/schema/jsdoc.js"
+      example-override="../src => typal">
+      A property with an example.
     </prop>
   </type>
 </types>
