@@ -86,6 +86,28 @@ var Test
 
 /*@*/
 
+## generates interfaces with assignments
+<types>
+  <interface name="Test" desc="Test.">
+    <fn name="constructor">
+      <arg string name="str">The string.</arg>
+      The constructor method.
+    </fn>
+  </interface>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml externs */
+/**
+ * Test.
+ * The constructor method.
+ * @param {string} str The string.
+ * @interface
+ */
+var Test = function(str) {}
+
+/*@*/
+
 ## multiple extends
 <types>
   <type extends="_restream.A,_restream.B" interface

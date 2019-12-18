@@ -1,3 +1,5 @@
+import { resolve, dirname } from 'path'
+
 /**
  * Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
  * @param {string} name Name of the param.
@@ -153,4 +155,15 @@ export const toType = (props, argsArgs, fullName = null) => {
   let fnType = `function(${args})`
   if (r) fnType += `: ${r}`
   return { rest: { ...rest, async }, fnType }
+}
+
+/**
+ * When the location is given, resolve relative example paths.
+ * @param {!Object} props
+ * @param {string|null} file
+ */
+export function updateExampleProp(props, file) {
+  const e = props['example']
+  if (e && e.startsWith('.') && file)
+    props['example'] = resolve(dirname(file), e)
 }

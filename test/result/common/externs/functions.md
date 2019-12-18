@@ -105,6 +105,7 @@ Test.prototype.syncVoid = function(arg0) {}
 /* typal test/temp/types.xml externs */
 /**
  * testing
+ * Constructor method.
  * @param {boolean} test What to test.
  * @interface
  */
@@ -131,6 +132,7 @@ Test.syncVoid = function(arg0) {}
 /* typal test/temp/types.xml externs */
 /**
  * testing
+ * Constructor method.
  * @param {boolean} test What to test.
  * @interface
  */
@@ -153,6 +155,7 @@ Test.prototype.syncVoid = function(test) {}
 /* typal test/temp/types.xml externs */
 /**
  * Preact component.
+ * Constructor method.
  * @constructor
  */
 var Component = function() {}

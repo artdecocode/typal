@@ -4,7 +4,7 @@ import Method from './Method'
 import Import from './Import'
 import read from '@wrote/read'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
-import { toType } from './'
+import { toType, updateExampleProp } from './'
 import Fn from './Fn'
 import { dirname, resolve } from 'path'
 
@@ -69,7 +69,7 @@ const parseFile = (xml, rootNamespace, location = null) => {
 
   const types = /** @type {!Array<!_typal.Type>} */ (extracted.reduce((acc, { content, props, tag }) => {
     const { 'alias': alias, 'aliases': aliases, ...restProps } = props
-    if (location) Type.updateExampleProp(restProps, location)
+    if (location) updateExampleProp(restProps, location)
     const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
 
     switch (tag) {
@@ -174,7 +174,7 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false, location
   const { fnType } = toType(props, argsArgs)
   if (isMethod) type.closureType = fnType
 
-  type.setAssignment(argsArgs)
+  if (!type.args) type.setAssignment(argsArgs)
 
   return type
 }

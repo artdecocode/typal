@@ -1,12 +1,11 @@
-import extractTags from 'rexml'
-import Property from './Property'
+import Property, { indentWithAster } from './Property'
 import Fn from './Fn'
-import { addSuppress, makeBlock, getExternDeclaration, makeOptional, toType } from './'
+import { addSuppress, makeBlock, getExternDeclaration, makeOptional, updateExampleProp } from './'
 import { trimD } from './'
-import Arg, { extractArgs } from './Arg' // eslint-disable-line
+import Arg from './Arg' // eslint-disable-line
 import { getLinks } from './get-links'
 import makePropsTable from './make-props-table'
-import { resolve, dirname } from 'path'
+import extractProperties from './extract-props'
 
 /**
  * A representation of a type.
@@ -94,16 +93,6 @@ _ns.Type.prototype.isConstructor
     return false
   }
   /**
-   * When the location is given, resolve relative example paths.
-   * @param {!Object} props
-   * @param {string|null} file
-   */
-  static updateExampleProp(props, file) {
-    const e = props['example']
-    if (e && e.startsWith('.') && file)
-      props['example'] = resolve(dirname(file), e)
-  }
-  /**
    * Create type from the xml content and properties parsed with `rexml`.
    */
   fromXML(content, {
@@ -130,41 +119,16 @@ _ns.Type.prototype.isConstructor
     if (namespace) this.namespace = namespace
 
     if (content) {
-      const ps = extractTags('prop', content)
-      const props = ps.map(({ content: c, props: p }) => {
-        const pr = new Property()
-        Type.updateExampleProp(p, this.file)
-        pr.fromXML(c, p)
-        return pr
-      })
-      const functions = extractTags(['function', 'fn', 'static'], content)
-
-      const fnProps = functions.map(({ content: c, props: p, tag }) => {
-        const isStatic = tag == 'static'
-        const { newContent, argsArgs } = extractArgs(c, rootNamespace)
-
-        const pr = new Fn(argsArgs)
-        const { rest, fnType } = toType(p, argsArgs, this.fullName)
-        rest['type'] = fnType
-
-        Type.updateExampleProp(rest, this.file)
-        pr.fromXML(newContent, rest)
-        if (isStatic) pr._static = true
-        return pr
-      })
-      const all = [...props, ...fnProps]
-      const { c, s, n } = all.reduce((acc, p) => {
-        if (p.isConstructor) acc.c.push(p)
-        else if (p.static) acc.s.push(p)
-        else acc.n.push(p)
-        return acc
-      }, { c: [], s: [], n: [] })
-
-      this.properties = [...c, ...s, ...n]
+      const { properties, constructor } = extractProperties(content, rootNamespace, this.file, this.fullName)
+      if (constructor) {
+        this.args = constructor.args
+      }
+      this.properties = properties
     }
     if (example) {
-      const e = (example.startsWith('.') && this.file) ? resolve(dirname(this.file), example) : example
-      this.examples = Property.readExamples(e, exampleOverride)
+      const e = { 'example': example }
+      updateExampleProp(e, this.file)
+      this.examples = Property.readExamples(e['example'], exampleOverride)
     }
   }
   get shouldPrototype() {
@@ -317,6 +281,10 @@ _ns.Type.prototype.isConstructor
   toHeading(ws = '', includePrototypeTag = true, includeExample = false) {
     let lines = []
     if (this.description) lines.push(` * ${this.description}`)
+    const constructor = this.properties[0]
+    if (constructor instanceof Fn && constructor.isConstructor && constructor.description) {
+      lines.push(indentWithAster(constructor.description))
+    }
     if (this.extends) {
       this.extends.split(/,\s*/).forEach((e) => {
         lines.push(` * @extends {${e}}`)
@@ -356,7 +324,7 @@ _ns.Type.prototype.isConstructor
     }) {}` : null
   }
   /**
-   * Only used in externs.
+   * Only used in externs for `@constructor` / `@interface` annotations.
    */
   toPrototype() {
     const pp = this.toHeading()

@@ -57,6 +57,7 @@ constructor(location, force) {}
 
 /**
  * Hello World
+ * Constructor method.
  * @example
  * ```js
  * import hello from '＠example/example'
@@ -95,6 +96,7 @@ class Test {
 class Test {
   /**
    * Hello World
+   * Constructor method.
    * @example
    * another example
    * 2.js
@@ -143,6 +145,7 @@ class Test {
 class Test {
   /**
    * Hello World
+   * Constructor method.
    * @example
    * ```js
    * console.log('hello')
@@ -183,6 +186,7 @@ class Test {
 class Test {
   /**
    * Hello World
+   * Constructor method.
    * @example
    * ```js
    * console.log('hello')
