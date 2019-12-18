@@ -224,7 +224,7 @@ const E = async a => {
   ({f:a} = new Ja({rs:a, S:D(!0)}));
   return await a;
 };
-async function G(a) {
+async function F(a) {
   a = ta(a);
   return await E(a);
 }
@@ -1173,7 +1173,7 @@ function Kb(a, b = !1, c = !1, d = b) {
     const g = f.aliases.map(h => Ab(f, h));
     e.push(...g);
     return e;
-  }, []) : []).map(e => wb(e, b));
+  }, []) : []).filter(e => e instanceof V ? !e.isConstructor : !0).map(e => wb(e, b));
   a = [d, ...a].join("\n");
   b && !c && (a = P(a));
   return a = O(a);
@@ -1216,20 +1216,20 @@ class Y {
     t && (this.namespace = t);
     if (a) {
       b = R("prop", a).map(({content:x, props:z}) => {
-        const F = new Bb;
+        const G = new Bb;
         Gb(z, this.file);
-        F.b(x, z);
-        return F;
+        G.b(x, z);
+        return G;
       });
-      a = R(["function", "fn", "static"], a).map(({content:x, props:z, tag:F}) => {
-        F = "static" == F;
+      a = R(["function", "fn", "static"], a).map(({content:x, props:z, tag:G}) => {
+        G = "static" == G;
         const {K:$b, F:Ha} = pb(x, u);
         x = new V(Ha);
         const {W:ha, H:ac} = fb(z, Ha, this.fullName);
         ha.type = ac;
         Gb(ha, this.file);
         x.b($b, ha);
-        F && (x.f = !0);
+        G && (x.f = !0);
         return x;
       });
       a = [...b, ...a];
@@ -1454,15 +1454,13 @@ class Qb extends N {
   b.m(a);
 }, Tb = (a, b) => {
   var {args:c = []} = a;
-  if (c.length) {
-    var d = `function(${c.map(({I:e}) => e).join(", ")}): ${a.fullName}`;
-    c = new V(c);
-    c.isConstructor = !0;
-    c.b("Constructor method.", {type:d, name:"constructor"});
-    c.examples = a.examples;
-    tb(c, b);
-    a.properties.unshift(c);
-  }
+  const d = `function(${c.map(({I:e}) => e).join(", ")}): ${a.fullName}`;
+  c = new V(c);
+  c.isConstructor = !0;
+  c.b("Constructor method.", {type:d, name:"constructor"});
+  c.examples = a.examples;
+  tb(c, b);
+  a.properties.unshift(c);
 }, Vb = (a, b, c = null) => {
   a = R("types", a);
   if (!a.length) {
@@ -1536,7 +1534,7 @@ class Qb extends N {
   });
   return g;
 }, Xb = async(a, b = []) => {
-  const c = await G(a);
+  const c = await F(a);
   let d, e, f;
   try {
     ({namespace:d = null, types:e, imports:f} = Vb(c, void 0, a));
@@ -1742,7 +1740,7 @@ async function qc() {
 }
 const rc = async(a, b = [], c = null) => {
   await Promise.all(a.map(async d => {
-    var e = await G(d);
+    var e = await F(d);
     const f = new mc(b, d);
     f.end(e);
     e = await E(f);
@@ -1761,12 +1759,12 @@ var tc = async() => {
 const sc = async(a, b = !1, c = !1, d = "", e = [], f = !1) => {
   const g = [];
   await Promise.all(e.map(async h => {
-    h = await G(h);
+    h = await F(h);
     const {types:k, imports:l} = Vb(h);
     g.push(k, l);
   }));
   await Promise.all(a.map(async h => {
-    var k = await G(h);
+    var k = await F(h);
     const l = jc({v:b, A:c, D:f}, c);
     g.forEach(m => l.emit("types", m));
     l.file = h;
@@ -1866,7 +1864,7 @@ async function Bc(a) {
 ;var Cc = async() => {
   const {s:a} = {s:ja};
   await Promise.all(y.map(async b => {
-    b = await G(b);
+    b = await F(b);
     b = await Bc(b);
     a ? await H(a, b) : console.log(b);
   }));

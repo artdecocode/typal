@@ -232,7 +232,7 @@ _ns.Type.prototype.isConstructor
     const dd = ` ${this.getFullNameForExtends(useNamespace)}${this.descriptionWithTag}`
     const s = ` * @typedef {${t}}${dd}`
     /**
-     * @type {!Array<!Property>}
+     * @type {!Array<!(Property|Fn)>}
      */
     const properties = this.properties ? this.properties.reduce((acc, p) => {
       if (p._static) return acc
@@ -241,10 +241,15 @@ _ns.Type.prototype.isConstructor
       acc.push(...a)
       return acc
     }, []) : []
-    const p = properties.map((pr) => {
-      const sp = pr.toProp(closure, useNamespace)
-      return sp
-    })
+    const p = properties
+      .filter((pr) => {
+        if (pr instanceof Fn) return !pr.isConstructor
+        return true
+      })
+      .map((pr) => {
+        const sp = pr.toProp(closure, useNamespace)
+        return sp
+      })
     let typedef = [s, ...p].join('\n')
     if (closure && !noSuppress) typedef = addSuppress(typedef)
     typedef = makeBlock(typedef)

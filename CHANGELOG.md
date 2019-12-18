@@ -1,5 +1,9 @@
 ## 18 December 2019
 
+### [1.24.12](https://github.com/artdecocode/typal/compare/v1.24.11...v1.24.12)
+
+- [fix] Add constructor property on constructors/interfaces even without args.
+
 ### [1.24.11](https://github.com/artdecocode/typal/compare/v1.24.10...v1.24.11)
 
 - [fix] Add location to the template.

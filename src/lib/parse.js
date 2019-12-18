@@ -30,7 +30,6 @@ const removeNamespace = (namespace, type) => {
  */
 const addConstructorProperty = (type, rootNamespace) => {
   const { args: Args = [] } = type
-  if (!Args.length) return
   const args = Args.map(({ fullType }) => fullType).join(', ')
   const t = `function(${args}): ${type.fullName}`
   const prop = new Fn(Args)
