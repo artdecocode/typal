@@ -1,5 +1,9 @@
 ## 18 December 2019
 
+### [1.24.14](https://github.com/artdecocode/typal/compare/v1.24.13...v1.24.14)
+
+- [feature] Arguments for interfaces/constructors in externs.
+
 ### [1.24.13](https://github.com/artdecocode/typal/compare/v1.24.12...v1.24.13)
 
 - [feature] Template no return.
