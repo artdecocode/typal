@@ -134,16 +134,14 @@ _ns.Type.prototype.isConstructor
         return pr
       })
       const all = [...props, ...fnProps]
-      const { s, n } = all.reduce((acc, p) => {
-        if (p.static) acc.s.push(p)
+      const { c, s, n } = all.reduce((acc, p) => {
+        if (p.isConstructor) acc.c.push(p)
+        else if (p.static) acc.s.push(p)
         else acc.n.push(p)
         return acc
-      }, { s: [], n: [] })
-      this.properties = [...s, ...n].sort(({ isConstructor: a }, { isConstructor: b }) => {
-        if (a && !b) return -1
-        if (b && !a) return 1
-        return 0
-      })
+      }, { c: [], s: [], n: [] })
+
+      this.properties = [...c, ...s, ...n]
     }
     if (example) this.examples = Property.readExamples(example, exampleOverride)
   }

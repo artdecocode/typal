@@ -1,5 +1,9 @@
 ## 18 December 2019
 
+### [1.24.7](https://github.com/artdecocode/typal/compare/v1.24.6...v1.24.7)
+
+- [fix] Fix ordering.
+
 ### [1.24.6](https://github.com/artdecocode/typal/compare/v1.24.5...v1.24.6)
 
 - [fix] Fix examples' indentation.
