@@ -1,5 +1,9 @@
 ## 18 December 2019
 
+### [1.24.8](https://github.com/artdecocode/typal/compare/v1.24.7...v1.24.8)
+
+- [feature] Relative example paths.
+
 ### [1.24.7](https://github.com/artdecocode/typal/compare/v1.24.6...v1.24.7)
 
 - [fix] Fix ordering.

@@ -1,14 +1,15 @@
 #!/usr/bin/env node
              
+const path = require('path');
 const fs = require('fs');
 const stream = require('stream');
 const os = require('os');             
 var w = "function" == typeof Object.defineProperties ? Object.defineProperty : function(a, b, d) {
   a != Array.prototype && a != Object.prototype && (a[b] = d.value);
-}, y = "undefined" != typeof window && window === this ? this : "undefined" != typeof global && null != global ? global : this;
-function A(a, b) {
+}, z = "undefined" != typeof window && window === this ? this : "undefined" != typeof global && null != global ? global : this;
+function aa(a, b) {
   if (b) {
-    var d = y;
+    var d = z;
     a = a.split(".");
     for (var c = 0; c < a.length - 1; c++) {
       var e = a[c];
@@ -21,7 +22,7 @@ function A(a, b) {
     b != c && null != b && w(d, a, {configurable:!0, writable:!0, value:b});
   }
 }
-A("String.prototype.trimRight", function(a) {
+aa("String.prototype.trimRight", function(a) {
   function b() {
     return this.replace(/[\s\xa0]+$/, "");
   }
@@ -30,31 +31,34 @@ A("String.prototype.trimRight", function(a) {
 function B(a, b, d) {
   const c = [];
   b.replace(a, (e, ...g) => {
-    e = g.slice(0, g.length - 2).reduce((f, h, k) => {
-      k = d[k];
-      if (!k || void 0 === h) {
+    e = g.slice(0, g.length - 2).reduce((f, k, h) => {
+      h = d[h];
+      if (!h || void 0 === k) {
         return f;
       }
-      f[k] = h;
+      f[h] = k;
       return f;
     }, {});
     c.push(e);
   });
   return c;
 }
-;const C = new RegExp(`${/([^\s>=/]+)/.source}(?:\\s*=\\s*${/(?:"([\s\S]*?)"|'([\s\S]*?)')/.source})?`, "g"), D = new RegExp(`(?:\\s+((?:${C.source}\\s*)*))`);
-const F = (a, b) => B(new RegExp(`<(${(Array.isArray(a) ? a : [a]).join("|")})${D.source}?(?:${/\s*\/>/.source}|${/>([\s\S]+?)?<\/\1>/.source})`, "g"), b, "t a v v1 v2 c".split(" ")).map(({t:d, a:c = "", c:e = ""}) => {
-  c = c.replace(/\/$/, "").trim();
-  c = E(c);
-  return {content:e, props:c, tag:d};
-}), E = a => B(C, a, ["key", "val", "def", "f"]).reduce((b, {key:d, val:c}) => {
+;const C = new RegExp(`${/([^\s>=/]+)/.source}(?:\\s*=\\s*${/(?:"([\s\S]*?)"|'([\s\S]*?)')/.source})?`, "g"), ba = new RegExp(`(?:\\s+((?:${C.source}\\s*)*))`);
+const D = (a, b) => {
+  a = (Array.isArray(a) ? a : [a]).join("|");
+  return B(new RegExp(`<(${a})${ba.source}?(?:${/\s*\/>/.source}|${/>([\s\S]+?)?<\/\1>/.source})`, "g"), b, "t a v v1 v2 c".split(" ")).map(({t:d, a:c = "", c:e = ""}) => {
+    c = c.replace(/\/$/, "").trim();
+    c = ca(c);
+    return {content:e, props:c, tag:d};
+  });
+}, ca = a => B(C, a, ["key", "val", "def", "f"]).reduce((b, {key:d, val:c}) => {
   if (void 0 === c) {
     return b[d] = !0, b;
   }
   b[d] = "true" == c ? !0 : "false" == c ? !1 : /^\d+$/.test(c) ? parseInt(c, 10) : c;
   return b;
 }, {});
-const aa = a => a.split(/([!?=*(),:.<>{}|\s+])/g).filter(b => /\S/.test(b)).map(b => {
+const da = a => a.split(/([!?=*(),:.<>{}|\s+])/g).filter(b => /\S/.test(b)).map(b => {
   switch(b) {
     case "function":
       return "function";
@@ -71,20 +75,20 @@ const aa = a => a.split(/([!?=*(),:.<>{}|\s+])/g).filter(b => /\S/.test(b)).map(
   }
   return b;
 });
-function ba(a) {
+function ea(a) {
   let b = 0;
   const d = (e = 1) => a[b + e], c = (e = !0, g = []) => {
     var f = {};
-    let h = a[b];
-    if (["nullable", "nonNullable"].includes(h)) {
+    let k = a[b];
+    if (["nullable", "nonNullable"].includes(k)) {
       if (!e) {
-        throw Error(`${h} not allowed after .`);
+        throw Error(`${k} not allowed after .`);
       }
-      f.nullable = "nullable" === h;
+      f.nullable = "nullable" === k;
       b++;
     }
-    h = a[b];
-    if ("(" == h) {
+    k = a[b];
+    if ("(" == k) {
       b++;
       f = {...c(!0, []), ...f};
       if (")" != a[b]) {
@@ -95,20 +99,20 @@ function ba(a) {
         return f;
       }
     } else {
-      if ("{" == h) {
+      if ("{" == k) {
         b++;
         g = f;
         for (e = {}; "}" != a[b];) {
-          var k = a[b];
+          var h = a[b];
           b++;
-          e[k] = null;
+          e[h] = null;
           if (":" == a[b]) {
             b++;
             try {
-              var l = c();
-              e[k] = l;
-            } catch (q) {
-              throw q.message += `(when parsing ${k} property)`, q;
+              var m = c();
+              e[h] = m;
+            } catch (p) {
+              throw p.message += `(when parsing ${h} property)`, p;
             }
           }
           if ("}" == a[b]) {
@@ -116,7 +120,7 @@ function ba(a) {
             break;
           }
           if ("," != a[b]) {
-            throw Error(`Expecting , for record after ${k}`);
+            throw Error(`Expecting , for record after ${h}`);
           }
           b++;
         }
@@ -124,25 +128,25 @@ function ba(a) {
         return f;
       }
     }
-    if (["nonNullable", "nullable"].includes(h)) {
+    if (["nonNullable", "nullable"].includes(k)) {
       throw Error("Nullability already defined.");
     }
-    if (/[=),:.<>}|]/.test(h)) {
-      throw Error(`Unexpected token ${h}.`);
+    if (/[=),:.<>}|]/.test(k)) {
+      throw Error(`Unexpected token ${k}.`);
     }
     "|" != a[b] && (f.name = a[b], b++);
-    if ("function" == h) {
-      l = f;
-      k = {return:null, args:[]};
+    if ("function" == k) {
+      m = f;
+      h = {return:null, args:[]};
       if ("(" != a[b]) {
         throw Error("Expecting opening (");
       }
       b++;
-      for (var m; ")" != a[b];) {
-        if (m && "this" == a[b]) {
+      for (var l; ")" != a[b];) {
+        if (l && "this" == a[b]) {
           throw Error("this must come first in function arguments");
         }
-        if (m && "new" == a[b]) {
+        if (l && "new" == a[b]) {
           throw Error("new must come first in function arguments");
         }
         if ("this" == a[b]) {
@@ -151,7 +155,7 @@ function ba(a) {
             throw Error("Expecting :");
           }
           b++;
-          k.this = c();
+          h.this = c();
         } else {
           if ("new" == a[b]) {
             b++;
@@ -159,23 +163,23 @@ function ba(a) {
               throw Error("Expecting :");
             }
             b++;
-            k.new = c();
+            h.new = c();
           } else {
             if ("." == a[b] && "." == d() && "." == d(2)) {
               b++;
               b++;
               b++;
-              m = c();
+              l = c();
               if (")" != a[b]) {
                 throw Error("Variable args must come last");
               }
-              k.variableArgs = m;
+              h.variableArgs = l;
             } else {
-              m = c(), k.args.push(m), "=" == a[b] && (m.optional = !0, b++);
+              l = c(), h.args.push(l), "=" == a[b] && (l.optional = !0, b++);
             }
           }
         }
-        m = !0;
+        l = !0;
         if (")" == a[b]) {
           break;
         }
@@ -186,16 +190,16 @@ function ba(a) {
         }
       }
       b++;
-      ":" == a[b] && (b++, m = c(), void 0 == m.name && m.nullable && (m.name = ""), k.return = m);
-      l.function = k;
+      ":" == a[b] && (b++, l = c(), void 0 == l.name && l.nullable && (l.name = ""), h.return = l);
+      m.function = h;
     } else {
-      if ("<" == a[b] || (k = "." == a[b] && "<" == d())) {
+      if ("<" == a[b] || (h = "." == a[b] && "<" == d())) {
         b++;
-        k && b++;
-        l = f;
-        for (k = []; ">" != a[b];) {
-          m = c();
-          k.push(m);
+        h && b++;
+        m = f;
+        for (h = []; ">" != a[b];) {
+          l = c();
+          h.push(l);
           if (">" == a[b]) {
             break;
           }
@@ -206,17 +210,17 @@ function ba(a) {
           }
         }
         b++;
-        l.application = k;
+        m.application = h;
       }
     }
     for (; "." == a[b];) {
       f.name += ".";
       b++;
-      ({name:l} = c(!1));
-      if (!l) {
+      ({name:m} = c(!1));
+      if (!m) {
         throw Error("Expected to see the name after .");
       }
-      f.name += l;
+      f.name += m;
     }
     if ("|" != a[b] || !e) {
       return f;
@@ -228,11 +232,11 @@ function ba(a) {
   };
   return c();
 }
-;function G(a) {
-  a = aa(a);
-  return ba(a);
+;function E(a) {
+  a = da(a);
+  return ea(a);
 }
-;const H = ({w:a, B:b, i:d, type:c}) => b ? "string" : a ? "number" : d ? "boolean" : c ? c : "*", I = a => {
+;const F = ({A:a, C:b, l:d, type:c}) => b ? "string" : a ? "number" : d ? "boolean" : c ? c : "*", G = a => {
   a = a.trimRight();
   var b = /\S/.exec(a);
   if (!b) {
@@ -254,84 +258,84 @@ function ba(a) {
     const e = new RegExp(`^ {${b}}`);
     return d.map(g => g.replace(e, "")).join("\n");
   }
-}, J = (a, b, d = null) => {
+}, H = (a, b, d = null) => {
   const {async:c, "void":e, "return":g = e ? "void" : "", ...f} = a;
   ({args:a = ""} = a);
-  a || (a = b.map(({m:h, name:k}) => "this" == k ? `${k}: ${h}` : k.startsWith("...") ? `...${h}` : h).join(","));
+  a || (a = b.map(({s:k, name:h}) => "this" == h ? `${h}: ${k}` : h.startsWith("...") ? `...${k}` : k).join(","));
   b = g.replace(/\n\s*/g, " ");
   c && b ? b = `!Promise<${b}>` : c && (b = "!Promise");
   !b && "constructor" == f.name && d && (b = d);
   d = `function(${a})`;
   b && (d += `: ${b}`);
-  return {D:{...f, async:c}, l:d};
+  return {F:{...f, async:c}, o:d};
 };
-function ca(a, b, {name:d, string:c, "boolean":e, opt:g, number:f, type:h}, k) {
+function fa(a, b, {name:d, string:c, "boolean":e, opt:g, number:f, type:k}, h) {
   if (!d) {
     throw Error("Argument does not have a name.");
   }
   a.name = d;
-  b && (a.description = I(b));
-  b = H({w:f, B:c, i:e, type:h});
-  k && (b = b.replace(new RegExp(`([!?])?${k}\\.`, "g"), "$1"));
+  b && (a.description = G(b));
+  b = F({A:f, C:c, l:e, type:k});
+  h && (b = b.replace(new RegExp(`([!?])?${h}\\.`, "g"), "$1"));
   b.endsWith("=") && (b = b.replace(/=$/, ""), g = !0);
   a.type = b;
   g && (a.optional = !0);
 }
-class da {
+class ha {
   constructor() {
     this.name = null;
     this.type = "";
     this.optional = !1;
     this.description = "";
   }
-  get m() {
+  get s() {
     return this.optional ? `${this.type}=` : this.type;
   }
 }
-const K = (a, b) => {
+const I = (a, b) => {
   let d = a.lastIndexOf("</arg>"), c = a;
   var e = [];
-  -1 != d && (d += 6, e = a.slice(0, d), c = a.slice(d), e = F("arg", e), e = e.map(({content:g, props:f}) => {
-    const h = new da;
-    ca(h, g, f, b);
-    return h;
+  -1 != d && (d += 6, e = a.slice(0, d), c = a.slice(d), e = D("arg", e), e = e.map(({content:g, props:f}) => {
+    const k = new ha;
+    fa(k, g, f, b);
+    return k;
   }));
-  return {v:c, h:e};
+  return {w:c, j:e};
 };
-const {readFileSync:ea} = fs;
-const fa = a => {
+const {readFileSync:ia} = fs;
+const ja = a => {
   const b = a.replace(/^\s*\n/gm, "").split("\n").reduce((d, c) => {
     [{length:c = 0} = {}] = /^\s*/.exec(c) || [];
     return c < d ? c : d;
   }, Infinity);
   return a.replace(new RegExp(`^ {${b}}`, "gm"), "");
 };
-function L(a, b = "") {
+function J(a, b = "") {
   const d = b.split(/\s*,\s*/);
   return a.split(/\s*,\s*/).map(c => {
-    let e = c = ea(c, "utf8");
+    let e = c = ia(c, "utf8");
     if (c = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\s*\/\* end example \*\//.exec(c)) {
-      [, c] = c, e = fa(c);
+      [, c] = c, e = ja(c);
     }
     d.forEach(g => {
-      const [f, h] = g.split(/\s*=>\s*/);
-      e = e.replace(`'${f}'`, `'${h}'`);
-      e = e.replace(`"${f}"`, `"${h}"`);
+      const [f, k] = g.split(/\s*=>\s*/);
+      e = e.replace(`'${f}'`, `'${k}'`);
+      e = e.replace(`"${f}"`, `"${k}"`);
     });
     return e = e.replace(/@/g, "\uff20");
   });
 }
-function M(a, b, d = new RegExp(`([!?])?${b}\\.`, "g")) {
+function K(a, b, d = new RegExp(`([!?])?${b}\\.`, "g")) {
   b && (a.type = a.type.replace(d, "$1"));
 }
-class N {
+class L {
   constructor(a = null) {
     this.g = this.description = this.name = null;
-    this.o = "";
-    this.default = this.s = null;
+    this.h = "";
+    this.default = this.u = null;
     this.optional = !1;
     this.aliases = [];
-    this.u = !1;
+    this.v = !1;
     this.parsed = null;
     this.args = a;
     this.f = !1;
@@ -342,10 +346,10 @@ class N {
       throw Error("The property was not parsed.");
     }
     const {function:{args:b, return:d, this:c, variableArgs:e}} = this.parsed;
-    var g = b.map(h => a(h)).map((h, k) => {
-      const {optional:l} = b[k];
-      let {name:m = `arg${k}`, optional:q = l} = this.C[k] || {};
-      return `${`${m}${q ? "?" : ""}`}: ${h}`;
+    var g = b.map(k => a(k)).map((k, h) => {
+      const {optional:m} = b[h];
+      let {name:l = `arg${h}`, optional:p = m} = this.D[h] || {};
+      return `${`${l}${p ? "?" : ""}`}: ${k}`;
     });
     if (c) {
       var f = a(c);
@@ -353,12 +357,12 @@ class N {
     }
     if (e) {
       f = a(e);
-      let h = "...args";
+      let k = "...args";
       try {
-        h = `${this.args[this.args.length - 1].name}`;
-      } catch (k) {
+        k = `${this.args[this.args.length - 1].name}`;
+      } catch (h) {
       }
-      g.push(`${h}: ${f}[]`);
+      g.push(`${k}: ${f}[]`);
     }
     g = g.join(", ");
     f = d ? a(d) : "?";
@@ -370,40 +374,40 @@ class N {
   get hasDefault() {
     return null !== this.default;
   }
-  b(a, {name:b, string:d, "boolean":c, opt:e, number:g, type:f, "default":h, closure:k, alias:l, aliases:m, example:q, "example-override":n = "", noParams:r, "static":t, initial:p}) {
+  b(a, {name:b, string:d, "boolean":c, opt:e, number:g, type:f, "default":k, closure:h, alias:m, aliases:l, example:p, "example-override":n = "", noParams:q, "static":v, initial:r}) {
     if (!b) {
       throw Error("Property does not have a name.");
     }
     this.name = b;
-    a && (this.description = I(a));
-    a = H({w:g, B:d, i:c, type:f});
-    r && (this.u = r);
-    k && (this.s = k);
+    a && (this.description = G(a));
+    a = F({A:g, C:d, l:c, type:f});
+    q && (this.v = q);
+    h && (this.u = h);
     this.type = a;
-    void 0 !== h ? this.default = h : void 0 !== p && (this.default = p);
-    if (e || void 0 !== h) {
+    void 0 !== k ? this.default = k : void 0 !== r && (this.default = r);
+    if (e || void 0 !== k) {
       this.optional = !0;
     }
-    l && (this.aliases = [l]);
-    m && (this.aliases = m.split(/\s*,\s*/));
-    t && (this.f = !0);
-    q && (this.examples = L(q, n));
+    m && (this.aliases = [m]);
+    l && (this.aliases = l.split(/\s*,\s*/));
+    v && (this.f = !0);
+    p && (this.examples = J(p, n));
   }
   get type() {
     return this.g || "*";
   }
   set type(a) {
     this.g = a || null;
-    this.o = this.s || this.g || "";
-    if (!this.u) {
+    this.h = this.u || this.g || "";
+    if (!this.v) {
       try {
-        this.parsed = G(this.o), this.isParsedFunction && !this.args && (this.args = []);
+        this.parsed = E(this.h), this.isParsedFunction && !this.args && (this.args = []);
       } catch (b) {
         this.parsed = null;
       }
     }
   }
-  get C() {
+  get D() {
     var a = this.args;
     this.args && this.args[0] && "this" == this.args[0].name && ([, ...a] = this.args);
     return a;
@@ -412,7 +416,7 @@ class N {
     return !!this.parsed && "function" == this.parsed.name;
   }
 }
-;class O extends N {
+;class M extends L {
   constructor(...a) {
     super(...a);
     this.isConstructor = this.async = !1;
@@ -423,19 +427,19 @@ class N {
     this.async = b.async;
   }
 }
-;const S = (a, b, d = {}) => {
+;const O = (a, b, d = {}) => {
   let c;
   if ("object" == typeof b) {
     c = b;
   } else {
     try {
-      (c = G(b)) || console.log("Could not parse %s", b);
+      (c = E(b)) || console.log("Could not parse %s", b);
     } catch (e) {
       console.log("Could not parse %s", b), console.error(e.message);
     }
   }
-  return c ? R(c, a, d) : b;
-}, R = (a, b, d = {}) => {
+  return c ? N(c, a, d) : b;
+}, N = (a, b, d = {}) => {
   if ("" == a.name && a.nullable) {
     return "?";
   }
@@ -446,40 +450,41 @@ class N {
   if (a.function) {
     e = e + g + (a.name + "(");
     const f = [];
-    a.function.this && (c = "this: " + R(a.function.this, b, d), f.push(c));
-    a.function.new && (c = "new: " + R(a.function.new, b, d), f.push(c));
-    a.function.args.forEach(h => {
-      let k = R(h, b, d);
-      h.optional && (k += "=");
-      f.push(k);
+    a.function.this && (c = "this: " + N(a.function.this, b, d), f.push(c));
+    a.function.new && (c = "new: " + N(a.function.new, b, d), f.push(c));
+    a.function.args.forEach(k => {
+      let h = N(k, b, d);
+      k.optional && (h += "=");
+      f.push(h);
     });
-    a.function.variableArgs && (c = "..." + R(a.function.variableArgs, b, d), f.push(c));
-    e += f.join(", ") + ")";
-    a.function.return && (e += ": " + R(a.function.return, b, d));
+    a.function.variableArgs && (c = "..." + N(a.function.variableArgs, b, d), f.push(c));
+    c = f.join(", ");
+    e += c + ")";
+    a.function.return && (e += ": " + N(a.function.return, b, d));
   } else {
     a.record ? (e += "{ ", c = Object.keys(a.record).map(f => {
-      var h = a.record[f];
-      if (!h) {
+      var k = a.record[f];
+      if (!k) {
         return f;
       }
-      h = R(h, b, d);
-      return `${f}: ${h}`;
-    }), e += c.join(", "), e += " }") : a.application ? (e += T(a.name, b, g, d) + "&lt;", c = a.application.map(f => R(f, b, d)), e += c.join(", "), e += "&gt;") : a.union ? (e = e + g + "(", g = a.union.map(f => R(f, b, d)), e += g.join(c ? " \\| " : " | "), e += ")") : e += T("any" == a.name ? "*" : a.name, b, g, d);
+      k = N(k, b, d);
+      return `${f}: ${k}`;
+    }), e += c.join(", "), e += " }") : a.application ? (e += P(a.name, b, g, d) + "&lt;", c = a.application.map(f => N(f, b, d)), e += c.join(", "), e += "&gt;") : a.union ? (e = e + g + "(", g = a.union.map(f => N(f, b, d)), e += g.join(c ? " \\| " : " | "), e += ")") : e += P("any" == a.name ? "*" : a.name, b, g, d);
   }
   return e;
-}, T = (a, b, d = "", c = {}) => {
-  const {flatten:e = !1, nameProcess:g, link:f = ({link:l}) => `#${l}`} = c;
-  c = ha(b, a);
+}, P = (a, b, d = "", c = {}) => {
+  const {flatten:e = !1, nameProcess:g, link:f = ({link:m}) => `#${m}`} = c;
+  c = ka(b, a);
   d = `${d}${a}`;
   if (!c) {
     return d;
   }
-  let {link:h, type:{description:k}} = c;
-  h = f(c);
-  e && ((b = b.find(({fullName:l}) => l == a)) && b.link && (h = b.link), !k && b.description && (k = b.description), "function" == typeof e && e(a));
+  let {link:k, type:{description:h}} = c;
+  k = f(c);
+  e && ((b = b.find(({fullName:m}) => m == a)) && b.link && (k = b.link), !h && b.description && (h = b.description), "function" == typeof e && e(a));
   b = g ? g(d) : d;
-  return k ? `<a href="${h}" title="${k.replace(/"/g, "&quot;")}">${b}</a>` : `[${b}](${h})`;
-}, ha = (a, b) => {
+  return h ? `<a href="${k}" title="${h.replace(/"/g, "&quot;")}">${b}</a>` : `[${b}](${k})`;
+}, ka = (a, b) => {
   a = a.filter(({fullName:c}) => c == b);
   if (a.length) {
     var d = a.find(({import:c}) => c || !1);
@@ -487,34 +492,35 @@ class N {
     return {link:`${"type"}-${a.fullName.replace(/<\/?code>/g, "").replace(/<\/?strong>/g, "").replace(/<br\/>/g, "").replace(/&nbsp;/g, "").replace(/[^\w-\d ]/g, "").toLowerCase().replace(/[, ]/g, "-")}`, type:a};
   }
 };
-function ia(a, b = [], d = [], c = {}) {
-  const {narrow:e = !1, flatten:g = !1, preprocessDesc:f, link:h} = c;
+function la(a, b = [], d = [], c = {}) {
+  const {narrow:e = !1, flatten:g = !1, preprocessDesc:f, link:k} = c;
   if (!b.length) {
     return "";
   }
-  const k = a.isConstructor || a.isInterface, l = b.some(({hasDefault:n}) => n), m = {flatten:g, escapePipe:!e, link:h}, q = n => S(d, n, m);
+  const h = a.isConstructor || a.isInterface, m = b.some(({hasDefault:n}) => n), l = {flatten:g, escapePipe:!e, link:k}, p = n => O(d, n, l);
   a = b.map(n => {
-    let r;
-    n.args && n.isParsedFunction ? (r = n.toTypeScriptFunction(q), n.isConstructor && (r = `new ${r}`)) : r = S(d, n.parsed || n.type, m);
-    const t = k || n.optional ? n.name : `${n.name}*`, p = n.hasDefault ? `\`${n.default}\`` : "-", u = f ? f(n.description) : n.description;
-    return {prop:n, typeName:r, name:t, de:ja(u, !e), d:p};
+    let q;
+    n.args && n.isParsedFunction ? (q = n.toTypeScriptFunction(p), n.isConstructor && (q = `new ${q}`)) : q = O(d, n.parsed || n.type, l);
+    const v = h || n.optional ? n.name : `${n.name}*`, r = n.hasDefault ? `\`${n.default}\`` : "-", t = f ? f(n.description) : n.description;
+    return {prop:n, typeName:q, name:v, de:ma(t, !e), d:r};
   });
   if (e) {
-    return {props:a, anyHaveDefault:l, constr:k};
+    return {props:a, anyHaveDefault:m, constr:h};
   }
-  a = a.map(({name:n, typeName:r, de:t, d:p, prop:u}) => [u.optional ? n : `__${n}__`, `<em>${r}</em>`, t, ...l ? [p] : []]);
-  b = ["Name", ...e ? ["Type & Description"] : ["Type", "Description"], ...l ? [k ? "Initial" : "Default"] : []];
+  a = a.map(({name:n, typeName:q, de:v, d:r, prop:t}) => [t.optional ? n : `__${n}__`, `<em>${q}</em>`, v, ...m ? [r] : []]);
+  b = ["Name", ...e ? ["Type & Description"] : ["Type", "Description"], ...m ? [h ? "Initial" : "Default"] : []];
   return `
 
 \`\`\`table
 ${JSON.stringify([b, ...a], null, 2)}
 \`\`\``;
 }
-const ja = (a = "", b = !0) => {
+const ma = (a = "", b = !0) => {
   null === a && (a = "");
   b && (a = a.replace(/\|/g, "\\|"));
   return a.replace(/</g, "&lt;").replace(/>/, "&gt;");
 };
+const {dirname:Q, resolve:R} = path;
 class U {
   constructor() {
     this.name = "";
@@ -526,53 +532,54 @@ class U {
     this.isRecord = this.isInterface = this.isConstructor = !1;
     this.args = this.extends = null;
     this.examples = [];
+    this.f = null;
   }
   get import() {
     return !1;
   }
-  b(a, {name:b, type:d, desc:c, noToc:e, spread:g, noExpand:f, link:h, closure:k, constructor:l, "extends":m, "interface":q, record:n, example:r, "example-override":t}, p, u = null) {
+  b(a, {name:b, type:d, desc:c, noToc:e, spread:g, noExpand:f, link:k, closure:h, constructor:m, "extends":l, "interface":p, record:n, example:q, "example-override":v}, r, t = null) {
     if (!b) {
       throw Error("Type does not have a name.");
     }
     this.name = b;
     d && (this.type = d);
-    k ? this.closureType = k : this.closureType = this.type;
-    c && (this.description = I(c));
+    h ? this.closureType = h : this.closureType = this.type;
+    c && (this.description = G(c));
     this.noToc = !!e;
     this.spread = !!g;
     this.noExpand = !!f;
-    h && (this.link = h);
-    !0 === l && (this.isConstructor = l);
-    !0 === q && (this.isInterface = q);
+    k && (this.link = k);
+    !0 === m && (this.isConstructor = m);
+    !0 === p && (this.isInterface = p);
     !0 === n && (this.isRecord = n);
-    m && (this.extends = m);
-    p && (this.namespace = p);
+    l && (this.extends = l);
+    r && (this.namespace = r);
     if (a) {
-      b = F("prop", a).map(({content:v, props:x}) => {
-        const z = new N;
-        z.b(v, x);
-        return z;
+      b = D("prop", a).map(({content:u, props:x}) => {
+        const A = new L;
+        A.b(u, x);
+        return A;
       });
-      a = F(["function", "fn", "static"], a).map(({content:v, props:x, tag:z}) => {
-        z = "static" == z;
-        const {v:ka, h:P} = K(v, u);
-        v = new O(P);
-        const {D:Q, l:la} = J(x, P, this.fullName);
-        Q.type = la;
-        v.b(ka, Q);
-        z && (v.f = !0);
-        return v;
+      a = D(["function", "fn", "static"], a).map(({content:u, props:x, tag:A}) => {
+        A = "static" == A;
+        const {w:na, j:S} = I(u, t);
+        u = new M(S);
+        const {F:T, o:oa} = H(x, S, this.fullName);
+        T.type = oa;
+        u.b(na, T);
+        A && (u.f = !0);
+        return u;
       });
       a = [...b, ...a];
-      const {j:ma, A:na, n:oa} = a.reduce((v, x) => {
-        x.isConstructor ? v.j.push(x) : x.static ? v.A.push(x) : v.n.push(x);
-        return v;
-      }, {j:[], A:[], n:[]});
-      this.properties = [...ma, ...na, ...oa];
+      const {m:y, B:pa, n:qa} = a.reduce((u, x) => {
+        x.isConstructor ? u.m.push(x) : x.static ? u.B.push(x) : u.n.push(x);
+        return u;
+      }, {m:[], B:[], n:[]});
+      this.properties = [...y, ...pa, ...qa];
     }
-    r && (this.examples = L(r, t));
+    q && (q = q.startsWith(".") && this.f ? R(Q(this.f), q) : q, this.examples = J(q, v));
   }
-  g(a, b = new RegExp(`([!?])?${a}\\.`, "g")) {
+  h(a, b = new RegExp(`([!?])?${a}\\.`, "g")) {
     this.type && (this.type = this.type.replace(b, "$1"));
     this.extends && (this.extends = this.extends.replace(b, "$1"));
     return b;
@@ -589,55 +596,55 @@ class U {
   toMarkdown(a = [], b = {}) {
     const {flatten:d, details:c = []} = b, e = c.includes(this.name);
     var g = this.type ? `\`${this.type}\`` : "", f = g;
-    this.link ? f = `[${g}](${this.link})` : !this.import && this.type && (f = S(a, this.type, b), g = f != this.type, f = V(f, g));
+    this.link ? f = `[${g}](${this.link})` : !this.import && this.type && (f = O(a, this.type, b), g = f != this.type, f = V(f, g));
     g = V(this.fullName);
     g = this.import ? `[${g}](l-type)` : this.noToc ? `[${g}](l-type)` : `[${g}](t-type)`;
-    const h = this.description ? `: ${this.description}` : "";
+    const k = this.description ? `: ${this.description}` : "";
     f = f ? `${f} ` : "";
-    let k = /_/.test(g);
+    let h = /_/.test(g);
     if (this.extends) {
-      const l = pa(this.extends, a, b), m = ` extends ${l}`;
-      k = k || /_/.test(l);
-      f = (k ? f + "<strong>" : f + "__") + (g + m);
+      const m = ra(this.extends, a, b), l = ` extends ${m}`;
+      h = h || /_/.test(m);
+      f = (h ? f + "<strong>" : f + "__") + (g + l);
       "function" == typeof d && d(this.extends);
     } else {
-      f = (k ? f + "<strong>" : f + "__") + g;
+      f = (h ? f + "<strong>" : f + "__") + g;
     }
-    f = (k ? f + "</strong>" : f + "__") + h;
-    a = ia(this, this.properties, a, b);
+    f = (h ? f + "</strong>" : f + "__") + k;
+    a = la(this, this.properties, a, b);
     return {LINE:f, table:a, displayInDetails:e};
   }
 }
-const V = (a, b = !1) => `${b ? "<code>" : "`"}${a}${b ? "</code>" : "`"}`, pa = (a, b, d) => a.split(/,\s*/).map(c => {
+const V = (a, b = !1) => `${b ? "<code>" : "`"}${a}${b ? "</code>" : "`"}`, ra = (a, b, d) => a.split(/,\s*/).map(c => {
   let e = `\`${c}\``;
   var g = b.find(({fullName:f}) => f == c);
-  g && g.link ? (e = "<a ", g.description && (e += `title="${g.description}" `), e += `href="${g.link}">\`${c}\`</a>`) : (g = S(b, c, {...d, nameProcess:f => `\`${f}\``}), c != g && (e = g));
+  g && g.link ? (e = "<a ", g.description && (e += `title="${g.description}" `), e += `href="${g.link}">\`${c}\`</a>`) : (g = O(b, c, {...d, nameProcess:f => `\`${f}\``}), c != g && (e = g));
   return e;
 }).join(", ");
 class W extends U {
   constructor() {
     super();
-    this.f = null;
+    this.g = null;
     this.async = !1;
   }
   get isMethod() {
     return !0;
   }
   b(a, {async:b, "return":d, ...c}, ...e) {
-    this.description = I(a);
+    this.description = G(a);
     super.b("", c, ...e);
-    d && (this.f = d.replace(/\n\s*/g, " "));
+    d && (this.g = d.replace(/\n\s*/g, " "));
     b && (this.async = !0);
   }
   get return() {
-    return this.f || "void";
+    return this.g || "void";
   }
-  g(a) {
-    a = super.g(a);
-    this.f && (this.f = this.f.replace(a, "$1"));
+  h(a) {
+    a = super.h(a);
+    this.g && (this.g = this.g.replace(a, "$1"));
   }
 }
-;class qa extends U {
+;class sa extends U {
   constructor() {
     super();
     this.from = "";
@@ -650,98 +657,104 @@ class W extends U {
       throw Error("From attribute of import is not given.");
     }
     this.from = b;
-    this.description = I(a);
+    this.description = G(a);
     super.b("", {...c, noToc:!0, name:d, type:`import('${b}').${d}`}, e != g ? e : null);
   }
 }
-;const {homedir:ra} = os;
-ra();
-const sa = (a, b) => {
+;const {homedir:ta} = os;
+ta();
+const ua = (a, b) => {
   const d = new RegExp(`([!?])?${a}\\.`, "g");
   b.properties.forEach(c => {
-    M(c, a, d);
+    K(c, a, d);
   });
-  b.g(a);
+  b.h(a);
 }, X = (a, b) => {
   var {args:d = []} = a;
   if (d.length) {
-    var c = `function(${d.map(({m:e}) => e).join(", ")}): ${a.fullName}`;
-    d = new O(d);
+    var c = `function(${d.map(({s:e}) => e).join(", ")}): ${a.fullName}`;
+    d = new M(d);
     d.isConstructor = !0;
     d.b("Constructor method.", {type:c, name:"constructor"});
     d.examples = a.examples;
-    M(d, b);
+    K(d, b);
     a.properties.unshift(d);
   }
-}, Y = (a, b, d, c, e = !1) => {
-  const g = e ? new W : new U, f = a.search(/<(prop|function|fn|static) /);
-  let h = "", k = a;
-  1 != f && (h = a.slice(0, f), k = a.slice(f));
-  const {h:l, v:m} = K(h, c);
-  g.b(e ? m : k, b, d, c);
-  ({l:a} = J(b, l));
-  e && (g.closureType = a);
-  g.args = l;
-  return g;
-}, Z = (a, b, d, c, e = !1) => {
-  const g = [], {alias:f, aliases:h, ...k} = b;
-  b = Y(a, b, d, c, e);
-  g.push(b);
-  (f ? [f] : h ? h.split(/, */) : []).forEach(l => {
-    l = Y(a, {...k, name:l}, d, c, e);
-    l.description = `${l.description}${l.description ? " " : ""}Alias of \`${k.name}\`.`;
-    g.push(l);
+}, Y = (a, b, d, c, e = !1, g = null) => {
+  const f = e ? new W : new U;
+  f.f = g;
+  g = a.search(/<(prop|function|fn|static) /);
+  let k = "", h = a;
+  1 != g && (k = a.slice(0, g), h = a.slice(g));
+  const {j:m, w:l} = I(k, c);
+  f.b(e ? l : h, b, d, c);
+  ({o:a} = H(b, m));
+  e && (f.closureType = a);
+  f.args = m;
+  return f;
+}, Z = ({content:a, props:b, ns:d, i:c, isMethod:e = !1, location:g = null}) => {
+  const f = [], {alias:k, aliases:h, ...m} = b;
+  b = Y(a, b, d, c, e, g);
+  f.push(b);
+  (k ? [k] : h ? h.split(/, */) : []).forEach(l => {
+    l = Y(a, {...m, name:l}, d, c, e, g);
+    l.description = `${l.description}${l.description ? " " : ""}Alias of \`${m.name}\`.`;
+    f.push(l);
   });
-  return g;
+  return f;
 };
-module.exports = {_Type:U, _Property:N, _Method:W, _parseFile:(a, b) => {
-  a = F("types", a);
+module.exports = {_Type:U, _Property:L, _Method:W, _parseFile:(a, b, d = null) => {
+  a = D("types", a);
   if (!a.length) {
     throw Error("XML file should contain root types element.");
   }
-  const [{content:d, props:{namespace:c, ns:e = c}}] = a, g = b == e ? void 0 : e, f = [];
-  a = F(["type", "interface", "constructor", "method", "import"], d).reduce((h, {content:k, props:l, tag:m}) => {
-    const {alias:q, aliases:n, ...r} = l;
-    var t = q ? [q] : n ? n.split(/, */) : [];
-    switch(m) {
+  const [{content:c, props:{namespace:e, ns:g = e}}] = a, f = b == g ? void 0 : g, k = [];
+  a = D(["type", "interface", "constructor", "method", "import"], c).reduce((h, {content:m, props:l, tag:p}) => {
+    const {alias:n, aliases:q, ...v} = l;
+    var r = v.example;
+    r && r.startsWith(".") && d && (v.example = R(Q(d), r));
+    r = n ? [n] : q ? q.split(/, */) : [];
+    switch(p) {
       case "type":
-        m = new U;
-        m.b(k, l, g, b);
-        h.push(m);
-        t.forEach(p => {
-          const u = new U;
-          u.b(k, {...r, name:p}, g, b);
-          h.push(u);
+        p = new U;
+        d && (p.f = d);
+        p.b(m, l, f, b);
+        h.push(p);
+        r.forEach(t => {
+          const y = new U;
+          d && (y.f = d);
+          y.b(m, {...v, name:t}, f, b);
+          h.push(y);
         });
         break;
       case "interface":
-        l = Z(k, l, g, b);
-        l.forEach(p => {
-          p.properties.some(({isConstructor:u}) => u) || X(p, b);
-          p.isInterface = !0;
+        l = Z({content:m, props:l, ns:f, i:b, location:d});
+        l.forEach(t => {
+          t.properties.some(({isConstructor:y}) => y) || X(t, b);
+          t.isInterface = !0;
         });
         h.push(...l);
         break;
       case "constructor":
-        l = Z(k, l, g, b);
-        l.forEach(p => {
-          p.properties.some(({isConstructor:u}) => u) || X(p, b);
-          p.isConstructor = !0;
+        l = Z({content:m, props:l, ns:f, i:b, location:d});
+        l.forEach(t => {
+          t.properties.some(({isConstructor:y}) => y) || X(t, b);
+          t.isConstructor = !0;
         });
         h.push(...l);
         break;
       case "method":
-        l = Z(k, l, g, b, !0);
+        l = Z({content:m, props:l, ns:f, i:b, isMethod:!0, location:d});
         h.push(...l);
         break;
       case "import":
-        t = new qa, t.b(k, l, l.ns || l.from, b), f.push(t);
+        p = new sa, p.b(m, l, l.ns || l.from, b), k.push(p);
     }
     return h;
   }, []);
-  b && a.forEach(h => sa(b, h));
-  return {namespace:e, types:a, imports:f};
-}, _getLinks:S};
+  b && a.forEach(h => ua(b, h));
+  return {namespace:g, types:a, imports:k};
+}, _getLinks:O};
 
 
 //# sourceMappingURL=typal.js.map

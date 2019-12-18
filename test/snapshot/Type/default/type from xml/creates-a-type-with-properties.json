@@ -49,5 +49,6 @@
   "isRecord": false,
   "extends": null,
   "args": null,
-  "examples": []
+  "examples": [],
+  "file": null
 }

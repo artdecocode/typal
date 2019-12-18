@@ -6,6 +6,7 @@ import { trimD } from './'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
 import { getLinks } from './get-links'
 import makePropsTable from './make-props-table'
+import { resolve, dirname } from 'path'
 
 /**
  * A representation of a type.
@@ -82,6 +83,12 @@ _ns.Type.prototype.isConstructor
      * @type {!Array<string>}
      */
     this.examples = []
+
+    /**
+     * The location on the disk.
+     * @type {string|null}
+     */
+    this.file = null
   }
   get import() {
     return false
@@ -143,7 +150,10 @@ _ns.Type.prototype.isConstructor
 
       this.properties = [...c, ...s, ...n]
     }
-    if (example) this.examples = Property.readExamples(example, exampleOverride)
+    if (example) {
+      const e = (example.startsWith('.') && this.file) ? resolve(dirname(this.file), example) : example
+      this.examples = Property.readExamples(e, exampleOverride)
+    }
   }
   get shouldPrototype() {
     return this.isConstructor || this.isInterface || this.isRecord

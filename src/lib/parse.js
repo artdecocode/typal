@@ -6,6 +6,7 @@ import read from '@wrote/read'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
 import { toType } from './'
 import Fn from './Fn'
+import { dirname, resolve } from 'path'
 
 /**
  * When Documentary compiles types with `-n` (root namespace) flag,
@@ -46,8 +47,9 @@ const addConstructorProperty = (type, rootNamespace) => {
  * Parse the types.xml file.
  * @param {string} xml The content of the `xml` file.
  * @param {string} [rootNamespace] Namespace to ignore in types and properties.
+ * @param {string|null} [location] The file location. Will be used to update relative example locations.
  */
-const parseFile = (xml, rootNamespace) => {
+const parseFile = (xml, rootNamespace, location = null) => {
   const root = extractTags('types', xml)
   if (!root.length)
     throw new Error('XML file should contain root types element.')
@@ -68,23 +70,28 @@ const parseFile = (xml, rootNamespace) => {
 
   const types = /** @type {!Array<!_typal.Type>} */ (extracted.reduce((acc, { content, props, tag }) => {
     const { 'alias': alias, 'aliases': aliases, ...restProps } = props
+    const example = restProps['example']
+    if (example && example.startsWith('.') && location)
+      restProps['example']  = resolve(dirname(location), example)
     const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
 
     switch (tag) {
     case 'type': {
       const type = new Type()
+      if (location) type.file = location
       type.fromXML(content, props, ns, rootNamespace)
       acc.push(type)
 
       als.forEach((name) => {
         const type2 = new Type()
+        if (location) type2.file = location
         type2.fromXML(content, { ...restProps, name }, ns, rootNamespace)
         acc.push(type2)
       })
       break
     }
     case 'interface': {
-      const t = parseTypes(content, props, ns, rootNamespace)
+      const t = parseTypes({ content, props, ns, rootNamespace, location })
       t.forEach(tt => {
         const hasConsructorProp = tt.properties.some(({ isConstructor }) => {
           return isConstructor
@@ -96,7 +103,7 @@ const parseFile = (xml, rootNamespace) => {
       break
     }
     case 'constructor': {
-      const t = parseTypes(content, props, ns, rootNamespace)
+      const t = parseTypes({ content, props, ns, rootNamespace, location })
       t.forEach(tt => {
         const hasConsructorProp = tt.properties.some(({ isConstructor }) => {
           return isConstructor
@@ -108,7 +115,9 @@ const parseFile = (xml, rootNamespace) => {
       break
     }
     case 'method': {
-      const t = parseTypes(content, props, ns, rootNamespace, true)
+      const t = parseTypes({
+        content, props, ns, rootNamespace, isMethod: true, location,
+      })
       acc.push(...t)
       break
     }
@@ -140,9 +149,11 @@ const parseFile = (xml, rootNamespace) => {
  * @param {string} [ns]
  * @param {string} [rootNamespace]
  * @param {boolean} [isMethod]
+ * @param {string|null} [location] The source XML file location.
  */
-const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
+const parseType = (content, props, ns, rootNamespace, isMethod = false, location = null) => {
   const type = isMethod ? new Method() : new Type()
+  type.file = location
   const i = content.search(/<(prop|function|fn|static) /)
   let prebody = '', body = content
   if (i != 1) {
@@ -174,22 +185,26 @@ const parseType = (content, props, ns, rootNamespace, isMethod = false) => {
 /**
  * This is applicable to @interfaces/constructors/methods which
  * will be written with `= function () {}` in externs.
- * @param {string} content
- * @param {!Object} props
- * @param {string} [ns]
- * @param {string} [rootNamespace]
- * @param {boolean} [isMethod]
+ * @param {Object} props
+ * @param {string} props.content
+ * @param {!Object} props.props
+ * @param {string} [props.ns]
+ * @param {string} [props.rootNamespace]
+ * @param {boolean} [props.isMethod]
+ * @param {string|null} [props.location]
  */
-const parseTypes = (content, props, ns, rootNamespace, isMethod = false) => {
+const parseTypes = ({
+  content, props, ns, rootNamespace, isMethod = false, location = null,
+}) => {
   const acc = []
   const { 'alias': alias, 'aliases': aliases, ...restProps } = props
-  const type = parseType(content, props, ns, rootNamespace, isMethod)
+  const type = parseType(content, props, ns, rootNamespace, isMethod, location)
   acc.push(type)
 
   const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])
 
   als.forEach((name) => {
-    const type2 = parseType(content, { ...restProps, name }, ns, rootNamespace, isMethod)
+    const type2 = parseType(content, { ...restProps, name }, ns, rootNamespace, isMethod, location)
     type2.description = `${type2.description}${type2.description ? ' ' : ''}Alias of \`${restProps.name}\`.`
     acc.push(type2)
   })
@@ -206,7 +221,7 @@ export const readTypesFile = async (path, ignore = []) => {
   const xml = await read(path)
   let namespace, types, imports
   try {
-    ({ namespace = null, types, imports } = parseFile(xml))
+    ({ namespace = null, types, imports } = parseFile(xml, undefined, path))
   } catch (err) {
     err.message = `Error while reading ${path}\n${err.message}`
     throw err
