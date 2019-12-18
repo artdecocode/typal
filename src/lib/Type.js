@@ -147,7 +147,7 @@ _ns.Type.prototype.isConstructor
         const { rest, fnType } = toType(p, argsArgs, this.fullName)
         rest['type'] = fnType
 
-        Type.updateExampleProp(p, this.file)
+        Type.updateExampleProp(rest, this.file)
         pr.fromXML(newContent, rest)
         if (isStatic) pr._static = true
         return pr

@@ -53,7 +53,7 @@ const da = (a, b, c, d = !1, e = !1) => {
     b.push(d);
   }
   return b;
-}, ha = () => {
+}, ia = () => {
   var a = fa;
   return Object.keys(a).reduce((b, c) => {
     const d = a[c];
@@ -109,8 +109,8 @@ help:{description:"Print the help information and exit.", boolean:!0, short:"h"}
   f = f.filter(g => null !== g);
   Object.assign(a, {Y:f});
   return a;
-}(fa), z = w.source, ia = w.output, ja = w.closure, ka = w.useNamespace, la = w.externs, ma = w.types, na = w.template, oa = w.migrate, pa = w.help, qa = w.version;
-function ra(a = {usage:{}}) {
+}(fa), y = w.source, ja = w.output, ka = w.closure, la = w.useNamespace, ma = w.externs, na = w.types, oa = w.template, pa = w.migrate, qa = w.help, ra = w.version;
+function sa(a = {usage:{}}) {
   const {usage:b = {}, description:c, line:d, example:e} = a;
   a = Object.keys(b);
   const f = Object.values(b), [g] = a.reduce(([l = 0, m = 0], n) => {
@@ -141,35 +141,35 @@ ${a.join("\n")}
     ${e}
 ` : a;
 }
-;const {createReadStream:sa, createWriteStream:ta, lstat:A, readFileSync:ua, readdir:va} = fs;
-var wa = stream;
-const {Transform:B, Writable:xa} = stream;
-const ya = (a, b = 0, c = !1) => {
+;const {createReadStream:ta, createWriteStream:ua, lstat:A, readFileSync:va, readdir:wa} = fs;
+var xa = stream;
+const {Transform:B, Writable:ya} = stream;
+const za = (a, b = 0, c = !1) => {
   if (0 === b && !c) {
     return a;
   }
   a = a.split("\n", c ? b + 1 : void 0);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, za = (a, b = !1) => ya(a, 2 + (b ? 1 : 0)), Aa = a => {
+}, Aa = (a, b = !1) => za(a, 2 + (b ? 1 : 0)), Ba = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
-const {homedir:Ba} = os;
-const Ca = /\s+at.*(?:\(|\s)(.*)\)?/, Da = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, Ea = Ba(), C = a => {
-  const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(Da.source.replace("IGNORED_MODULES", d));
+const {homedir:Ca} = os;
+const Da = /\s+at.*(?:\(|\s)(.*)\)?/, Ea = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, Fa = Ca(), C = a => {
+  const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(Ea.source.replace("IGNORED_MODULES", d));
   return a.replace(/\\/g, "/").split("\n").filter(f => {
-    f = f.match(Ca);
+    f = f.match(Da);
     if (null === f || !f[1]) {
       return !0;
     }
     f = f[1];
     return f.includes(".app/Contents/Resources/electron.asar") || f.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(f);
-  }).filter(f => f.trim()).map(f => b ? f.replace(Ca, (g, h) => g.replace(h, h.replace(Ea, "~"))) : f).join("\n");
+  }).filter(f => f.trim()).map(f => b ? f.replace(Da, (g, h) => g.replace(h, h.replace(Fa, "~"))) : f).join("\n");
 };
-function Fa(a, b, c = !1) {
+function Ga(a, b, c = !1) {
   return function(d) {
-    var e = Aa(arguments), {stack:f} = Error();
-    const g = ya(f, 2, !0), h = (f = d instanceof Error) ? d.message : d;
+    var e = Ba(arguments), {stack:f} = Error();
+    const g = za(f, 2, !0), h = (f = d instanceof Error) ? d.message : d;
     e = [`Error: ${h}`, ...null !== e && a === e || c ? [b] : [g, b]].join("\n");
     e = C(e);
     return Object.assign(f ? d : Error(), {message:h, stack:e});
@@ -177,9 +177,9 @@ function Fa(a, b, c = !1) {
 }
 ;function D(a) {
   var {stack:b} = Error();
-  const c = Aa(arguments);
-  b = za(b, a);
-  return Fa(c, b, a);
+  const c = Ba(arguments);
+  b = Aa(b, a);
+  return Ga(c, b, a);
 }
 ;const Ia = (a, b) => {
   b.once("error", c => {
@@ -187,7 +187,7 @@ function Fa(a, b, c = !1) {
   });
   return b;
 };
-class Ja extends xa {
+class Ja extends ya {
   constructor(a) {
     const {binary:b = !1, rs:c = null, ...d} = a || {}, {S:e = D(!0), proxyError:f} = a || {}, g = (h, k) => e(k);
     super(d);
@@ -225,14 +225,14 @@ const E = async a => {
   return await a;
 };
 async function G(a) {
-  a = sa(a);
+  a = ta(a);
   return await E(a);
 }
 ;async function H(a, b) {
   if (!a) {
     throw Error("No path is given.");
   }
-  const c = D(!0), d = ta(a);
+  const c = D(!0), d = ua(a);
   await new Promise((e, f) => {
     d.on("error", g => {
       g = c(g);
@@ -282,7 +282,7 @@ async function K(a) {
     c.code = "ENOTDIR";
     throw c;
   }
-  c = await I(va, a);
+  c = await I(wa, a);
   var d = await Oa(a, c);
   c = d.filter(Pa);
   d = d.filter(Qa).reduce((e, f) => {
@@ -459,7 +459,7 @@ class N extends B {
   }
 }
 async function Za(a, b) {
-  b instanceof wa ? b.pipe(a) : a.end(b);
+  b instanceof xa ? b.pipe(a) : a.end(b);
   return await E(a);
 }
 ;function $a() {
@@ -832,7 +832,7 @@ function S(a) {
 function rb(a, b = "") {
   const c = b.split(/\s*,\s*/);
   return a.split(/\s*,\s*/).map(d => {
-    let e = d = ua(d, "utf8");
+    let e = d = va(d, "utf8");
     if (d = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\s*\/\* end example \*\//.exec(d)) {
       [, d] = d, e = qb(d);
     }
@@ -1215,26 +1215,26 @@ class Y {
     m && (this.extends = m);
     t && (this.namespace = t);
     if (a) {
-      b = R("prop", a).map(({content:x, props:y}) => {
+      b = R("prop", a).map(({content:x, props:z}) => {
         const F = new Bb;
-        Gb(y, this.file);
-        F.b(x, y);
+        Gb(z, this.file);
+        F.b(x, z);
         return F;
       });
-      a = R(["function", "fn", "static"], a).map(({content:x, props:y, tag:F}) => {
+      a = R(["function", "fn", "static"], a).map(({content:x, props:z, tag:F}) => {
         F = "static" == F;
-        const {K:$b, F:Ga} = pb(x, u);
-        x = new V(Ga);
-        const {W:Ha, H:ac} = fb(y, Ga, this.fullName);
-        Ha.type = ac;
-        Gb(y, this.file);
-        x.b($b, Ha);
+        const {K:$b, F:Ha} = pb(x, u);
+        x = new V(Ha);
+        const {W:ha, H:ac} = fb(z, Ha, this.fullName);
+        ha.type = ac;
+        Gb(ha, this.file);
+        x.b($b, ha);
         F && (x.f = !0);
         return x;
       });
       a = [...b, ...a];
-      const {G:v, L:bc, n:cc} = a.reduce((x, y) => {
-        y.isConstructor ? x.G.push(y) : y.static ? x.L.push(y) : x.n.push(y);
+      const {G:v, L:bc, n:cc} = a.reduce((x, z) => {
+        z.isConstructor ? x.G.push(z) : z.static ? x.L.push(z) : x.n.push(z);
         return x;
       }, {G:[], L:[], n:[]});
       this.properties = [...v, ...bc, ...cc];
@@ -1732,8 +1732,8 @@ const oc = async a => a ? (await Promise.all(a.split(",").map(async b => {
   return b;
 }, []);
 async function qc() {
-  const {s:a, types:b} = {s:na, types:ma}, c = await oc(b), d = await pc(c);
-  await Promise.all(z.map(async e => {
+  const {s:a, types:b} = {s:oa, types:na}, c = await oc(b), d = await pc(c);
+  await Promise.all(y.map(async e => {
     var f = await I(A, e);
     let g;
     f.isFile() ? g = [e] : f.isDirectory() && (f = await K(e), g = L(f.content, e));
@@ -1750,8 +1750,8 @@ const rc = async(a, b = [], c = null) => {
   }));
 };
 var tc = async() => {
-  const {v:a = !1, D:b = !1, A:c = !1, s:d, types:e} = {v:ja, A:la, s:ia, types:ma, D:ka}, f = await oc(e);
-  await Promise.all(z.map(async g => {
+  const {v:a = !1, D:b = !1, A:c = !1, s:d, types:e} = {v:ka, A:ma, s:ja, types:na, D:la}, f = await oc(e);
+  await Promise.all(y.map(async g => {
     var h = await I(A, g);
     let k;
     h.isFile() ? k = [g] : h.isDirectory() && (h = await K(g), k = L(h.content, g));
@@ -1864,23 +1864,23 @@ async function Bc(a) {
 </types>`;
 }
 ;var Cc = async() => {
-  const {s:a} = {s:ia};
-  await Promise.all(z.map(async b => {
+  const {s:a} = {s:ja};
+  await Promise.all(y.map(async b => {
     b = await G(b);
     b = await Bc(b);
     a ? await H(a, b) : console.log(b);
   }));
 };
-if (pa) {
-  const a = ha();
-  console.log(ra({usage:a, description:"Embeds and maintains Closure-compatible types JSDoc in\nJavaScript source code from an external types.xml file.", line:"typal source [--closure|externs] [--migrate] [-o output] [-hv]", example:"typal src/index.js -c"}));
+if (qa) {
+  const a = ia();
+  console.log(sa({usage:a, description:"Embeds and maintains Closure-compatible types JSDoc in\nJavaScript source code from an external types.xml file.", line:"typal source [--closure|externs] [--migrate] [-o output] [-hv]", example:"typal src/index.js -c"}));
   process.exit();
 } else {
-  qa && (console.log(require("../../package.json").version), process.exit());
+  ra && (console.log(require("../../package.json").version), process.exit());
 }
 (async() => {
   try {
-    return oa ? await Cc() : na ? await qc() : await tc();
+    return pa ? await Cc() : oa ? await qc() : await tc();
   } catch (a) {
     process.env.DEBUG ? console.log(a.stack) : console.log(a.message);
   }
