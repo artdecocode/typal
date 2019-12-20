@@ -1,8 +1,8 @@
-import Property from './Property'
-import Fn from './Fn'
 import extractTags from 'rexml'
-import { toType, updateExampleProp } from './'
-import { extractArgs } from './Arg'
+import Property from '../Property'
+import Fn from '../Fn'
+import { extractArgs } from '../Arg'
+import { toType, updateExampleProp } from '../'
 
 /**
  * Extract properties from the body of a type (or constructor/interface).

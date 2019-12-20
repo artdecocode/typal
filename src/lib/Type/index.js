@@ -1,11 +1,12 @@
-import Property, { indentWithAster } from './Property'
-import Fn from './Fn'
-import { addSuppress, makeBlock, getExternDeclaration, makeOptional, updateExampleProp, getLink } from './'
-import { trimD } from './'
-import Arg from './Arg' // eslint-disable-line
-import { getLinks } from './get-links'
-import makePropsTable from './make-props-table'
 import extractProperties from './extract-props'
+import Property, { indentWithAster } from '../Property'
+import Fn from '../Fn'
+import { addSuppress, makeBlock, getExternDeclaration, makeOptional,
+  updateExampleProp, trimD } from '../'
+import Arg from '../Arg' // eslint-disable-line
+import { getLinks } from '../get-links'
+import makePropsTable from '../make-props-table'
+import { markdownExtendsList } from './lib'
 
 /**
  * A representation of a type.
@@ -473,36 +474,6 @@ const getSpread = (properties = [], closure = false) => {
   return st
 }
 
-const removeNullable = (n) => {
-  return n.replace(/^!?/, '')
-}
-
-/**
- * Generates a line for headings.
- * @param {string} Extends Comma-separated list of types that are extended.
- * @param {!Array<!_typal.Type>} allTypes All existing types for linking.
- * @param {!_typal.LinkingOptions} [opts] Linking options.
- */
-const markdownExtendsList = (Extends, allTypes, opts = {}) => {
-  function getName(n) {
-    let r = removeNullable(n)
-    r = `\`${n}\``
-    return r
-  }
-  const E = Extends.split(/,\s*/).map((ee) => {
-    const rr = getLinks(allTypes, ee, {
-      ...opts,
-      flatten: true,
-      nameProcess: opts.nameProcess ? (n) => {
-        const p = opts.nameProcess(n)
-        if (/[_*~>]/.test(p)) return `<code>${p}</code>`
-        return getName(p)
-      } : getName,
-    })
-    return rr
-  })
-  return E.join(', ')
-}
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('@typedefs/parser').Type} _typedefsParser.Type

@@ -1,5 +1,10 @@
 ## 20 December 2019
 
+### [1.24.17](https://github.com/artdecocode/typal/compare/v1.24.16...v1.24.17)
+
+- [feature] Read `<record>` tags.
+- [fix] Pass through `flatten` to extends markdown generation.
+
 ### [1.24.16](https://github.com/artdecocode/typal/compare/v1.24.15...v1.24.16)
 
 - [fix] Run `nameProcess` on the extends type.
