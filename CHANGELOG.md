@@ -1,3 +1,10 @@
+## 20 December 2019
+
+### [1.24.16](https://github.com/artdecocode/typal/compare/v1.24.15...v1.24.16)
+
+- [fix] Run `nameProcess` on the extends type.
+- [feature] Pass odd or even argument to the `nameProcess` when generating mdTable.
+
 ## 19 December 2019
 
 ### [1.24.15](https://github.com/artdecocode/typal/compare/v1.24.14...v1.24.15)

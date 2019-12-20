@@ -330,7 +330,7 @@ _typal.ToMarkdownOptions.prototype.details
  * How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
  * @type {(function(string): string)|undefined}
  */
-_typal.ToMarkdownOptions.prototype.preprocessDesc = function(arg0) {}
+_typal.ToMarkdownOptions.prototype.preprocessDesc = function(description) {}
 /**
  * Options for linking.
  * @record
@@ -347,12 +347,12 @@ _typal.LinkingOptions.prototype.escapePipe
  */
 _typal.LinkingOptions.prototype.flatten
 /**
- * The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
+ * The function to get a link to the type. By default, prepends `#` to the generated link, but in case of _Wiki_ generation, _Documentary_ will make sure that types can be linked across pages.
  * @type {(function({ link: string, type: !_typal.Type }): string)|undefined}
  */
-_typal.LinkingOptions.prototype.link = function(arg0) {}
+_typal.LinkingOptions.prototype.link = function(info) {}
 /**
- * Preprocessor for the name of the type.
- * @type {(function(string): string)|undefined}
+ * Preprocessor for the name of the type. Can be used to include icons.
+ * @type {(function(string,boolean=): string)|undefined}
  */
-_typal.LinkingOptions.prototype.nameProcess = function(arg0) {}
+_typal.LinkingOptions.prototype.nameProcess = function(name, odd) {}

@@ -1,24 +1,30 @@
 import { getLinks } from './get-links'
 
 /**
+ * Close integration with Documentary. Returns either prepared mapped properties, or a string with `table` rule to be inserted into documenation.
  * @param {!_typal.Type} type The type for which to make the table
- * @param {!Array<!_typal.Property>} [props]
- * @param {!Array<!_typal.Type>} [allTypes]
- * @param {!_typal.ToMarkdownOptions} [opts]
+ * @param {!Array<!_typal.Property>} [props] The properties.
+ * @param {!Array<!_typal.Type>} [allTypes] All types to look up links to.
+ * @param {!_typal.ToMarkdownOptions} [opts] Linking options.
  */
-export default function makePropsTable (type, props = [], allTypes = [], opts = {}) {
-  const { narrow = false, flatten = false, preprocessDesc, link } = opts
+export default function makePropsTable(type, props = [], allTypes = [], opts = {}) {
+  const { narrow = false, preprocessDesc } = opts
   if (!props.length) return ''
   const constr = type.isConstructor || type.isInterface
   const anyHaveDefault = props.some(({ hasDefault }) => hasDefault)
 
   const linkOptions = /** @type {!_typal.LinkingOptions} */ ({
-    flatten,
     escapePipe: !narrow,
-    link,
+    ...opts,
   })
-  const links = (s) => getLinks(/** @type {!Array<!_typal.Type>} */ (allTypes), s, linkOptions)
-  const ps = props.map((prop) => {
+  const ps = props.map((prop, i) => {
+    const odd = (i + 1) % 2 > 0
+    const links = (s) => getLinks(/** @type {!Array<!_typal.Type>} */ (allTypes), s, {
+      ...linkOptions,
+      nameProcess: opts.nameProcess ? (name) => {
+        return opts.nameProcess(name, odd)
+      } : undefined,
+    })
     let typeName
     if (prop.args && prop.isParsedFunction) {
       typeName = prop.toTypeScriptFunction(links)
@@ -36,6 +42,7 @@ export default function makePropsTable (type, props = [], allTypes = [], opts = 
       name,
       de: esc(de, !narrow),
       d,
+      odd,
     }
   })
   if (narrow) { // narrow is the newer API for Documentary

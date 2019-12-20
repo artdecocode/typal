@@ -6,7 +6,6 @@ import read from '@wrote/read'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
 import { toType, updateExampleProp } from './'
 import Fn from './Fn'
-import { dirname, resolve } from 'path'
 
 /**
  * When Documentary compiles types with `-n` (root namespace) flag,
@@ -62,12 +61,17 @@ const parseFile = (xml, rootNamespace, location = null) => {
 
   const extracted = extractTags([
     'type', 'interface', 'constructor', 'method', 'import',
+    'record',
   ], Root)
 
   /** @type {!Array<!_typal.Import>} */
   const imports = []
 
   const types = /** @type {!Array<!_typal.Type>} */ (extracted.reduce((acc, { content, props, tag }) => {
+    if (tag == 'record') {
+      tag = 'type'
+      props['record'] = true
+    }
     const { 'alias': alias, 'aliases': aliases, ...restProps } = props
     if (location) updateExampleProp(restProps, location)
     const als = alias ? [alias] : (aliases ? aliases.split(/, */) : [])

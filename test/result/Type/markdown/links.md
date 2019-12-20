@@ -21,5 +21,5 @@
 /* expected */
 [`import('http').one`](https://1) __[`http.one`](l-type)__
 [`import('http').two`](https://2) __[`http.two`](l-type)__
-__[`Test`](t-type) extends <a href="https://1">`http.one`</a>, <a href="https://2">`http.two`</a>__
+__[`Test`](t-type) extends [`http.one`](https://1), [`http.two`](https://2)__
 /**/

@@ -1,6 +1,6 @@
 import Property, { indentWithAster } from './Property'
 import Fn from './Fn'
-import { addSuppress, makeBlock, getExternDeclaration, makeOptional, updateExampleProp } from './'
+import { addSuppress, makeBlock, getExternDeclaration, makeOptional, updateExampleProp, getLink } from './'
 import { trimD } from './'
 import Arg from './Arg' // eslint-disable-line
 import { getLinks } from './get-links'
@@ -473,25 +473,33 @@ const getSpread = (properties = [], closure = false) => {
   return st
 }
 
-const markdownExtendsList = (Extends, allTypes, opts) => {
+const removeNullable = (n) => {
+  return n.replace(/^!?/, '')
+}
+
+/**
+ * Generates a line for headings.
+ * @param {string} Extends Comma-separated list of types that are extended.
+ * @param {!Array<!_typal.Type>} allTypes All existing types for linking.
+ * @param {!_typal.LinkingOptions} [opts] Linking options.
+ */
+const markdownExtendsList = (Extends, allTypes, opts = {}) => {
+  function getName(n) {
+    let r = removeNullable(n)
+    r = `\`${n}\``
+    return r
+  }
   const E = Extends.split(/,\s*/).map((ee) => {
-    let e = `\`${ee}\``
-    const foundExt = allTypes.find(({ fullName }) => {
-      return fullName == ee
+    const rr = getLinks(allTypes, ee, {
+      ...opts,
+      flatten: true,
+      nameProcess: opts.nameProcess ? (n) => {
+        const p = opts.nameProcess(n)
+        if (/[_*~>]/.test(p)) return `<code>${p}</code>`
+        return getName(p)
+      } : getName,
     })
-    if (foundExt && foundExt.link) {
-      e = '<a '
-      if (foundExt.description) {
-        e += `title="${foundExt.description}" `
-      }
-      e += `href="${foundExt.link}">\`${ee}\`</a>`
-    } else {
-      const le = getLinks(allTypes, ee, { ...opts,
-        nameProcess: (td) => `\`${td}\``,
-      })
-      if (ee != le) e = le
-    }
-    return e
+    return rr
   })
   return E.join(', ')
 }
@@ -502,6 +510,14 @@ const markdownExtendsList = (Extends, allTypes, opts) => {
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('../../types').ToMarkdownOptions} _typal.ToMarkdownOptions
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').LinkingOptions} _typal.LinkingOptions
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../../types').Type} _typal.Type
  */
 
 // /**

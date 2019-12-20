@@ -1,28 +1,34 @@
 <types ns="_typal">
-  <type record name="ToMarkdownOptions" desc="These options are there for _Documentary_ integration as these 2 packages work together." extends="_typal.LinkingOptions">
+  <record name="ToMarkdownOptions" desc="These options are there for _Documentary_ integration as these 2 packages work together." extends="_typal.LinkingOptions">
     <prop boolean name="narrow" default="false">
       If specified, this will return an object `{ props: ps, anyHaveDefault, constr }` for _Documentary_. Otherwise, returns a string. Semi-private API.
     </prop>
     <prop type="!Array<string>" name="details" opt>
       The list of types that should be displayed in a `<details>` element, with the name and description as summary, and the properties table inside.
     </prop>
-    <prop type="function(string): string" name="preprocessDesc" opt>
+    <fn return="string" name="preprocessDesc" opt>
+      <arg string name="description">The description to pre-process.</arg>
       How to process description. _Documentary_ will strip the triple-backtick code blocks and insert them manually at the end to avoid any transforms in them.
-    </prop>
-  </type>
+    </fn>
+  </record>
 
-  <type record name="LinkingOptions" desc="Options for linking.">
+  <record name="LinkingOptions" desc="Options for linking.">
     <prop boolean name="escapePipe" default="true">
       Escapes the `|` in unions so it becomes `\|`.
     </prop>
     <prop type="boolean|function(string): void" name="flatten" default="false">
       Whether to follow links of referenced types. This will exclude them from printing in imports when compiling _README_ documentation. If function is passed, it will be called with the name of flattened type.
     </prop>
-    <prop type="function({ link: string, type: !_typal.Type }): string" name="link" opt>
-      The function to get a link to the type. By default, appends `#` to the generated link, but in case of Wiki generation, _Documentary_ will make sure that types can be linked across pages.
-    </prop>
-    <prop type="function(string): string" name="nameProcess" opt>
-      Preprocessor for the name of the type.
-    </prop>
-  </type>
+    <fn return="string" name="link" opt>
+      <arg type="{ link: string, type: !_typal.Type }" name="info">
+        The `link` is the type name that will be present for anchoring on the page, e.g., `type-config`. The `type` is the linked type.
+      </arg>
+      The function to get a link to the type. By default, prepends `#` to the generated link, but in case of _Wiki_ generation, _Documentary_ will make sure that types can be linked across pages.
+    </fn>
+    <fn return="string" name="nameProcess" opt>
+      <arg string name="name">The name of the type.</arg>
+      <arg boolean name="odd" opt>When creating a table, indicates whether the row is odd or even.</arg>
+      Preprocessor for the name of the type. Can be used to include icons.
+    </fn>
+  </record>
 </types>

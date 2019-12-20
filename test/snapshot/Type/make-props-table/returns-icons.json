@@ -1,0 +1,10 @@
+[
+  {
+    "typeName": "[<icon-odd> Test](#type-test)",
+    "odd": true
+  },
+  {
+    "typeName": "[<icon-even> Test](#type-test)",
+    "odd": false
+  }
+]

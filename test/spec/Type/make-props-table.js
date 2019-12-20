@@ -22,6 +22,22 @@ const ts = {
     ])
     return res
   },
+  'returns icons'() {
+    const { props } = makePropsTable({}, [
+      Property.fromXML('test', { name: 'prop1', type: 'Test' }),
+      Property.fromXML('test2', { name: 'prop2', type: 'Test' }),
+    ], [{ fullName: 'Test' }], {
+      narrow: true,
+      nameProcess(name, odd) {
+        const icon = odd ? '<icon-odd>' : '<icon-even>'
+        return `${icon} ${name}`
+      },
+    })
+    return props.map(({ typeName, odd }) => {
+      return { typeName, odd }
+    })
+    return res
+  },
 }
 
 export default ts
