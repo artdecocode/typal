@@ -149,10 +149,11 @@ export const toType = (props, argsArgs, fullName = null) => {
   let r = ret.replace(/\n\s*/g, ' ')
   if (async && r) r = `!Promise<${r}>`
   else if (async) r = '!Promise'
-  if (!r && rest.name == 'constructor' && fullName) r = fullName
+  // if (!r && rest.name == 'constructor' && fullName) r = fullName
+  const ne = rest.name == 'constructor' ? `new: ${fullName}, ` : ''
   // generate function string which will be parsed
   // a hack to convert args into _typedefParser.Type
-  let fnType = `function(${args})`
+  let fnType = `function(${ne}${args})`
   if (r) fnType += `: ${r}`
   return { rest: { ...rest, async, return: r }, fnType }
 }

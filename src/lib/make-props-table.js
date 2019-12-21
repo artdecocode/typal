@@ -17,18 +17,18 @@ export default function makePropsTable(type, props = [], allTypes = [], opts = {
     escapePipe: !narrow,
     ...opts,
   })
+  let odd
+  const links = (s) => getLinks(/** @type {!Array<!_typal.Type>} */ (allTypes), s, {
+    ...linkOptions,
+    nameProcess: opts.nameProcess ? (name) => {
+      return opts.nameProcess(name, odd)
+    } : undefined,
+  })
   const ps = props.map((prop, i) => {
-    const odd = (i + 1) % 2 > 0
-    const links = (s) => getLinks(/** @type {!Array<!_typal.Type>} */ (allTypes), s, {
-      ...linkOptions,
-      nameProcess: opts.nameProcess ? (name) => {
-        return opts.nameProcess(name, odd)
-      } : undefined,
-    })
+    odd = (i + 1) % 2 > 0
     let typeName
     if (prop.args && prop.isParsedFunction) {
       typeName = prop.toTypeScriptFunction(links)
-      if (prop.isConstructor) typeName = `new ${typeName}`
     } else
       typeName = links(prop.parsed || prop.type)
     // constructors and interfaces will always have to initialise properties

@@ -119,7 +119,8 @@ export default class Property {
    */
   toTypeScriptFunction(serialiseType) {
     if (!this.parsed) throw new Error('The property was not parsed.')
-    const { function: { args, return: ret, this: thisType, variableArgs } } = this.parsed
+    let { function: { new: ne, args, return: ret, this: thisType, variableArgs } } = this.parsed
+    if (ne) ret = ne
     const a = args
       .map((ar) => serialiseType(ar))
       .map((type, i) => {
@@ -144,11 +145,13 @@ export default class Property {
     }
     const j = a.join(', ')
     const r = ret ? serialiseType(ret) : '?'
-    const typeName = `(${j}) => ${r}`
+    let typeName = `(${j}) => ${r}`
+    if (ne) typeName = 'new ' + typeName
     return typeName
   }
   clearNamespace(namespace, s = new RegExp(`([!?])?${namespace}\\.`, 'g')) {
     if (!namespace) return
+    if (this._closure) this._closure = this._closure.replace(s, '$1')
     this.type = this.type.replace(s, '$1')
     return s
   }
