@@ -1,3 +1,9 @@
+## 21 December 2019
+
+### [1.24.18](https://github.com/artdecocode/typal/compare/v1.24.17...v1.24.18)
+
+- [fix] Fix the order when flattening.
+
 ## 20 December 2019
 
 ### [1.24.17](https://github.com/artdecocode/typal/compare/v1.24.16...v1.24.17)
