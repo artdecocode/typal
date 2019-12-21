@@ -1,5 +1,9 @@
 ## 21 December 2019
 
+### [1.24.19](https://github.com/artdecocode/typal/compare/v1.24.18...v1.24.19)
+
+- [fix] Fix how constructors are parsed and serialised.
+
 ### [1.24.18](https://github.com/artdecocode/typal/compare/v1.24.17...v1.24.18)
 
 - [fix] Fix the order when flattening.
