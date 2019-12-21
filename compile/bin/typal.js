@@ -1135,8 +1135,8 @@ class W extends xb {
     return c;
   }
   let {link:k, type:{description:l}} = d;
-  k = g(d);
   e && ((b = b.find(({fullName:h}) => h == a)) && b.link && (k = b.link), !l && b.description && (l = b.description), "function" == typeof e && e(a));
+  d.link == k && (k = g(d));
   b = f ? f(c) : c;
   return l ? `<a href="${k}" title="${l.replace(/"/g, "&quot;")}">${b}</a>` : `[${b}](${k})`;
 }, Bb = (a, b) => {

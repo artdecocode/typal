@@ -512,8 +512,8 @@ class P {
     return c;
   }
   let {link:l, type:{description:h}} = d;
-  l = f(d);
   e && ((b = b.find(({fullName:m}) => m == a)) && b.link && (l = b.link), !h && b.description && (h = b.description), "function" == typeof e && e(a));
+  d.link == l && (l = f(d));
   b = g ? g(c) : c;
   return h ? `<a href="${l}" title="${h.replace(/"/g, "&quot;")}">${b}</a>` : `[${b}](${l})`;
 }, ia = (a, b) => {

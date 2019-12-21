@@ -112,7 +112,8 @@ const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
   const n = `${nullable}${type}`
   if (!l) return n
   let { link, type: { description } } = l
-  link = linkFn(l)
+
+  // flatten should just become default now
   if (flatten) {
     const found = allTypes.find(({ fullName }) => fullName == type)
     if (found && found.link) {
@@ -121,6 +122,8 @@ const getTypeWithLink = (type, allTypes, nullable = '', opts = {}) => {
     if (!description && found.description) description = found.description
     if (typeof flatten == 'function') flatten(type)
   }
+  if (l.link == link) link = linkFn(l) // not flattened
+
   const nn = nameProcess ? nameProcess(n) : n
   if (!description) return `[${nn}](${link})`
   return `<a href="${link}" title="${description.replace(/"/g, '&quot;')}">${nn}</a>`
