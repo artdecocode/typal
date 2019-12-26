@@ -57,7 +57,7 @@
 /* typal test/temp/types.xml namespace */
 /**
  * @typedef {typal.Component} Component `＠constructor` https://git.io/fjHoZ
- * @typedef {{defaultProps: !Object|undefined} & typal.$Component} typal.Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {typal.$Component & {defaultProps: !Object|undefined}} typal.Component `＠constructor` https://git.io/fjHoZ
  * @typedef {Object} typal.$Component `＠constructor` https://git.io/fjHoZ
  */
 
@@ -186,7 +186,7 @@
 /* typal test/temp/types.xml namespace */
 /**
  * @typedef {typal.Component} Component `＠constructor` https://git.io/fjHoZ
- * @typedef {_t.A & _t.B & typal.$Component} typal.Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {typal.$Component & _t.A & _t.B} typal.Component `＠constructor` https://git.io/fjHoZ
  * @typedef {Object} typal.$Component `＠constructor` https://git.io/fjHoZ
  */
 

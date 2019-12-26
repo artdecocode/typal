@@ -1292,7 +1292,7 @@ class Y {
     } else {
       this.namespace && c && (f = ` * @typedef {${this.fullName}} ${this.name}${this.l}`, f = N(f), g.push(f));
     }
-    d && (c = ` * @typedef {${this.extends.split(/,\s*/).join(" & ")} & ${Hb(this, c)}} ${c ? this.fullName : this.name}${this.l}`, a && !b && (c = O(c)), c = N(c), g.push(c));
+    d && (c = ` * @typedef {${Hb(this, c)} & ${this.extends.split(/,\s*/).join(" & ")}} ${c ? this.fullName : this.name}${this.l}`, a && !b && (c = O(c)), c = N(c), g.push(c));
     g.push(e);
     return g.join("");
   }

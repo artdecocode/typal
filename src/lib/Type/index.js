@@ -254,7 +254,8 @@ _ns.Type.prototype.isConstructor
       parts.push(td)
     }
     if (hasExtends) {
-      let extended = ` * @typedef {${this.extends.split(/,\s*/).join(' & ')} & ${this.getFullNameForExtends(useNamespace)}} ${useNamespace ? this.fullName : this.name}${this.descriptionWithTag}`
+      const ne = this.getFullNameForExtends(useNamespace)
+      let extended = ` * @typedef {${ne} & ${this.extends.split(/,\s*/).join(' & ')}} ${useNamespace ? this.fullName : this.name}${this.descriptionWithTag}`
       if (closure && !noSuppress) extended = addSuppress(extended)
       extended = makeBlock(extended)
       parts.push(extended)

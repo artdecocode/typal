@@ -101,14 +101,14 @@ depack@^1.0.1:
     "@depack/nodejs" "^1.1.4"
     "@externs/nodejs" "^1.5.0"
 
-documentary@^1.35.2:
-  version "1.35.2"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.35.2.tgz#9e18ad2e52e02369b5a6aa0951a89a8b72917d0e"
-  integrity sha512-qtoHJqVqeSwNE/Vnf8oLNG3wEfsbQxLWqBEdYC+zL6yNaLtS2/H0CGzf3jTfYqDWV0DHJirEHa9qJ++/bSaxJw==
+documentary@^1.35.8:
+  version "1.35.8"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.35.8.tgz#17e86eeecdca6daa0c8058484e6ced78ce5e3199"
+  integrity sha512-/V3Qs4oru12RFl0zif4TPmTcJ0whCnaWZxOsblpkzyFx7wZkWK9QTMGMz1C2Qv2aYVswMjV2BKQuE5UBHAsa6Q==
   dependencies:
     alamode "^3.3.0"
     preact "8.5.3"
-    typal "^1.24.15"
+    typal "^1.24.19"
 
 erotic@^2.1.0, erotic@^2.1.1:
   version "2.1.1"
@@ -178,10 +178,10 @@ temp-context@^2.1.3:
     makepromise "^3.0.3"
     pedantry "^2.3.1"
 
-typal@^1.24.15:
-  version "1.24.15"
-  resolved "https://registry.yarnpkg.com/typal/-/typal-1.24.15.tgz#e44d2eece47e466285a932d013505192b3cbc3c0"
-  integrity sha512-ghWcOORBgNeYCKu9lIAkYnC+Jv522j2WNjKD/hCkh1jTOrflTqgKKNZRxSOC+GJpk9GUivjaJjNRdImE/W/u1Q==
+typal@^1.24.19:
+  version "1.24.19"
+  resolved "https://registry.yarnpkg.com/typal/-/typal-1.24.19.tgz#b77d62a25cf65bfbb13808d3939a571c8a65a8f4"
+  integrity sha512-LAdurZ+1RxVKXkxGR9qr+CM7b5DfQ+HB7zk1dBd2YVL3mcCS+s0K5k/5plxM3NMPcmjQi12nz2woWxoQp9nnbQ==
 
 usually@^1.2.0:
   version "1.2.0"

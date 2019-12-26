@@ -13,7 +13,7 @@
 /*@ expected */
 /* typal test/temp/types.xml */
 /**
- * @typedef {_restream.Replaceable & $Test} Test The test.
+ * @typedef {$Test & _restream.Replaceable} Test The test.
  * @typedef {Object} $Test The test.
  * @prop {boolean} [bool] A prop.
  */
@@ -44,7 +44,7 @@
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {_restream.Replaceable & _test.$Test} _test.Test The test.
+ * @typedef {_test.$Test & _restream.Replaceable} _test.Test The test.
  */
 /**
  * @suppress {nonStandardJsDocs}
