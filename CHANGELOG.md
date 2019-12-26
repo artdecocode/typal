@@ -1,3 +1,9 @@
+## 26 December 2019
+
+### [1.24.20](https://github.com/artdecocode/typal/compare/v1.24.19...v1.24.20)
+
+- [fix] Fix the typedef order of extended types (nominal comes first).
+
 ## 21 December 2019
 
 ### [1.24.19](https://github.com/artdecocode/typal/compare/v1.24.18...v1.24.19)

@@ -58,3 +58,4 @@ typings/
 .env
 .documentary/cache
 t
+test/temp
