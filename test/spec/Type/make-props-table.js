@@ -36,7 +36,6 @@ const ts = {
     return props.map(({ typeName, odd }) => {
       return { typeName, odd }
     })
-    return res
   },
 }
 

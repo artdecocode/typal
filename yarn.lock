@@ -101,10 +101,10 @@ depack@^1.0.1:
     "@depack/nodejs" "^1.1.4"
     "@externs/nodejs" "^1.5.0"
 
-documentary@^1.35.8:
-  version "1.35.8"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.35.8.tgz#17e86eeecdca6daa0c8058484e6ced78ce5e3199"
-  integrity sha512-/V3Qs4oru12RFl0zif4TPmTcJ0whCnaWZxOsblpkzyFx7wZkWK9QTMGMz1C2Qv2aYVswMjV2BKQuE5UBHAsa6Q==
+documentary@^1.35.9:
+  version "1.35.9"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.35.9.tgz#f0003b04c4a54325198e1189f81ba88aad87e21a"
+  integrity sha512-NnZvzx+429RfwgehvpSNvTXFEOR3bnrPW09TZpPxwa2QnPOdRybxoKDrluP6QoGDQslOKXrWkzSXO/lesqPsWw==
   dependencies:
     alamode "^3.3.0"
     preact "8.5.3"
