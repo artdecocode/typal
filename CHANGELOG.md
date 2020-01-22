@@ -1,3 +1,9 @@
+## 22 January 2020
+
+### [1.25.0](https://github.com/artdecocode/typal/compare/v1.24.20...v1.25.0)
+
+- [feature] Add `<embed>` element to the schema.
+
 ## 26 December 2019
 
 ### [1.24.20](https://github.com/artdecocode/typal/compare/v1.24.19...v1.24.20)
