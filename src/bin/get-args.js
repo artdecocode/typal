@@ -49,12 +49,13 @@ export const argsConfig = {
     short: 'v',
   },
 }
+
 const args = argufy(argsConfig)
 
 /**
  * The path to the source file or directory with files to embed types into. Can specify multiple values, e.g., `typal types/index.js types/vendor.js`.
  */
-export const _source = /** @type {(!Array<string>|string)} */ (args['source'])
+export const _source = /** @type {!Array<string>} */ (args['source'])
 
 /**
  * The destination where to save output.

@@ -61,6 +61,10 @@ const parseFile = (xml, rootNamespace, location = null) => {
 
   const ns = rootNamespace == namespace ? undefined : namespace
 
+  const embeds = extractTags([
+    'embed',
+  ], Root).map(({ props }) => props)
+
   const extracted = extractTags([
     'type', 'interface', 'constructor', 'method', 'import',
     'record',
@@ -142,7 +146,7 @@ const parseFile = (xml, rootNamespace, location = null) => {
     /** @type {string} */ (rootNamespace), t
   ))
 
-  return { namespace, types, imports }
+  return { namespace, types, imports, embeds }
 }
 
 /**
@@ -222,9 +226,9 @@ export default parseFile
  */
 export const readTypesFile = async (path, ignore = []) => {
   const xml = await read(path)
-  let namespace, types, imports
+  let namespace, types, imports, embeds
   try {
-    ({ namespace = null, types, imports } = parseFile(xml, undefined, path))
+    ({ namespace = null, types, imports, embeds } = parseFile(xml, undefined, path))
   } catch (err) {
     err.message = `Error while reading ${path}\n${err.message}`
     throw err
@@ -237,7 +241,7 @@ export const readTypesFile = async (path, ignore = []) => {
     if (ignore.includes(fullName)) return false
     return true
   })
-  return { types, imports, namespace }
+  return { types, imports, namespace, embeds }
 }
 
 /**

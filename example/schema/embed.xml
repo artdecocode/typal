@@ -1,0 +1,8 @@
+<types>
+  <embed src="example/schema/extends.xml" namespace />
+  <type name="MyType" extends="_test.Test" desc="A custom type.">
+    <prop string name="example">
+      Hello World.
+    </prop>
+  </type>
+</types>

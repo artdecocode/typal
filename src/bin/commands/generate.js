@@ -8,6 +8,10 @@ import makeJSTypal from '../../lib/make-JSTypal'
 import parseFile from '../../lib/parse'
 import { getTypes } from './template'
 
+/**
+ * Adds typal JSDoc into source JS files.
+ * @param {!Array<string>} source The source files.
+ */
 export default async (source, opts = {}) => {
   const {
     closure = false,

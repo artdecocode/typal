@@ -37,10 +37,26 @@ async function replacement(match, docOrTypal, location) {
 
   try {
     this.LOG('Detected type marker: %s', location)
-    const { types, imports, namespace } = await readTypesFile(loc, ignore)
+    const { types, imports, namespace, embeds } = await readTypesFile(loc, ignore)
 
     this.emit('types', types) // remember types for js-replace-stream
     this.emit('types', imports)
+    const em = await Promise.all(embeds.map(async ({
+      src, path: p = src, ignore: i, namespace: n, closure: c,
+      externs: ext, 'no-suppress': nos,
+    }) => {
+      const a = [p]
+      if (i) a.push(`ignore:${i}`)
+      if (n) a.push('namespace')
+      if (c) a.push('closure')
+      if (ext) a.push('ext')
+      if (nos) a.push('noSuppress')
+      const l = a.join(' ')
+      const s = `\n /* typal-embed ${l} */\n`
+      const e = await replacement.call(this, s, 'typal-embed', l)
+      return e
+    }))
+    let bem = em.join('')
 
     let block
     if (closure) {
@@ -55,7 +71,7 @@ async function replacement(match, docOrTypal, location) {
       block = joinTypes(imports, types)
     }
 
-    const typedef = `/* ${docOrTypal} ${location} */\n${block}`
+    const typedef = `/* ${docOrTypal} ${location} */\n${block}${bem}`
     return typedef
   } catch (e) {
     this.LOG('(%s) Could not process typedef-js: %s', location, e.message)

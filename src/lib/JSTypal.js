@@ -13,6 +13,11 @@ export default class JSTypal extends Replaceable {
     this.on('namespace', namespace => {
       this.addNamespace(namespace)
     })
+    // this.on('embeds', (embeds) => {
+    //   embeds.forEach(({ src, ignore }) => {
+    //     this.write(`\n /* typal-embed ${src}${ignore ? ` ignore:${ignore}`: ''} */\n`)
+    //   })
+    // })
     /** @type {{ closure: boolean, externs: boolean, useNamespace: boolean }} */
     this.conf = conf
     /** @type {!Array<string>} */

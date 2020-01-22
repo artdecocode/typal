@@ -191,3 +191,27 @@
  */
 
 /*@*/
+
+## embeds
+<types namespace="typal">
+  <embed src="test/fixture/ns.xml" namespace />
+  <constructor desc="https://git.io/fjHoZ"
+    name="Component" extends="_t.A, _t.B">
+  </constructor>
+</types>
+
+/*@ expected */
+/* typal test/temp/types.xml namespace */
+/**
+ * @typedef {typal.Component} Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {typal.$Component & _t.A & _t.B} typal.Component `＠constructor` https://git.io/fjHoZ
+ * @typedef {Object} typal.$Component `＠constructor` https://git.io/fjHoZ
+ */
+/* typal-embed test/fixture/ns.xml namespace */
+/**
+ * @typedef {ns.Conf} Conf config
+ * @typedef {Object} ns.Conf config
+ * @prop {string} propName The prop description.
+ */
+
+/*@*/

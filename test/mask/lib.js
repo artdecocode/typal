@@ -72,6 +72,11 @@ export const namespaces = makeTestSuite('test/result/common/namespace', {
    * @param {TempContext} t
    */
   async getReadable({ write }) {
+    // add this to zoroaster
+    if (this.input.startsWith('debugger')) {
+      debugger
+      this.input = this.input.replace(/debugger\s/, '')
+    }
     await write('types.xml', this.input)
     let conf
     if (this.preamble) conf = this.preamble
