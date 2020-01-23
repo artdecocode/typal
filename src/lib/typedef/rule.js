@@ -21,6 +21,7 @@ async function replacement(match, docOrTypal, location) {
   const noSuppress = args.includes('noSuppress')
   const skipNsDecl = args.includes('skipNsDecl')
   const useNamespace = args.includes('namespace')
+  const noEmbed = args.includes('noEmbed') || args.includes('no-embed')
 
   let ignore = args.find((a) => {
     return a.startsWith('ignore:')
@@ -41,9 +42,11 @@ async function replacement(match, docOrTypal, location) {
 
     this.emit('types', types) // remember types for js-replace-stream
     this.emit('types', imports)
-    const em = await Promise.all(embeds.map(async ({
-      src, path: p = src, ignore: i, namespace: n, closure: c,
-      externs: ext, 'no-suppress': nos,
+    let em = []
+    if (!noEmbed) em = await Promise.all(embeds.map(async ({
+      src, path: p = src, ignore: i = ignore.join(','),
+      namespace: n = useNamespace , closure: c = closure,
+      externs: ext = externs, 'no-suppress': nos = noSuppress,
     }) => {
       const a = [p]
       if (i) a.push(`ignore:${i}`)

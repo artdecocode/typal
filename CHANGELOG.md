@@ -1,3 +1,9 @@
+## 23 January 2020
+
+### [1.25.1](https://github.com/artdecocode/typal/compare/v1.25.0...v1.25.1)
+
+- [feature] Support `no-embed` attribute and inherit attributes for embedding.
+
 ## 22 January 2020
 
 ### [1.25.0](https://github.com/artdecocode/typal/compare/v1.24.20...v1.25.0)

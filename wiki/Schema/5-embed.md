@@ -11,6 +11,8 @@ Any additional types that need to be put in the source code can be added with th
 </import>
 ```
 
+The only required attribute is either `src` or `path` that point to the XML file to read for embedding. A new marker will inherit all attributes from its parent, e.g., if the parent used `extern`, the new one will also have `externs`. This is because they are used in the same file. If, for some reason, they need to be explicitly overridden, new values can also be passed.
+
 - `src`: the path to the XML file.
 - `path`: alternative attribute name to `src`.
 - `ignore` [_optional_]: comma-separated list of types to ignore.
@@ -28,3 +30,11 @@ Any additional types that need to be put in the source code can be added with th
 %FORK-js src/bin/typal example/schema/embed.js -o -%
 </td></tr>
 </table>
+
+Embeds are mostly used in typedefs, but should be skipped in externs as the compiler will discover the externs during compilation. To prevent embeds, the `no-embed` (or `noEmbed`) attribute should be set on the parent market.
+
+```js
+/* typal types/index.xml externs no-embed */
+
+// no embedding will take place
+```
