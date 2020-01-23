@@ -1,5 +1,9 @@
 ## 23 January 2020
 
+### [1.26.0](https://github.com/artdecocode/typal/compare/v1.25.1...v1.26.0)
+
+- [license] Change to AGPL.
+
 ### [1.25.1](https://github.com/artdecocode/typal/compare/v1.25.0...v1.25.1)
 
 - [feature] Support `no-embed` attribute and inherit attributes for embedding.
