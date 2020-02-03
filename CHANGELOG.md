@@ -1,4 +1,8 @@
-## 23 January 2020
+## 3 February 2020
+
+### [1.26.2](https://github.com/artdecocode/typal/compare/v1.26.1...v1.26.2)
+
+- [fix] Try to fix EOLs.
 
 ### [1.26.1](https://github.com/artdecocode/typal/compare/v1.26.0...v1.26.1)
 
