@@ -6,10 +6,21 @@ const os = require('os');
 const path = require('path');             
 var aa = "function" == typeof Object.defineProperties ? Object.defineProperty : function(a, b, c) {
   a != Array.prototype && a != Object.prototype && (a[b] = c.value);
-}, ba = "undefined" != typeof window && window === this ? this : "undefined" != typeof global && null != global ? global : this;
-function ca(a, b) {
+};
+function ba(a) {
+  a = ["object" == typeof window && window, "object" == typeof self && self, "object" == typeof global && global, a];
+  for (var b = 0; b < a.length; ++b) {
+    var c = a[b];
+    if (c && c.Math == Math) {
+      return c;
+    }
+  }
+  return globalThis;
+}
+var ca = ba(this);
+function da(a, b) {
   if (b) {
-    var c = ba;
+    var c = ca;
     a = a.split(".");
     for (var d = 0; d < a.length - 1; d++) {
       var e = a[d];
@@ -22,13 +33,13 @@ function ca(a, b) {
     b != d && null != b && aa(c, a, {configurable:!0, writable:!0, value:b});
   }
 }
-ca("String.prototype.trimRight", function(a) {
+da("String.prototype.trimRight", function(a) {
   function b() {
     return this.replace(/[\s\xa0]+$/, "");
   }
   return a || b;
 });
-const da = (a, b, c, d = !1, e = !1) => {
+const ea = (a, b, c, d = !1, e = !1) => {
   const f = c ? new RegExp(`^-(${c}|-${b})$`) : new RegExp(`^--${b}$`);
   b = a.findIndex(g => f.test(g));
   if (-1 == b) {
@@ -43,7 +54,7 @@ const da = (a, b, c, d = !1, e = !1) => {
   }
   e && (d = parseInt(d, 10));
   return {value:d, index:b, length:2};
-}, ea = a => {
+}, fa = a => {
   const b = [];
   for (let c = 0; c < a.length; c++) {
     const d = a[c];
@@ -53,8 +64,8 @@ const da = (a, b, c, d = !1, e = !1) => {
     b.push(d);
   }
   return b;
-}, ha = () => {
-  var a = fa;
+}, ia = () => {
+  var a = ha;
   return Object.keys(a).reduce((b, c) => {
     const d = a[c];
     if ("string" == typeof d) {
@@ -68,11 +79,11 @@ const da = (a, b, c, d = !1, e = !1) => {
     return b;
   }, {});
 };
-const fa = {source:{description:"The path to the source file or directory with files to embed types into. Can specify multiple values, e.g., `typal types/index.js types/vendor.js`.", command:!0, multiple:!0}, output:{description:"The destination where to save output.\nIf not passed, the file will be overwritten.\nIf `-` is passed, prints to stdout.", short:"o"}, closure:{description:"Whether to generate types in _Closure_ mode.", boolean:!0, short:"c"}, useNamespace:{description:"Generate JSDoc for functions using namespaces.", 
+const ha = {source:{description:"The path to the source file or directory with files to embed types into. Can specify multiple values, e.g., `typal types/index.js types/vendor.js`.", command:!0, multiple:!0}, output:{description:"The destination where to save output.\nIf not passed, the file will be overwritten.\nIf `-` is passed, prints to stdout.", short:"o"}, closure:{description:"Whether to generate types in _Closure_ mode.", boolean:!0, short:"c"}, useNamespace:{description:"Generate JSDoc for functions using namespaces.", 
 boolean:!0, short:"u"}, externs:{description:"Whether to generate externs for _GCC_.", boolean:!0, short:"e"}, types:{description:"Comma-separated location of files to read types from.", short:"t"}, template:{description:"Scans the input file for `@type` comment in functions' JSDoc, and inserts the annotations from types' files.", short:"T"}, migrate:{description:"Extracts types from JavaScript source code and saves them\ninto the types.xml file specified in the output option.", boolean:!0, short:"m"}, 
 help:{description:"Print the help information and exit.", boolean:!0, short:"h"}, version:{description:"Show the version's number and exit.", boolean:!0, short:"v"}}, w = function(a = {}, b = process.argv) {
   let [, , ...c] = b;
-  const d = ea(c);
+  const d = fa(c);
   c = c.slice(d.length);
   a = Object.entries(a).reduce((g, [h, l]) => {
     g[h] = "string" == typeof l ? {short:l} : l;
@@ -89,7 +100,7 @@ help:{description:"Print the help information and exit.", boolean:!0, short:"h"}
         if (r && d.length) {
           k = d[0];
         } else {
-          const t = da(c, h, m, n, p);
+          const t = ea(c, h, m, n, p);
           ({value:k} = t);
           const u = t.index, v = t.length;
           void 0 !== u && v && e.push({index:u, length:v});
@@ -109,8 +120,8 @@ help:{description:"Print the help information and exit.", boolean:!0, short:"h"}
   f = f.filter(g => null !== g);
   Object.assign(a, {Y:f});
   return a;
-}(fa), y = w.source, z = w.output, ia = w.closure, ja = w.useNamespace, ka = w.externs, la = w.types, ma = w.template, na = w.migrate, oa = w.help, pa = w.version;
-function qa(a = {usage:{}}) {
+}(ha), y = w.source, z = w.output, ja = w.closure, ka = w.useNamespace, la = w.externs, ma = w.types, na = w.template, oa = w.migrate, pa = w.help, qa = w.version;
+function ra(a = {usage:{}}) {
   const {usage:b = {}, description:c, line:d, example:e} = a;
   a = Object.keys(b);
   const f = Object.values(b), [g] = a.reduce(([k = 0, m = 0], n) => {
@@ -141,35 +152,35 @@ ${a.join("\n")}
     ${e}
 ` : a;
 }
-;const ra = fs.createReadStream, sa = fs.createWriteStream, A = fs.lstat, ta = fs.readFileSync, ua = fs.readdir;
-var va = stream;
-const B = stream.Transform, wa = stream.Writable;
-const xa = (a, b = 0, c = !1) => {
+;const sa = fs.createReadStream, ta = fs.createWriteStream, A = fs.lstat, ua = fs.readFileSync, va = fs.readdir;
+var wa = stream;
+const B = stream.Transform, xa = stream.Writable;
+const ya = (a, b = 0, c = !1) => {
   if (0 === b && !c) {
     return a;
   }
   a = a.split("\n", c ? b + 1 : void 0);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, ya = (a, b = !1) => xa(a, 2 + (b ? 1 : 0)), za = a => {
+}, za = (a, b = !1) => ya(a, 2 + (b ? 1 : 0)), Aa = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
-const Aa = os.homedir;
-const Ba = /\s+at.*(?:\(|\s)(.*)\)?/, Ca = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, Da = Aa(), D = a => {
-  const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(Ca.source.replace("IGNORED_MODULES", d));
+const Ba = os.homedir;
+const Ca = /\s+at.*(?:\(|\s)(.*)\)?/, Da = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, Ea = Ba(), D = a => {
+  const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(Da.source.replace("IGNORED_MODULES", d));
   return a.replace(/\\/g, "/").split("\n").filter(f => {
-    f = f.match(Ba);
+    f = f.match(Ca);
     if (null === f || !f[1]) {
       return !0;
     }
     f = f[1];
     return f.includes(".app/Contents/Resources/electron.asar") || f.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(f);
-  }).filter(f => f.trim()).map(f => b ? f.replace(Ba, (g, h) => g.replace(h, h.replace(Da, "~"))) : f).join("\n");
+  }).filter(f => f.trim()).map(f => b ? f.replace(Ca, (g, h) => g.replace(h, h.replace(Ea, "~"))) : f).join("\n");
 };
-function Ea(a, b, c = !1) {
+function Fa(a, b, c = !1) {
   return function(d) {
-    var e = za(arguments), {stack:f} = Error();
-    const g = xa(f, 2, !0), h = (f = d instanceof Error) ? d.message : d;
+    var e = Aa(arguments), {stack:f} = Error();
+    const g = ya(f, 2, !0), h = (f = d instanceof Error) ? d.message : d;
     e = [`Error: ${h}`, ...null !== e && a === e || c ? [b] : [g, b]].join("\n");
     e = D(e);
     return Object.assign(f ? d : Error(), {message:h, stack:e});
@@ -177,17 +188,17 @@ function Ea(a, b, c = !1) {
 }
 ;function E(a) {
   var {stack:b} = Error();
-  const c = za(arguments);
-  b = ya(b, a);
-  return Ea(c, b, a);
+  const c = Aa(arguments);
+  b = za(b, a);
+  return Fa(c, b, a);
 }
-;const Fa = (a, b) => {
+;const Ga = (a, b) => {
   b.once("error", c => {
     a.emit("error", c);
   });
   return b;
 };
-class Ga extends wa {
+class Ha extends xa {
   constructor(a) {
     const {binary:b = !1, rs:c = null, ...d} = a || {}, {R:e = E(!0), proxyError:f} = a || {}, g = (h, l) => e(l);
     super(d);
@@ -209,7 +220,7 @@ class Ga extends wa {
         }
         l(k);
       });
-      c && Fa(this, c).pipe(this);
+      c && Ga(this, c).pipe(this);
     });
   }
   _write(a, b, c) {
@@ -221,18 +232,18 @@ class Ga extends wa {
   }
 }
 const F = async a => {
-  ({f:a} = new Ga({rs:a, R:E(!0)}));
+  ({f:a} = new Ha({rs:a, R:E(!0)}));
   return await a;
 };
 async function G(a) {
-  a = ra(a);
+  a = sa(a);
   return await F(a);
 }
 ;async function H(a, b) {
   if (!a) {
     throw Error("No path is given.");
   }
-  const c = E(!0), d = sa(a);
+  const c = E(!0), d = ta(a);
   await new Promise((e, f) => {
     d.on("error", g => {
       g = c(g);
@@ -240,27 +251,19 @@ async function G(a) {
     }).on("close", e).end(b);
   });
 }
-;function Ha(a, b) {
-  if (b > a - 2) {
-    throw Error("Function does not accept that many arguments.");
-  }
-}
-async function I(a, b, c) {
+;async function I(a, b, c) {
   const d = E(!0);
-  if ("function" !== typeof a) {
+  if ("function" != typeof a) {
     throw Error("Function must be passed.");
   }
-  const e = a.length;
-  if (!e) {
-    throw Error("Function does not accept any arguments.");
+  if (!a.length) {
+    throw Error(`Function${a.name ? ` ${a.name}` : ""} does not accept any arguments.`);
   }
-  return await new Promise((f, g) => {
-    const h = (k, m) => k ? (k = d(k), g(k)) : f(c || m);
-    let l = [h];
-    Array.isArray(b) ? (b.forEach((k, m) => {
-      Ha(e, m);
-    }), l = [...b, h]) : 1 < Array.from(arguments).length && (Ha(e, 0), l = [b, h]);
-    a(...l);
+  return await new Promise((e, f) => {
+    const g = (l, k) => l ? (l = d(l), f(l)) : e(c || k);
+    let h = [g];
+    Array.isArray(b) ? h = [...b, g] : 1 < Array.from(arguments).length && (h = [b, g]);
+    a(...h);
   });
 }
 ;const Ia = path.dirname, J = path.join, Ja = path.relative, Ka = path.resolve;
@@ -282,7 +285,7 @@ async function K(a) {
     c.code = "ENOTDIR";
     throw c;
   }
-  c = await I(ua, a);
+  c = await I(va, a);
   var d = await La(a, c);
   c = d.filter(Ma);
   d = d.filter(Na).reduce((e, f) => {
@@ -458,7 +461,7 @@ class Ya extends B {
   }
 }
 async function Xa(a, b) {
-  b instanceof va ? b.pipe(a) : a.end(b);
+  b instanceof wa ? b.pipe(a) : a.end(b);
   return await F(a);
 }
 ;function Za() {
@@ -834,7 +837,7 @@ function T(a) {
 function qb(a, b = "") {
   const c = b.split(/\s*,\s*/);
   return a.split(/\s*,\s*/).map(d => {
-    let e = d = ta(d, "utf8");
+    let e = d = ua(d, "utf8");
     if (d = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\s*\/\* end example \*\//.exec(d)) {
       [, d] = d, e = pb(d);
     }
@@ -1774,12 +1777,12 @@ const qc = async a => a ? (await Promise.all(a.split(",").map(async b => {
   return b;
 }, []);
 async function sc() {
-  const a = await qc(la), b = await rc(a);
+  const a = await qc(ma), b = await rc(a);
   await Promise.all(y.map(async c => {
     var d = await I(A, c);
     let e;
     d.isFile() ? e = [c] : d.isDirectory() && (d = await K(c), e = L(d.content, c));
-    await tc(e, b, ma);
+    await tc(e, b, na);
   }));
 }
 const tc = async(a, b = [], c = null) => {
@@ -1792,7 +1795,7 @@ const tc = async(a, b = [], c = null) => {
   }));
 };
 var vc = async() => {
-  const {o:a = !1, D:b = !1, w:c = !1, V:d, types:e} = {o:ia, w:ka, V:z, types:la, D:ja}, f = await qc(e);
+  const {o:a = !1, D:b = !1, w:c = !1, V:d, types:e} = {o:ja, w:la, V:z, types:ma, D:ka}, f = await qc(e);
   await Promise.all(y.map(async g => {
     var h = await I(A, g);
     let l;
@@ -1932,16 +1935,16 @@ async function Dc(a) {
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-if (oa) {
-  const a = ha();
-  console.log(qa({usage:a, description:"Embeds and maintains Closure-compatible types JSDoc in\nJavaScript source code from an external types.xml file.", line:"typal source [--closure|externs] [--migrate] [-o output] [-hv]", example:"typal src/index.js -c"}));
+if (pa) {
+  const a = ia();
+  console.log(ra({usage:a, description:"Embeds and maintains Closure-compatible types JSDoc in\nJavaScript source code from an external types.xml file.", line:"typal source [--closure|externs] [--migrate] [-o output] [-hv]", example:"typal src/index.js -c"}));
   process.exit();
 } else {
-  pa && (console.log(require("../../package.json").version), process.exit());
+  qa && (console.log(require("../../package.json").version), process.exit());
 }
 (async() => {
   try {
-    return na ? await Ec() : ma ? await sc() : await vc();
+    return oa ? await Ec() : na ? await sc() : await vc();
   } catch (a) {
     process.env.DEBUG ? console.log(a.stack) : console.log(a.message);
   }

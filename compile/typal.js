@@ -6,10 +6,21 @@ const stream = require('stream');
 const os = require('os');             
 var w = "function" == typeof Object.defineProperties ? Object.defineProperty : function(a, b, d) {
   a != Array.prototype && a != Object.prototype && (a[b] = d.value);
-}, x = "undefined" != typeof window && window === this ? this : "undefined" != typeof global && null != global ? global : this;
-function y(a, b) {
+};
+function x(a) {
+  a = ["object" == typeof window && window, "object" == typeof self && self, "object" == typeof global && global, a];
+  for (var b = 0; b < a.length; ++b) {
+    var d = a[b];
+    if (d && d.Math == Math) {
+      return d;
+    }
+  }
+  return globalThis;
+}
+var y = x(this);
+function A(a, b) {
   if (b) {
-    var d = x;
+    var d = y;
     a = a.split(".");
     for (var c = 0; c < a.length - 1; c++) {
       var e = a[c];
@@ -22,13 +33,13 @@ function y(a, b) {
     b != c && null != b && w(d, a, {configurable:!0, writable:!0, value:b});
   }
 }
-y("String.prototype.trimRight", function(a) {
+A("String.prototype.trimRight", function(a) {
   function b() {
     return this.replace(/[\s\xa0]+$/, "");
   }
   return a || b;
 });
-function A(a, b, d) {
+function B(a, b, d) {
   const c = [];
   b.replace(a, (e, ...g) => {
     e = g.slice(0, g.length - 2).reduce((f, k, h) => {
@@ -43,22 +54,22 @@ function A(a, b, d) {
   });
   return c;
 }
-;const B = new RegExp(`${/([^\s>=/]+)/.source}(?:\\s*=\\s*${/(?:"([\s\S]*?)"|'([\s\S]*?)')/.source})?`, "g"), C = new RegExp(`(?:\\s+((?:${B.source}\\s*)*))`);
-const E = (a, b) => {
+;const C = new RegExp(`${/([^\s>=/]+)/.source}(?:\\s*=\\s*${/(?:"([\s\S]*?)"|'([\s\S]*?)')/.source})?`, "g"), D = new RegExp(`(?:\\s+((?:${C.source}\\s*)*))`);
+const F = (a, b) => {
   a = (Array.isArray(a) ? a : [a]).join("|");
-  return A(new RegExp(`<(${a})${C.source}?(?:${/\s*\/>/.source}|${/>([\s\S]+?)?<\/\1>/.source})`, "g"), b, "t a v v1 v2 c".split(" ")).map(({t:d, a:c = "", c:e = ""}) => {
+  return B(new RegExp(`<(${a})${D.source}?(?:${/\s*\/>/.source}|${/>([\s\S]+?)?<\/\1>/.source})`, "g"), b, "t a v v1 v2 c".split(" ")).map(({t:d, a:c = "", c:e = ""}) => {
     c = c.replace(/\/$/, "").trim();
-    c = D(c);
+    c = E(c);
     return {content:e, props:c, tag:d};
   });
-}, D = a => A(B, a, ["key", "val", "def", "f"]).reduce((b, {key:d, val:c}) => {
+}, E = a => B(C, a, ["key", "val", "def", "f"]).reduce((b, {key:d, val:c}) => {
   if (void 0 === c) {
     return b[d] = !0, b;
   }
   b[d] = "true" == c ? !0 : "false" == c ? !1 : /^\d+$/.test(c) ? parseInt(c, 10) : c;
   return b;
 }, {});
-const F = a => a.split(/([!?=*(),:.<>{}|\s+])/g).filter(b => /\S/.test(b)).map(b => {
+const G = a => a.split(/([!?=*(),:.<>{}|\s+])/g).filter(b => /\S/.test(b)).map(b => {
   switch(b) {
     case "function":
       return "function";
@@ -75,7 +86,7 @@ const F = a => a.split(/([!?=*(),:.<>{}|\s+])/g).filter(b => /\S/.test(b)).map(b
   }
   return b;
 });
-function G(a) {
+function aa(a) {
   let b = 0;
   const d = (e = 1) => a[b + e], c = (e = !0, g = []) => {
     var f = {};
@@ -233,10 +244,10 @@ function G(a) {
   return c();
 }
 ;function H(a) {
-  a = F(a);
-  return G(a);
+  a = G(a);
+  return aa(a);
 }
-;const aa = path.dirname, ba = path.resolve;
+;const ba = path.dirname, ca = path.resolve;
 const I = ({A:a, C:b, l:d, type:c}) => b ? "string" : a ? "number" : d ? "boolean" : c ? c : "*", J = a => {
   a = a.trimRight();
   var b = /\S/.exec(a);
@@ -271,9 +282,9 @@ const I = ({A:a, C:b, l:d, type:c}) => b ? "string" : a ? "number" : d ? "boolea
 };
 function L(a, b) {
   const d = a.example;
-  d && d.startsWith(".") && b && (a.example = ba(aa(b), d));
+  d && d.startsWith(".") && b && (a.example = ca(ba(b), d));
 }
-;function ca(a, b, {name:d, string:c, "boolean":e, opt:g, number:f, type:k}, h) {
+;function da(a, b, {name:d, string:c, "boolean":e, opt:g, number:f, type:k}, h) {
   if (!d) {
     throw Error("Argument does not have a name.");
   }
@@ -285,7 +296,7 @@ function L(a, b) {
   a.type = b;
   g && (a.optional = !0);
 }
-class da {
+class ea {
   constructor() {
     this.name = null;
     this.type = "";
@@ -299,15 +310,15 @@ class da {
 const M = (a, b) => {
   let d = a.lastIndexOf("</arg>"), c = a;
   var e = [];
-  -1 != d && (d += 6, e = a.slice(0, d), c = a.slice(d), e = E("arg", e), e = e.map(({content:g, props:f}) => {
-    const k = new da;
-    ca(k, g, f, b);
+  -1 != d && (d += 6, e = a.slice(0, d), c = a.slice(d), e = F("arg", e), e = e.map(({content:g, props:f}) => {
+    const k = new ea;
+    da(k, g, f, b);
     return k;
   }));
   return {w:c, j:e};
 };
-const ea = fs.readFileSync;
-const fa = a => {
+const fa = fs.readFileSync;
+const ha = a => {
   const b = a.replace(/^\s*\n/gm, "").split("\n").reduce((d, c) => {
     [{length:c = 0} = {}] = /^\s*/.exec(c) || [];
     return c < d ? c : d;
@@ -317,9 +328,9 @@ const fa = a => {
 function N(a, b = "") {
   const d = b.split(/\s*,\s*/);
   return a.split(/\s*,\s*/).map(c => {
-    let e = c = ea(c, "utf8");
+    let e = c = fa(c, "utf8");
     if (c = /\/\* start example \*\/\r?\n([\s\S]+?)\r?\n\s*\/\* end example \*\//.exec(c)) {
-      [, c] = c, e = fa(c);
+      [, c] = c, e = ha(c);
     }
     d.forEach(g => {
       const [f, k] = g.split(/\s*=>\s*/);
@@ -436,14 +447,14 @@ class P {
     this.return = b.return;
   }
 }
-;function ha(a, b, d, c) {
-  var e = E("prop", a).map(({content:h, props:l}) => {
+;function ia(a, b, d, c) {
+  var e = F("prop", a).map(({content:h, props:l}) => {
     const n = new P;
     L(l, d);
     n.b(h, l);
     return n;
   });
-  a = E(["function", "fn", "static"], a).map(({content:h, props:l, tag:n}) => {
+  a = F(["function", "fn", "static"], a).map(({content:h, props:l, tag:n}) => {
     n = "static" == n;
     const {w:m, j:p} = M(h, b);
     h = new Q(p);
@@ -508,7 +519,7 @@ class P {
   return e;
 }, T = (a, b, d = "", c = {}) => {
   const {flatten:e = !1, nameProcess:g, link:f = ({link:l}) => `#${l}`} = c;
-  c = ia(b, a);
+  c = ja(b, a);
   d = `${d}${a}`;
   if (!c) {
     return d;
@@ -518,7 +529,7 @@ class P {
   c.link == k && (k = f(c));
   b = g ? g(d) : d;
   return h ? `<a href="${k}" title="${h.replace(/"/g, "&quot;")}">${b}</a>` : `[${b}](${k})`;
-}, ia = (a, b) => {
+}, ja = (a, b) => {
   a = a.filter(({fullName:c}) => c == b);
   if (a.length) {
     var d = a.find(({import:c}) => c || !1);
@@ -526,7 +537,7 @@ class P {
     return {link:`${"type"}-${a.fullName.replace(/<\/?code>/g, "").replace(/<\/?strong>/g, "").replace(/<br\/>/g, "").replace(/&nbsp;/g, "").replace(/[^\w-\d ]/g, "").toLowerCase().replace(/[, ]/g, "-")}`, type:a};
   }
 };
-function ja(a, b = [], d = [], c = {}) {
+function ka(a, b = [], d = [], c = {}) {
   const {narrow:e = !1, preprocessDesc:g} = c;
   if (!b.length) {
     return "";
@@ -538,7 +549,7 @@ function ja(a, b = [], d = [], c = {}) {
     l = 0 < (p + 1) % 2;
     p = m.args && m.isParsedFunction ? m.toTypeScriptFunction(n) : n(m.parsed || m.type);
     const q = f || m.optional ? m.name : `${m.name}*`, r = m.hasDefault ? `\`${m.default}\`` : "-", t = g ? g(m.description) : m.description;
-    return {prop:m, typeName:p, name:q, de:ka(t, !e), d:r, G:l};
+    return {prop:m, typeName:p, name:q, de:la(t, !e), d:r, G:l};
   });
   if (e) {
     return {props:a, anyHaveDefault:k, constr:f};
@@ -551,12 +562,12 @@ function ja(a, b = [], d = [], c = {}) {
 ${JSON.stringify([b, ...a], null, 2)}
 \`\`\``;
 }
-const ka = (a = "", b = !0) => {
+const la = (a = "", b = !0) => {
   null === a && (a = "");
   b && (a = a.replace(/\|/g, "\\|"));
   return a.replace(/</g, "&lt;").replace(/>/, "&gt;");
 };
-const la = (a, b, d = {}) => {
+const ma = (a, b, d = {}) => {
   function c(e) {
     e.replace(/^!?/, "");
     return `\`${e}\``;
@@ -600,7 +611,7 @@ class U {
     n && (this.extends = n);
     t && (this.namespace = t);
     if (a) {
-      const {properties:u, constructor:v} = ha(a, z, this.f, this.fullName);
+      const {properties:u, constructor:v} = ia(a, z, this.f, this.fullName);
       v && (this.args = v.args);
       this.properties = u;
     }
@@ -630,7 +641,7 @@ class U {
     f = f ? `${f} ` : "";
     let h = /_/.test(g);
     if (this.extends) {
-      const l = la(this.extends, a, b), n = ` extends ${l}`;
+      const l = ma(this.extends, a, b), n = ` extends ${l}`;
       h = h || /_/.test(l);
       f = (h ? f + "<strong>" : f + "__") + (g + n);
       "function" == typeof d && d(this.extends);
@@ -638,7 +649,7 @@ class U {
       f = (h ? f + "<strong>" : f + "__") + g;
     }
     f = (h ? f + "</strong>" : f + "__") + k;
-    a = ja(this, this.properties, a, b);
+    a = ka(this, this.properties, a, b);
     return {LINE:f, table:a, displayInDetails:e};
   }
 }
@@ -666,7 +677,7 @@ class W extends U {
     this.g && (this.g = this.g.replace(a, "$1"));
   }
 }
-;class ma extends U {
+;class na extends U {
   constructor() {
     super();
     this.from = "";
@@ -683,9 +694,9 @@ class W extends U {
     super.b("", {...c, noToc:!0, name:d, type:`import('${b}').${d}`}, e != g ? e : null);
   }
 }
-;const na = os.homedir;
-na();
-const oa = (a, b) => {
+;const oa = os.homedir;
+oa();
+const pa = (a, b) => {
   const d = new RegExp(`([!?])?${a}\\.`, "g");
   b.properties.forEach(c => {
     O(c, a, d);
@@ -746,13 +757,13 @@ const oa = (a, b) => {
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 module.exports = {_Type:U, _Property:P, _Method:W, _parseFile:(a, b, d = null) => {
-  a = E("types", a);
+  a = F("types", a);
   if (!a.length) {
     throw Error("XML file should contain root types element.");
   }
   const [{content:c, props:{namespace:e, ns:g = e}}] = a, f = b == g ? void 0 : g;
-  a = E(["embed"], c).map(({props:l}) => l);
-  const k = [], h = E("type interface constructor method import record".split(" "), c).reduce((l, {content:n, props:m, tag:p}) => {
+  a = F(["embed"], c).map(({props:l}) => l);
+  const k = [], h = F("type interface constructor method import record".split(" "), c).reduce((l, {content:n, props:m, tag:p}) => {
     "record" == p && (p = "type", m.record = !0);
     const {alias:q, aliases:r, ...t} = m;
     d && L(t, d);
@@ -791,11 +802,11 @@ module.exports = {_Type:U, _Property:P, _Method:W, _parseFile:(a, b, d = null) =
         l.push(...m);
         break;
       case "import":
-        z = new ma, z.b(n, m, m.ns || m.from, b), k.push(z);
+        z = new na, z.b(n, m, m.ns || m.from, b), k.push(z);
     }
     return l;
   }, []);
-  b && h.forEach(l => oa(b, l));
+  b && h.forEach(l => pa(b, l));
   return {namespace:g, types:h, imports:k, embeds:a};
 }, _getLinks:S};
 
