@@ -1,5 +1,11 @@
 ## 23 January 2020
 
+### [1.26.1](https://github.com/artdecocode/typal/compare/v1.26.0...v1.26.1)
+
+- [fix] Upgrade `makePromise`.
+
+## 23 January 2020
+
 ### [1.26.0](https://github.com/artdecocode/typal/compare/v1.25.1...v1.26.0)
 
 - [license] Change to AGPL.
