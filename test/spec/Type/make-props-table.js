@@ -9,7 +9,7 @@ const ts = {
     ])
     return res
   },
-  'escapes the | in the description'() {
+  'escapes pipe in the description'() {
     const res = makePropsTable({}, [
       Property.fromXML('`echo abc | node consume.js`', { name: 'prop1', type: 'string' }),
     ])
