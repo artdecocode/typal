@@ -1,6 +1,7 @@
 import Type from '../Type' // eslint-disable-line
 import Import from '../Import' // eslint-disable-line
 import { makeBlock, addSuppress } from '../'
+import { EOL } from 'os'
 
 // import { builtinModules } from 'module'
 // export const importToExtern = (Import, namespace) => {
@@ -54,7 +55,7 @@ export const externsJoinTypes = (types, namespace, currentNamespaces, skipNsDecl
   //   return m
   // })
   const blocks = [...tblocks, ...iblocks]
-    .join('\n')
+    .join(EOL)
   const n = namespace && !skipNsDecl && !currentNamespaces.includes(namespace) ? `/** @const */
 var ${namespace} = {}
 ` : ''

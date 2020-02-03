@@ -5,7 +5,7 @@ import JSTypal from './JSTypal'
 
 export default (conf, onlyTypedef = false) => {
   const { externsTypedef } = makeMarkers({
-    externsTypedef: /^\/\*\*? (documentary|typal) (.+?) externs (.*?)\*\/\n(?:([^\n][\s\S]+?\n))?$/mg,
+    externsTypedef: /^\/\*\*? (documentary|typal) (.+?) externs (.*?)\*\/\r?\n(?:([^\r\n][\s\S]+?\r?\n))?$/mg,
   })
   // to exclude @params in externs block from JSDoc warnings
   const cr = makeCutRule(externsTypedef)

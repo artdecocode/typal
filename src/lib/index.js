@@ -1,4 +1,5 @@
 import { resolve, dirname } from 'path'
+import { EOL } from 'os'
 
 /**
  * Return a name of a property with its default value, and surrounded by square brackets if default is given. If type is boolean or number, the default value is not surrounded by "".
@@ -106,7 +107,7 @@ export const trimD = d => {
 
   if (i == 0) return d
   const s = d.substr(0, i)
-  let n = s.lastIndexOf('\n')
+  let n = s.lastIndexOf(EOL)
   // remove everything before first /n
   if (n == -1) n = 0
   else {
@@ -115,7 +116,7 @@ export const trimD = d => {
   }
   const ws = i - n
   const w = ' '.repeat(ws)
-  const dd = d.split('\n')
+  const dd = d.split(EOL)
   const a = dd.filter(b => /\S/.test(b))
   const notWithSpace = a.find(b => {
     const res = !b.startsWith(w)
@@ -123,7 +124,7 @@ export const trimD = d => {
   })
   if (!notWithSpace) {
     const re = new RegExp(`^ {${ws}}`)
-    return dd.map(b => b.replace(re, '')).join('\n')
+    return dd.map(b => b.replace(re, '')).join(EOL)
   } else return d.trim()
 }
 
@@ -146,7 +147,7 @@ export const toType = (props, argsArgs, fullName = null) => {
     }).join(',')
   }
 
-  let r = ret.replace(/\n\s*/g, ' ')
+  let r = ret.replace(/\r?\n\s*/g, ' ')
   if (async && r) r = `!Promise<${r}>`
   else if (async) r = '!Promise'
   // if (!r && rest.name == 'constructor' && fullName) r = fullName

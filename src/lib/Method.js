@@ -26,7 +26,7 @@ export default class Method extends Type {
   }, ...args) {
     this.description = trimD(content)
     super.fromXML('', props, ...args)
-    if (methodReturn) this._methodReturn = methodReturn.replace(/\n\s*/g, ' ')
+    if (methodReturn) this._methodReturn = methodReturn.replace(/\r?\n\s*/g, ' ')
     if (methodAsync) this.async = true
   }
   /**

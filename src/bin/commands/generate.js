@@ -7,6 +7,7 @@ import makePromise from 'makepromise'
 import makeJSTypal from '../../lib/make-JSTypal'
 import parseFile from '../../lib/parse'
 import { getTypes } from './template'
+import { EOL } from 'os'
 
 /**
  * Adds typal JSDoc into source JS files.
@@ -54,7 +55,7 @@ const processFiles = async (files, closure = false, externs = false, output = ''
     existingTypes.forEach(type => js.emit('types', type))
     js.file = file
     js.LOG = console.error
-    js.lines = content.split('\n')
+    js.lines = content.split(EOL)
     js.end(content)
     const res = await collect(js)
     if (output == '-') {

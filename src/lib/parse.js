@@ -6,6 +6,7 @@ import read from '@wrote/read'
 import Arg, { extractArgs } from './Arg' // eslint-disable-line
 import { toType, updateExampleProp } from './'
 import Fn from './Fn'
+import { EOL } from 'os'
 
 /**
  * When Documentary compiles types with `-n` (root namespace) flag,
@@ -230,7 +231,7 @@ export const readTypesFile = async (path, ignore = []) => {
   try {
     ({ namespace = null, types, imports, embeds } = parseFile(xml, undefined, path))
   } catch (err) {
-    err.message = `Error while reading ${path}\n${err.message}`
+    err.message = `Error while reading ${path}${EOL}${err.message}`
     throw err
   }
   types = types.filter(({ fullName }) => {

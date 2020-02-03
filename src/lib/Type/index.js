@@ -1,3 +1,4 @@
+import { EOL } from 'os'
 import extractProperties from './extract-props'
 import Property, { indentWithAster } from '../Property'
 import Fn from '../Fn'
@@ -156,7 +157,7 @@ _ns.Type.prototype.isConstructor
       s = ` * @typedef {${nn}}`
     }
     if (s) {
-      if (this.description) s = ` * ${this.description}\n${s}`
+      if (this.description) s = ` * ${this.description}${EOL}${s}`
       s = makeBlock(s)
       s = s + getExternDeclaration(this.namespace, this.name)
       return s
@@ -215,7 +216,7 @@ _ns.Type.prototype.isConstructor
         const sp = pr.toProp(closure, useNamespace)
         return sp
       })
-    let typedef = [s, ...p].join('\n')
+    let typedef = [s, ...p].join(EOL)
     if (closure && !noSuppress) typedef = addSuppress(typedef)
     typedef = makeBlock(typedef)
     return typedef
@@ -331,7 +332,7 @@ _ns.Type.prototype.isConstructor
   toPrototype() {
     const pp = this.toHeading()
     // if (this.closureType) pp.push(` * @type {${this.closureType}}`)  // todo <arg>new</arg>
-    let s = makeBlock(pp.join('\n'))
+    let s = makeBlock(pp.join(EOL))
     s = s + getExternDeclaration(this.namespace, this.name, this.toExternsAssignment())
     /** @type {!Array<!(Property|Fn)>} */
     const properties = this.properties.reduce((acc, p) => {
@@ -353,7 +354,7 @@ _ns.Type.prototype.isConstructor
       r += p.toExternsAssignment()
       return r
     })
-    const j = [s, ...t].join('\n')
+    const j = [s, ...t].join(EOL)
     return j
   }
   /**
@@ -387,7 +388,7 @@ _ns.Type.prototype.isConstructor
       const sp = pr.toParam(paramName, ws, closure, useNamespace)
       return sp
     }) : []
-    const st = [s, ...p].join('\n')
+    const st = [s, ...p].join(EOL)
     return st
   }
 

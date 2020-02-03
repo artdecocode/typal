@@ -3,6 +3,7 @@ import createRegexTransformStream from 'restream'
 import mismatch from 'mismatch'
 import { collect } from 'catchment'
 import { getNameWithDefault } from './'
+import { EOL } from 'os'
 
 const getVal = (val) => {
   let v
@@ -13,17 +14,17 @@ const getVal = (val) => {
 }
 
 export const propExtractRe = /^ \* @prop {(.+?)} (\[)?(.+?)(?:=(["'])?(.+?)\4)?(?:])?(?: (.+?))?(?: Default `(.+?)`.)?$/gm
-const propRe = / \* @prop(?:erty)? .+\n/
+const propRe = / \* @prop(?:erty)? .+\r?\n/
 const keys = ['type', 'opt', 'name', 'quote', 'defaultValue', 'description', 'Default']
 
-const typedefRe = new RegExp(`^ \\* @typedef {(.+?)} (.+?)(?: (.+))?\\n((?:${propRe.source})*)`, 'gm')
+const typedefRe = new RegExp(`^ \\* @typedef {(.+?)} (.+?)(?: (.+))?\\r?\\n((?:${propRe.source})*)`, 'gm')
 
 const makeType = (type, name, description, properties) => {
   const hasProps = properties.length
   const tt = type && type != 'Object' ? ` type="${type}"` : ''
   const d = description ? ` desc="${description}"` : ''
   const i = ' '.repeat(2)
-  const t = `${i}<type name="${name}"${tt}${d}${hasProps ? '' : ' /'}>\n`
+  const t = `${i}<type name="${name}"${tt}${d}${hasProps ? '' : ' /'}>${EOL}`
   return t
 }
 
@@ -34,8 +35,8 @@ const makeP = (type, name, defaultValue, optional, description) => {
   const o = (optional && !hasDefault) ? ' opt' : ''
   const i = ' '.repeat(4)
   const ii = ' '.repeat(6)
-  const desc = description ? `>\n${ii}${description}\n${i}</prop>` : '/>'
-  const p = `${i}<prop${o}${t} name="${name}"${def}${desc}\n`
+  const desc = description ? `>${EOL}${ii}${description}${EOL}${i}</prop>` : '/>'
+  const p = `${i}<prop${o}${t} name="${name}"${def}${desc}${EOL}`
   return p
 }
 
@@ -58,7 +59,7 @@ class XML extends Transform {
       const p = makeP(pType, pName, d, optional, pDesc)
       this.push(p)
     })
-    if (properties.length) this.push('  </type>\n')
+    if (properties.length) this.push(`  </type>${EOL}`)
     next()
   }
 }
@@ -68,7 +69,7 @@ const makeImport = (type, name) => {
   if (!f) throw new Error(`Could not extract package from "${type}"`)
   const [,, from] = f
   const i = ' '.repeat(2)
-  return `${i}<import name="${name}" from="${from}" />\n`
+  return `${i}<import name="${name}" from="${from}" />${EOL}`
 }
 
 /**

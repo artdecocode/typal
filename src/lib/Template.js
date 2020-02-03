@@ -1,3 +1,4 @@
+import { EOL } from 'os'
 import { Replaceable } from 'restream'
 import Type from './Type' // eslint-disable-line
 import Fn from './Fn'
@@ -41,11 +42,11 @@ export default class Template extends Replaceable {
             const ja = args.join(', ')
             const s = makeMethod(jsdoc, Static, Async, name, ja, ext)
             const t = aliases.map((al) => {
-              const alJsdoc = jsdoc + `\n * @alias ${name} An alias for **${name}**.`
+              const alJsdoc = jsdoc + `${EOL} * @alias ${name} An alias for **${name}**.`
               return makeMethod(alJsdoc, Static, Async, al, ja, ext, name)
             })
             const strings = [s, ...t]
-            return strings.join('\n')
+            return strings.join(EOL)
           })
           const constr = type.properties.find((prop) => {
             return prop instanceof Fn && prop.isConstructor
@@ -57,14 +58,14 @@ ${removeReturnFromJsDoc(constr.toExtern('', true), n)}
 constructor(${constrArgs}) {
   super(${constrArgs})
 }`
-          const s = [c, ...tt].join('\n').replace(/^/gm, '  ')
+          const s = [c, ...tt].join(EOL).replace(/^/gm, '  ')
           let res = `${cl}{
 ${s}
 }`
           if (type.description) {
             res = `/**
 ${indentWithAster(type.description)}
- */\n` + res
+ */${EOL}` + res
           }
           return res
         },
@@ -92,7 +93,7 @@ ${indentWithAster(type.description)}
           }
           if (pr == 'constructor' || tag == 'methodType') {
             const lines = type.toHeading(ws, false, true)
-            return lines.join('\n')
+            return lines.join(EOL)
           }
           const fn = type.properties.find(({ name }) => {
             return name == pr
@@ -116,7 +117,7 @@ ${indentWithAster(type.description)}
 
 const removeReturnFromJsDoc = (jsdoc, type) => {
   return jsdoc
-    .replace(`\n * @return {${type}}`, '')
-    .replace(`\n * @return {!${type}}`, '')
-    .replace(`\n * @return {?${type}}`, '')
+    .replace(`${EOL} * @return {${type}}`, '')
+    .replace(`${EOL} * @return {!${type}}`, '')
+    .replace(`${EOL} * @return {?${type}}`, '')
 }

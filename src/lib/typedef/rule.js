@@ -2,13 +2,14 @@ import { makeBlock } from '../'
 import Type from '../Type' // eslint-disable-line
 import JSTypal from '../JSTypal' // eslint-disable-line
 import Import from '../Import' // eslint-disable-line
+import { EOL } from 'os'
 import { readTypesFile } from '../parse'
 import { closureJoinTypes, externsJoinTypes } from '../closure'
 
 /**
  * The regex to detect the marker for `typal`. Will return everything until blank line which must be present even at the end of the file.
  */
-export const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\n(?:([^\n][\s\S]+?\n))?$/mg
+export const typedefJsRe = /^\/\*\*? (documentary|typal) (.+?) \*\/\r?\n(?:([^\n][\s\S]+?\r?\n))?$/mg
 
 /**
  * @suppress {globalThis}
@@ -55,7 +56,7 @@ async function replacement(match, docOrTypal, location) {
       if (ext) a.push('ext')
       if (nos) a.push('noSuppress')
       const l = a.join(' ')
-      const s = `\n /* typal-embed ${l} */\n`
+      const s = `${EOL} /* typal-embed ${l} */${EOL}`
       const e = await replacement.call(this, s, 'typal-embed', l)
       return e
     }))
@@ -65,7 +66,7 @@ async function replacement(match, docOrTypal, location) {
     if (closure) {
       block = closureJoinTypes(imports, types, noSuppress)
     } else if (externs) {
-      block = externsJoinTypes(types, namespace, this.namespaces, skipNsDecl) + '\n'
+      block = externsJoinTypes(types, namespace, this.namespaces, skipNsDecl) + EOL
       if (namespace) this.emit('namespace', namespace)
     } else if (useNamespace) {
       if (namespace) this.emit('namespace', namespace)
@@ -74,7 +75,7 @@ async function replacement(match, docOrTypal, location) {
       block = joinTypes(imports, types)
     }
 
-    const typedef = `/* ${docOrTypal} ${location} */\n${block}${bem}`
+    const typedef = `/* ${docOrTypal} ${location} */${EOL}${block}${bem}`
     return typedef
   } catch (e) {
     this.LOG('(%s) Could not process typedef-js: %s', location, e.message)
@@ -109,7 +110,7 @@ const joinTypes = (imports, types, useNamespace = false) => {
 
 export default typedefRule
 
-const m = / \*\/\n\/\*\*\n \* @typedef/g
+const m = / \*\/\r?\n\/\*\*\r?\n \* @typedef/g
 
 /**
  * @suppress {nonStandardJsDocs}

@@ -3,28 +3,29 @@ import { getPropType, getNameWithDefault, makeOptional, trimD } from './'
 import Arg from './Arg' // eslint-disable-line
 import serialise from './serialise'
 import { readFileSync } from 'fs'
+import { EOL } from 'os'
 
 /**
  * Apply ` * ` indentation.
  * @param {string} string The string to indent.
  */
 export const indentWithAster = (string, skipFirst = false) => {
-  const d = string.split('\n').map((l, i) => {
+  const d = string.split(EOL).map((l, i) => {
     if (skipFirst && !i) return l
     let s = ' *'
     if (l.length) s += ' '
     s += l
     return s
-  }).join('\n')
+  }).join(EOL)
   return d
 }
 
 // from documentary
 const getPartial = (boundExample) => {
   const s = boundExample
-    .replace(/^\s*\n/gm, '') // remove empty lines
+    .replace(/^\s*\r?\n/gm, '') // remove empty lines
   const minLength = s
-    .split('\n')
+    .split(EOL)
     .reduce((acc, current) => {
       const [{ length = 0 } = {}] = /^\s*/.exec(current) || []
       if (length < acc) return length
@@ -261,15 +262,15 @@ export default class Property {
       const exampleLines = Property.getExampleLines(this.examples, {
         addExample: false, indent: false,
       })
-      const e = exampleLines.join('\n')
+      const e = exampleLines.join(EOL)
         .replace(/\*/g, '＊')
-      if (e) s += `\n${e}`
+      if (e) s += `${EOL}${e}`
     }
     return s
   }
   get descriptionWithDefault() {
     let s = this.description || ''
-    const d = this.hasDefault ? `${/``` */.test(this.description) ? '\n' :
+    const d = this.hasDefault ? `${/``` */.test(this.description) ? EOL :
       (s ? ' ' : '')}Default \`${this.default}\`.` : ''
     return `${s}${d}`
   }
@@ -368,7 +369,7 @@ export default class Property {
     const { descriptionWithDefault } = this
     if (descriptionWithDefault) {
       const d = indentWithAster(descriptionWithDefault)
-      pp.push(...d.split('\n'))
+      pp.push(...d.split(EOL))
     }
     if (!this.optional && this.isParsedFunction) {
       const lines = this.toHeading(fromTemplate)
@@ -382,7 +383,7 @@ export default class Property {
       pp.push(...el)
     }
     if (ws) pp = pp.map(p => `${ws}${p}`)
-    return pp.join('\n')
+    return pp.join(EOL)
   }
   /**
    * @param {!Array<string>} examples The examples.
@@ -391,7 +392,7 @@ export default class Property {
     const pp = []
     if (addExample) pp.push(' * @example')
     examples.forEach((example) => {
-      const exampleLines = example.split('\n')
+      const exampleLines = example.split(EOL)
       let currentComment = [], currentBlock = []
       let state = '', newState
       let eg = exampleLines.reduce((acc, current) => {
@@ -405,10 +406,10 @@ export default class Property {
         if (!state) state = newState
         if (newState != state) {
           if (newState == 'block') {
-            acc.push(currentComment.join('\n'))
+            acc.push(currentComment.join(EOL))
             currentComment = []
           } else {
-            acc.push(currentBlock.join('\n'))
+            acc.push(currentBlock.join(EOL))
             currentBlock = []
           }
           state = newState
@@ -416,17 +417,17 @@ export default class Property {
         return acc
       }, [])
       if (currentComment.length) {
-        eg.push(currentComment.join('\n'))
+        eg.push(currentComment.join(EOL))
       } else if (currentBlock.length) {
-        eg.push(currentBlock.join('\n'))
+        eg.push(currentBlock.join(EOL))
       }
       eg = eg.reduce((acc, e) => {
         if (e.startsWith('///')) {
           e = e.replace(/^\/\/\/\s+/gm, '')
-          acc.push(...e.split('\n'))
+          acc.push(...e.split(EOL))
         } else {
           acc.push('```js')
-          acc.push(...e.split('\n'))
+          acc.push(...e.split(EOL))
           acc.push('```')
         }
         return acc
@@ -438,9 +439,9 @@ export default class Property {
   }
   toParam(parentParam, ws = '', closure = false, useNamespace = false) {
     const s = this.toJSDoc(parentParam, closure, useNamespace)
-    const [firstLine, ...rest] = s.split('\n')
+    const [firstLine, ...rest] = s.split(EOL)
     const m = [`@param ${firstLine}`, ...rest].map(l => `${ws} * ${l}`)
-    const p = m.join('\n')
+    const p = m.join(EOL)
     return p
   }
   makeAlias(name) {
