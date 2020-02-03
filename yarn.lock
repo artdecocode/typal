@@ -38,10 +38,10 @@
   dependencies:
     makepromise "^3.1.0"
 
-"@wrote/read-dir-structure@^1.2.0", "@wrote/read-dir-structure@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@wrote/read-dir-structure/-/read-dir-structure-1.3.0.tgz#3e0652807ec76085474ec427c2cf198f13a09be4"
-  integrity sha512-+yseRsIOiOrYv0xVuRqDM1OTGytRW2UfLPCFCzG34mRcorOhd7Zy6EYiNbCM2GgEtmhCpHzIKyiLLuKh/M8RHA==
+"@wrote/read-dir-structure@^1.2.0", "@wrote/read-dir-structure@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@wrote/read-dir-structure/-/read-dir-structure-1.3.1.tgz#f63e2d9f8dd4b5c173b803cdc2f8d2cebd29177b"
+  integrity sha512-fGf6n2k6/6S4koam4odR1Bk/2nzkP7/e5iyiwvexLQ7phdCnlwKJiLtYlFmOLHk4cavBpdwRP8NUm+sUJQDPHw==
 
 "@wrote/read@^1.0.3", "@wrote/read@^1.0.4":
   version "1.0.4"
